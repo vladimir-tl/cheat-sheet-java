@@ -17,11 +17,11 @@ OUT = ROOT / "docs/index.html"
 # The header shows only these high-level groups; the topics of the active group go to a second row.
 # Theory files not listed here end up in the group "Other".
 GROUPS = [
+    ("types", "Types", "Типы", ["PrimitivesAndWrappersTheory"]),
     ("loops", "Loops", "Циклы", ["ForTheory", "WhileTheory"]),
     ("conditions", "Conditions", "Условия", ["IfElseTheory", "SwitchTheory"]),
     ("arrays", "Arrays", "Массивы", ["ArrayTheory"]),
     ("collections", "Collections", "Коллекции", ["ListTheory", "SetTheory", "MapTheory"]),
-    ("types", "Types", "Типы", ["PrimitivesAndWrappersTheory"]),
     ("streams", "Stream API", "Stream API", ["StreamTheory"]),
 ]
 
@@ -281,7 +281,7 @@ def render_tasks(t, lang):
         out.append('<section class="card task">')
         out.append(f'<h3>{inline(task["title"])}</h3>')
         out.append(render_text(task["text"], k))
-        out.append(f'<div class="code"><pre><code>{highlight(task["sig"])}</code></pre></div>')
+        out.append(f'<div class="code"><pre><code>{highlight(task["sig"].removeprefix("static "))}</code></pre></div>')
         out.append("</section>")
     return "\n".join(out)
 
@@ -303,8 +303,11 @@ def render_topic(t, lang):
         out.append("</ol></div>")
     out.append("</div>")
     if t["practice"]:
+        target = f"#{k}-tasks" if t.get("tasks") else f"#{k}"
+        practice = re.sub(r"\borg\.tl(?:\.\w+)+",
+                          lambda m: f'<a class="xref" href="{target}">{m.group(0)}</a>', esc(t["practice"]))
         extra = f' <a class="xref" href="#{k}-tasks">{TASKS_TITLE[lang]} ↓</a>' if t.get("tasks") else ""
-        out.append(f'<p class="practice">{esc(t["practice"])}{extra}</p>')
+        out.append(f'<p class="practice">{practice}{extra}</p>')
     out.append("</nav>")
 
     for g in t["groups"]:
@@ -363,6 +366,9 @@ header { position: sticky; top: 0; z-index: 5; background: var(--card); border-b
 .tabs a, .subtabs a { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
 .tabs a:hover, .subtabs a:hover { color: var(--text); }
 .tabs a.active, .subtabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.practice-link { margin-left: auto; flex: none; padding: 4px 12px; margin-top: 4px; margin-bottom: 4px; border: 1px solid var(--accent); border-radius: 6px; color: var(--accent); text-decoration: none; font-size: 14px; white-space: nowrap; }
+.practice-link:hover { background: var(--inline-bg); }
+.practice-link.hidden { visibility: hidden; }
 .subbar { border-top: 1px solid var(--border); background: var(--bg); }
 .subbar.hidden { display: none; }
 .subtabs { display: none; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
@@ -426,6 +432,7 @@ __TABS__
 </div>
 <div class="subbar"><div class="bar">
 __SUBTABS__
+  <a class="practice-link" id="practice-link" href="#"><span class="l-en">Practice tasks</span><span class="l-ru">Практика</span></a>
 </div></div></header>
 <main>
 __TOPICS__
@@ -439,6 +446,7 @@ const topics = [...document.querySelectorAll(".topic")];
 const groupTabs = [...document.querySelectorAll(".tabs a")];
 const subtabs = [...document.querySelectorAll(".subtabs")];
 const subbar = document.querySelector(".subbar");
+const practiceLink = document.getElementById("practice-link");
 let lang = "en";
 try { lang = localStorage.getItem("lang") || ""; } catch (e) {}
 if (lang !== "ru" && lang !== "en") lang = (navigator.language || "").toLowerCase().startsWith("ru") ? "ru" : "en";
@@ -466,7 +474,10 @@ function route() {
     if (on) hasSub = true;
     st.querySelectorAll("a").forEach(a => a.classList.toggle("active", a.dataset.key === key));
   });
-  subbar.classList.toggle("hidden", !hasSub);
+  const hasTasks = !!document.querySelector('.topic.active [data-id="' + key + '-tasks"]');
+  subbar.classList.toggle("hidden", !hasSub && !hasTasks);
+  practiceLink.classList.toggle("hidden", !hasTasks);
+  practiceLink.href = "#" + key + "-tasks";
   const target = h.includes("-") ? document.querySelector('.l-' + lang + ' [data-id="' + h + '"]') : null;
   if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
 }

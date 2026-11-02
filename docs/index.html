@@ -33,6 +33,9 @@ header { position: sticky; top: 0; z-index: 5; background: var(--card); border-b
 .tabs a, .subtabs a { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
 .tabs a:hover, .subtabs a:hover { color: var(--text); }
 .tabs a.active, .subtabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.practice-link { margin-left: auto; flex: none; padding: 4px 12px; margin-top: 4px; margin-bottom: 4px; border: 1px solid var(--accent); border-radius: 6px; color: var(--accent); text-decoration: none; font-size: 14px; white-space: nowrap; }
+.practice-link:hover { background: var(--inline-bg); }
+.practice-link.hidden { visibility: hidden; }
 .subbar { border-top: 1px solid var(--border); background: var(--bg); }
 .subbar.hidden { display: none; }
 .subtabs { display: none; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
@@ -90,11 +93,11 @@ section { scroll-margin-top: 110px; }
 <header><div class="bar">
   <div class="brand">Java cheat sheet</div>
   <div class="tabs">
+    <a href="#primitivesandwrappers" data-group="types"><span class="l-en">Types</span><span class="l-ru">Типы</span></a>
     <a href="#for" data-group="loops"><span class="l-en">Loops</span><span class="l-ru">Циклы</span></a>
     <a href="#ifelse" data-group="conditions"><span class="l-en">Conditions</span><span class="l-ru">Условия</span></a>
     <a href="#array" data-group="arrays"><span class="l-en">Arrays</span><span class="l-ru">Массивы</span></a>
     <a href="#list" data-group="collections"><span class="l-en">Collections</span><span class="l-ru">Коллекции</span></a>
-    <a href="#primitivesandwrappers" data-group="types"><span class="l-en">Types</span><span class="l-ru">Типы</span></a>
     <a href="#stream" data-group="streams"><span class="l-en">Stream API</span><span class="l-ru">Stream API</span></a>
   </div>
   <div class="lang"><button type="button" data-lang="ru">RU</button><button type="button" data-lang="en">EN</button></div>
@@ -103,8 +106,265 @@ section { scroll-margin-top: 110px; }
   <div class="subtabs" data-group="loops"><a href="#for" data-key="for"><span class="l-en">The for loop</span><span class="l-ru">Цикл for</span></a><a href="#while" data-key="while"><span class="l-en">The while loop</span><span class="l-ru">Цикл while</span></a></div>
   <div class="subtabs" data-group="conditions"><a href="#ifelse" data-key="ifelse"><span class="l-en">If-else</span><span class="l-ru">If-else</span></a><a href="#switch" data-key="switch"><span class="l-en">Switch</span><span class="l-ru">Switch</span></a></div>
   <div class="subtabs" data-group="collections"><a href="#list" data-key="list"><span class="l-en">List</span><span class="l-ru">List</span></a><a href="#set" data-key="set"><span class="l-en">Set and HashSet</span><span class="l-ru">Set и HashSet</span></a><a href="#map" data-key="map"><span class="l-en">Map</span><span class="l-ru">Map</span></a></div>
+  <a class="practice-link" id="practice-link" href="#"><span class="l-en">Practice tasks</span><span class="l-ru">Практика</span></a>
 </div></div></header>
 <main>
+<div class="topic" data-key="primitivesandwrappers" data-group="types">
+<div class="l-en">
+<h1>Primitives and wrapper classes</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Basics</h4><ol>
+<li value="1"><a href="#primitivesandwrappers-1">Two kinds of types: primitives and wrappers</a></li>
+<li value="2"><a href="#primitivesandwrappers-2">The eight primitives and their wrappers</a></li>
+<li value="3"><a href="#primitivesandwrappers-3">When to use which</a></li>
+</ol></div>
+<div class="group"><h4>Converting</h4><ol>
+<li value="4"><a href="#primitivesandwrappers-4">Autoboxing and unboxing</a></li>
+<li value="5"><a href="#primitivesandwrappers-5">Parsing: String to number and back</a></li>
+<li value="6"><a href="#primitivesandwrappers-6">Casting: widening and narrowing</a></li>
+</ol></div>
+<div class="group"><h4>Traps</h4><ol>
+<li value="7"><a href="#primitivesandwrappers-7">Unboxing <code>null</code>: NullPointerException</a></li>
+<li value="8"><a href="#primitivesandwrappers-8">Comparing wrappers: <code>==</code> or equals?</a></li>
+<li value="9"><a href="#primitivesandwrappers-9">Integer division, overflow, double precision</a></li>
+</ol></div>
+</div>
+<p class="practice">Practice: see <a class="xref" href="#primitivesandwrappers">org.tl.types</a> (PrimitivesAndWrappersCheatSheet).</p>
+</nav>
+<h2 class="group-title">Basics</h2>
+<section class="card" data-id="primitivesandwrappers-1">
+<h3>1. Two kinds of types: primitives and wrappers</h3>
+<p>Primitive: stores the value itself. Fast, never <code>null</code>, has no methods. Written in lower case: int, double, boolean.</p>
+<p>Wrapper: a class (an object) that holds a primitive. Can be <code>null</code>, has useful methods, and is required by generics. Written with a capital letter: Integer, Double, Boolean.</p>
+<p>String is NOT a primitive; it is a class.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> a = <span class="t-number">5</span>;          <span class="t-comment">// primitive: just the number 5</span>
+<span class="t-type">Integer</span> b = <span class="t-number">5</span>;      <span class="t-comment">// wrapper: an object holding 5</span>
+<span class="t-type">Integer</span> c = <span class="t-kw">null</span>;   <span class="t-comment">// possible only for a wrapper</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-2">
+<h3>2. The eight primitives and their wrappers</h3>
+<pre class="plain">  Primitive | Wrapper   | Size   | Default | Notes
+  ----------|-----------|--------|---------|---------------------------------
+  byte      | Byte      | 8 bit  | 0       | -128 .. 127
+  short     | Short     | 16 bit | 0       |
+  int       | Integer   | 32 bit | 0       | the default integer type
+  long      | Long      | 64 bit | 0L      | literal needs L: 10000000000L
+  float     | Float     | 32 bit | 0.0f    | literal needs f: 1.5f
+  double    | Double    | 64 bit | 0.0     | the default decimal type
+  char      | Character | 16 bit | 0 (nul) | one character in single quotes: 'a'
+  boolean   | Boolean   | n/a    | false   | true or false</pre>
+<p>The default is what a field or an array element gets if you set nothing. For every wrapper the default is <code>null</code>, not 0.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">long</span> big = <span class="t-number">10000000000L</span>;  <span class="t-comment">// without L: "integer number too large"</span>
+<span class="t-kw">float</span> f = <span class="t-number">1.5f</span>;           <span class="t-comment">// without f: 1.5 is a double and does not fit into float</span>
+<span class="t-kw">char</span> letter = <span class="t-string">'a'</span>;        <span class="t-comment">// single quotes for char, double quotes for String</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-3">
+<h3>3. When to use which</h3>
+<ul><li>Primitive by default: counters, math, flags.</li><li>Wrapper when you need <code>null</code> ("no value"), or inside generics: <code>Map&lt;String, Long&gt;</code>. Generics cannot hold primitives: <code>Map&lt;String, long&gt;</code> does not compile.</li></ul>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> count = <span class="t-number">0</span>;                    <span class="t-comment">// a counter: primitive</span>
+<span class="t-type">Integer</span> maybeAge = <span class="t-kw">null</span>;          <span class="t-comment">// age may be unknown: wrapper</span></code></pre></div>
+</section>
+<h2 class="group-title">Converting</h2>
+<section class="card" data-id="primitivesandwrappers-4">
+<h3>4. Autoboxing and unboxing</h3>
+<pre class="plain">Java converts between a primitive and its wrapper automatically.
+  boxing:   int -&gt; Integer
+  unboxing: Integer -&gt; int</pre>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Integer</span> boxed = <span class="t-number">5</span>;       <span class="t-comment">// boxing</span>
+<span class="t-kw">int</span> primitive = boxed;   <span class="t-comment">// unboxing</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-5">
+<h3>5. Parsing: String to number and back</h3>
+<p><code>Integer.parseInt("42")</code> turns text into an int. <code>String.valueOf(42)</code> turns a number into text. Text that is not a number throws NumberFormatException.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> a = <span class="t-type">Integer</span>.parseInt(<span class="t-string">"42"</span>);             <span class="t-comment">// 42</span>
+<span class="t-kw">double</span> d = <span class="t-type">Double</span>.parseDouble(<span class="t-string">"3.14"</span>);      <span class="t-comment">// 3.14</span>
+<span class="t-type">String</span> text = <span class="t-type">String</span>.valueOf(<span class="t-number">42</span>);           <span class="t-comment">// "42"</span>
+<span class="t-type">Integer</span> boxed = <span class="t-type">Integer</span>.valueOf(<span class="t-number">42</span>);        <span class="t-comment">// 42 as an Integer</span>
+
+<span class="t-comment">// Integer.parseInt("abc");   // NumberFormatException: For input string: "abc"</span>
+<span class="t-comment">// Integer.parseInt("");      // NumberFormatException</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-6">
+<h3>6. Casting: widening and narrowing</h3>
+<p>Widening (smaller <code>-&gt;</code> bigger type) is automatic and safe: int <code>-&gt;</code> long <code>-&gt;</code> double. Narrowing (bigger <code>-&gt;</code> smaller) needs a cast in brackets and may lose data.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">long</span> big = <span class="t-number">5</span>;                   <span class="t-comment">// int -&gt; long, automatic</span>
+<span class="t-kw">double</span> dbl = <span class="t-number">5</span>;                 <span class="t-comment">// int -&gt; double, automatic: 5.0</span>
+
+<span class="t-kw">int</span> truncated = (<span class="t-kw">int</span>) <span class="t-number">3.99</span>;     <span class="t-comment">// 3: the decimals are CUT, not rounded</span>
+<span class="t-kw">byte</span> overflow = (<span class="t-kw">byte</span>) <span class="t-number">200</span>;     <span class="t-comment">// -56: 200 does not fit into byte (max 127)</span>
+<span class="t-kw">int</span> rounded = (<span class="t-kw">int</span>) <span class="t-type">Math</span>.round(<span class="t-number">3.99</span>); <span class="t-comment">// 4: use Math.round to round</span></code></pre></div>
+</section>
+<h2 class="group-title">Traps</h2>
+<section class="card" data-id="primitivesandwrappers-7">
+<h3>7. Unboxing <code>null</code>: NullPointerException</h3>
+<p>A wrapper may be <code>null</code>, a primitive may not. If you unbox a <code>null</code> wrapper, the program crashes.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Integer</span> value = <span class="t-kw">null</span>;
+<span class="t-comment">// int x = value;   // NullPointerException</span>
+
+<span class="t-kw">int</span> safe = (value != <span class="t-kw">null</span>) ? value : <span class="t-number">0</span>;   <span class="t-comment">// check first -&gt; 0</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-8">
+<h3>8. Comparing wrappers: <code>==</code> or equals?</h3>
+<p>For primitives <code>==</code> compares values. For wrappers <code>==</code> compares REFERENCES (are these the same object?), not values. Always use <code>equals()</code> for wrappers.</p>
+<p>Integer caches the values -128 .. 127, so <code>==</code> "works" for small numbers by accident and fails for big ones. Do not rely on it.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> a = <span class="t-number">1000</span>, b = <span class="t-number">1000</span>;
+<span class="t-type">System</span>.out.println(a == b);             <span class="t-comment">// true: primitives</span>
+
+<span class="t-type">Integer</span> c = <span class="t-number">1000</span>, d = <span class="t-number">1000</span>;
+<span class="t-type">System</span>.out.println(c == d);             <span class="t-comment">// false (!) two different objects</span>
+<span class="t-type">System</span>.out.println(c.equals(d));        <span class="t-comment">// true: compares values</span>
+
+<span class="t-type">Integer</span> e = <span class="t-number">100</span>, f = <span class="t-number">100</span>;
+<span class="t-type">System</span>.out.println(e == f);             <span class="t-comment">// true, only because 100 is cached</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-9">
+<h3>9. Integer division, overflow, double precision</h3>
+<p>Three classic surprises with numbers.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// Integer division: int / int is an int, the decimals are cut</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">5</span> / <span class="t-number">2</span>);              <span class="t-comment">// 2, not 2.5</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">5</span> / <span class="t-number">2.0</span>);            <span class="t-comment">// 2.5: one operand is a double</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">5</span> % <span class="t-number">2</span>);              <span class="t-comment">// 1: the remainder</span>
+
+<span class="t-comment">// Overflow: int has no room for a bigger number and wraps around</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span>);      <span class="t-comment">// 2147483647</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span> + <span class="t-number">1</span>);  <span class="t-comment">// -2147483648 (!)</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span> + <span class="t-number">1L</span>); <span class="t-comment">// 2147483648: use long</span>
+
+<span class="t-comment">// Precision: double stores decimals approximately</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">0.1</span> + <span class="t-number">0.2</span>);              <span class="t-comment">// 0.30000000000000004</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">0.1</span> + <span class="t-number">0.2</span> == <span class="t-number">0.3</span>);       <span class="t-comment">// false</span>
+<span class="t-comment">// For money use BigDecimal or whole cents in a long.</span></code></pre></div>
+</section>
+</div>
+<div class="l-ru">
+<h1>Примитивы и классы-обёртки</h1>
+<p class="lead">Короткие примеры. Скопируйте любой из них в метод main и запустите.</p>
+<nav class="card contents"><h2>Содержание</h2><div class="cols">
+<div class="group"><h4>Основы</h4><ol>
+<li value="1"><a href="#primitivesandwrappers-1">Два вида типов: примитивы и обёртки</a></li>
+<li value="2"><a href="#primitivesandwrappers-2">Восемь примитивов и их обёртки</a></li>
+<li value="3"><a href="#primitivesandwrappers-3">Что когда использовать</a></li>
+</ol></div>
+<div class="group"><h4>Преобразования</h4><ol>
+<li value="4"><a href="#primitivesandwrappers-4">Автоупаковка и распаковка</a></li>
+<li value="5"><a href="#primitivesandwrappers-5">Парсинг: строка в число и обратно</a></li>
+<li value="6"><a href="#primitivesandwrappers-6">Приведение типов: расширение и сужение</a></li>
+</ol></div>
+<div class="group"><h4>Ловушки</h4><ol>
+<li value="7"><a href="#primitivesandwrappers-7">Распаковка <code>null</code>: NullPointerException</a></li>
+<li value="8"><a href="#primitivesandwrappers-8">Сравнение обёрток: <code>==</code> или equals?</a></li>
+<li value="9"><a href="#primitivesandwrappers-9">Целочисленное деление, переполнение, точность double</a></li>
+</ol></div>
+</div>
+<p class="practice">Практика: см. <a class="xref" href="#primitivesandwrappers">org.tl.types</a> (PrimitivesAndWrappersCheatSheet).</p>
+</nav>
+<h2 class="group-title">Основы</h2>
+<section class="card" data-id="primitivesandwrappers-1">
+<h3>1. Два вида типов: примитивы и обёртки</h3>
+<p>Примитив: хранит само значение. Быстрый, никогда не <code>null</code>, методов нет. Пишется с маленькой буквы: int, double, boolean.</p>
+<p>Обёртка: класс (объект), который хранит примитив. Может быть <code>null</code>, имеет полезные методы и нужна для generics. Пишется с большой буквы: Integer, Double, Boolean.</p>
+<p>String НЕ примитив; это класс.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> a = <span class="t-number">5</span>;          <span class="t-comment">// примитив: просто число 5</span>
+<span class="t-type">Integer</span> b = <span class="t-number">5</span>;      <span class="t-comment">// обёртка: объект, хранящий 5</span>
+<span class="t-type">Integer</span> c = <span class="t-kw">null</span>;   <span class="t-comment">// возможно только для обёртки</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-2">
+<h3>2. Восемь примитивов и их обёртки</h3>
+<pre class="plain">  Примитив  | Обёртка   | Размер | По умолч.| Примечания
+  ----------|-----------|--------|----------|--------------------------------
+  byte      | Byte      | 8 бит  | 0        | -128 .. 127
+  short     | Short     | 16 бит | 0        |
+  int       | Integer   | 32 бит | 0        | целый тип по умолчанию
+  long      | Long      | 64 бит | 0L       | в литерале нужна L: 10000000000L
+  float     | Float     | 32 бит | 0.0f     | в литерале нужна f: 1.5f
+  double    | Double    | 64 бит | 0.0      | дробный тип по умолчанию
+  char      | Character | 16 бит | 0 (nul)  | один символ в одинарных кавычках: 'a'
+  boolean   | Boolean   | н/д    | false    | true или false</pre>
+<p>«По умолчанию» это значение, которое получает поле или элемент массива, если ничего не задать. Для любой обёртки значение по умолчанию <code>null</code>, а не 0.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">long</span> big = <span class="t-number">10000000000L</span>;  <span class="t-comment">// без L: "integer number too large"</span>
+<span class="t-kw">float</span> f = <span class="t-number">1.5f</span>;           <span class="t-comment">// без f: 1.5 это double и не помещается в float</span>
+<span class="t-kw">char</span> letter = <span class="t-string">'a'</span>;        <span class="t-comment">// одинарные кавычки для char, двойные для String</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-3">
+<h3>3. Что когда использовать</h3>
+<ul><li>По умолчанию примитив: счётчики, математика, флаги.</li><li>Обёртка, когда нужен <code>null</code> («значения нет») или внутри generics: <code>Map&lt;String, Long&gt;</code>. Generics не могут хранить примитивы: <code>Map&lt;String, long&gt;</code> не компилируется.</li></ul>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> count = <span class="t-number">0</span>;                    <span class="t-comment">// счётчик: примитив</span>
+<span class="t-type">Integer</span> maybeAge = <span class="t-kw">null</span>;          <span class="t-comment">// возраст может быть неизвестен: обёртка</span></code></pre></div>
+</section>
+<h2 class="group-title">Преобразования</h2>
+<section class="card" data-id="primitivesandwrappers-4">
+<h3>4. Автоупаковка и распаковка</h3>
+<pre class="plain">Java сама преобразует примитив в обёртку и обратно.
+  упаковка (boxing):     int -&gt; Integer
+  распаковка (unboxing): Integer -&gt; int</pre>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Integer</span> boxed = <span class="t-number">5</span>;       <span class="t-comment">// упаковка</span>
+<span class="t-kw">int</span> primitive = boxed;   <span class="t-comment">// распаковка</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-5">
+<h3>5. Парсинг: строка в число и обратно</h3>
+<p><code>Integer.parseInt("42")</code> превращает текст в int. <code>String.valueOf(42)</code> превращает число в текст. Текст, который не является числом, бросает NumberFormatException.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> a = <span class="t-type">Integer</span>.parseInt(<span class="t-string">"42"</span>);             <span class="t-comment">// 42</span>
+<span class="t-kw">double</span> d = <span class="t-type">Double</span>.parseDouble(<span class="t-string">"3.14"</span>);      <span class="t-comment">// 3.14</span>
+<span class="t-type">String</span> text = <span class="t-type">String</span>.valueOf(<span class="t-number">42</span>);           <span class="t-comment">// "42"</span>
+<span class="t-type">Integer</span> boxed = <span class="t-type">Integer</span>.valueOf(<span class="t-number">42</span>);        <span class="t-comment">// 42 как Integer</span>
+
+<span class="t-comment">// Integer.parseInt("abc");   // NumberFormatException: For input string: "abc"</span>
+<span class="t-comment">// Integer.parseInt("");      // NumberFormatException</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-6">
+<h3>6. Приведение типов: расширение и сужение</h3>
+<p>Расширение (меньший <code>-&gt;</code> больший тип) автоматическое и безопасное: int <code>-&gt;</code> long <code>-&gt;</code> double. Сужение (больший <code>-&gt;</code> меньший) требует приведения в скобках и может потерять данные.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">long</span> big = <span class="t-number">5</span>;                   <span class="t-comment">// int -&gt; long, автоматически</span>
+<span class="t-kw">double</span> dbl = <span class="t-number">5</span>;                 <span class="t-comment">// int -&gt; double, автоматически: 5.0</span>
+
+<span class="t-kw">int</span> truncated = (<span class="t-kw">int</span>) <span class="t-number">3.99</span>;     <span class="t-comment">// 3: дробная часть ОТБРАСЫВАЕТСЯ, а не округляется</span>
+<span class="t-kw">byte</span> overflow = (<span class="t-kw">byte</span>) <span class="t-number">200</span>;     <span class="t-comment">// -56: 200 не помещается в byte (максимум 127)</span>
+<span class="t-kw">int</span> rounded = (<span class="t-kw">int</span>) <span class="t-type">Math</span>.round(<span class="t-number">3.99</span>); <span class="t-comment">// 4: для округления используйте Math.round</span></code></pre></div>
+</section>
+<h2 class="group-title">Ловушки</h2>
+<section class="card" data-id="primitivesandwrappers-7">
+<h3>7. Распаковка <code>null</code>: NullPointerException</h3>
+<p>Обёртка может быть <code>null</code>, примитив нет. Если распаковать <code>null</code>-обёртку, программа упадёт.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Integer</span> value = <span class="t-kw">null</span>;
+<span class="t-comment">// int x = value;   // NullPointerException</span>
+
+<span class="t-kw">int</span> safe = (value != <span class="t-kw">null</span>) ? value : <span class="t-number">0</span>;   <span class="t-comment">// сначала проверка -&gt; 0</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-8">
+<h3>8. Сравнение обёрток: <code>==</code> или equals?</h3>
+<p>Для примитивов <code>==</code> сравнивает значения. Для обёрток <code>==</code> сравнивает ССЫЛКИ (это один и тот же объект?), а не значения. Для обёрток всегда используйте <code>equals()</code>.</p>
+<p>Integer кэширует значения -128 .. 127, поэтому <code>==</code> «работает» для маленьких чисел случайно и ломается для больших. Не полагайтесь на это.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> a = <span class="t-number">1000</span>, b = <span class="t-number">1000</span>;
+<span class="t-type">System</span>.out.println(a == b);             <span class="t-comment">// true: примитивы</span>
+
+<span class="t-type">Integer</span> c = <span class="t-number">1000</span>, d = <span class="t-number">1000</span>;
+<span class="t-type">System</span>.out.println(c == d);             <span class="t-comment">// false (!) два разных объекта</span>
+<span class="t-type">System</span>.out.println(c.equals(d));        <span class="t-comment">// true: сравнивает значения</span>
+
+<span class="t-type">Integer</span> e = <span class="t-number">100</span>, f = <span class="t-number">100</span>;
+<span class="t-type">System</span>.out.println(e == f);             <span class="t-comment">// true, только потому что 100 в кэше</span></code></pre></div>
+</section>
+<section class="card" data-id="primitivesandwrappers-9">
+<h3>9. Целочисленное деление, переполнение, точность double</h3>
+<p>Три классических неожиданности с числами.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// Целочисленное деление: int / int это int, дробная часть отбрасывается</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">5</span> / <span class="t-number">2</span>);              <span class="t-comment">// 2, а не 2.5</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">5</span> / <span class="t-number">2.0</span>);            <span class="t-comment">// 2.5: один операнд double</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">5</span> % <span class="t-number">2</span>);              <span class="t-comment">// 1: остаток</span>
+
+<span class="t-comment">// Переполнение: в int не хватает места для большего числа, и значение «заворачивается»</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span>);      <span class="t-comment">// 2147483647</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span> + <span class="t-number">1</span>);  <span class="t-comment">// -2147483648 (!)</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span> + <span class="t-number">1L</span>); <span class="t-comment">// 2147483648: используйте long</span>
+
+<span class="t-comment">// Точность: double хранит дроби приблизительно</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">0.1</span> + <span class="t-number">0.2</span>);              <span class="t-comment">// 0.30000000000000004</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">0.1</span> + <span class="t-number">0.2</span> == <span class="t-number">0.3</span>);       <span class="t-comment">// false</span>
+<span class="t-comment">// Для денег используйте BigDecimal или целое число копеек в long.</span></code></pre></div>
+</section>
+</div>
+</div>
 <div class="topic" data-key="for" data-group="loops">
 <div class="l-en">
 <h1>The for loop</h1>
@@ -124,7 +384,7 @@ section { scroll-margin-top: 110px; }
 <li value="7"><a href="#for-7">for-each</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see org.tl.loops.forloop (ForCheatSheet, ForTasks, ForSolutions). <a class="xref" href="#for-tasks">Practice tasks ↓</a></p>
+<p class="practice">Practice: see <a class="xref" href="#for-tasks">org.tl.loops.forloop</a> (ForCheatSheet, ForTasks, ForSolutions). <a class="xref" href="#for-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="for-1">
@@ -259,52 +519,52 @@ section { scroll-margin-top: 110px; }
 <section class="card task">
 <h3>Ticket 1. Numbering for the daily report</h3>
 <p>The support lead wants a numbered list of the first 10 tickets for the daily report. Print the numbers from 1 to 10, each on its own line.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 2. Operators on even lines</h3>
 <p>Only the even phone lines (2, 4, 6 ... 20) have an operator on duty today. Print the numbers of these lines, each on its own line.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task2()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task2()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 3. Countdown to the sale</h3>
 <p>The big sale starts in 10 seconds and the banner shows a countdown. Print the numbers from 10 down to 1, each on its own line.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task3()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task3()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 4. Tracks sold this week</h3>
 <p>On day 1 the store sold 1 track, on day 2 two tracks, on day 3 three tracks and so on. How many tracks were sold in total in the first n days? For n = 5 the answer is 15.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 5. Playlist shuffles</h3>
 <p>A customer asks: "In how many different orders can I play n tracks?" That is n! = 1 * 2 * ... * n. For n = 5 the answer is 120.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">long</span> task5(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">long</span> task5(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 6. The biggest invoice</h3>
 <p>The manager gives you the totals of today's invoices. Which invoice total is the biggest?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task6(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task6(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 7. Profitable days</h3>
 <p>The array holds the profit of each day of the month; a loss day is negative. On how many days did the store make a positive profit?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task7(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task7(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 8. Promo code typed backwards</h3>
 <p>A customer typed the promo code from right to left. Restore it: "abc" <code>-&gt;</code> "cba". Do not use <code>StringBuilder.reverse()</code>.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task8(<span class="t-type">String</span> s)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task8(<span class="t-type">String</span> s)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 9. Vowels in a song title</h3>
 <p>The marketing team analyses song titles. How many vowels (a, e, i, o, u) are there in the title?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task9(<span class="t-type">String</span> s)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task9(<span class="t-type">String</span> s)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 10. Lucky ticket number</h3>
 <p>A customer gets a bonus if the number of their ticket is a prime number (it has no divisors except 1 and itself; 1 is not prime). Is the number n prime?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task10(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task10(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 11. Banner for the support page</h3>
@@ -312,12 +572,12 @@ section { scroll-margin-top: 110px; }
 <pre class="plain">*
 **
 ***</pre>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task11(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task11(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 12. Ticket labels</h3>
 <p>The helpdesk labels tickets 1..n: a number divisible by 3 is "Fizz" (billing), by 5 is "Buzz" (shipping), by both is "FizzBuzz" (urgent); any other ticket just shows its number. Print the label of each ticket on its own line.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task12(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task12(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 </div>
 <div class="l-ru">
@@ -338,7 +598,7 @@ section { scroll-margin-top: 110px; }
 <li value="7"><a href="#for-7">for-each</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. org.tl.loops.forloop (ForCheatSheet, ForTasks, ForSolutions). <a class="xref" href="#for-tasks">Практические задачи ↓</a></p>
+<p class="practice">Практика: см. <a class="xref" href="#for-tasks">org.tl.loops.forloop</a> (ForCheatSheet, ForTasks, ForSolutions). <a class="xref" href="#for-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="for-1">
@@ -473,52 +733,52 @@ section { scroll-margin-top: 110px; }
 <section class="card task">
 <h3>Тикет 1. Нумерация для ежедневного отчёта</h3>
 <p>Руководитель поддержки хочет пронумерованный список первых 10 тикетов для ежедневного отчёта. Выведите числа от 1 до 10, каждое на отдельной строке.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 2. Операторы на чётных линиях</h3>
 <p>Сегодня дежурные операторы есть только на чётных телефонных линиях (2, 4, 6 ... 20). Выведите номера этих линий, каждый на отдельной строке.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task2()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task2()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 3. Обратный отсчёт до распродажи</h3>
 <p>Большая распродажа начнётся через 10 секунд, на баннере идёт обратный отсчёт. Выведите числа от 10 до 1, каждое на отдельной строке.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task3()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task3()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 4. Треки, проданные за неделю</h3>
 <p>В 1-й день магазин продал 1 трек, во 2-й — два трека, в 3-й — три трека и так далее. Сколько всего треков продано за первые n дней? Для n = 5 ответ 15.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 5. Перемешивание плейлиста</h3>
 <p>Клиент спрашивает: «Сколькими разными способами можно проиграть n треков?» Это n! = 1 * 2 * ... * n. Для n = 5 ответ 120.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">long</span> task5(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">long</span> task5(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 6. Самый крупный счёт</h3>
 <p>Менеджер даёт вам суммы сегодняшних счетов. Какая сумма счёта самая большая?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task6(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task6(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 7. Прибыльные дни</h3>
 <p>В массиве лежит прибыль за каждый день месяца; убыточный день — отрицательное число. В скольких днях магазин получил положительную прибыль?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task7(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task7(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 8. Промокод, набранный задом наперёд</h3>
 <p>Клиент набрал промокод справа налево. Восстановите его: "abc" <code>-&gt;</code> "cba". Не используйте <code>StringBuilder.reverse()</code>.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task8(<span class="t-type">String</span> s)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task8(<span class="t-type">String</span> s)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 9. Гласные в названии песни</h3>
 <p>Маркетологи анализируют названия песен. Сколько гласных (a, e, i, o, u) в названии?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task9(<span class="t-type">String</span> s)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task9(<span class="t-type">String</span> s)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 10. Счастливый номер билета</h3>
 <p>Клиент получает бонус, если номер его билета — простое число (у него нет делителей, кроме 1 и самого себя; 1 не является простым). Является ли число n простым?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task10(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task10(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 11. Баннер для страницы поддержки</h3>
@@ -526,12 +786,12 @@ section { scroll-margin-top: 110px; }
 <pre class="plain">*
 **
 ***</pre>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task11(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task11(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 12. Метки тикетов</h3>
 <p>Служба помощи метит тикеты 1..n: номер, кратный 3, — это "Fizz" (биллинг), кратный 5 — "Buzz" (доставка), кратный обоим — "FizzBuzz" (срочно); любой другой тикет показывает просто свой номер. Выведите метку каждого тикета на отдельной строке.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task12(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task12(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 </div>
 </div>
@@ -550,7 +810,7 @@ section { scroll-margin-top: 110px; }
 <li value="5"><a href="#while-5">Infinite loop</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see org.tl.loops.whileloop (WhileCheatSheet, WhileTasks, WhileSolutions). <a class="xref" href="#while-tasks">Practice tasks ↓</a></p>
+<p class="practice">Practice: see <a class="xref" href="#while-tasks">org.tl.loops.whileloop</a> (WhileCheatSheet, WhileTasks, WhileSolutions). <a class="xref" href="#while-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="while-1">
@@ -643,52 +903,52 @@ section { scroll-margin-top: 110px; }
 <section class="card task">
 <h3>Ticket 1. Open tickets</h3>
 <p>Print the numbers of the first 10 open tickets: from 1 to 10, each on its own line.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 2. Server restart</h3>
 <p>Before a restart the status page shows a countdown. Print the numbers from 10 down to 1, each on its own line.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task2()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task2()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 3. Loyalty points</h3>
 <p>A customer gets 1 point for the first order, 2 points for the second, 3 for the third and so on. How many points in total after n orders? For n = 5 the answer is 15.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task3(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task3(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 4. Length of an order number</h3>
 <p>The label printer needs to know how many digits are in the order number n (n &gt;= 0). For 12345 the answer is 5.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 5. Checksum of an order number</h3>
 <p>The checksum of an order number is the sum of its digits. For 123 it is 6. Return the checksum of n.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 6. Reversed order number</h3>
 <p>The old warehouse system stores order numbers backwards. Return the number written in reverse order: 123 <code>-&gt;</code> 321.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task6(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task6(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 7. Shrinking an image</h3>
 <p>A product photo is n pixels wide and the site halves it (integer division) until it is 1 pixel wide. How many halvings does it take? For 16 the answer is 4.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task7(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task7(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 8. Equal packs of tracks</h3>
 <p>A customer has two playlists, a tracks and b tracks. They want to cut both into packs of the same size with nothing left over, and the packs must be as big as possible. That is the greatest common divisor (Euclid's algorithm). For 12 and 18 the answer is 6.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task8(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task8(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 9. The first refund</h3>
 <p>The array holds the movements of a customer's account; a refund is a negative number. At which index is the first refund? If there is no refund, return -1.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task9(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task9(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 10. The support bot's number game</h3>
 <p>The support bot plays a game with a bored customer. It starts with the number n. While n is not 1: if n is even, divide it by 2; otherwise n = 3 * n + 1. How many steps did the game take? For 6 the answer is 8 (6 3 10 5 16 8 4 2 1).</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task10(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task10(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 </div>
 <div class="l-ru">
@@ -705,7 +965,7 @@ section { scroll-margin-top: 110px; }
 <li value="5"><a href="#while-5">Бесконечный цикл</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. org.tl.loops.whileloop (WhileCheatSheet, WhileTasks, WhileSolutions). <a class="xref" href="#while-tasks">Практические задачи ↓</a></p>
+<p class="practice">Практика: см. <a class="xref" href="#while-tasks">org.tl.loops.whileloop</a> (WhileCheatSheet, WhileTasks, WhileSolutions). <a class="xref" href="#while-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="while-1">
@@ -798,52 +1058,52 @@ section { scroll-margin-top: 110px; }
 <section class="card task">
 <h3>Тикет 1. Открытые тикеты</h3>
 <p>Выведите номера первых 10 открытых тикетов: от 1 до 10, каждый на отдельной строке.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 2. Перезапуск сервера</h3>
 <p>Перед перезапуском на странице статуса идёт обратный отсчёт. Выведите числа от 10 до 1, каждое на отдельной строке.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task2()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task2()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 3. Баллы лояльности</h3>
 <p>Клиент получает 1 балл за первый заказ, 2 балла за второй, 3 за третий и так далее. Сколько всего баллов после n заказов? Для n = 5 ответ 15.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task3(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task3(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 4. Длина номера заказа</h3>
 <p>Принтеру этикеток нужно знать, сколько цифр в номере заказа n (n &gt;= 0). Для 12345 ответ 5.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 5. Контрольная сумма номера заказа</h3>
 <p>Контрольная сумма номера заказа — это сумма его цифр. Для 123 она равна 6. Верните контрольную сумму числа n.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 6. Номер заказа наоборот</h3>
 <p>Старая складская система хранит номера заказов задом наперёд. Верните число, записанное в обратном порядке: 123 <code>-&gt;</code> 321.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task6(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task6(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 7. Уменьшение изображения</h3>
 <p>Фото товара имеет ширину n пикселей, сайт делит её пополам (целочисленное деление), пока ширина не станет 1 пиксель. Сколько делений понадобится? Для 16 ответ 4.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task7(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task7(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 8. Одинаковые пачки треков</h3>
 <p>У клиента два плейлиста: a треков и b треков. Он хочет разрезать оба на пачки одинакового размера без остатка, причём пачки должны быть как можно больше. Это наибольший общий делитель (алгоритм Евклида). Для 12 и 18 ответ 6.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task8(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task8(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 9. Первый возврат</h3>
 <p>В массиве лежат движения по счёту клиента; возврат — отрицательное число. По какому индексу лежит первый возврат? Если возвратов нет, верните -1.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task9(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task9(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 10. Числовая игра бота поддержки</h3>
 <p>Бот поддержки играет в игру со скучающим клиентом. Он начинает с числа n. Пока n не равно 1: если n чётное, разделите его на 2; иначе n = 3 * n + 1. Сколько шагов заняла игра? Для 6 ответ 8 (6 3 10 5 16 8 4 2 1).</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task10(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task10(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 </div>
 </div>
@@ -867,7 +1127,7 @@ section { scroll-margin-top: 110px; }
 <li value="8"><a href="#ifelse-8">Braces, semicolon, = instead of <code>==</code>, order of conditions</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see org.tl.conditions.ifelse (IfElseCheatSheet, IfElseTasks, IfElseSolutions). <a class="xref" href="#ifelse-tasks">Practice tasks ↓</a></p>
+<p class="practice">Practice: see <a class="xref" href="#ifelse-tasks">org.tl.conditions.ifelse</a> (IfElseCheatSheet, IfElseTasks, IfElseSolutions). <a class="xref" href="#ifelse-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="ifelse-1">
@@ -1043,62 +1303,62 @@ section { scroll-margin-top: 110px; }
 <section class="card task">
 <h3>Ticket 1. Charge or not?</h3>
 <p>The billing system gives you an amount n. If it is greater than 0, it is a charge. Is it a charge?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task1(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task1(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 2. Which queue?</h3>
 <p>Tickets with an even number go to queue A, the others to queue B. Does the ticket number n go to queue A (is it even)?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task2(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task2(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 3. The higher price</h3>
 <p>Two partner shops sell the same album at prices a and b. Which price is higher? Do not use Math.max.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task3(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task3(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 4. Account movement</h3>
 <p>Label the movement n on a customer's account: "positive" for money in, "negative" for money out, "zero" for nothing.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 5. Delivery window</h3>
 <p>A courier can deliver on days from..to, both ends included. Can the courier deliver on day n?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task5(<span class="t-kw">int</span> n, <span class="t-kw">int</span> from, <span class="t-kw">int</span> to)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task5(<span class="t-kw">int</span> n, <span class="t-kw">int</span> from, <span class="t-kw">int</span> to)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 6. Best of three offers</h3>
 <p>Three suppliers offered a, b and c. Which offer is the biggest? Do not use Math.max.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task6(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b, <span class="t-kw">int</span> c)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task6(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b, <span class="t-kw">int</span> c)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 7. Support quality grade</h3>
 <p>A customer rated the support from 0 to 100 points. Turn it into a grade: 90 and more is "A", 80+ is "B", 70+ is "C", 60+ is "D", below 60 is "F".</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task7(<span class="t-kw">int</span> score)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task7(<span class="t-kw">int</span> score)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 8. Content filter</h3>
 <p>The store hides some albums from young listeners. Return the age group of the customer: under 13 is "child", under 18 is "teenager", otherwise "adult".</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task8(<span class="t-kw">int</span> age)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task8(<span class="t-kw">int</span> age)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 9. Yearly subscription</h3>
 <p>A yearly subscription has an extra day in a leap year. A year is a leap year if it is divisible by 4, but not by 100, unless it is divisible by 400. Is the year a leap year?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task9(<span class="t-kw">int</span> year)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task9(<span class="t-kw">int</span> year)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 10. Cardboard stand</h3>
 <p>A customer wants to build a triangle stand from three cardboard strips of lengths a, b, c. It works only if each strip is shorter than the sum of the other two. Can the triangle be built?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task10(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b, <span class="t-kw">int</span> c)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task10(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b, <span class="t-kw">int</span> c)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 11. Password on sign-up</h3>
 <p>A new customer chose a password. It is accepted if it is given (not <code>null</code>) and has at least 8 characters. Is the password accepted?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task11(<span class="t-type">String</span> password)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task11(<span class="t-type">String</span> password)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 12. Label of one ticket</h3>
 <p>A ticket number divisible by 3 and 5 is "FizzBuzz" (urgent), divisible by 3 is "Fizz" (billing), divisible by 5 is "Buzz" (shipping). Any other ticket is labelled with its number as text. Return the label of the ticket n.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task12(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task12(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 </div>
 <div class="l-ru">
@@ -1120,7 +1380,7 @@ section { scroll-margin-top: 110px; }
 <li value="8"><a href="#ifelse-8">Скобки, точка с запятой, = вместо <code>==</code>, порядок условий</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. org.tl.conditions.ifelse (IfElseCheatSheet, IfElseTasks, IfElseSolutions). <a class="xref" href="#ifelse-tasks">Практические задачи ↓</a></p>
+<p class="practice">Практика: см. <a class="xref" href="#ifelse-tasks">org.tl.conditions.ifelse</a> (IfElseCheatSheet, IfElseTasks, IfElseSolutions). <a class="xref" href="#ifelse-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="ifelse-1">
@@ -1296,62 +1556,62 @@ section { scroll-margin-top: 110px; }
 <section class="card task">
 <h3>Тикет 1. Списание или нет?</h3>
 <p>Биллинг присылает вам сумму n. Если она больше 0, это списание. Это списание?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task1(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task1(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 2. Какая очередь?</h3>
 <p>Тикеты с чётным номером идут в очередь A, остальные — в очередь B. Попадёт ли тикет с номером n в очередь A (чётный ли он)?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task2(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task2(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 3. Цена повыше</h3>
 <p>Два магазина-партнёра продают один альбом по ценам a и b. Какая цена выше? Не используйте Math.max.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task3(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task3(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 4. Движение по счёту</h3>
 <p>Подпишите движение n по счёту клиента: "positive" — деньги пришли, "negative" — деньги ушли, "zero" — ничего не изменилось.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task4(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 5. Окно доставки</h3>
 <p>Курьер может доставлять в дни from..to, обе границы включены. Может ли курьер доставить в день n?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task5(<span class="t-kw">int</span> n, <span class="t-kw">int</span> from, <span class="t-kw">int</span> to)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task5(<span class="t-kw">int</span> n, <span class="t-kw">int</span> from, <span class="t-kw">int</span> to)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 6. Лучшее из трёх предложений</h3>
 <p>Три поставщика предложили a, b и c. Какое предложение самое большое? Не используйте Math.max.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task6(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b, <span class="t-kw">int</span> c)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task6(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b, <span class="t-kw">int</span> c)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 7. Оценка качества поддержки</h3>
 <p>Клиент оценил поддержку от 0 до 100 баллов. Преобразуйте оценку в буквенную: 90 и больше — "A", 80+ — "B", 70+ — "C", 60+ — "D", ниже 60 — "F".</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task7(<span class="t-kw">int</span> score)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task7(<span class="t-kw">int</span> score)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 8. Фильтр контента</h3>
 <p>Магазин скрывает некоторые альбомы от молодых слушателей. Верните возрастную группу клиента: младше 13 — "child", младше 18 — "teenager", иначе "adult".</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task8(<span class="t-kw">int</span> age)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task8(<span class="t-kw">int</span> age)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 9. Годовая подписка</h3>
 <p>В високосном году в годовой подписке на один день больше. Год високосный, если он делится на 4, но не делится на 100, если только не делится на 400. Високосный ли год?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task9(<span class="t-kw">int</span> year)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task9(<span class="t-kw">int</span> year)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 10. Картонная подставка</h3>
 <p>Клиент хочет собрать треугольную подставку из трёх картонных полосок длиной a, b, c. Это возможно, только если каждая полоска короче суммы двух других. Можно ли собрать треугольник?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task10(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b, <span class="t-kw">int</span> c)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task10(<span class="t-kw">int</span> a, <span class="t-kw">int</span> b, <span class="t-kw">int</span> c)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 11. Пароль при регистрации</h3>
 <p>Новый клиент выбрал пароль. Он принимается, если он задан (не <code>null</code>) и содержит не менее 8 символов. Принят ли пароль?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task11(<span class="t-type">String</span> password)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task11(<span class="t-type">String</span> password)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 12. Метка одного тикета</h3>
 <p>Номер тикета, кратный 3 и 5, — "FizzBuzz" (срочно), кратный 3 — "Fizz" (биллинг), кратный 5 — "Buzz" (доставка). Любой другой тикет помечается своим номером в виде текста. Верните метку тикета n.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task12(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task12(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 </div>
 </div>
@@ -1375,7 +1635,7 @@ section { scroll-margin-top: 110px; }
 <li value="8"><a href="#switch-8">switch or if-else?</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see org.tl.conditions.switchcase (SwitchCheatSheet, SwitchTasks, SwitchSolutions). <a class="xref" href="#switch-tasks">Practice tasks ↓</a></p>
+<p class="practice">Practice: see <a class="xref" href="#switch-tasks">org.tl.conditions.switchcase</a> (SwitchCheatSheet, SwitchTasks, SwitchSolutions). <a class="xref" href="#switch-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Classic switch</h2>
 <section class="card" data-id="switch-1">
@@ -1537,52 +1797,52 @@ section { scroll-margin-top: 110px; }
 <section class="card task">
 <h3>Ticket 1. Delivery day</h3>
 <p>The delivery system gives you the day of the week as a number: 1 is "Monday" ... 7 is "Sunday". Return the name of the day, or "Unknown" for any other number.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task1(<span class="t-kw">int</span> day)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task1(<span class="t-kw">int</span> day)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 2. Reduced support hours</h3>
 <p>On weekends (days 6 and 7) the support works with reduced hours. Is the day a weekend day? Any other number is not.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task2(<span class="t-kw">int</span> day)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task2(<span class="t-kw">int</span> day)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 3. Billing period</h3>
 <p>A monthly subscription is charged for every day of the month. How many days are in the month (1..12)? February has 28. For any other number return -1.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task3(<span class="t-kw">int</span> month)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task3(<span class="t-kw">int</span> month)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 4. Seasonal playlist</h3>
 <p>The store shows a playlist of the season. Return the season of the month: Winter (12, 1, 2), Spring (3-5), Summer (6-8), Autumn (9-11).</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task4(<span class="t-kw">int</span> month)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task4(<span class="t-kw">int</span> month)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 5. Voice bot</h3>
 <p>The voice bot recognises the words "one", "two" and "three" and turns them into numbers 1, 2 and 3. Return 0 for any other word.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-type">String</span> word)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">String</span> word)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 6. Refund calculator in the bot</h3>
 <p>A customer asks the bot to calculate "a operator b" for "+", "-", "*" or "/". Return the result. For any other operator return 0.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task6(<span class="t-kw">int</span> a, <span class="t-type">String</span> operator, <span class="t-kw">int</span> b)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task6(<span class="t-kw">int</span> a, <span class="t-type">String</span> operator, <span class="t-kw">int</span> b)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 7. Spelling hint</h3>
 <p>The bot helps customers who spell their name aloud. Is the letter c a vowel (a, e, i, o, u)? Lower case only.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task7(<span class="t-kw">char</span> c)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task7(<span class="t-kw">char</span> c)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 8. Customer rating</h3>
 <p>A customer rated the order with a number: 5 is "Excellent", 4 is "Good", 3 is "Satisfactory", 2 or 1 is "Fail". Any other number is "Invalid".</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task8(<span class="t-kw">int</span> grade)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task8(<span class="t-kw">int</span> grade)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 9. Warehouse robot</h3>
 <p>The warehouse robot hit a wall and must turn back. Return the opposite direction: UP and DOWN swap places, LEFT and RIGHT too. Use a switch expression.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Direction</span> task9(<span class="t-type">Direction</span> direction)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Direction</span> task9(<span class="t-type">Direction</span> direction)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 10. Loyalty program</h3>
 <p>Customers of the loyalty program get a discount in percent: "gold" 20, "silver" 10, "bronze" 5. Any other customer type gets 0.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task10(<span class="t-type">String</span> type)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task10(<span class="t-type">String</span> type)</code></pre></div>
 </section>
 </div>
 <div class="l-ru">
@@ -1604,7 +1864,7 @@ section { scroll-margin-top: 110px; }
 <li value="8"><a href="#switch-8">switch или if-else?</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. org.tl.conditions.switchcase (SwitchCheatSheet, SwitchTasks, SwitchSolutions). <a class="xref" href="#switch-tasks">Практические задачи ↓</a></p>
+<p class="practice">Практика: см. <a class="xref" href="#switch-tasks">org.tl.conditions.switchcase</a> (SwitchCheatSheet, SwitchTasks, SwitchSolutions). <a class="xref" href="#switch-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Классический switch</h2>
 <section class="card" data-id="switch-1">
@@ -1766,52 +2026,52 @@ section { scroll-margin-top: 110px; }
 <section class="card task">
 <h3>Тикет 1. День доставки</h3>
 <p>Система доставки присылает день недели числом: 1 — "Monday" ... 7 — "Sunday". Верните название дня или "Unknown" для любого другого числа.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task1(<span class="t-kw">int</span> day)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task1(<span class="t-kw">int</span> day)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 2. Сокращённые часы поддержки</h3>
 <p>В выходные (дни 6 и 7) поддержка работает по сокращённому графику. Выходной ли это день? Любое другое число — не выходной.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task2(<span class="t-kw">int</span> day)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task2(<span class="t-kw">int</span> day)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 3. Расчётный период</h3>
 <p>Месячная подписка списывается за каждый день месяца. Сколько дней в месяце (1..12)? В феврале 28. Для любого другого числа верните -1.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task3(<span class="t-kw">int</span> month)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task3(<span class="t-kw">int</span> month)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 4. Сезонный плейлист</h3>
 <p>Магазин показывает плейлист сезона. Верните сезон по месяцу: Winter (12, 1, 2), Spring (3-5), Summer (6-8), Autumn (9-11).</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task4(<span class="t-kw">int</span> month)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task4(<span class="t-kw">int</span> month)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 5. Голосовой бот</h3>
 <p>Голосовой бот распознаёт слова "one", "two" и "three" и превращает их в числа 1, 2 и 3. Для любого другого слова верните 0.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-type">String</span> word)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">String</span> word)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 6. Калькулятор возвратов в боте</h3>
 <p>Клиент просит бота посчитать «a operator b» для "+", "-", "*" или "/". Верните результат. Для любого другого оператора верните 0.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task6(<span class="t-kw">int</span> a, <span class="t-type">String</span> operator, <span class="t-kw">int</span> b)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task6(<span class="t-kw">int</span> a, <span class="t-type">String</span> operator, <span class="t-kw">int</span> b)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 7. Подсказка по написанию</h3>
 <p>Бот помогает клиентам, которые называют своё имя по буквам. Является ли буква c гласной (a, e, i, o, u)? Только строчные буквы.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task7(<span class="t-kw">char</span> c)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task7(<span class="t-kw">char</span> c)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 8. Оценка клиента</h3>
 <p>Клиент оценил заказ числом: 5 — "Excellent", 4 — "Good", 3 — "Satisfactory", 2 или 1 — "Fail". Любое другое число — "Invalid".</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task8(<span class="t-kw">int</span> grade)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task8(<span class="t-kw">int</span> grade)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 9. Складской робот</h3>
 <p>Складской робот упёрся в стену и должен развернуться. Верните противоположное направление: UP и DOWN меняются местами, LEFT и RIGHT тоже. Используйте switch-выражение.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Direction</span> task9(<span class="t-type">Direction</span> direction)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Direction</span> task9(<span class="t-type">Direction</span> direction)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 10. Программа лояльности</h3>
 <p>Клиенты программы лояльности получают скидку в процентах: "gold" 20, "silver" 10, "bronze" 5. Клиент любого другого типа получает 0.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task10(<span class="t-type">String</span> type)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task10(<span class="t-type">String</span> type)</code></pre></div>
 </section>
 </div>
 </div>
@@ -1838,7 +2098,7 @@ section { scroll-margin-top: 110px; }
 <li value="9"><a href="#array-9">Array or List? Converting between them</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see org.tl.arrays (ArrayCheatSheet, ArrayTasks, ArraySolutions). <a class="xref" href="#array-tasks">Practice tasks ↓</a></p>
+<p class="practice">Practice: see <a class="xref" href="#array-tasks">org.tl.arrays</a> (ArrayCheatSheet, ArrayTasks, ArraySolutions). <a class="xref" href="#array-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="array-1">
@@ -1989,52 +2249,52 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 1. Top-5 chart</h3>
 <p>Prepare the places of the weekly chart: create an int array with the numbers 1, 2, 3, 4, 5 and return it.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span>[] task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 2. Empty seat map</h3>
 <p>For an online concert you need a seat map with n seats. Create an int array with n cells (0 means "free") and return it.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span>[] task2(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task2(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 3. Who is first?</h3>
 <p>The array holds the numbers of customers waiting in the queue. Return the number of the customer who is first.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task3(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task3(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 4. The latest order</h3>
 <p>The array holds order numbers in the order they arrived. Return the number of the latest order.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task4(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task4(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 5. Promo price</h3>
 <p>The first cell of the price array holds the price of the album of the day. Put the promo price 100 into the first cell.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task5(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task5(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 6. Queue length</h3>
 <p>How many customers are in the queue (how many cells are in the array)?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task6(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task6(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 7. A new order arrives</h3>
 <p>An array holds the order numbers. A new order with the number value arrives. Return a NEW array: the old orders plus the new one at the end.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span>[] task7(<span class="t-kw">int</span>[] arr, <span class="t-kw">int</span> value)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task7(<span class="t-kw">int</span>[] arr, <span class="t-kw">int</span> value)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 8. Report for the manager</h3>
 <p>The manager wants the order numbers as readable text, like "[1, 2, 3]". Return the array as text.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task8(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task8(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 9. Daily revenue</h3>
 <p>The array holds the amounts of today's orders. Return the total revenue of the day.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task9(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task9(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 10. Safe backup</h3>
 <p>Before a risky edit, back up the array of prices. Return an independent copy: changing the copy must not change the original.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span>[] task10(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task10(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 </div>
 <div class="l-ru">
@@ -2059,7 +2319,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <li value="9"><a href="#array-9">Массив или List? Превращение одного в другой</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. org.tl.arrays (ArrayCheatSheet, ArrayTasks, ArraySolutions). <a class="xref" href="#array-tasks">Практические задачи ↓</a></p>
+<p class="practice">Практика: см. <a class="xref" href="#array-tasks">org.tl.arrays</a> (ArrayCheatSheet, ArrayTasks, ArraySolutions). <a class="xref" href="#array-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="array-1">
@@ -2211,52 +2471,52 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 1. Топ-5 чарта</h3>
 <p>Подготовьте места недельного чарта: создайте массив int с числами 1, 2, 3, 4, 5 и верните его.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span>[] task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 2. Пустая схема мест</h3>
 <p>Для онлайн-концерта нужна схема из n мест. Создайте массив int из n ячеек (0 означает «свободно») и верните его.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span>[] task2(<span class="t-kw">int</span> n)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task2(<span class="t-kw">int</span> n)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 3. Кто первый?</h3>
 <p>В массиве лежат номера клиентов, ожидающих в очереди. Верните номер клиента, который стоит первым.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task3(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task3(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 4. Последний заказ</h3>
 <p>В массиве лежат номера заказов в порядке поступления. Верните номер последнего заказа.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task4(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task4(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 5. Промо-цена</h3>
 <p>В первой ячейке массива цен лежит цена альбома дня. Запишите в первую ячейку промо-цену 100.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task5(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task5(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 6. Длина очереди</h3>
 <p>Сколько клиентов в очереди (сколько ячеек в массиве)?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task6(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task6(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 7. Поступил новый заказ</h3>
 <p>В массиве лежат номера заказов. Поступает новый заказ с номером value. Верните НОВЫЙ массив: старые заказы плюс новый в конце.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span>[] task7(<span class="t-kw">int</span>[] arr, <span class="t-kw">int</span> value)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task7(<span class="t-kw">int</span>[] arr, <span class="t-kw">int</span> value)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 8. Отчёт для менеджера</h3>
 <p>Менеджеру нужны номера заказов в виде читаемого текста, например "[1, 2, 3]". Верните массив в виде текста.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task8(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task8(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 9. Дневная выручка</h3>
 <p>В массиве лежат суммы сегодняшних заказов. Верните общую выручку за день.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task9(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task9(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 10. Надёжная резервная копия</h3>
 <p>Перед рискованной правкой сделайте резервную копию массива цен. Верните независимую копию: изменение копии не должно менять оригинал.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span>[] task10(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task10(<span class="t-kw">int</span>[] arr)</code></pre></div>
 </section>
 </div>
 </div>
@@ -2285,7 +2545,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <li value="11"><a href="#list-11">All basic methods in one table</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see org.tl.collections.list (ListCheatSheet, ListTasks, ListSolutions). <a class="xref" href="#list-tasks">Practice tasks ↓</a></p>
+<p class="practice">Practice: see <a class="xref" href="#list-tasks">org.tl.collections.list</a> (ListCheatSheet, ListTasks, ListSolutions). <a class="xref" href="#list-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Creating a list</h2>
 <section class="card" data-id="list-1">
@@ -2463,72 +2723,72 @@ names.clear();              <span class="t-comment">// []</span></code></pre></d
 <section class="card task">
 <h3>Ticket 1. New support queue</h3>
 <p>The shift starts and nobody is waiting yet. Create an empty list for the names of customers and return it.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 2. Morning shift</h3>
 <p>Three customers are already waiting: "Anna", "Bob", "Eve" (in this order). Create a list with their names and return it.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task2()</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task2()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 3. Who is next?</h3>
 <p>Return the name of the customer who is first in the queue.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task3(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task3(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 4. Who came last?</h3>
 <p>Return the name of the customer who joined the queue last.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task4(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task4(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 5. How many are waiting?</h3>
 <p>Return the number of customers in the queue.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 6. A new customer joins</h3>
 <p>A customer with the given name joins the queue. Add the name to the end of the list.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task6(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task6(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 7. Name correction</h3>
 <p>The first customer's name was typed wrongly. Replace the first name in the list with the correct one.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task7(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task7(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 8. Customer served</h3>
 <p>The first customer in the queue has been helped and leaves. Remove the first name from the list.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task8(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task8(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 9. Is the customer in the queue?</h3>
 <p>A customer calls and asks: "Am I already in the queue?" Return true if the name is in the list.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task9(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task9(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 10. Position in the queue</h3>
 <p>The customer asks: "What is my position?" Return the index of the name in the list (0 is the first place), or -1 if the name is not in the list.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task10(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task10(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 11. Is the queue empty?</h3>
 <p>The agent wants to take a break. Return true if nobody is waiting.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task11(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task11(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 12. Invoices from small to big</h3>
 <p>The list holds the totals of today's invoices. Sort it in ascending order.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task12(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task12(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 13. The biggest invoice</h3>
 <p>Which invoice total in the list is the biggest?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task13(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task13(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 14. End of the shift</h3>
 <p>The shift is over and the queue is handed over to another team. Remove all names from the list.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task14(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task14(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 </div>
 <div class="l-ru">
@@ -2555,7 +2815,7 @@ names.clear();              <span class="t-comment">// []</span></code></pre></d
 <li value="11"><a href="#list-11">Все базовые методы в одной таблице</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. org.tl.collections.list (ListCheatSheet, ListTasks, ListSolutions). <a class="xref" href="#list-tasks">Практические задачи ↓</a></p>
+<p class="practice">Практика: см. <a class="xref" href="#list-tasks">org.tl.collections.list</a> (ListCheatSheet, ListTasks, ListSolutions). <a class="xref" href="#list-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Создание списка</h2>
 <section class="card" data-id="list-1">
@@ -2733,72 +2993,72 @@ names.clear();              <span class="t-comment">// []</span></code></pre></d
 <section class="card task">
 <h3>Тикет 1. Новая очередь поддержки</h3>
 <p>Смена началась, пока никто не ждёт. Создайте пустой список для имён клиентов и верните его.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 2. Утренняя смена</h3>
 <p>Уже ждут три клиента: "Anna", "Bob", "Eve" (в таком порядке). Создайте список с их именами и верните его.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task2()</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task2()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 3. Кто следующий?</h3>
 <p>Верните имя клиента, который первый в очереди.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task3(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task3(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 4. Кто пришёл последним?</h3>
 <p>Верните имя клиента, который встал в очередь последним.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task4(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task4(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 5. Сколько ждёт?</h3>
 <p>Верните количество клиентов в очереди.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 6. Пришёл новый клиент</h3>
 <p>Клиент с данным именем встал в очередь. Добавьте имя в конец списка.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task6(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task6(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 7. Исправление имени</h3>
 <p>Имя первого клиента набрали с ошибкой. Замените первое имя в списке на правильное.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task7(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task7(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 8. Клиент обслужен</h3>
 <p>Первому клиенту в очереди помогли, и он уходит. Удалите первое имя из списка.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task8(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task8(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 9. Клиент уже в очереди?</h3>
 <p>Клиент звонит и спрашивает: «Я уже в очереди?» Верните true, если имя есть в списке.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task9(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task9(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 10. Место в очереди</h3>
 <p>Клиент спрашивает: «Какое у меня место?» Верните индекс имени в списке (0 — первое место) или -1, если имени в списке нет.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task10(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task10(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 11. Очередь пуста?</h3>
 <p>Сотрудник хочет сделать перерыв. Верните true, если никто не ждёт.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task11(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task11(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 12. Счета от меньшего к большему</h3>
 <p>В списке лежат суммы сегодняшних счетов. Отсортируйте его по возрастанию.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task12(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task12(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 13. Самый крупный счёт</h3>
 <p>Какая сумма счёта в списке самая большая?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task13(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task13(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 14. Конец смены</h3>
 <p>Смена закончилась, очередь передаётся другой команде. Удалите все имена из списка.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task14(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task14(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list)</code></pre></div>
 </section>
 </div>
 </div>
@@ -2827,7 +3087,7 @@ names.clear();              <span class="t-comment">// []</span></code></pre></d
 <li value="9"><a href="#set-9">List, Set or Map?</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see org.tl.collections.set (SetCheatSheet, SetTasks, SetSolutions). <a class="xref" href="#set-tasks">Practice tasks ↓</a></p>
+<p class="practice">Practice: see <a class="xref" href="#set-tasks">org.tl.collections.set</a> (SetCheatSheet, SetTasks, SetSolutions). <a class="xref" href="#set-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="set-1">
@@ -2959,52 +3219,52 @@ names.size();                <span class="t-comment">// 2</span></code></pre></d
 <section class="card task">
 <h3>Ticket 1. Blocklist</h3>
 <p>The store starts a blocklist of customers who abuse the support. It is empty for now. Create an empty <code>Set&lt;String&gt;</code> and return it.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 2. VIP customers</h3>
 <p>The VIP customers are "Anna", "Bob" and "Eve". Create a set with these names and return it.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; task2()</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; task2()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 3. Newsletter sign-up</h3>
 <p>A customer subscribes to the newsletter. Add the name to the set of subscribers. Return true if the customer is a new subscriber, false if they were already subscribed.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task3(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task3(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 4. Is the customer blocked?</h3>
 <p>Return true if the name is in the set.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task4(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task4(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 5. How many subscribers?</h3>
 <p>Return the number of subscribers in the set.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 6. Unsubscribe</h3>
 <p>A customer unsubscribes from the newsletter. Remove the name from the set.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task6(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task6(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 7. Duplicate tickets</h3>
 <p>One customer can open several tickets, so the list of customer ids has repeats. Return a set with every customer id once. [1, 2, 2, 3] <code>-&gt;</code> {1, 2, 3}.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Set</span>&lt;<span class="t-type">Integer</span>&gt; task7(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">Integer</span>&gt; task7(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 8. Unique customers today</h3>
 <p>How many different customers wrote to the support today? The list holds the customer id of every ticket. [1, 2, 2, 3] <code>-&gt;</code> 3.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task8(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task8(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 9. Double click on "Pay"</h3>
 <p>The system suspects that an order was submitted twice. Return true if the list of order numbers contains at least one repeated number.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task9(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task9(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 10. Different letters in a promo code</h3>
 <p>The marketing team wants to know how many different characters a promo code uses. "hello" <code>-&gt;</code> 4 (h, e, l, o).</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task10(<span class="t-type">String</span> text)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task10(<span class="t-type">String</span> text)</code></pre></div>
 </section>
 </div>
 <div class="l-ru">
@@ -3031,7 +3291,7 @@ names.size();                <span class="t-comment">// 2</span></code></pre></d
 <li value="9"><a href="#set-9">List, Set или Map?</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. org.tl.collections.set (SetCheatSheet, SetTasks, SetSolutions). <a class="xref" href="#set-tasks">Практические задачи ↓</a></p>
+<p class="practice">Практика: см. <a class="xref" href="#set-tasks">org.tl.collections.set</a> (SetCheatSheet, SetTasks, SetSolutions). <a class="xref" href="#set-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="set-1">
@@ -3163,52 +3423,52 @@ names.size();                <span class="t-comment">// 2</span></code></pre></d
 <section class="card task">
 <h3>Тикет 1. Чёрный список</h3>
 <p>Магазин заводит чёрный список клиентов, которые злоупотребляют поддержкой. Пока он пуст. Создайте пустой <code>Set&lt;String&gt;</code> и верните его.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 2. VIP-клиенты</h3>
 <p>VIP-клиенты — "Anna", "Bob" и "Eve". Создайте множество с этими именами и верните его.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; task2()</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; task2()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 3. Подписка на рассылку</h3>
 <p>Клиент подписывается на рассылку. Добавьте имя во множество подписчиков. Верните true, если клиент новый подписчик, и false, если он уже был подписан.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task3(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task3(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 4. Клиент заблокирован?</h3>
 <p>Верните true, если имя есть во множестве.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task4(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task4(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 5. Сколько подписчиков?</h3>
 <p>Верните количество подписчиков во множестве.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 6. Отписка</h3>
 <p>Клиент отписывается от рассылки. Удалите имя из множества.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task6(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task6(<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set, <span class="t-type">String</span> name)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 7. Дубликаты тикетов</h3>
 <p>Один клиент может открыть несколько тикетов, поэтому в списке id клиентов есть повторы. Верните множество, где каждый id клиента встречается один раз. [1, 2, 2, 3] <code>-&gt;</code> {1, 2, 3}.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Set</span>&lt;<span class="t-type">Integer</span>&gt; task7(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">Integer</span>&gt; task7(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 8. Уникальные клиенты за сегодня</h3>
 <p>Сколько разных клиентов написали в поддержку сегодня? В списке лежит id клиента из каждого тикета. [1, 2, 2, 3] <code>-&gt;</code> 3.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task8(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task8(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 9. Двойной клик по «Оплатить»</h3>
 <p>Система подозревает, что заказ отправили дважды. Верните true, если в списке номеров заказов есть хотя бы один повторяющийся номер.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task9(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task9(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 10. Разные символы в промокоде</h3>
 <p>Маркетологи хотят знать, сколько разных символов использует промокод. "hello" <code>-&gt;</code> 4 (h, e, l, o).</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task10(<span class="t-type">String</span> text)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task10(<span class="t-type">String</span> text)</code></pre></div>
 </section>
 </div>
 </div>
@@ -3233,7 +3493,7 @@ names.size();                <span class="t-comment">// 2</span></code></pre></d
 <li value="7"><a href="#map-7">Keys must be unique and comparable by equals/hashCode</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see org.tl.collections.map (MapCheatSheet, MapTasks, MapSolutions). <a class="xref" href="#map-tasks">Practice tasks ↓</a></p>
+<p class="practice">Practice: see <a class="xref" href="#map-tasks">org.tl.collections.map</a> (MapCheatSheet, MapTasks, MapSolutions). <a class="xref" href="#map-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="map-1">
@@ -3343,32 +3603,32 @@ map.size();          <span class="t-comment">// 2</span></code></pre></div>
 <section class="card task">
 <h3>Ticket 1. Customer cards</h3>
 <p>The CRM stores a customer name and the age of the customer. Create a <code>Map&lt;String, Integer&gt;</code> with three customers and their ages and return it.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 2. Lookup in the CRM</h3>
 <p>A customer calls and gives their name. Return the age stored for this name, or -1 if there is no such customer.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task2(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task2(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 3. Is the customer registered?</h3>
 <p>Return true if the map has a card for the given name.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task3(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task3(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 4. List for the manager</h3>
 <p>The manager wants to see all customer cards. Print every pair as "name=age", each on its own line.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task4(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task4(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 5. Total of the order</h3>
 <p>The map holds the products of an order and their prices. Return the total price (the sum of all values).</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 6. Typo statistics</h3>
 <p>The quality team studies the messages of customers. Count how many times every character appears in the text. "aab" <code>-&gt;</code> {a=2, b=1}.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Map</span>&lt;<span class="t-type">Character</span>, <span class="t-type">Integer</span>&gt; task6(<span class="t-type">String</span> s)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">Character</span>, <span class="t-type">Integer</span>&gt; task6(<span class="t-type">String</span> s)</code></pre></div>
 </section>
 </div>
 <div class="l-ru">
@@ -3391,7 +3651,7 @@ map.size();          <span class="t-comment">// 2</span></code></pre></div>
 <li value="7"><a href="#map-7">Ключи уникальны и сравниваются через equals/hashCode</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. org.tl.collections.map (MapCheatSheet, MapTasks, MapSolutions). <a class="xref" href="#map-tasks">Практические задачи ↓</a></p>
+<p class="practice">Практика: см. <a class="xref" href="#map-tasks">org.tl.collections.map</a> (MapCheatSheet, MapTasks, MapSolutions). <a class="xref" href="#map-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="map-1">
@@ -3501,288 +3761,32 @@ map.size();          <span class="t-comment">// 2</span></code></pre></div>
 <section class="card task">
 <h3>Тикет 1. Карточки клиентов</h3>
 <p>CRM хранит имя клиента и его возраст. Создайте <code>Map&lt;String, Integer&gt;</code> с тремя клиентами и их возрастами и верните её.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; task1()</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; task1()</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 2. Поиск в CRM</h3>
 <p>Клиент звонит и называет своё имя. Верните возраст, сохранённый для этого имени, или -1, если такого клиента нет.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task2(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task2(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 3. Клиент зарегистрирован?</h3>
 <p>Верните true, если в map есть карточка с данным именем.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task3(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task3(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 4. Список для менеджера</h3>
 <p>Менеджер хочет увидеть все карточки клиентов. Выведите каждую пару как "name=age", каждую на отдельной строке.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">void</span> task4(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">void</span> task4(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 5. Сумма заказа</h3>
 <p>В map лежат товары заказа и их цены. Верните общую стоимость (сумму всех значений).</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 6. Статистика опечаток</h3>
 <p>Отдел качества изучает сообщения клиентов. Посчитайте, сколько раз встречается каждый символ в тексте. "aab" <code>-&gt;</code> {a=2, b=1}.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Map</span>&lt;<span class="t-type">Character</span>, <span class="t-type">Integer</span>&gt; task6(<span class="t-type">String</span> s)</code></pre></div>
-</section>
-</div>
-</div>
-<div class="topic" data-key="primitivesandwrappers" data-group="types">
-<div class="l-en">
-<h1>Primitives and wrapper classes</h1>
-<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
-<nav class="card contents"><h2>Contents</h2><div class="cols">
-<div class="group"><h4>Basics</h4><ol>
-<li value="1"><a href="#primitivesandwrappers-1">Two kinds of types: primitives and wrappers</a></li>
-<li value="2"><a href="#primitivesandwrappers-2">The eight primitives and their wrappers</a></li>
-<li value="3"><a href="#primitivesandwrappers-3">When to use which</a></li>
-</ol></div>
-<div class="group"><h4>Converting</h4><ol>
-<li value="4"><a href="#primitivesandwrappers-4">Autoboxing and unboxing</a></li>
-<li value="5"><a href="#primitivesandwrappers-5">Parsing: String to number and back</a></li>
-<li value="6"><a href="#primitivesandwrappers-6">Casting: widening and narrowing</a></li>
-</ol></div>
-<div class="group"><h4>Traps</h4><ol>
-<li value="7"><a href="#primitivesandwrappers-7">Unboxing <code>null</code>: NullPointerException</a></li>
-<li value="8"><a href="#primitivesandwrappers-8">Comparing wrappers: <code>==</code> or equals?</a></li>
-<li value="9"><a href="#primitivesandwrappers-9">Integer division, overflow, double precision</a></li>
-</ol></div>
-</div>
-<p class="practice">Practice: see org.tl.types (PrimitivesAndWrappersCheatSheet).</p>
-</nav>
-<h2 class="group-title">Basics</h2>
-<section class="card" data-id="primitivesandwrappers-1">
-<h3>1. Two kinds of types: primitives and wrappers</h3>
-<p>Primitive: stores the value itself. Fast, never <code>null</code>, has no methods. Written in lower case: int, double, boolean.</p>
-<p>Wrapper: a class (an object) that holds a primitive. Can be <code>null</code>, has useful methods, and is required by generics. Written with a capital letter: Integer, Double, Boolean.</p>
-<p>String is NOT a primitive; it is a class.</p>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> a = <span class="t-number">5</span>;          <span class="t-comment">// primitive: just the number 5</span>
-<span class="t-type">Integer</span> b = <span class="t-number">5</span>;      <span class="t-comment">// wrapper: an object holding 5</span>
-<span class="t-type">Integer</span> c = <span class="t-kw">null</span>;   <span class="t-comment">// possible only for a wrapper</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-2">
-<h3>2. The eight primitives and their wrappers</h3>
-<pre class="plain">  Primitive | Wrapper   | Size   | Default | Notes
-  ----------|-----------|--------|---------|---------------------------------
-  byte      | Byte      | 8 bit  | 0       | -128 .. 127
-  short     | Short     | 16 bit | 0       |
-  int       | Integer   | 32 bit | 0       | the default integer type
-  long      | Long      | 64 bit | 0L      | literal needs L: 10000000000L
-  float     | Float     | 32 bit | 0.0f    | literal needs f: 1.5f
-  double    | Double    | 64 bit | 0.0     | the default decimal type
-  char      | Character | 16 bit | 0 (nul) | one character in single quotes: 'a'
-  boolean   | Boolean   | n/a    | false   | true or false</pre>
-<p>The default is what a field or an array element gets if you set nothing. For every wrapper the default is <code>null</code>, not 0.</p>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">long</span> big = <span class="t-number">10000000000L</span>;  <span class="t-comment">// without L: "integer number too large"</span>
-<span class="t-kw">float</span> f = <span class="t-number">1.5f</span>;           <span class="t-comment">// without f: 1.5 is a double and does not fit into float</span>
-<span class="t-kw">char</span> letter = <span class="t-string">'a'</span>;        <span class="t-comment">// single quotes for char, double quotes for String</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-3">
-<h3>3. When to use which</h3>
-<ul><li>Primitive by default: counters, math, flags.</li><li>Wrapper when you need <code>null</code> ("no value"), or inside generics: <code>Map&lt;String, Long&gt;</code>. Generics cannot hold primitives: <code>Map&lt;String, long&gt;</code> does not compile.</li></ul>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> count = <span class="t-number">0</span>;                    <span class="t-comment">// a counter: primitive</span>
-<span class="t-type">Integer</span> maybeAge = <span class="t-kw">null</span>;          <span class="t-comment">// age may be unknown: wrapper</span></code></pre></div>
-</section>
-<h2 class="group-title">Converting</h2>
-<section class="card" data-id="primitivesandwrappers-4">
-<h3>4. Autoboxing and unboxing</h3>
-<pre class="plain">Java converts between a primitive and its wrapper automatically.
-  boxing:   int -&gt; Integer
-  unboxing: Integer -&gt; int</pre>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Integer</span> boxed = <span class="t-number">5</span>;       <span class="t-comment">// boxing</span>
-<span class="t-kw">int</span> primitive = boxed;   <span class="t-comment">// unboxing</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-5">
-<h3>5. Parsing: String to number and back</h3>
-<p><code>Integer.parseInt("42")</code> turns text into an int. <code>String.valueOf(42)</code> turns a number into text. Text that is not a number throws NumberFormatException.</p>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> a = <span class="t-type">Integer</span>.parseInt(<span class="t-string">"42"</span>);             <span class="t-comment">// 42</span>
-<span class="t-kw">double</span> d = <span class="t-type">Double</span>.parseDouble(<span class="t-string">"3.14"</span>);      <span class="t-comment">// 3.14</span>
-<span class="t-type">String</span> text = <span class="t-type">String</span>.valueOf(<span class="t-number">42</span>);           <span class="t-comment">// "42"</span>
-<span class="t-type">Integer</span> boxed = <span class="t-type">Integer</span>.valueOf(<span class="t-number">42</span>);        <span class="t-comment">// 42 as an Integer</span>
-
-<span class="t-comment">// Integer.parseInt("abc");   // NumberFormatException: For input string: "abc"</span>
-<span class="t-comment">// Integer.parseInt("");      // NumberFormatException</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-6">
-<h3>6. Casting: widening and narrowing</h3>
-<p>Widening (smaller <code>-&gt;</code> bigger type) is automatic and safe: int <code>-&gt;</code> long <code>-&gt;</code> double. Narrowing (bigger <code>-&gt;</code> smaller) needs a cast in brackets and may lose data.</p>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">long</span> big = <span class="t-number">5</span>;                   <span class="t-comment">// int -&gt; long, automatic</span>
-<span class="t-kw">double</span> dbl = <span class="t-number">5</span>;                 <span class="t-comment">// int -&gt; double, automatic: 5.0</span>
-
-<span class="t-kw">int</span> truncated = (<span class="t-kw">int</span>) <span class="t-number">3.99</span>;     <span class="t-comment">// 3: the decimals are CUT, not rounded</span>
-<span class="t-kw">byte</span> overflow = (<span class="t-kw">byte</span>) <span class="t-number">200</span>;     <span class="t-comment">// -56: 200 does not fit into byte (max 127)</span>
-<span class="t-kw">int</span> rounded = (<span class="t-kw">int</span>) <span class="t-type">Math</span>.round(<span class="t-number">3.99</span>); <span class="t-comment">// 4: use Math.round to round</span></code></pre></div>
-</section>
-<h2 class="group-title">Traps</h2>
-<section class="card" data-id="primitivesandwrappers-7">
-<h3>7. Unboxing <code>null</code>: NullPointerException</h3>
-<p>A wrapper may be <code>null</code>, a primitive may not. If you unbox a <code>null</code> wrapper, the program crashes.</p>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Integer</span> value = <span class="t-kw">null</span>;
-<span class="t-comment">// int x = value;   // NullPointerException</span>
-
-<span class="t-kw">int</span> safe = (value != <span class="t-kw">null</span>) ? value : <span class="t-number">0</span>;   <span class="t-comment">// check first -&gt; 0</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-8">
-<h3>8. Comparing wrappers: <code>==</code> or equals?</h3>
-<p>For primitives <code>==</code> compares values. For wrappers <code>==</code> compares REFERENCES (are these the same object?), not values. Always use <code>equals()</code> for wrappers.</p>
-<p>Integer caches the values -128 .. 127, so <code>==</code> "works" for small numbers by accident and fails for big ones. Do not rely on it.</p>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> a = <span class="t-number">1000</span>, b = <span class="t-number">1000</span>;
-<span class="t-type">System</span>.out.println(a == b);             <span class="t-comment">// true: primitives</span>
-
-<span class="t-type">Integer</span> c = <span class="t-number">1000</span>, d = <span class="t-number">1000</span>;
-<span class="t-type">System</span>.out.println(c == d);             <span class="t-comment">// false (!) two different objects</span>
-<span class="t-type">System</span>.out.println(c.equals(d));        <span class="t-comment">// true: compares values</span>
-
-<span class="t-type">Integer</span> e = <span class="t-number">100</span>, f = <span class="t-number">100</span>;
-<span class="t-type">System</span>.out.println(e == f);             <span class="t-comment">// true, only because 100 is cached</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-9">
-<h3>9. Integer division, overflow, double precision</h3>
-<p>Three classic surprises with numbers.</p>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// Integer division: int / int is an int, the decimals are cut</span>
-<span class="t-type">System</span>.out.println(<span class="t-number">5</span> / <span class="t-number">2</span>);              <span class="t-comment">// 2, not 2.5</span>
-<span class="t-type">System</span>.out.println(<span class="t-number">5</span> / <span class="t-number">2.0</span>);            <span class="t-comment">// 2.5: one operand is a double</span>
-<span class="t-type">System</span>.out.println(<span class="t-number">5</span> % <span class="t-number">2</span>);              <span class="t-comment">// 1: the remainder</span>
-
-<span class="t-comment">// Overflow: int has no room for a bigger number and wraps around</span>
-<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span>);      <span class="t-comment">// 2147483647</span>
-<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span> + <span class="t-number">1</span>);  <span class="t-comment">// -2147483648 (!)</span>
-<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span> + <span class="t-number">1L</span>); <span class="t-comment">// 2147483648: use long</span>
-
-<span class="t-comment">// Precision: double stores decimals approximately</span>
-<span class="t-type">System</span>.out.println(<span class="t-number">0.1</span> + <span class="t-number">0.2</span>);              <span class="t-comment">// 0.30000000000000004</span>
-<span class="t-type">System</span>.out.println(<span class="t-number">0.1</span> + <span class="t-number">0.2</span> == <span class="t-number">0.3</span>);       <span class="t-comment">// false</span>
-<span class="t-comment">// For money use BigDecimal or whole cents in a long.</span></code></pre></div>
-</section>
-</div>
-<div class="l-ru">
-<h1>Примитивы и классы-обёртки</h1>
-<p class="lead">Короткие примеры. Скопируйте любой из них в метод main и запустите.</p>
-<nav class="card contents"><h2>Содержание</h2><div class="cols">
-<div class="group"><h4>Основы</h4><ol>
-<li value="1"><a href="#primitivesandwrappers-1">Два вида типов: примитивы и обёртки</a></li>
-<li value="2"><a href="#primitivesandwrappers-2">Восемь примитивов и их обёртки</a></li>
-<li value="3"><a href="#primitivesandwrappers-3">Что когда использовать</a></li>
-</ol></div>
-<div class="group"><h4>Преобразования</h4><ol>
-<li value="4"><a href="#primitivesandwrappers-4">Автоупаковка и распаковка</a></li>
-<li value="5"><a href="#primitivesandwrappers-5">Парсинг: строка в число и обратно</a></li>
-<li value="6"><a href="#primitivesandwrappers-6">Приведение типов: расширение и сужение</a></li>
-</ol></div>
-<div class="group"><h4>Ловушки</h4><ol>
-<li value="7"><a href="#primitivesandwrappers-7">Распаковка <code>null</code>: NullPointerException</a></li>
-<li value="8"><a href="#primitivesandwrappers-8">Сравнение обёрток: <code>==</code> или equals?</a></li>
-<li value="9"><a href="#primitivesandwrappers-9">Целочисленное деление, переполнение, точность double</a></li>
-</ol></div>
-</div>
-<p class="practice">Практика: см. org.tl.types (PrimitivesAndWrappersCheatSheet).</p>
-</nav>
-<h2 class="group-title">Основы</h2>
-<section class="card" data-id="primitivesandwrappers-1">
-<h3>1. Два вида типов: примитивы и обёртки</h3>
-<p>Примитив: хранит само значение. Быстрый, никогда не <code>null</code>, методов нет. Пишется с маленькой буквы: int, double, boolean.</p>
-<p>Обёртка: класс (объект), который хранит примитив. Может быть <code>null</code>, имеет полезные методы и нужна для generics. Пишется с большой буквы: Integer, Double, Boolean.</p>
-<p>String НЕ примитив; это класс.</p>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> a = <span class="t-number">5</span>;          <span class="t-comment">// примитив: просто число 5</span>
-<span class="t-type">Integer</span> b = <span class="t-number">5</span>;      <span class="t-comment">// обёртка: объект, хранящий 5</span>
-<span class="t-type">Integer</span> c = <span class="t-kw">null</span>;   <span class="t-comment">// возможно только для обёртки</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-2">
-<h3>2. Восемь примитивов и их обёртки</h3>
-<pre class="plain">  Примитив  | Обёртка   | Размер | По умолч.| Примечания
-  ----------|-----------|--------|----------|--------------------------------
-  byte      | Byte      | 8 бит  | 0        | -128 .. 127
-  short     | Short     | 16 бит | 0        |
-  int       | Integer   | 32 бит | 0        | целый тип по умолчанию
-  long      | Long      | 64 бит | 0L       | в литерале нужна L: 10000000000L
-  float     | Float     | 32 бит | 0.0f     | в литерале нужна f: 1.5f
-  double    | Double    | 64 бит | 0.0      | дробный тип по умолчанию
-  char      | Character | 16 бит | 0 (nul)  | один символ в одинарных кавычках: 'a'
-  boolean   | Boolean   | н/д    | false    | true или false</pre>
-<p>«По умолчанию» это значение, которое получает поле или элемент массива, если ничего не задать. Для любой обёртки значение по умолчанию <code>null</code>, а не 0.</p>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">long</span> big = <span class="t-number">10000000000L</span>;  <span class="t-comment">// без L: "integer number too large"</span>
-<span class="t-kw">float</span> f = <span class="t-number">1.5f</span>;           <span class="t-comment">// без f: 1.5 это double и не помещается в float</span>
-<span class="t-kw">char</span> letter = <span class="t-string">'a'</span>;        <span class="t-comment">// одинарные кавычки для char, двойные для String</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-3">
-<h3>3. Что когда использовать</h3>
-<ul><li>По умолчанию примитив: счётчики, математика, флаги.</li><li>Обёртка, когда нужен <code>null</code> («значения нет») или внутри generics: <code>Map&lt;String, Long&gt;</code>. Generics не могут хранить примитивы: <code>Map&lt;String, long&gt;</code> не компилируется.</li></ul>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> count = <span class="t-number">0</span>;                    <span class="t-comment">// счётчик: примитив</span>
-<span class="t-type">Integer</span> maybeAge = <span class="t-kw">null</span>;          <span class="t-comment">// возраст может быть неизвестен: обёртка</span></code></pre></div>
-</section>
-<h2 class="group-title">Преобразования</h2>
-<section class="card" data-id="primitivesandwrappers-4">
-<h3>4. Автоупаковка и распаковка</h3>
-<pre class="plain">Java сама преобразует примитив в обёртку и обратно.
-  упаковка (boxing):     int -&gt; Integer
-  распаковка (unboxing): Integer -&gt; int</pre>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Integer</span> boxed = <span class="t-number">5</span>;       <span class="t-comment">// упаковка</span>
-<span class="t-kw">int</span> primitive = boxed;   <span class="t-comment">// распаковка</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-5">
-<h3>5. Парсинг: строка в число и обратно</h3>
-<p><code>Integer.parseInt("42")</code> превращает текст в int. <code>String.valueOf(42)</code> превращает число в текст. Текст, который не является числом, бросает NumberFormatException.</p>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> a = <span class="t-type">Integer</span>.parseInt(<span class="t-string">"42"</span>);             <span class="t-comment">// 42</span>
-<span class="t-kw">double</span> d = <span class="t-type">Double</span>.parseDouble(<span class="t-string">"3.14"</span>);      <span class="t-comment">// 3.14</span>
-<span class="t-type">String</span> text = <span class="t-type">String</span>.valueOf(<span class="t-number">42</span>);           <span class="t-comment">// "42"</span>
-<span class="t-type">Integer</span> boxed = <span class="t-type">Integer</span>.valueOf(<span class="t-number">42</span>);        <span class="t-comment">// 42 как Integer</span>
-
-<span class="t-comment">// Integer.parseInt("abc");   // NumberFormatException: For input string: "abc"</span>
-<span class="t-comment">// Integer.parseInt("");      // NumberFormatException</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-6">
-<h3>6. Приведение типов: расширение и сужение</h3>
-<p>Расширение (меньший <code>-&gt;</code> больший тип) автоматическое и безопасное: int <code>-&gt;</code> long <code>-&gt;</code> double. Сужение (больший <code>-&gt;</code> меньший) требует приведения в скобках и может потерять данные.</p>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">long</span> big = <span class="t-number">5</span>;                   <span class="t-comment">// int -&gt; long, автоматически</span>
-<span class="t-kw">double</span> dbl = <span class="t-number">5</span>;                 <span class="t-comment">// int -&gt; double, автоматически: 5.0</span>
-
-<span class="t-kw">int</span> truncated = (<span class="t-kw">int</span>) <span class="t-number">3.99</span>;     <span class="t-comment">// 3: дробная часть ОТБРАСЫВАЕТСЯ, а не округляется</span>
-<span class="t-kw">byte</span> overflow = (<span class="t-kw">byte</span>) <span class="t-number">200</span>;     <span class="t-comment">// -56: 200 не помещается в byte (максимум 127)</span>
-<span class="t-kw">int</span> rounded = (<span class="t-kw">int</span>) <span class="t-type">Math</span>.round(<span class="t-number">3.99</span>); <span class="t-comment">// 4: для округления используйте Math.round</span></code></pre></div>
-</section>
-<h2 class="group-title">Ловушки</h2>
-<section class="card" data-id="primitivesandwrappers-7">
-<h3>7. Распаковка <code>null</code>: NullPointerException</h3>
-<p>Обёртка может быть <code>null</code>, примитив нет. Если распаковать <code>null</code>-обёртку, программа упадёт.</p>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Integer</span> value = <span class="t-kw">null</span>;
-<span class="t-comment">// int x = value;   // NullPointerException</span>
-
-<span class="t-kw">int</span> safe = (value != <span class="t-kw">null</span>) ? value : <span class="t-number">0</span>;   <span class="t-comment">// сначала проверка -&gt; 0</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-8">
-<h3>8. Сравнение обёрток: <code>==</code> или equals?</h3>
-<p>Для примитивов <code>==</code> сравнивает значения. Для обёрток <code>==</code> сравнивает ССЫЛКИ (это один и тот же объект?), а не значения. Для обёрток всегда используйте <code>equals()</code>.</p>
-<p>Integer кэширует значения -128 .. 127, поэтому <code>==</code> «работает» для маленьких чисел случайно и ломается для больших. Не полагайтесь на это.</p>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> a = <span class="t-number">1000</span>, b = <span class="t-number">1000</span>;
-<span class="t-type">System</span>.out.println(a == b);             <span class="t-comment">// true: примитивы</span>
-
-<span class="t-type">Integer</span> c = <span class="t-number">1000</span>, d = <span class="t-number">1000</span>;
-<span class="t-type">System</span>.out.println(c == d);             <span class="t-comment">// false (!) два разных объекта</span>
-<span class="t-type">System</span>.out.println(c.equals(d));        <span class="t-comment">// true: сравнивает значения</span>
-
-<span class="t-type">Integer</span> e = <span class="t-number">100</span>, f = <span class="t-number">100</span>;
-<span class="t-type">System</span>.out.println(e == f);             <span class="t-comment">// true, только потому что 100 в кэше</span></code></pre></div>
-</section>
-<section class="card" data-id="primitivesandwrappers-9">
-<h3>9. Целочисленное деление, переполнение, точность double</h3>
-<p>Три классических неожиданности с числами.</p>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// Целочисленное деление: int / int это int, дробная часть отбрасывается</span>
-<span class="t-type">System</span>.out.println(<span class="t-number">5</span> / <span class="t-number">2</span>);              <span class="t-comment">// 2, а не 2.5</span>
-<span class="t-type">System</span>.out.println(<span class="t-number">5</span> / <span class="t-number">2.0</span>);            <span class="t-comment">// 2.5: один операнд double</span>
-<span class="t-type">System</span>.out.println(<span class="t-number">5</span> % <span class="t-number">2</span>);              <span class="t-comment">// 1: остаток</span>
-
-<span class="t-comment">// Переполнение: в int не хватает места для большего числа, и значение «заворачивается»</span>
-<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span>);      <span class="t-comment">// 2147483647</span>
-<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span> + <span class="t-number">1</span>);  <span class="t-comment">// -2147483648 (!)</span>
-<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span> + <span class="t-number">1L</span>); <span class="t-comment">// 2147483648: используйте long</span>
-
-<span class="t-comment">// Точность: double хранит дроби приблизительно</span>
-<span class="t-type">System</span>.out.println(<span class="t-number">0.1</span> + <span class="t-number">0.2</span>);              <span class="t-comment">// 0.30000000000000004</span>
-<span class="t-type">System</span>.out.println(<span class="t-number">0.1</span> + <span class="t-number">0.2</span> == <span class="t-number">0.3</span>);       <span class="t-comment">// false</span>
-<span class="t-comment">// Для денег используйте BigDecimal или целое число копеек в long.</span></code></pre></div>
+<div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">Character</span>, <span class="t-type">Integer</span>&gt; task6(<span class="t-type">String</span> s)</code></pre></div>
 </section>
 </div>
 </div>
@@ -3814,7 +3818,7 @@ map.size();          <span class="t-comment">// 2</span></code></pre></div>
 <li value="12"><a href="#stream-12">One use only, no terminal operation, effectively final</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see org.tl.streams (StreamCheatSheet, StreamTasks, StreamSolutions). <a class="xref" href="#stream-tasks">Practice tasks ↓</a></p>
+<p class="practice">Practice: see <a class="xref" href="#stream-tasks">org.tl.streams</a> (StreamCheatSheet, StreamTasks, StreamSolutions). <a class="xref" href="#stream-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="stream-1">
@@ -4012,72 +4016,72 @@ totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>);     <spa
 <section class="card task">
 <h3>Ticket 1. Big invoices</h3>
 <p>The accountant wants to check only the large invoices. From the invoice totals return those greater than 100.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task1(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task1(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 2. Prices in cents</h3>
 <p>The payment system works with cents. Return the prices multiplied by 100: [5, 12] <code>-&gt;</code> [500, 1200].</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task2(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; prices)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task2(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; prices)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 3. Label printer</h3>
 <p>The label printer needs the customer names in upper case. "Anna" <code>-&gt;</code> "ANNA".</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task3(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task3(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 4. Urgent tickets</h3>
 <p>The list holds the priority of every ticket; 1 means "urgent". How many urgent tickets are there?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">long</span> task4(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; priorities)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">long</span> task4(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; priorities)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 5. Revenue of the day</h3>
 <p>Return the sum of all the invoice totals.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 6. Average rating</h3>
 <p>Customers rated the support from 1 to 5. Return the average rating, or 0 if nobody has rated yet.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">double</span> task6(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; ratings)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">double</span> task6(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; ratings)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 7. The biggest invoice</h3>
 <p>Return the biggest invoice total, or -1 if there are no invoices.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task7(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task7(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 8. Top 3 invoices</h3>
 <p>The manager wants the three biggest invoices, the biggest first. [5, 12, 8, 20, 3] <code>-&gt;</code> [20, 12, 8].</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task8(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task8(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 9. Countries of our customers</h3>
 <p>The list holds the country of every order. Return every country once, in the order of the first appearance.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task9(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task9(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 10. Any refund?</h3>
 <p>The list holds the movements of an account; a refund is a negative number. Is there at least one refund?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task10(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; movements)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task10(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; movements)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 11. All orders paid?</h3>
 <p>The list holds the paid amounts of the orders. Are all the amounts greater than 0?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task11(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; amounts)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task11(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; amounts)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 12. First long title</h3>
 <p>Find the first track title that is longer than 10 characters, or return "none" if there is no such title.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task12(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; titles)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task12(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; titles)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 13. Mailing list</h3>
 <p>Make one line with all the customer names separated by a comma and a space: ["Anna", "Bob", "Eve"] <code>-&gt;</code> "Anna, Bob, Eve".</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task13(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task13(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Ticket 14. Customers per country</h3>
 <p>How many orders came from each country? Return a map: country <code>-&gt;</code> number of orders. ["USA", "Brazil", "USA"] <code>-&gt;</code> {USA=2, Brazil=1}.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Long</span>&gt; task14(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Long</span>&gt; task14(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
 </section>
 </div>
 <div class="l-ru">
@@ -4107,7 +4111,7 @@ totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>);     <spa
 <li value="12"><a href="#stream-12">Один раз, нет терминальной операции, effectively final</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. org.tl.streams (StreamCheatSheet, StreamTasks, StreamSolutions). <a class="xref" href="#stream-tasks">Практические задачи ↓</a></p>
+<p class="practice">Практика: см. <a class="xref" href="#stream-tasks">org.tl.streams</a> (StreamCheatSheet, StreamTasks, StreamSolutions). <a class="xref" href="#stream-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="stream-1">
@@ -4305,72 +4309,72 @@ totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>);     <spa
 <section class="card task">
 <h3>Тикет 1. Крупные счета</h3>
 <p>Бухгалтер хочет проверить только крупные счета. Из сумм счетов верните те, что больше 100.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task1(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task1(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 2. Цены в центах</h3>
 <p>Платёжная система работает в центах. Верните цены, умноженные на 100: [5, 12] <code>-&gt;</code> [500, 1200].</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task2(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; prices)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task2(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; prices)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 3. Принтер этикеток</h3>
 <p>Принтеру этикеток нужны имена клиентов в верхнем регистре. "Anna" <code>-&gt;</code> "ANNA".</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task3(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task3(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 4. Срочные тикеты</h3>
 <p>В списке лежит приоритет каждого тикета; 1 означает «срочно». Сколько срочных тикетов?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">long</span> task4(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; priorities)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">long</span> task4(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; priorities)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 5. Выручка за день</h3>
 <p>Верните сумму всех счетов.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task5(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 6. Средняя оценка</h3>
 <p>Клиенты оценили поддержку от 1 до 5. Верните среднюю оценку или 0, если ещё никто не оценил.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">double</span> task6(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; ratings)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">double</span> task6(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; ratings)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 7. Самый крупный счёт</h3>
 <p>Верните самую большую сумму счёта или -1, если счетов нет.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">int</span> task7(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">int</span> task7(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 8. Топ-3 счёта</h3>
 <p>Менеджеру нужны три самых крупных счёта, самый большой первым. [5, 12, 8, 20, 3] <code>-&gt;</code> [20, 12, 8].</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task8(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task8(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 9. Страны наших клиентов</h3>
 <p>В списке лежит страна каждого заказа. Верните каждую страну один раз, в порядке первого появления.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task9(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task9(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 10. Есть возвраты?</h3>
 <p>В списке лежат движения по счёту; возврат — отрицательное число. Есть ли хотя бы один возврат?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task10(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; movements)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task10(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; movements)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 11. Все заказы оплачены?</h3>
 <p>В списке лежат оплаченные суммы заказов. Все ли суммы больше 0?</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-kw">boolean</span> task11(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; amounts)</code></pre></div>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task11(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; amounts)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 12. Первое длинное название</h3>
 <p>Найдите первое название трека длиннее 10 символов или верните "none", если такого названия нет.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task12(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; titles)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task12(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; titles)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 13. Список рассылки</h3>
 <p>Составьте одну строку со всеми именами клиентов через запятую и пробел: ["Anna", "Bob", "Eve"] <code>-&gt;</code> "Anna, Bob, Eve".</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">String</span> task13(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">String</span> task13(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
 </section>
 <section class="card task">
 <h3>Тикет 14. Клиенты по странам</h3>
 <p>Сколько заказов пришло из каждой страны? Верните map: страна <code>-&gt;</code> число заказов. ["USA", "Brazil", "USA"] <code>-&gt;</code> {USA=2, Brazil=1}.</p>
-<div class="code"><pre><code><span class="t-kw">static</span> <span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Long</span>&gt; task14(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
+<div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Long</span>&gt; task14(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
 </section>
 </div>
 </div>
@@ -4384,6 +4388,7 @@ const topics = [...document.querySelectorAll(".topic")];
 const groupTabs = [...document.querySelectorAll(".tabs a")];
 const subtabs = [...document.querySelectorAll(".subtabs")];
 const subbar = document.querySelector(".subbar");
+const practiceLink = document.getElementById("practice-link");
 let lang = "en";
 try { lang = localStorage.getItem("lang") || ""; } catch (e) {}
 if (lang !== "ru" && lang !== "en") lang = (navigator.language || "").toLowerCase().startsWith("ru") ? "ru" : "en";
@@ -4411,7 +4416,10 @@ function route() {
     if (on) hasSub = true;
     st.querySelectorAll("a").forEach(a => a.classList.toggle("active", a.dataset.key === key));
   });
-  subbar.classList.toggle("hidden", !hasSub);
+  const hasTasks = !!document.querySelector('.topic.active [data-id="' + key + '-tasks"]');
+  subbar.classList.toggle("hidden", !hasSub && !hasTasks);
+  practiceLink.classList.toggle("hidden", !hasTasks);
+  practiceLink.href = "#" + key + "-tasks";
   const target = h.includes("-") ? document.querySelector('.l-' + lang + ' [data-id="' + h + '"]') : null;
   if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
 }
