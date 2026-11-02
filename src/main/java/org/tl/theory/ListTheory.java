@@ -3,6 +3,7 @@ package org.tl.theory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -126,17 +127,28 @@ public class ListTheory {
      *
      * You can't write new List<>(): an interface can't be instantiated.
      *
-     * Why not ArrayList<String> names = new ArrayList<>()? It works, but declaring the
-     * variable as List lets you switch the implementation later (e.g. new LinkedList<>())
-     * by changing only the right side. The rest of the code uses only List methods and
-     * stays the same. The same idea for methods: accept List<String> as a parameter,
-     * not ArrayList<String>.
+     * Note: You can write ArrayList on the left too! Both are correct, only the variable type differs:
+     *   - List — an interface: "I need a list".
+     *     > List<String> names = new ArrayList<>();
+     *   - ArrayList — a concrete class: "I need exactly an ArrayList".
+     *     > ArrayList<String> names = new ArrayList<>();
+     *   - On the right in both cases: the same ArrayList object is created.
+     *   - Why List is used more often: you can switch the implementation and keep the rest of the code.
+     *     > List<String> names = new ArrayList<>();
+     *     > // later you can change it to:
+     *     > List<String> names = new LinkedList<>();
+     *     > // code that uses List methods keeps working:
+     *     > names.add("Ann");
+     *     > names.get(0);
+     *   - The same idea for methods: accept List<String> as a parameter, not ArrayList<String>.
      *
-     * ArrayList: stores elements in an array; fast get by index, slower insert/remove in
-     * the middle. The default choice.
+     * The two main List implementations:
+     *   - ArrayList: stores elements in an array. Fast get(i) by index, slower insert/remove in the middle. The default choice.
+     *   - LinkedList: stores elements as a chain, each one knows its neighbours. Fast to add/remove at the start and end (addFirst, removeFirst), but get(i) is slow: it walks the chain from the start. Rarely needed.
      */
     static void listVsArrayList() {
-        List<String> names = new ArrayList<>(); // empty list
+        List<String> names = new ArrayList<>();   // empty list, the default choice
+        List<String> linked = new LinkedList<>(); // also a List, another implementation
     }
 
     /**
@@ -199,6 +211,17 @@ public class ListTheory {
      *
      * contains(x) is true if the element is in the list. indexOf(x) is the index of the
      * first match, or -1 if there is none. lastIndexOf(x) is the index of the last match.
+     *
+     * Note: How does a list know the element is "the same"? With equals()
+     *   - contains, indexOf and remove(Object) compare elements with equals(), not ==. So a new String or Integer with the same value is found.
+     *   - Your own class without equals(): Java compares references, so an object with the same data is NOT found.
+     *     > class Song { String title; Song(String t) { title = t; } }
+     *     > songs.add(new Song("Hello"));
+     *     > songs.contains(new Song("Hello")); // false: another object
+     *   - A record gets equals() and hashCode() automatically: equal data means equal objects.
+     *     > record Track(String title) {}
+     *     > tracks.add(new Track("Hello"));
+     *     > tracks.contains(new Track("Hello")); // true
      */
     static void searching() {
         List<String> names = new ArrayList<>(List.of("Anna", "Bob", "Anna"));
@@ -207,6 +230,15 @@ public class ListTheory {
         names.indexOf("Anna");      // 0
         names.lastIndexOf("Anna");  // 2
         names.indexOf("Zed");       // -1: not found
+
+        // own class without equals: not found; record: found
+        class Song { String title; Song(String t) { title = t; } }
+        List<Song> songs = new ArrayList<>(List.of(new Song("Hello")));
+        songs.contains(new Song("Hello"));    // false
+
+        record Track(String title) {}
+        List<Track> tracks = new ArrayList<>(List.of(new Track("Hello")));
+        tracks.contains(new Track("Hello"));  // true
     }
 
     /**
@@ -227,14 +259,30 @@ public class ListTheory {
     /**
      * 9. remove(int) or remove(Object)?
      *
-     * A trap with List<Integer>. The list has two methods named remove:
-     * remove(int index) and remove(Object value). With a plain number Java picks the index.
+     * A list has two methods named remove:
+     *   - remove(int index): removes the element AT position index.
+     *   - remove(Object value): removes the element EQUAL to value (the first one found).
+     *
+     * With List<String> there is no confusion: names.remove("Bob") can only be a value.
+     * But in a List<Integer> both the positions and the elements are numbers. For list.remove(1)
+     * Java picks remove(int index): 1 already is an int and fits without turning into an Integer.
+     *
+     * Note: How to do it right
+     *   - Remove by position: pass an int.
+     *     > list.remove(0);
+     *   - Remove by value: pass an Integer object, then Java takes remove(Object).
+     *     > list.remove(Integer.valueOf(10));
      */
     static void removeTrap() {
         List<Integer> list = new ArrayList<>(List.of(10, 20, 30));
+        list.remove(1);                    // position 1 holds 20 -> [10, 30]
 
-        list.remove(1);                    // index 1 -> removes 20 -> [10, 30]
-        list.remove(Integer.valueOf(10));  // the VALUE 10 -> [30]
+        List<Integer> other = new ArrayList<>(List.of(10, 20, 30));
+        other.remove(Integer.valueOf(10)); // the value 10, wherever it is -> [20, 30]
+
+        List<Integer> trap = new ArrayList<>(List.of(10, 20, 30));
+        // trap.remove(10);                // meant the number 10, but Java looks for POSITION 10:
+                                           // IndexOutOfBoundsException (the list has only 3 elements)
     }
 
     /**

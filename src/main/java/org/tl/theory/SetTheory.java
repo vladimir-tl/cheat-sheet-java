@@ -189,6 +189,13 @@ public class SetTheory {
         names.add("Anna");
         names.add("anna");           // a different string (case matters) -> both are stored
         names.size();                // 2
+
+        // your own key type: use a record (or write equals and hashCode)
+        record Customer(String email) {}
+        Set<Customer> customers = new HashSet<>();
+        customers.add(new Customer("ann@mail.ee"));
+        customers.add(new Customer("ann@mail.ee")); // equal by equals() -> not added again
+        customers.size();            // 1 (with a plain class without equals it would be 2)
     }
 
     /**

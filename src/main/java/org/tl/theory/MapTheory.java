@@ -172,5 +172,12 @@ public class MapTheory {
         map.put("Anna", 1);
         map.put("anna", 2);  // different key: String is case-sensitive -> 2 entries
         map.size();          // 2
+
+        // your own key type: a record gives equals and hashCode for free
+        record CustomerId(String email) {}
+        Map<CustomerId, Integer> bonus = new HashMap<>();
+        bonus.put(new CustomerId("ann@mail.ee"), 10);
+        bonus.put(new CustomerId("ann@mail.ee"), 20); // the same key by equals() -> value replaced
+        bonus.size();        // 1 (with a plain class without equals it would be 2)
     }
 }

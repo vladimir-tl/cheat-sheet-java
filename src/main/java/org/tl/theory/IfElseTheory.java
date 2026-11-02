@@ -153,7 +153,7 @@ public class IfElseTheory {
     /**
      * 6. Comparing strings: equals, not ==
      *
-     * For objects == compares references (is it the same object?), not the text.
+     * For objects `==` compares references (is it the same object?), not the text.
      * Always compare strings with equals().
      *
      * Put the literal first: "yes".equals(answer) works even if answer is null,

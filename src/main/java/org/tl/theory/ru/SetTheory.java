@@ -189,6 +189,13 @@ public class SetTheory {
         names.add("Anna");
         names.add("anna");           // другая строка (регистр важен) -> сохранятся обе
         names.size();                // 2
+
+        // свой тип элемента: используйте record (или напишите equals и hashCode)
+        record Customer(String email) {}
+        Set<Customer> customers = new HashSet<>();
+        customers.add(new Customer("ann@mail.ee"));
+        customers.add(new Customer("ann@mail.ee")); // равен по equals() -> второй раз не добавится
+        customers.size();            // 1 (с обычным классом без equals было бы 2)
     }
 
     /**

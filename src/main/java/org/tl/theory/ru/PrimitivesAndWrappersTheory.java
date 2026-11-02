@@ -1,5 +1,7 @@
 package org.tl.theory.ru;
 
+import java.util.Objects;
+
 /**
  * ТЕОРИЯ: примитивы и классы-обёртки
  *
@@ -22,9 +24,8 @@ package org.tl.theory.ru;
  *   8. Сравнение обёрток: == или equals?
  *   9. Целочисленное деление, переполнение, точность double
  *
- * Практика: см. org.tl.types (PrimitivesAndWrappersCheatSheet).
- */
-public class PrimitivesAndWrappersTheory {
+ * Практика: см. org.tl.types (PrimitivesAndWrappersCheatSheet, PrimitivesAndWrappersTasks, PrimitivesAndWrappersSolutions).
+ */public class PrimitivesAndWrappersTheory {
 
     /**
      * 1. Два вида типов: примитивы и обёртки
@@ -55,10 +56,15 @@ public class PrimitivesAndWrappersTheory {
      *   float     | Float     | 32 бит | 0.0f     | в литерале нужна f: 1.5f
      *   double    | Double    | 64 бит | 0.0      | дробный тип по умолчанию
      *   char      | Character | 16 бит | 0 (nul)  | один символ в одинарных кавычках: 'a'
-     *   boolean   | Boolean   | н/д    | false    | true или false
+     *   boolean   | Boolean   | —      | false    | true или false
      *
      * «По умолчанию» это значение, которое получает поле или элемент массива, если ничего не задать.
      * Для любой обёртки значение по умолчанию null, а не 0.
+     *
+     * Заметка: Почему у boolean нет размера? Спецификация Java его не задаёт. В boolean всего 1 бит
+     * информации (true или false), но память нельзя адресовать по одному биту, поэтому решает JVM:
+     * обычно 1 байт в массиве и 4 байта (как int) в локальной переменной.
+     * Для написания кода это знать не нужно.
      */
     static void table() {
         long big = 10000000000L;  // без L: "integer number too large"
@@ -137,11 +143,23 @@ public class PrimitivesAndWrappersTheory {
     /**
      * 8. Сравнение обёрток: == или equals?
      *
-     * Для примитивов == сравнивает значения. Для обёрток == сравнивает ССЫЛКИ (это один и тот же
-     * объект?), а не значения. Для обёрток всегда используйте equals().
+     * Это два разных вопроса:
+     *   - == для примитивов: равны ли значения?
+     *   - == для объектов (Integer, String, Long...): это ОДИН И ТОТ ЖЕ объект в памяти?
+     *   - equals(): равны ли значения? Для объектов почти всегда нужно именно это.
      *
      * Integer кэширует значения -128 .. 127, поэтому == «работает» для маленьких чисел случайно
      * и ломается для больших. Не полагайтесь на это.
+     *
+     * Заметка: Ещё три ловушки с equals
+     *   - Разные типы обёрток никогда не равны: Long это не Integer, даже с тем же значением.
+     *     > Long id = 1L;
+     *     > id.equals(1);    // false: 1 упаковывается в Integer
+     *     > id.equals(1L);   // true
+     *   - equals на null падает: если c равно null, c.equals(d) бросает NullPointerException. Objects.equals(c, d) безопасен.
+     *     > Objects.equals(null, null); // true
+     *     > Objects.equals(null, 5);    // false, без исключения
+     *   - int == Integer: Java распаковывает Integer и сравнивает значения. Если Integer равен null, будет NullPointerException.
      */
     static void equalsTrap() {
         int a = 1000, b = 1000;
@@ -153,6 +171,15 @@ public class PrimitivesAndWrappersTheory {
 
         Integer e = 100, f = 100;
         System.out.println(e == f);             // true, только потому что 100 в кэше
+
+        Long id = 1L;
+        System.out.println(id.equals(1));       // false: Integer 1 это не Long 1
+        System.out.println(id.equals(1L));      // true
+
+        Integer missing = null;
+        System.out.println(Objects.equals(missing, c)); // false, безопасно с null
+        // missing.equals(c);                   // NullPointerException
+        // int x = 5; x == missing;             // NullPointerException: null нельзя распаковать
     }
 
     /**

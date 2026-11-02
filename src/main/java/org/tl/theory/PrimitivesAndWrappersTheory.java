@@ -1,5 +1,7 @@
 package org.tl.theory;
 
+import java.util.Objects;
+
 /**
  * THEORY: primitives and wrapper classes
  *
@@ -22,9 +24,8 @@ package org.tl.theory;
  *   8. Comparing wrappers: == or equals?
  *   9. Integer division, overflow, double precision
  *
- * Practice: see org.tl.types (PrimitivesAndWrappersCheatSheet).
- */
-public class PrimitivesAndWrappersTheory {
+ * Practice: see org.tl.types (PrimitivesAndWrappersCheatSheet, PrimitivesAndWrappersTasks, PrimitivesAndWrappersSolutions).
+ */public class PrimitivesAndWrappersTheory {
 
     /**
      * 1. Two kinds of types: primitives and wrappers
@@ -55,10 +56,15 @@ public class PrimitivesAndWrappersTheory {
      *   float     | Float     | 32 bit | 0.0f    | literal needs f: 1.5f
      *   double    | Double    | 64 bit | 0.0     | the default decimal type
      *   char      | Character | 16 bit | 0 (nul) | one character in single quotes: 'a'
-     *   boolean   | Boolean   | n/a    | false   | true or false
+     *   boolean   | Boolean   | —      | false   | true or false
      *
      * The default is what a field or an array element gets if you set nothing.
      * For every wrapper the default is null, not 0.
+     *
+     * Note: Why does boolean have no size? The Java specification does not fix it. A boolean holds
+     * just 1 bit of information (true or false), but memory can't be addressed by single bits, so the
+     * JVM decides: usually 1 byte in an array and 4 bytes (like an int) in a local variable.
+     * You never need to know this when writing code.
      */
     static void table() {
         long big = 10000000000L;  // without L: "integer number too large"
@@ -137,11 +143,23 @@ public class PrimitivesAndWrappersTheory {
     /**
      * 8. Comparing wrappers: == or equals?
      *
-     * For primitives == compares values. For wrappers == compares REFERENCES (are these the
-     * same object?), not values. Always use equals() for wrappers.
+     * Two different questions:
+     *   - == for primitives: are the values equal?
+     *   - == for objects (Integer, String, Long...): is it the SAME object in memory?
+     *   - equals(): are the values equal? This is almost always what you want for objects.
      *
      * Integer caches the values -128 .. 127, so == "works" for small numbers by accident
      * and fails for big ones. Do not rely on it.
+     *
+     * Note: Three more equals traps
+     *   - Different wrapper types are never equal: a Long is not an Integer, even with the same value.
+     *     > Long id = 1L;
+     *     > id.equals(1);    // false: 1 is boxed to Integer
+     *     > id.equals(1L);   // true
+     *   - equals on null crashes: if c is null, c.equals(d) throws NullPointerException. Objects.equals(c, d) is safe.
+     *     > Objects.equals(null, null); // true
+     *     > Objects.equals(null, 5);    // false, no exception
+     *   - int == Integer: Java unboxes the Integer and compares values. If the Integer is null, NullPointerException.
      */
     static void equalsTrap() {
         int a = 1000, b = 1000;
@@ -153,6 +171,15 @@ public class PrimitivesAndWrappersTheory {
 
         Integer e = 100, f = 100;
         System.out.println(e == f);             // true, only because 100 is cached
+
+        Long id = 1L;
+        System.out.println(id.equals(1));       // false: Integer 1 is not Long 1
+        System.out.println(id.equals(1L));      // true
+
+        Integer missing = null;
+        System.out.println(Objects.equals(missing, c)); // false, safe with null
+        // missing.equals(c);                   // NullPointerException
+        // int x = 5; x == missing;             // NullPointerException: null can't be unboxed
     }
 
     /**

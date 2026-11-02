@@ -97,7 +97,7 @@ public class ArrayTheory {
     /**
      * 4. Read and change an element
      *
-     *   - array[index] on the left side of = writes a value, anywhere else it reads one.
+     *   - array[index]: on the left side of `=` writes a value, anywhere else it reads one.
      *   - Size: array.length (no parentheses, unlike list.size()).
      *   - Last element: array[array.length - 1].
      */

@@ -172,5 +172,12 @@ public class MapTheory {
         map.put("Anna", 1);
         map.put("anna", 2);  // другой ключ: String учитывает регистр -> 2 записи
         map.size();          // 2
+
+        // свой тип ключа: record сам даёт equals и hashCode
+        record CustomerId(String email) {}
+        Map<CustomerId, Integer> bonus = new HashMap<>();
+        bonus.put(new CustomerId("ann@mail.ee"), 10);
+        bonus.put(new CustomerId("ann@mail.ee"), 20); // тот же ключ по equals() -> значение заменено
+        bonus.size();        // 1 (с обычным классом без equals было бы 2)
     }
 }

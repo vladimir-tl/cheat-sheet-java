@@ -99,9 +99,42 @@ def highlight(code, cur=None):
     return "".join(out)
 
 
+# An expression in prose: "n >= 0", "sum / count", "a + b > c", "array[array.length - 1]", "i++".
+_OPERAND = r"(?:\((?:int|long|double)\) )?(?:\.\.\.|'.'|[A-Za-z_]\w*(?:\.\w+)*(?:\([^()]*\))?(?:\[[^\]]*\])?|\d[\d_]*(?:\.\d+)?[Ll]?)"
+_OP = r"(?:%|&&|\|\||\+=|-=|\*=|/=|<=|>=|==|!=|>|<|/|\*|\+|-|=)"
+EXPR = re.compile(rf"(?<![\w.])(?:{_OPERAND}(?: {_OP} {_OPERAND})+|[A-Za-z_]\w*(?:\+\+|--))(?![\w(])")
+
+
+_PROSE = set("and or of the a an both new compares writes is it not to in on as by и или".split()) - {"a"}
+
+
+def _is_prose_dash(m):
+    """Not code: "names - the variable name" (a dash between words) or a plain word as an operand ("both > 0")."""
+    parts = m.split(" ")
+    if " - " in m and all(re.fullmatch(r"[A-Za-z]{2,}", p) for p in parts[::2]):
+        return True
+    return any(p in _PROSE for p in parts[::2])
+
+
+def _next_expr(text, pos):
+    while True:
+        m = EXPR.search(text, pos)
+        if not m or not _is_prose_dash(m.group()):
+            return m
+        pos = m.start() + 1
+
+
 def inline(text, cur=None):
+    """Plain text -> HTML. `code` in backticks is always code; calls, generics and expressions are found automatically."""
+    if "`" in text:
+        parts = text.split("`")
+        return "".join(f"<code>{esc(p)}</code>" if i % 2 else inline(p, cur) for i, p in enumerate(parts))
     out, pos = [], 0
-    for m in INLINE.finditer(text):
+    while True:
+        found = [m for m in (INLINE.search(text, pos), _next_expr(text, pos)) if m]
+        if not found:
+            break
+        m = min(found, key=lambda x: (x.start(), -x.end()))
         out.append(link(esc(text[pos:m.start()]), cur))
         out.append(f"<code>{esc(m.group())}</code>")
         pos = m.end()
@@ -128,6 +161,17 @@ def is_preformatted(p):
         elif l.startswith("  ") and not seen_bullet:
             return True
     return False
+
+
+def item_html(text, ordered, topic):
+    """Bolds the topic of a list item: "Label: ..." -> <strong>Label:</strong> ...
+    In a numbered list the first sentence ("Index out of range. ...") counts as the topic too."""
+    ends = [m.end() for m in re.finditer(r":\s" + (r"|\.\s" if ordered else ""), text)]
+    cut = ends[0] if ends else 0
+    if 0 < cut <= (100 if ordered else 55) and (ordered or ". " not in text[:cut]):
+        label = text[:cut].rstrip()
+        return f"<strong>{inline(label, topic)}</strong> {inline(text[cut:], topic)}"
+    return inline(text, topic)
 
 
 def render_text(lines, topic=None):
@@ -164,7 +208,7 @@ def render_text(lines, topic=None):
             if items:
                 tag = "ol" if ordered[0] else "ul"
                 out.append(f"<{tag}>" + "".join(
-                    f"<li>{inline(i, topic)}"
+                    f"<li>{item_html(i, ordered[0], topic)}"
                     + (f'<pre class="eg"><code>{highlight(chr(10).join(c), topic)}</code></pre>' if c else "")
                     + "</li>" for i, c in items) + f"</{tag}>")
                 items.clear()
@@ -279,6 +323,25 @@ def parse_tasks(theory_cls):
     return {"intro": intro, "tasks": tasks}
 
 
+HINT_RE = re.compile(r"^(?:Hint|Подсказка):\s*(.*)")
+
+
+def split_hint(lines):
+    """Takes the "Hint:" / "Подсказка:" paragraph out of a task text. Returns (other lines, hint text)."""
+    rest, hint, in_hint = [], [], False
+    for l in lines:
+        m = HINT_RE.match(l.strip())
+        if m:
+            in_hint = True
+            hint.append(m.group(1))
+        elif in_hint and l.strip():
+            hint.append(l.strip())
+        else:
+            in_hint = False
+            rest.append(l)
+    return rest, " ".join(hint)
+
+
 def render_tasks(t, lang):
     k, tk = t["key"], t["tasks"]
     out = [f'<h2 class="group-title" data-id="{k}-tasks">{TASKS_TITLE[lang]}</h2>', '<section class="card">',
@@ -286,12 +349,16 @@ def render_tasks(t, lang):
     for task in tk["tasks"]:
         out.append('<section class="card task">')
         out.append(f'<h3>{inline(task["title"])}</h3>')
-        out.append(render_text(task["text"], k))
+        text, hint = split_hint(task["text"])
+        out.append(render_text(text, k))
         out.append(f'<div class="code"><pre><code>{highlight(task["sig"].removeprefix("static "))}</code></pre></div>')
+        if hint:
+            out.append(f'<details class="hint"><summary>{HINT_TITLE[lang]}</summary><p>{inline(hint, k)}</p></details>')
         out.append("</section>")
     return "\n".join(out)
 
 
+HINT_TITLE = {"en": "Hint", "ru": "Подсказка"}
 TASKS_TITLE = {"en": "Practice tasks", "ru": "Практические задачи"}
 
 
@@ -394,6 +461,10 @@ h2 { font-size: 20px; margin: 0 0 12px; }
 .note { border-left: 4px solid var(--accent); background: var(--inline-bg); border-radius: 6px; padding: 10px 16px; margin: 0 0 12px; }
 .note-title { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); margin-bottom: 4px; }
 .note p, .note ul { margin-bottom: 6px; } .note ul { margin-top: 4px; }
+.hint { margin-top: 10px; border: 1px dashed var(--border); border-radius: 8px; padding: 6px 12px; }
+.hint summary { cursor: pointer; color: var(--accent); font-size: 14px; user-select: none; }
+.hint[open] summary { margin-bottom: 4px; }
+.hint p { margin: 0 0 4px; }
 .xref { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
 .xref:hover { border-bottom-style: solid; }
 code { font: 0.9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--inline-bg);
@@ -527,12 +598,11 @@ def main():
     for gkey, gen, gru, gnames in groups:
         first = data["en"][gnames[0]]["key"]
         tabs.append(f'    <a href="#{first}" data-group="{gkey}">{label(gen, gru)}</a>')
-        if len(gnames) > 1:
-            links = "".join(
-                f'<a href="#{data["en"][n]["key"]}" data-key="{data["en"][n]["key"]}">'
-                f'{label(cap(data["en"][n]["title"]), cap(data["ru"].get(n, data["en"][n])["title"]))}</a>'
-                for n in gnames)
-            subtabs.append(f'  <div class="subtabs" data-group="{gkey}">{links}</div>')
+        links = "".join(
+            f'<a href="#{data["en"][n]["key"]}" data-key="{data["en"][n]["key"]}">'
+            f'{label(cap(data["en"][n]["title"]), cap(data["ru"].get(n, data["en"][n])["title"]))}</a>'
+            for n in gnames)
+        subtabs.append(f'  <div class="subtabs" data-group="{gkey}">{links}</div>')
 
     topics = []
     for n in names:

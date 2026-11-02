@@ -3,6 +3,7 @@ package org.tl.theory.ru;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  *
  * Создание списка
  *   1. Что такое List
-  2. Создание списка: четыре способа
+ *   2. Создание списка: четыре способа
  *   3. List<String> names = new ArrayList<>(): что слева и что справа
  *   4. Неизменяемый список: List.of
  *
@@ -126,17 +127,28 @@ public class ListTheory {
      *
      * Написать new List<>() нельзя: у интерфейса нельзя создать экземпляр.
      *
-     * Почему не ArrayList<String> names = new ArrayList<>()? Это работает, но если объявить
-     * переменную как List, реализацию можно потом заменить (например, на new LinkedList<>()),
-     * изменив только правую часть. Остальной код использует только методы List и остаётся
-     * прежним. Та же идея для методов: принимайте List<String> в параметре,
-     * а не ArrayList<String>.
+     * Заметка: Слева тоже можно написать ArrayList! Оба варианта правильные, разница только в типе переменной:
+     *   - List — интерфейс: «мне нужен список».
+     *     > List<String> names = new ArrayList<>();
+     *   - ArrayList — конкретный класс: «мне нужен именно ArrayList».
+     *     > ArrayList<String> names = new ArrayList<>();
+     *   - Справа в обоих случаях: создаётся одинаковый объект ArrayList.
+     *   - Почему чаще пишут List: реализацию можно заменить, а остальной код останется прежним.
+     *     > List<String> names = new ArrayList<>();
+     *     > // позже можно заменить на:
+     *     > List<String> names = new LinkedList<>();
+     *     > // код, который использует методы List, продолжит работать:
+     *     > names.add("Ann");
+     *     > names.get(0);
+     *   - Та же идея для методов: принимайте List<String> в параметре, а не ArrayList<String>.
      *
-     * ArrayList: хранит элементы в массиве; быстрый get по индексу, вставка и удаление
-     * в середине медленнее. Выбор по умолчанию.
+     * Две главные реализации List:
+     *   - ArrayList: хранит элементы в массиве. Быстрый get(i) по индексу, вставка и удаление в середине медленнее. Выбор по умолчанию.
+     *   - LinkedList: хранит элементы цепочкой, каждый знает соседей. Быстро добавлять и удалять в начале и в конце (addFirst, removeFirst), но get(i) медленный: идёт по цепочке с начала. Нужен редко.
      */
     static void listVsArrayList() {
-        List<String> names = new ArrayList<>(); // пустой список
+        List<String> names = new ArrayList<>();   // пустой список, выбор по умолчанию
+        List<String> linked = new LinkedList<>(); // тоже List, другая реализация
     }
 
     /**
@@ -198,6 +210,17 @@ public class ListTheory {
      *
      * contains(x) истинно, если элемент есть в списке. indexOf(x) это индекс первого
      * совпадения или -1, если его нет. lastIndexOf(x) это индекс последнего совпадения.
+     *
+     * Заметка: Как список понимает, что элемент «тот же»? Через equals()
+     *   - contains, indexOf и remove(Object) сравнивают элементы через equals(), а не ==. Поэтому новая строка или Integer с тем же значением находится.
+     *   - Свой класс без equals(): Java сравнивает ссылки, и объект с теми же данными НЕ находится.
+     *     > class Song { String title; Song(String t) { title = t; } }
+     *     > songs.add(new Song("Hello"));
+     *     > songs.contains(new Song("Hello")); // false: другой объект
+     *   - record получает equals() и hashCode() автоматически: одинаковые данные значит равные объекты.
+     *     > record Track(String title) {}
+     *     > tracks.add(new Track("Hello"));
+     *     > tracks.contains(new Track("Hello")); // true
      */
     static void searching() {
         List<String> names = new ArrayList<>(List.of("Anna", "Bob", "Anna"));
@@ -206,6 +229,15 @@ public class ListTheory {
         names.indexOf("Anna");      // 0
         names.lastIndexOf("Anna");  // 2
         names.indexOf("Zed");       // -1: не найден
+
+        // свой класс без equals: не найден; record: найден
+        class Song { String title; Song(String t) { title = t; } }
+        List<Song> songs = new ArrayList<>(List.of(new Song("Hello")));
+        songs.contains(new Song("Hello"));    // false
+
+        record Track(String title) {}
+        List<Track> tracks = new ArrayList<>(List.of(new Track("Hello")));
+        tracks.contains(new Track("Hello"));  // true
     }
 
     /**
@@ -226,14 +258,30 @@ public class ListTheory {
     /**
      * 9. remove(int) или remove(Object)?
      *
-     * Ловушка со списком List<Integer>. У списка два метода с именем remove:
-     * remove(int index) и remove(Object value). С обычным числом Java выбирает индекс.
+     * У списка два метода с именем remove:
+     *   - remove(int index): удаляет элемент НА ПОЗИЦИИ index.
+     *   - remove(Object value): удаляет элемент СО ЗНАЧЕНИЕМ value (первый найденный).
+     *
+     * Для List<String> путаницы нет: names.remove("Bob") может быть только значением.
+     * Но в List<Integer> и позиции, и элементы это числа. Для list.remove(1) Java выбирает
+     * remove(int index): 1 уже int и подходит без превращения в Integer.
+     *
+     * Заметка: Как правильно
+     *   - Удалить по позиции: передайте int.
+     *     > list.remove(0);
+     *   - Удалить по значению: передайте объект Integer, тогда Java возьмёт remove(Object).
+     *     > list.remove(Integer.valueOf(10));
      */
     static void removeTrap() {
         List<Integer> list = new ArrayList<>(List.of(10, 20, 30));
+        list.remove(1);                    // позиция 1, там лежит 20 -> [10, 30]
 
-        list.remove(1);                    // индекс 1 -> удаляет 20 -> [10, 30]
-        list.remove(Integer.valueOf(10));  // ЗНАЧЕНИЕ 10 -> [30]
+        List<Integer> other = new ArrayList<>(List.of(10, 20, 30));
+        other.remove(Integer.valueOf(10)); // значение 10, где бы оно ни было -> [20, 30]
+
+        List<Integer> trap = new ArrayList<>(List.of(10, 20, 30));
+        // trap.remove(10);                // хотели удалить число 10, а Java ищет ПОЗИЦИЮ 10:
+                                           // IndexOutOfBoundsException (в списке всего 3 элемента)
     }
 
     /**
