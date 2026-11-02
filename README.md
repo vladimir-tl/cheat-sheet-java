@@ -7,10 +7,12 @@ Cheat sheets and practice tasks for the main Java topics.
 ```
 src/main/java/org/tl/
   theory/                      theory in the style of a cheat sheet: contents + numbered sections
-    ForTheory, WhileTheory, ListTheory, MapTheory, PrimitivesAndWrappersTheory
+    ForTheory, WhileTheory, SwitchTheory, ListTheory, MapTheory, PrimitivesAndWrappersTheory
   loops/
     forloop/                   ForCheatSheet, ForTasks, ForSolutions
     whileloop/                 WhileCheatSheet, WhileTasks, WhileSolutions
+  conditions/
+    switchcase/                SwitchCheatSheet, SwitchTasks, SwitchSolutions
   collections/
     list/                      ListCheatSheet, ListTasks, ListSolutions
     map/                       MapCheatSheet, MapTasks, MapSolutions
@@ -28,7 +30,7 @@ Every topic has the same files:
 
 ## Requirements
 
-- JDK 17 or newer (checked with JDK 21)
+- JDK 17 or newer (checked with JDK 21). switch expressions need Java 14+.
 
 ## How to run
 
@@ -51,6 +53,7 @@ Run any class that has `main` by its full name:
 ```bash
 java -cp out org.tl.loops.forloop.ForCheatSheet
 java -cp out org.tl.loops.whileloop.WhileCheatSheet
+java -cp out org.tl.conditions.switchcase.SwitchCheatSheet
 java -cp out org.tl.collections.list.ListCheatSheet
 java -cp out org.tl.collections.map.MapCheatSheet
 java -cp out org.tl.types.PrimitivesAndWrappersCheatSheet
