@@ -20,8 +20,10 @@ python3 scripts/build_docs.py
 ```
 
 Requires Python 3, no extra packages. Commit the updated `docs/index.html` together with the theory.
-When you add a new topic, create `*Theory.java` in both folders and add its name to `ORDER` in
-`scripts/build_docs.py` to place its tab (otherwise it goes to the end).
+The header shows only high-level groups (Loops, Conditions, Arrays, Collections, Types, Stream API);
+the topics of the chosen group are in a second row.
+When you add a new topic, create `*Theory.java` in both folders and add its name to a group in `GROUPS` in
+`scripts/build_docs.py` (otherwise it goes to the group "Other").
 
 The Java cheat sheets, tasks and solutions have English comments only; the language switch applies to the theory page.
 
@@ -30,7 +32,7 @@ The Java cheat sheets, tasks and solutions have English comments only; the langu
 ```
 src/main/java/org/tl/
   theory/                      theory in the style of a cheat sheet: contents + numbered sections
-    ForTheory, WhileTheory, IfElseTheory, SwitchTheory, ArrayTheory, ListTheory, SetTheory, MapTheory, PrimitivesAndWrappersTheory
+    ForTheory, WhileTheory, IfElseTheory, SwitchTheory, ArrayTheory, ListTheory, SetTheory, MapTheory, StreamTheory, PrimitivesAndWrappersTheory
     ru/                        the same files in Russian
   loops/
     forloop/                   ForCheatSheet, ForTasks, ForSolutions
@@ -43,6 +45,7 @@ src/main/java/org/tl/
     list/                      ListCheatSheet, ListTasks, ListSolutions
     set/                       SetCheatSheet, SetTasks, SetSolutions
     map/                       MapCheatSheet, MapTasks, MapSolutions
+  streams/                     StreamCheatSheet, StreamTasks, StreamSolutions
   types/                       PrimitivesAndWrappersCheatSheet
 docs/index.html                theory page (generated)
 scripts/build_docs.py          generator of the theory page
@@ -88,6 +91,7 @@ java -cp out org.tl.arrays.ArrayCheatSheet
 java -cp out org.tl.collections.list.ListCheatSheet
 java -cp out org.tl.collections.set.SetCheatSheet
 java -cp out org.tl.collections.map.MapCheatSheet
+java -cp out org.tl.streams.StreamCheatSheet
 java -cp out org.tl.types.PrimitivesAndWrappersCheatSheet
 ```
 

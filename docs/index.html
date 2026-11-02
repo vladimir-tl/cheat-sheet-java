@@ -30,9 +30,14 @@ header { position: sticky; top: 0; z-index: 5; background: var(--card); border-b
 .brand { font-weight: 700; padding: 12px 0; white-space: nowrap; flex: none; }
 .tabs { display: flex; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
-.tabs a { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
-.tabs a:hover { color: var(--text); }
-.tabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tabs a, .subtabs a { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
+.tabs a:hover, .subtabs a:hover { color: var(--text); }
+.tabs a.active, .subtabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.subbar { border-top: 1px solid var(--border); background: var(--bg); }
+.subbar.hidden { display: none; }
+.subtabs { display: none; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
+.subtabs.on { display: flex; }
+.subtabs a { padding: 8px 10px; font-size: 14px; }
 main { max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
 h1 { margin: 8px 0 4px; font-size: 28px; }
 .lead { color: var(--muted); margin: 0 0 20px; }
@@ -71,27 +76,29 @@ html:not([lang="ru"]) .l-ru, html[lang="ru"] .l-en { display: none; }
   border: 1px solid var(--border); }
 .lang button:first-child { border-radius: 6px 0 0 6px; } .lang button:last-child { border-radius: 0 6px 6px 0; }
 .lang button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-section { scroll-margin-top: 64px; }
+section { scroll-margin-top: 110px; }
 </style>
 </head>
 <body>
 <header><div class="bar">
   <div class="brand">Java cheat sheet</div>
   <div class="tabs">
-    <a href="#for" data-key="for"><span class="l-en">The for loop</span><span class="l-ru">Цикл for</span></a>
-    <a href="#while" data-key="while"><span class="l-en">The while loop</span><span class="l-ru">Цикл while</span></a>
-    <a href="#ifelse" data-key="ifelse"><span class="l-en">If-else</span><span class="l-ru">If-else</span></a>
-    <a href="#switch" data-key="switch"><span class="l-en">Switch</span><span class="l-ru">Switch</span></a>
-    <a href="#array" data-key="array"><span class="l-en">Arrays</span><span class="l-ru">Массивы</span></a>
-    <a href="#list" data-key="list"><span class="l-en">List</span><span class="l-ru">List</span></a>
-    <a href="#set" data-key="set"><span class="l-en">Set and HashSet</span><span class="l-ru">Set и HashSet</span></a>
-    <a href="#map" data-key="map"><span class="l-en">Map</span><span class="l-ru">Map</span></a>
-    <a href="#primitivesandwrappers" data-key="primitivesandwrappers"><span class="l-en">Primitives and wrapper classes</span><span class="l-ru">Примитивы и классы-обёртки</span></a>
+    <a href="#for" data-group="loops"><span class="l-en">Loops</span><span class="l-ru">Циклы</span></a>
+    <a href="#ifelse" data-group="conditions"><span class="l-en">Conditions</span><span class="l-ru">Условия</span></a>
+    <a href="#array" data-group="arrays"><span class="l-en">Arrays</span><span class="l-ru">Массивы</span></a>
+    <a href="#list" data-group="collections"><span class="l-en">Collections</span><span class="l-ru">Коллекции</span></a>
+    <a href="#primitivesandwrappers" data-group="types"><span class="l-en">Types</span><span class="l-ru">Типы</span></a>
+    <a href="#stream" data-group="streams"><span class="l-en">Stream API</span><span class="l-ru">Stream API</span></a>
   </div>
   <div class="lang"><button type="button" data-lang="ru">RU</button><button type="button" data-lang="en">EN</button></div>
-</div></header>
+</div>
+<div class="subbar"><div class="bar">
+  <div class="subtabs" data-group="loops"><a href="#for" data-key="for"><span class="l-en">The for loop</span><span class="l-ru">Цикл for</span></a><a href="#while" data-key="while"><span class="l-en">The while loop</span><span class="l-ru">Цикл while</span></a></div>
+  <div class="subtabs" data-group="conditions"><a href="#ifelse" data-key="ifelse"><span class="l-en">If-else</span><span class="l-ru">If-else</span></a><a href="#switch" data-key="switch"><span class="l-en">Switch</span><span class="l-ru">Switch</span></a></div>
+  <div class="subtabs" data-group="collections"><a href="#list" data-key="list"><span class="l-en">List</span><span class="l-ru">List</span></a><a href="#set" data-key="set"><span class="l-en">Set and HashSet</span><span class="l-ru">Set и HashSet</span></a><a href="#map" data-key="map"><span class="l-en">Map</span><span class="l-ru">Map</span></a></div>
+</div></div></header>
 <main>
-<div class="topic" data-key="for">
+<div class="topic" data-key="for" data-group="loops">
 <div class="l-en">
 <h1>The for loop</h1>
 <p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
@@ -387,7 +394,7 @@ section { scroll-margin-top: 64px; }
 </section>
 </div>
 </div>
-<div class="topic" data-key="while">
+<div class="topic" data-key="while" data-group="loops">
 <div class="l-en">
 <h1>The while loop</h1>
 <p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
@@ -591,7 +598,7 @@ section { scroll-margin-top: 64px; }
 </section>
 </div>
 </div>
-<div class="topic" data-key="ifelse">
+<div class="topic" data-key="ifelse" data-group="conditions">
 <div class="l-en">
 <h1>If-else</h1>
 <p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
@@ -971,7 +978,7 @@ section { scroll-margin-top: 64px; }
 </section>
 </div>
 </div>
-<div class="topic" data-key="switch">
+<div class="topic" data-key="switch" data-group="conditions">
 <div class="l-en">
 <h1>Switch</h1>
 <p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
@@ -1323,7 +1330,7 @@ section { scroll-margin-top: 64px; }
 </section>
 </div>
 </div>
-<div class="topic" data-key="array">
+<div class="topic" data-key="array" data-group="arrays">
 <div class="l-en">
 <h1>Arrays</h1>
 <p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
@@ -1660,7 +1667,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 </section>
 </div>
 </div>
-<div class="topic" data-key="list">
+<div class="topic" data-key="list" data-group="collections">
 <div class="l-en">
 <h1>List</h1>
 <p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
@@ -2034,7 +2041,7 @@ names.clear();              <span class="t-comment">// []</span></code></pre></d
 </section>
 </div>
 </div>
-<div class="topic" data-key="set">
+<div class="topic" data-key="set" data-group="collections">
 <div class="l-en">
 <h1>Set and HashSet</h1>
 <p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
@@ -2342,7 +2349,7 @@ names.size();                <span class="t-comment">// 2</span></code></pre></d
 </section>
 </div>
 </div>
-<div class="topic" data-key="map">
+<div class="topic" data-key="map" data-group="collections">
 <div class="l-en">
 <h1>Map</h1>
 <p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
@@ -2592,7 +2599,7 @@ map.size();          <span class="t-comment">// 2</span></code></pre></div>
 </section>
 </div>
 </div>
-<div class="topic" data-key="primitivesandwrappers">
+<div class="topic" data-key="primitivesandwrappers" data-group="types">
 <div class="l-en">
 <h1>Primitives and wrapper classes</h1>
 <p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
@@ -2852,6 +2859,454 @@ map.size();          <span class="t-comment">// 2</span></code></pre></div>
 </section>
 </div>
 </div>
+<div class="topic" data-key="stream" data-group="streams">
+<div class="l-en">
+<h1>Stream API</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Basics</h4><ol>
+<li value="1"><a href="#stream-1">What a stream is</a></li>
+<li value="2"><a href="#stream-2">Creating a stream</a></li>
+<li value="3"><a href="#stream-3">Lambda: a tiny function</a></li>
+</ol></div>
+<div class="group"><h4>Intermediate operations: the stations of the conveyor</h4><ol>
+<li value="4"><a href="#stream-4">filter: keep only the matching elements</a></li>
+<li value="5"><a href="#stream-5">map: transform every element</a></li>
+<li value="6"><a href="#stream-6">sorted, distinct, limit, skip</a></li>
+</ol></div>
+<div class="group"><h4>Terminal operations: the end of the conveyor</h4><ol>
+<li value="7"><a href="#stream-7">toList and collect: get a collection back</a></li>
+<li value="8"><a href="#stream-8">count, sum, average, min, max</a></li>
+<li value="9"><a href="#stream-9">anyMatch, allMatch, noneMatch, findFirst</a></li>
+<li value="10"><a href="#stream-10">forEach</a></li>
+</ol></div>
+<div class="group"><h4>Grouping</h4><ol>
+<li value="11"><a href="#stream-11">groupingBy and counting</a></li>
+</ol></div>
+<div class="group"><h4>Traps</h4><ol>
+<li value="12"><a href="#stream-12">One use only, no terminal operation, effectively final</a></li>
+</ol></div>
+</div>
+<p class="practice">Practice: see org.tl.streams (StreamCheatSheet, StreamTasks, StreamSolutions).</p>
+</nav>
+<h2 class="group-title">Basics</h2>
+<section class="card" data-id="stream-1">
+<h3>1. What a stream is</h3>
+<p>A stream is a way to process a collection step by step, like a conveyor belt:</p>
+<pre class="plain">  source  -&gt;  station  -&gt;  station  -&gt;  ...  -&gt;  result
+  (list)      filter       map                    (list, number, text...)</pre>
+<ul><li>The source is a List, Set, array and so on.</li><li>Stations (intermediate operations) take elements, filter or change them and pass them on.</li><li>The last step (terminal operation) collects the result. Only then the conveyor starts.</li></ul>
+<p>A stream does NOT change the source list. It gives you a new result. It replaces many for-loops with short, readable code: "from the invoices take the big ones, add up their totals".</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>, <span class="t-number">20</span>, <span class="t-number">3</span>);
+
+<span class="t-comment">// "From the invoice totals take those above 7 and make a list"</span>
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; big = totals.stream()    <span class="t-comment">// source</span>
+        .filter(t -&gt; t &gt; <span class="t-number">7</span>)            <span class="t-comment">// station: keep big ones</span>
+        .toList();                     <span class="t-comment">// end: a list [12, 8, 20]</span>
+
+<span class="t-comment">// The same with a loop (longer):</span>
+<span class="t-comment">// List&lt;Integer&gt; big = new ArrayList&lt;&gt;();</span>
+<span class="t-comment">// for (int t : totals) { if (t &gt; 7) big.add(t); }</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-2">
+<h3>2. Creating a stream</h3>
+<pre class="plain">  - from a List or Set: list.stream()
+  - from an array: Arrays.stream(array)
+  - from values: Stream.of("a", "b", "c")
+  - a range of numbers: IntStream.range(1, 6) gives 1, 2, 3, 4, 5 (the end is NOT included);
+    IntStream.rangeClosed(1, 5) gives 1..5 (the end is included)</pre>
+<p>A Map has no <code>stream()</code>: use <code>map.entrySet()</code><code>.stream()</code> or <code>map.values()</code><code>.stream()</code>.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>);
+<span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-type">Stream</span>&lt;<span class="t-type">String</span>&gt; fromList = names.stream();
+<span class="t-type">IntStream</span> fromArray = java.util.<span class="t-type">Arrays</span>.stream(numbers);
+<span class="t-type">Stream</span>&lt;<span class="t-type">String</span>&gt; fromValues = <span class="t-type">Stream</span>.of(<span class="t-string">"a"</span>, <span class="t-string">"b"</span>, <span class="t-string">"c"</span>);
+<span class="t-type">IntStream</span> range = <span class="t-type">IntStream</span>.range(<span class="t-number">1</span>, <span class="t-number">6</span>);                <span class="t-comment">// 1, 2, 3, 4, 5</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-3">
+<h3>3. Lambda: a tiny function</h3>
+<p>Streams are fed with small functions written as a lambda: parameters <code>-&gt;</code> result.</p>
+<pre class="plain">  x -&gt; x * 2            one parameter, returns x * 2
+  (a, b) -&gt; a + b       two parameters need brackets
+  x -&gt; { ...; return y; }  a block when one expression is not enough</pre>
+<p>Read the arrow as "goes to": t <code>-&gt;</code> t &gt; 7 is "t goes to (t is greater than 7)". The name of the parameter is up to you.</p>
+<pre class="plain">Method reference is a shorter lambda that only calls one method:
+  String::toUpperCase    is the same as   s -&gt; s.toUpperCase()
+  String::length         is the same as   s -&gt; s.length()
+  System.out::println    is the same as   x -&gt; System.out.println(x)</pre>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>);
+
+names.stream().map(s -&gt; s.toUpperCase());      <span class="t-comment">// lambda</span>
+names.stream().map(<span class="t-type">String</span>::toUpperCase);       <span class="t-comment">// method reference: the same</span></code></pre></div>
+</section>
+<h2 class="group-title">Intermediate operations: the stations of the conveyor</h2>
+<section class="card" data-id="stream-4">
+<h3>4. filter: keep only the matching elements</h3>
+<p>filter takes a condition (a lambda that returns true or false) and lets through only the elements for which it is true. The rest are thrown away.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>, <span class="t-number">20</span>, <span class="t-number">3</span>);
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Alex"</span>, <span class="t-string">"Eve"</span>);
+
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; big = totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>).toList();        <span class="t-comment">// [12, 8, 20]</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; onA = names.stream().filter(n -&gt; n.startsWith(<span class="t-string">"A"</span>)).toList(); <span class="t-comment">// [Anna, Alex]</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-5">
+<h3>5. map: transform every element</h3>
+<p>map takes a function and applies it to every element. The number of elements stays the same, but the elements (and even their type) can change.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>);
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; prices = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>);
+
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; upper = names.stream().map(<span class="t-type">String</span>::toUpperCase).toList();  <span class="t-comment">// [ANNA, BOB, EVE]</span>
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; lengths = names.stream().map(<span class="t-type">String</span>::length).toList();    <span class="t-comment">// [4, 3, 3]: String -&gt; Integer</span>
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; cents = prices.stream().map(p -&gt; p * <span class="t-number">100</span>).toList();       <span class="t-comment">// [500, 1200, 800]</span>
+
+<span class="t-comment">// Stations can be chained: filter first, then map</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; result = names.stream()
+        .filter(n -&gt; n.length() &gt; <span class="t-number">3</span>)
+        .map(<span class="t-type">String</span>::toUpperCase)
+        .toList();                                                      <span class="t-comment">// [ANNA]</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-6">
+<h3>6. sorted, distinct, limit, skip</h3>
+<pre class="plain">  sorted()                         - ascending order (numbers, strings)
+  sorted(Comparator.reverseOrder()) - descending order
+  distinct()                       - drop duplicates
+  limit(n)                         - take only the first n elements
+  skip(n)                          - skip the first n elements</pre>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>, <span class="t-number">12</span>, <span class="t-number">3</span>);
+
+totals.stream().sorted().toList();                                   <span class="t-comment">// [3, 5, 8, 12, 12]</span>
+totals.stream().sorted(<span class="t-type">Comparator</span>.reverseOrder()).toList();          <span class="t-comment">// [12, 12, 8, 5, 3]</span>
+totals.stream().distinct().toList();                                 <span class="t-comment">// [5, 12, 8, 3]</span>
+totals.stream().limit(<span class="t-number">2</span>).toList();                                   <span class="t-comment">// [5, 12]</span>
+totals.stream().skip(<span class="t-number">3</span>).toList();                                    <span class="t-comment">// [12, 3]</span>
+
+<span class="t-comment">// "The top 3 biggest totals":</span>
+totals.stream().sorted(<span class="t-type">Comparator</span>.reverseOrder()).limit(<span class="t-number">3</span>).toList(); <span class="t-comment">// [12, 12, 8]</span></code></pre></div>
+</section>
+<h2 class="group-title">Terminal operations: the end of the conveyor</h2>
+<section class="card" data-id="stream-7">
+<h3>7. toList and collect: get a collection back</h3>
+<p><code>toList()</code> ends the stream and gives a List. The result can NOT be changed (add throws UnsupportedOperationException). If you need a changeable list, wrap it: new <code>ArrayList&lt;&gt;</code>(...).</p>
+<pre class="plain">collect(...) is the general way, with ready collectors from the Collectors class:
+  Collectors.toList()         - a changeable List
+  Collectors.toSet()          - a Set (duplicates vanish)
+  Collectors.joining(", ")    - one String with all elements, with a separator</pre>
+<p>(<code>toList()</code> needs Java 16 or newer.)</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>);
+
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list = names.stream().toList();                          <span class="t-comment">// [Anna, Bob, Eve]</span>
+java.util.<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set = names.stream().collect(<span class="t-type">Collectors</span>.toSet());
+<span class="t-type">String</span> text = names.stream().collect(<span class="t-type">Collectors</span>.joining(<span class="t-string">", "</span>));       <span class="t-comment">// "Anna, Bob, Eve"</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-8">
+<h3>8. count, sum, average, min, max</h3>
+<pre class="plain">These operations end the stream and give a single value.
+  count()                 - how many elements (the result is a long)
+  mapToInt(...).sum()     - the sum of numbers
+  mapToInt(...).average() - the average (an OptionalDouble: the list may be empty)
+  max(...) / min(...)     - the biggest / the smallest (an Optional: the list may be empty)</pre>
+<p><code>mapToInt(Integer::intValue)</code> turns a <code>Stream&lt;Integer&gt;</code> into an IntStream, which has <code>sum()</code> and <code>average()</code>.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>, <span class="t-number">20</span>, <span class="t-number">3</span>);
+
+<span class="t-kw">long</span> howMany = totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>).count();                  <span class="t-comment">// 3</span>
+<span class="t-kw">int</span> sum = totals.stream().mapToInt(<span class="t-type">Integer</span>::intValue).sum();                <span class="t-comment">// 48</span>
+<span class="t-kw">double</span> average = totals.stream().mapToInt(<span class="t-type">Integer</span>::intValue)
+        .average().orElse(<span class="t-number">0</span>);                                               <span class="t-comment">// 9.6</span>
+<span class="t-kw">int</span> max = totals.stream().max(<span class="t-type">Integer</span>::compare).orElse(-<span class="t-number">1</span>);                 <span class="t-comment">// 20</span>
+<span class="t-kw">int</span> min = totals.stream().min(<span class="t-type">Integer</span>::compare).orElse(-<span class="t-number">1</span>);                 <span class="t-comment">// 3</span>
+
+<span class="t-comment">// orElse(x) is the value for an empty list: without it you get an Optional box.</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-9">
+<h3>9. anyMatch, allMatch, noneMatch, findFirst</h3>
+<pre class="plain">Questions about the elements:
+  anyMatch(cond)   - is there AT LEAST ONE element that matches? (true/false)
+  allMatch(cond)   - do ALL elements match? (true for an empty list)
+  noneMatch(cond)  - does NO element match?
+  findFirst()      - the first element, as an Optional (the stream may be empty).
+                     Take the value with orElse(default) or get().</pre>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>, <span class="t-number">20</span>, <span class="t-number">3</span>);
+
+<span class="t-kw">boolean</span> hasBig = totals.stream().anyMatch(t -&gt; t &gt; <span class="t-number">15</span>);                      <span class="t-comment">// true</span>
+<span class="t-kw">boolean</span> allPositive = totals.stream().allMatch(t -&gt; t &gt; <span class="t-number">0</span>);                  <span class="t-comment">// true</span>
+<span class="t-kw">boolean</span> noHuge = totals.stream().noneMatch(t -&gt; t &gt; <span class="t-number">100</span>);                    <span class="t-comment">// true</span>
+
+<span class="t-type">Optional</span>&lt;<span class="t-type">Integer</span>&gt; first = totals.stream().filter(t -&gt; t &gt; <span class="t-number">10</span>).findFirst();   <span class="t-comment">// Optional[12]</span>
+<span class="t-kw">int</span> firstOrDefault = totals.stream().filter(t -&gt; t &gt; <span class="t-number">100</span>).findFirst().orElse(-<span class="t-number">1</span>); <span class="t-comment">// -1</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-10">
+<h3>10. forEach</h3>
+<p>forEach does something with every element (print it, save it). It returns nothing. Use it for actions, not for collecting results: for results use <code>toList()</code> or collect.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>);
+
+names.stream().forEach(<span class="t-type">System</span>.out::println);       <span class="t-comment">// Anna, Bob, Eve</span>
+names.forEach(<span class="t-type">System</span>.out::println);                <span class="t-comment">// a List has forEach too: the same</span></code></pre></div>
+</section>
+<h2 class="group-title">Grouping</h2>
+<section class="card" data-id="stream-11">
+<h3>11. groupingBy and counting</h3>
+<p>collect(<code>Collectors.groupingBy(...)</code>) splits elements into groups and returns a Map: the key is the group, the value is a list of its elements. With <code>counting()</code> the value is just the number of elements in the group.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries = <span class="t-type">List</span>.of(<span class="t-string">"Brazil"</span>, <span class="t-string">"USA"</span>, <span class="t-string">"Brazil"</span>, <span class="t-string">"Canada"</span>, <span class="t-string">"USA"</span>, <span class="t-string">"Brazil"</span>);
+
+<span class="t-comment">// How many customers from each country?</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Long</span>&gt; count = countries.stream()
+        .collect(<span class="t-type">Collectors</span>.groupingBy(c -&gt; c, <span class="t-type">Collectors</span>.counting()));
+<span class="t-comment">// {Brazil=3, USA=2, Canada=1}  (the order of a HashMap is not guaranteed)</span>
+
+<span class="t-comment">// Group the words by their length:</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; words = <span class="t-type">List</span>.of(<span class="t-string">"hi"</span>, <span class="t-string">"yo"</span>, <span class="t-string">"hello"</span>, <span class="t-string">"world"</span>, <span class="t-string">"a"</span>);
+<span class="t-type">Map</span>&lt;<span class="t-type">Integer</span>, <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt;&gt; byLength = words.stream()
+        .collect(<span class="t-type">Collectors</span>.groupingBy(<span class="t-type">String</span>::length));
+<span class="t-comment">// {1=[a], 2=[hi, yo], 5=[hello, world]}</span></code></pre></div>
+</section>
+<h2 class="group-title">Traps</h2>
+<section class="card" data-id="stream-12">
+<h3>12. One use only, no terminal operation, effectively final</h3>
+<p>Three classic traps.</p>
+<pre class="plain">1) A stream can be used ONCE. A second use throws IllegalStateException
+   ("stream has already been operated upon or closed"). Make a new stream from the list.
+2) Without a terminal operation nothing happens. filter and map only describe the
+   conveyor; it starts when you call toList, count, forEach and so on.
+3) A lambda can only read local variables that never change (effectively final).
+   You can't count with an outside counter++ inside a lambda. Use count() or sum() instead.</pre>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>);
+
+<span class="t-type">Stream</span>&lt;<span class="t-type">Integer</span>&gt; stream = totals.stream();
+stream.count();
+<span class="t-comment">// stream.count();                      // IllegalStateException</span>
+
+totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>);     <span class="t-comment">// does nothing: no terminal operation</span>
+
+<span class="t-comment">// int counter = 0;</span>
+<span class="t-comment">// totals.forEach(t -&gt; counter++);      // does not compile: counter is not effectively final</span>
+<span class="t-kw">long</span> counter = totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>).count();   <span class="t-comment">// the right way</span></code></pre></div>
+</section>
+</div>
+<div class="l-ru">
+<h1>Stream API</h1>
+<p class="lead">Короткие примеры. Скопируйте любой из них в метод main и запустите.</p>
+<nav class="card contents"><h2>Содержание</h2><div class="cols">
+<div class="group"><h4>Основы</h4><ol>
+<li value="1"><a href="#stream-1">Что такое поток (stream)</a></li>
+<li value="2"><a href="#stream-2">Создание потока</a></li>
+<li value="3"><a href="#stream-3">Лямбда: крошечная функция</a></li>
+</ol></div>
+<div class="group"><h4>Промежуточные операции: станции конвейера</h4><ol>
+<li value="4"><a href="#stream-4">filter: оставить только подходящие элементы</a></li>
+<li value="5"><a href="#stream-5">map: преобразовать каждый элемент</a></li>
+<li value="6"><a href="#stream-6">sorted, distinct, limit, skip</a></li>
+</ol></div>
+<div class="group"><h4>Терминальные операции: конец конвейера</h4><ol>
+<li value="7"><a href="#stream-7">toList и collect: получить коллекцию обратно</a></li>
+<li value="8"><a href="#stream-8">count, sum, average, min, max</a></li>
+<li value="9"><a href="#stream-9">anyMatch, allMatch, noneMatch, findFirst</a></li>
+<li value="10"><a href="#stream-10">forEach</a></li>
+</ol></div>
+<div class="group"><h4>Группировка</h4><ol>
+<li value="11"><a href="#stream-11">groupingBy и counting</a></li>
+</ol></div>
+<div class="group"><h4>Ловушки</h4><ol>
+<li value="12"><a href="#stream-12">Один раз, нет терминальной операции, effectively final</a></li>
+</ol></div>
+</div>
+<p class="practice">Практика: см. org.tl.streams (StreamCheatSheet, StreamTasks, StreamSolutions).</p>
+</nav>
+<h2 class="group-title">Основы</h2>
+<section class="card" data-id="stream-1">
+<h3>1. Что такое поток (stream)</h3>
+<p>Поток это способ обрабатывать коллекцию по шагам, как конвейер:</p>
+<pre class="plain">  источник  -&gt;  станция  -&gt;  станция  -&gt;  ...  -&gt;  результат
+  (список)      filter       map                   (список, число, текст...)</pre>
+<ul><li>Источник это List, Set, массив и так далее.</li><li>Станции (промежуточные операции) берут элементы, фильтруют или меняют их и передают дальше.</li><li>Последний шаг (терминальная операция) собирает результат. Только тогда конвейер запускается.</li></ul>
+<p>Поток НЕ меняет исходный список. Он даёт новый результат. Он заменяет много циклов for коротким читаемым кодом: «из счетов возьми большие, сложи их суммы».</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>, <span class="t-number">20</span>, <span class="t-number">3</span>);
+
+<span class="t-comment">// «Из сумм счетов возьми те, что больше 7, и сделай список»</span>
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; big = totals.stream()    <span class="t-comment">// источник</span>
+        .filter(t -&gt; t &gt; <span class="t-number">7</span>)            <span class="t-comment">// станция: оставить большие</span>
+        .toList();                     <span class="t-comment">// конец: список [12, 8, 20]</span>
+
+<span class="t-comment">// То же самое циклом (длиннее):</span>
+<span class="t-comment">// List&lt;Integer&gt; big = new ArrayList&lt;&gt;();</span>
+<span class="t-comment">// for (int t : totals) { if (t &gt; 7) big.add(t); }</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-2">
+<h3>2. Создание потока</h3>
+<pre class="plain">  - из List или Set: list.stream()
+  - из массива: Arrays.stream(array)
+  - из значений: Stream.of("a", "b", "c")
+  - диапазон чисел: IntStream.range(1, 6) даёт 1, 2, 3, 4, 5 (конец НЕ включается);
+    IntStream.rangeClosed(1, 5) даёт 1..5 (конец включается)</pre>
+<p>У Map нет <code>stream()</code>: используйте <code>map.entrySet()</code><code>.stream()</code> или <code>map.values()</code><code>.stream()</code>.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>);
+<span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-type">Stream</span>&lt;<span class="t-type">String</span>&gt; fromList = names.stream();
+<span class="t-type">IntStream</span> fromArray = java.util.<span class="t-type">Arrays</span>.stream(numbers);
+<span class="t-type">Stream</span>&lt;<span class="t-type">String</span>&gt; fromValues = <span class="t-type">Stream</span>.of(<span class="t-string">"a"</span>, <span class="t-string">"b"</span>, <span class="t-string">"c"</span>);
+<span class="t-type">IntStream</span> range = <span class="t-type">IntStream</span>.range(<span class="t-number">1</span>, <span class="t-number">6</span>);                <span class="t-comment">// 1, 2, 3, 4, 5</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-3">
+<h3>3. Лямбда: крошечная функция</h3>
+<p>В потоки передают маленькие функции, записанные как лямбда: параметры <code>-&gt;</code> результат.</p>
+<pre class="plain">  x -&gt; x * 2            один параметр, возвращает x * 2
+  (a, b) -&gt; a + b       для двух параметров нужны скобки
+  x -&gt; { ...; return y; }  блок, когда одного выражения мало</pre>
+<p>Читайте стрелку как «переходит в»: t <code>-&gt;</code> t &gt; 7 это «t переходит в (t больше 7)». Имя параметра можно выбрать любое.</p>
+<pre class="plain">Ссылка на метод это более короткая лямбда, которая только вызывает один метод:
+  String::toUpperCase    то же самое, что   s -&gt; s.toUpperCase()
+  String::length         то же самое, что   s -&gt; s.length()
+  System.out::println    то же самое, что   x -&gt; System.out.println(x)</pre>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>);
+
+names.stream().map(s -&gt; s.toUpperCase());      <span class="t-comment">// лямбда</span>
+names.stream().map(<span class="t-type">String</span>::toUpperCase);       <span class="t-comment">// ссылка на метод: то же самое</span></code></pre></div>
+</section>
+<h2 class="group-title">Промежуточные операции: станции конвейера</h2>
+<section class="card" data-id="stream-4">
+<h3>4. filter: оставить только подходящие элементы</h3>
+<p>filter принимает условие (лямбду, которая возвращает true или false) и пропускает только те элементы, для которых оно истинно. Остальные отбрасываются.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>, <span class="t-number">20</span>, <span class="t-number">3</span>);
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Alex"</span>, <span class="t-string">"Eve"</span>);
+
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; big = totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>).toList();        <span class="t-comment">// [12, 8, 20]</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; onA = names.stream().filter(n -&gt; n.startsWith(<span class="t-string">"A"</span>)).toList(); <span class="t-comment">// [Anna, Alex]</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-5">
+<h3>5. map: преобразовать каждый элемент</h3>
+<p>map принимает функцию и применяет её к каждому элементу. Количество элементов остаётся тем же, но сами элементы (и даже их тип) могут измениться.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>);
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; prices = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>);
+
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; upper = names.stream().map(<span class="t-type">String</span>::toUpperCase).toList();  <span class="t-comment">// [ANNA, BOB, EVE]</span>
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; lengths = names.stream().map(<span class="t-type">String</span>::length).toList();    <span class="t-comment">// [4, 3, 3]: String -&gt; Integer</span>
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; cents = prices.stream().map(p -&gt; p * <span class="t-number">100</span>).toList();       <span class="t-comment">// [500, 1200, 800]</span>
+
+<span class="t-comment">// Станции можно соединять в цепочку: сначала filter, потом map</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; result = names.stream()
+        .filter(n -&gt; n.length() &gt; <span class="t-number">3</span>)
+        .map(<span class="t-type">String</span>::toUpperCase)
+        .toList();                                                      <span class="t-comment">// [ANNA]</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-6">
+<h3>6. sorted, distinct, limit, skip</h3>
+<pre class="plain">  sorted()                         - по возрастанию (числа, строки)
+  sorted(Comparator.reverseOrder()) - по убыванию
+  distinct()                       - убрать дубликаты
+  limit(n)                         - взять только первые n элементов
+  skip(n)                          - пропустить первые n элементов</pre>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>, <span class="t-number">12</span>, <span class="t-number">3</span>);
+
+totals.stream().sorted().toList();                                   <span class="t-comment">// [3, 5, 8, 12, 12]</span>
+totals.stream().sorted(<span class="t-type">Comparator</span>.reverseOrder()).toList();          <span class="t-comment">// [12, 12, 8, 5, 3]</span>
+totals.stream().distinct().toList();                                 <span class="t-comment">// [5, 12, 8, 3]</span>
+totals.stream().limit(<span class="t-number">2</span>).toList();                                   <span class="t-comment">// [5, 12]</span>
+totals.stream().skip(<span class="t-number">3</span>).toList();                                    <span class="t-comment">// [12, 3]</span>
+
+<span class="t-comment">// «Топ-3 самых больших суммы»:</span>
+totals.stream().sorted(<span class="t-type">Comparator</span>.reverseOrder()).limit(<span class="t-number">3</span>).toList(); <span class="t-comment">// [12, 12, 8]</span></code></pre></div>
+</section>
+<h2 class="group-title">Терминальные операции: конец конвейера</h2>
+<section class="card" data-id="stream-7">
+<h3>7. toList и collect: получить коллекцию обратно</h3>
+<p><code>toList()</code> завершает поток и выдаёт List. Результат НЕЛЬЗЯ менять (add бросает UnsupportedOperationException). Если нужен изменяемый список, оберните: new <code>ArrayList&lt;&gt;</code>(...).</p>
+<pre class="plain">collect(...) это общий способ, с готовыми коллекторами из класса Collectors:
+  Collectors.toList()         - изменяемый List
+  Collectors.toSet()          - Set (дубликаты исчезают)
+  Collectors.joining(", ")    - одна строка со всеми элементами через разделитель</pre>
+<p>(<code>toList()</code> требует Java 16 или новее.)</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>);
+
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list = names.stream().toList();                          <span class="t-comment">// [Anna, Bob, Eve]</span>
+java.util.<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; set = names.stream().collect(<span class="t-type">Collectors</span>.toSet());
+<span class="t-type">String</span> text = names.stream().collect(<span class="t-type">Collectors</span>.joining(<span class="t-string">", "</span>));       <span class="t-comment">// "Anna, Bob, Eve"</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-8">
+<h3>8. count, sum, average, min, max</h3>
+<pre class="plain">Эти операции завершают поток и дают одно значение.
+  count()                 - сколько элементов (результат long)
+  mapToInt(...).sum()     - сумма чисел
+  mapToInt(...).average() - среднее (OptionalDouble: список может быть пустым)
+  max(...) / min(...)     - наибольший / наименьший (Optional: список может быть пустым)</pre>
+<p><code>mapToInt(Integer::intValue)</code> превращает <code>Stream&lt;Integer&gt;</code> в IntStream, у которого есть <code>sum()</code> и <code>average()</code>.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>, <span class="t-number">20</span>, <span class="t-number">3</span>);
+
+<span class="t-kw">long</span> howMany = totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>).count();                  <span class="t-comment">// 3</span>
+<span class="t-kw">int</span> sum = totals.stream().mapToInt(<span class="t-type">Integer</span>::intValue).sum();                <span class="t-comment">// 48</span>
+<span class="t-kw">double</span> average = totals.stream().mapToInt(<span class="t-type">Integer</span>::intValue)
+        .average().orElse(<span class="t-number">0</span>);                                               <span class="t-comment">// 9.6</span>
+<span class="t-kw">int</span> max = totals.stream().max(<span class="t-type">Integer</span>::compare).orElse(-<span class="t-number">1</span>);                 <span class="t-comment">// 20</span>
+<span class="t-kw">int</span> min = totals.stream().min(<span class="t-type">Integer</span>::compare).orElse(-<span class="t-number">1</span>);                 <span class="t-comment">// 3</span>
+
+<span class="t-comment">// orElse(x) это значение для пустого списка: без него вы получите «коробку» Optional.</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-9">
+<h3>9. anyMatch, allMatch, noneMatch, findFirst</h3>
+<pre class="plain">Вопросы об элементах:
+  anyMatch(cond)   - есть ХОТЯ БЫ ОДИН подходящий элемент? (true/false)
+  allMatch(cond)   - подходят ли ВСЕ элементы? (true для пустого списка)
+  noneMatch(cond)  - НЕ подходит ни один элемент?
+  findFirst()      - первый элемент, в виде Optional (поток может быть пустым).
+                     Значение берут через orElse(default) или get().</pre>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>, <span class="t-number">20</span>, <span class="t-number">3</span>);
+
+<span class="t-kw">boolean</span> hasBig = totals.stream().anyMatch(t -&gt; t &gt; <span class="t-number">15</span>);                      <span class="t-comment">// true</span>
+<span class="t-kw">boolean</span> allPositive = totals.stream().allMatch(t -&gt; t &gt; <span class="t-number">0</span>);                  <span class="t-comment">// true</span>
+<span class="t-kw">boolean</span> noHuge = totals.stream().noneMatch(t -&gt; t &gt; <span class="t-number">100</span>);                    <span class="t-comment">// true</span>
+
+<span class="t-type">Optional</span>&lt;<span class="t-type">Integer</span>&gt; first = totals.stream().filter(t -&gt; t &gt; <span class="t-number">10</span>).findFirst();   <span class="t-comment">// Optional[12]</span>
+<span class="t-kw">int</span> firstOrDefault = totals.stream().filter(t -&gt; t &gt; <span class="t-number">100</span>).findFirst().orElse(-<span class="t-number">1</span>); <span class="t-comment">// -1</span></code></pre></div>
+</section>
+<section class="card" data-id="stream-10">
+<h3>10. forEach</h3>
+<p>forEach что-то делает с каждым элементом (печатает, сохраняет). Он ничего не возвращает. Используйте его для действий, а не для сбора результатов: для результатов есть <code>toList()</code> и collect.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>);
+
+names.stream().forEach(<span class="t-type">System</span>.out::println);       <span class="t-comment">// Anna, Bob, Eve</span>
+names.forEach(<span class="t-type">System</span>.out::println);                <span class="t-comment">// у List тоже есть forEach: то же самое</span></code></pre></div>
+</section>
+<h2 class="group-title">Группировка</h2>
+<section class="card" data-id="stream-11">
+<h3>11. groupingBy и counting</h3>
+<p>collect(<code>Collectors.groupingBy(...)</code>) делит элементы на группы и возвращает Map: ключ это группа, значение это список её элементов. С <code>counting()</code> значение это просто количество элементов в группе.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries = <span class="t-type">List</span>.of(<span class="t-string">"Brazil"</span>, <span class="t-string">"USA"</span>, <span class="t-string">"Brazil"</span>, <span class="t-string">"Canada"</span>, <span class="t-string">"USA"</span>, <span class="t-string">"Brazil"</span>);
+
+<span class="t-comment">// Сколько клиентов из каждой страны?</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Long</span>&gt; count = countries.stream()
+        .collect(<span class="t-type">Collectors</span>.groupingBy(c -&gt; c, <span class="t-type">Collectors</span>.counting()));
+<span class="t-comment">// {Brazil=3, USA=2, Canada=1}  (порядок в HashMap не гарантирован)</span>
+
+<span class="t-comment">// Сгруппировать слова по длине:</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; words = <span class="t-type">List</span>.of(<span class="t-string">"hi"</span>, <span class="t-string">"yo"</span>, <span class="t-string">"hello"</span>, <span class="t-string">"world"</span>, <span class="t-string">"a"</span>);
+<span class="t-type">Map</span>&lt;<span class="t-type">Integer</span>, <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt;&gt; byLength = words.stream()
+        .collect(<span class="t-type">Collectors</span>.groupingBy(<span class="t-type">String</span>::length));
+<span class="t-comment">// {1=[a], 2=[hi, yo], 5=[hello, world]}</span></code></pre></div>
+</section>
+<h2 class="group-title">Ловушки</h2>
+<section class="card" data-id="stream-12">
+<h3>12. Один раз, нет терминальной операции, effectively final</h3>
+<p>Три классические ловушки.</p>
+<pre class="plain">1) Поток можно использовать ОДИН раз. Повторное использование бросает IllegalStateException
+   ("stream has already been operated upon or closed"). Создайте новый поток из списка.
+2) Без терминальной операции ничего не происходит. filter и map только описывают
+   конвейер; он запускается, когда вы вызываете toList, count, forEach и так далее.
+3) Лямбда может только читать локальные переменные, которые не меняются (effectively final).
+   Считать внешним counter++ внутри лямбды нельзя. Используйте count() или sum().</pre>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>);
+
+<span class="t-type">Stream</span>&lt;<span class="t-type">Integer</span>&gt; stream = totals.stream();
+stream.count();
+<span class="t-comment">// stream.count();                      // IllegalStateException</span>
+
+totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>);     <span class="t-comment">// ничего не делает: нет терминальной операции</span>
+
+<span class="t-comment">// int counter = 0;</span>
+<span class="t-comment">// totals.forEach(t -&gt; counter++);      // не компилируется: counter не effectively final</span>
+<span class="t-kw">long</span> counter = totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>).count();   <span class="t-comment">// правильный способ</span></code></pre></div>
+</section>
+</div>
+</div>
 </main>
 <footer>
 <span class="l-en">Generated from <code>src/main/java/org/tl/theory</code> by <code>scripts/build_docs.py</code>. Do not edit by hand.</span><span class="l-ru">Сгенерировано из <code>src/main/java/org/tl/theory/ru</code> скриптом <code>scripts/build_docs.py</code>. Не редактируйте вручную.</span>
@@ -2859,7 +3314,9 @@ map.size();          <span class="t-comment">// 2</span></code></pre></div>
 <script>
 document.documentElement.classList.add("js");
 const topics = [...document.querySelectorAll(".topic")];
-const tabs = [...document.querySelectorAll(".tabs a")];
+const groupTabs = [...document.querySelectorAll(".tabs a")];
+const subtabs = [...document.querySelectorAll(".subtabs")];
+const subbar = document.querySelector(".subbar");
 let lang = "en";
 try { lang = localStorage.getItem("lang") || ""; } catch (e) {}
 if (lang !== "ru" && lang !== "en") lang = (navigator.language || "").toLowerCase().startsWith("ru") ? "ru" : "en";
@@ -2878,7 +3335,16 @@ function route() {
   let key = h.split("-")[0];
   if (!topics.some(t => t.dataset.key === key)) key = topics[0].dataset.key;
   topics.forEach(t => t.classList.toggle("active", t.dataset.key === key));
-  tabs.forEach(a => a.classList.toggle("active", a.dataset.key === key));
+  const group = topics.find(t => t.dataset.key === key).dataset.group;
+  groupTabs.forEach(a => a.classList.toggle("active", a.dataset.group === group));
+  let hasSub = false;
+  subtabs.forEach(st => {
+    const on = st.dataset.group === group;
+    st.classList.toggle("on", on);
+    if (on) hasSub = true;
+    st.querySelectorAll("a").forEach(a => a.classList.toggle("active", a.dataset.key === key));
+  });
+  subbar.classList.toggle("hidden", !hasSub);
   const target = h.includes("-") ? document.querySelector('.l-' + lang + ' [data-id="' + h + '"]') : null;
   if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
 }

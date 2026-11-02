@@ -14,9 +14,16 @@ SRC = {"en": ROOT / "src/main/java/org/tl/theory",
        "ru": ROOT / "src/main/java/org/tl/theory/ru"}
 OUT = ROOT / "docs/index.html"
 
-# Order of the tabs. Theory files not listed here are added at the end.
-ORDER = ["ForTheory", "WhileTheory", "IfElseTheory", "SwitchTheory", "ArrayTheory", "ListTheory", "SetTheory", "MapTheory",
-         "PrimitivesAndWrappersTheory"]
+# The header shows only these high-level groups; the topics of the active group go to a second row.
+# Theory files not listed here end up in the group "Other".
+GROUPS = [
+    ("loops", "Loops", "Циклы", ["ForTheory", "WhileTheory"]),
+    ("conditions", "Conditions", "Условия", ["IfElseTheory", "SwitchTheory"]),
+    ("arrays", "Arrays", "Массивы", ["ArrayTheory"]),
+    ("collections", "Collections", "Коллекции", ["ListTheory", "SetTheory", "MapTheory"]),
+    ("types", "Types", "Типы", ["PrimitivesAndWrappersTheory"]),
+    ("streams", "Stream API", "Stream API", ["StreamTheory"]),
+]
 
 KEYWORDS = set("""abstract boolean break byte case catch char class continue default do double else enum
 extends final finally float for if implements import instanceof int interface long new package private
@@ -242,9 +249,14 @@ header { position: sticky; top: 0; z-index: 5; background: var(--card); border-b
 .brand { font-weight: 700; padding: 12px 0; white-space: nowrap; flex: none; }
 .tabs { display: flex; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
-.tabs a { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
-.tabs a:hover { color: var(--text); }
-.tabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tabs a, .subtabs a { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
+.tabs a:hover, .subtabs a:hover { color: var(--text); }
+.tabs a.active, .subtabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.subbar { border-top: 1px solid var(--border); background: var(--bg); }
+.subbar.hidden { display: none; }
+.subtabs { display: none; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
+.subtabs.on { display: flex; }
+.subtabs a { padding: 8px 10px; font-size: 14px; }
 main { max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
 h1 { margin: 8px 0 4px; font-size: 28px; }
 .lead { color: var(--muted); margin: 0 0 20px; }
@@ -283,7 +295,7 @@ html:not([lang="ru"]) .l-ru, html[lang="ru"] .l-en { display: none; }
   border: 1px solid var(--border); }
 .lang button:first-child { border-radius: 6px 0 0 6px; } .lang button:last-child { border-radius: 0 6px 6px 0; }
 .lang button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-section { scroll-margin-top: 64px; }
+section { scroll-margin-top: 110px; }
 </style>
 </head>
 <body>
@@ -293,7 +305,10 @@ section { scroll-margin-top: 64px; }
 __TABS__
   </div>
   <div class="lang"><button type="button" data-lang="ru">RU</button><button type="button" data-lang="en">EN</button></div>
-</div></header>
+</div>
+<div class="subbar"><div class="bar">
+__SUBTABS__
+</div></div></header>
 <main>
 __TOPICS__
 </main>
@@ -303,7 +318,9 @@ __TOPICS__
 <script>
 document.documentElement.classList.add("js");
 const topics = [...document.querySelectorAll(".topic")];
-const tabs = [...document.querySelectorAll(".tabs a")];
+const groupTabs = [...document.querySelectorAll(".tabs a")];
+const subtabs = [...document.querySelectorAll(".subtabs")];
+const subbar = document.querySelector(".subbar");
 let lang = "en";
 try { lang = localStorage.getItem("lang") || ""; } catch (e) {}
 if (lang !== "ru" && lang !== "en") lang = (navigator.language || "").toLowerCase().startsWith("ru") ? "ru" : "en";
@@ -322,7 +339,16 @@ function route() {
   let key = h.split("-")[0];
   if (!topics.some(t => t.dataset.key === key)) key = topics[0].dataset.key;
   topics.forEach(t => t.classList.toggle("active", t.dataset.key === key));
-  tabs.forEach(a => a.classList.toggle("active", a.dataset.key === key));
+  const group = topics.find(t => t.dataset.key === key).dataset.group;
+  groupTabs.forEach(a => a.classList.toggle("active", a.dataset.group === group));
+  let hasSub = false;
+  subtabs.forEach(st => {
+    const on = st.dataset.group === group;
+    st.classList.toggle("on", on);
+    if (on) hasSub = true;
+    st.querySelectorAll("a").forEach(a => a.classList.toggle("active", a.dataset.key === key));
+  });
+  subbar.classList.toggle("hidden", !hasSub);
   const target = h.includes("-") ? document.querySelector('.l-' + lang + ' [data-id="' + h + '"]') : null;
   if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
 }
@@ -350,24 +376,37 @@ def main():
     for lang, folder in SRC.items():
         files = {p.stem: p for p in folder.glob("*Theory.java")}
         data[lang] = {n: parse(files[n]) for n in files}
-    names = [n for n in ORDER if n in data["en"]] + sorted(n for n in data["en"] if n not in ORDER)
+    known = [n for g in GROUPS for n in g[3]]
+    extra = sorted(n for n in data["en"] if n not in known)
+    groups = [(k, e, r, [n for n in ns if n in data["en"]]) for k, e, r, ns in GROUPS]
+    if extra:
+        groups.append(("other", "Other", "Другое", extra))
+    groups = [g for g in groups if g[3]]
+    names = [n for g in groups for n in g[3]]
+    group_of = {n: g[0] for g in groups for n in g[3]}
 
-    tabs = []
-    for n in names:
-        en = data["en"][n]
-        ru = data["ru"].get(n, en)
-        k = en["key"]
-        tabs.append(f'    <a href="#{k}" data-key="{k}"><span class="l-en">{esc(cap(en["title"]))}</span>'
-                    f'<span class="l-ru">{esc(cap(ru["title"]))}</span></a>')
+    def label(en_text, ru_text):
+        return f'<span class="l-en">{esc(en_text)}</span><span class="l-ru">{esc(ru_text)}</span>'
+
+    tabs, subtabs = [], []
+    for gkey, gen, gru, gnames in groups:
+        first = data["en"][gnames[0]]["key"]
+        tabs.append(f'    <a href="#{first}" data-group="{gkey}">{label(gen, gru)}</a>')
+        if len(gnames) > 1:
+            links = "".join(
+                f'<a href="#{data["en"][n]["key"]}" data-key="{data["en"][n]["key"]}">'
+                f'{label(cap(data["en"][n]["title"]), cap(data["ru"].get(n, data["en"][n])["title"]))}</a>'
+                for n in gnames)
+            subtabs.append(f'  <div class="subtabs" data-group="{gkey}">{links}</div>')
 
     topics = []
     for n in names:
         en = data["en"][n]
         ru = data["ru"].get(n, en)
-        topics.append(f'<div class="topic" data-key="{en["key"]}">\n{render_topic(en, "en")}\n'
-                      f'{render_topic(ru, "ru")}\n</div>')
+        topics.append(f'<div class="topic" data-key="{en["key"]}" data-group="{group_of[n]}">\n'
+                      f'{render_topic(en, "en")}\n{render_topic(ru, "ru")}\n</div>')
 
-    page = (PAGE.replace("__TABS__", "\n".join(tabs)).replace("__TOPICS__", "\n".join(topics))
+    page = (PAGE.replace("__TABS__", "\n".join(tabs)).replace("__SUBTABS__", "\n".join(subtabs)).replace("__TOPICS__", "\n".join(topics))
             .replace("__FOOTER_EN__", UI["en"]["footer"]).replace("__FOOTER_RU__", UI["ru"]["footer"]))
 
     OUT.parent.mkdir(exist_ok=True)
