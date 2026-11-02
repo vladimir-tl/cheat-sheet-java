@@ -118,7 +118,7 @@ NOTE_RE = re.compile(r"^(Note|Заметка):\s*(.*)")
 
 def is_preformatted(p):
     """A table or aligned columns: keep as is. Indented lines after a bullet are just its continuation."""
-    if any("|" in l for l in p):
+    if any("|" in l for l in p) or all(re.fullmatch(r"\*+", l.strip()) for l in p):
         return True
     seen_bullet = False
     for l in p:
@@ -232,6 +232,58 @@ def parse(path):
             "practice": practice, "sections": sections}
 
 
+TASK_RE = re.compile(r"/\*\*\n((?:(?!\*/).)*?)\n\s*\*/\n    (static [^\n]*?)\s*\{\n", re.S)
+
+
+def parse_tasks_ru(theory_cls, en_tasks):
+    """Russian task texts live in src/main/resources/tasks-ru/<X>Tasks.txt: an intro, then tasks split by '---'."""
+    path = ROOT / "src/main/resources/tasks-ru" / (theory_cls.replace("Theory", "Tasks") + ".txt")
+    if not path.exists():
+        return None
+    intro, *blocks = path.read_text(encoding="utf-8").split("\n---\n")
+    tasks = []
+    for b, en in zip(blocks, en_tasks["tasks"]):
+        lines = b.strip("\n").split("\n")
+        tasks.append({"title": lines[0], "text": lines[1:], "sig": en["sig"]})
+    if len(blocks) != len(en_tasks["tasks"]):
+        print(f"{theory_cls}: RU tasks {len(blocks)} != EN tasks {len(en_tasks['tasks'])}  <-- mismatch!")
+    return {"intro": intro.strip().split("\n"), "tasks": tasks}
+
+
+def parse_tasks(theory_cls):
+    """Reads <X>Tasks.java for <X>Theory. Returns None if the topic has no tasks. Solutions are not read."""
+    name = theory_cls.replace("Theory", "Tasks") + ".java"
+    path = next(iter((ROOT / "src/main/java/org/tl").rglob(name)), None)
+    if path is None:
+        return None
+    s = path.read_text(encoding="utf-8")
+    head = re.search(r"/\*\*(.*?)\*/\s*public class", s, re.S)
+    lines = doc_lines(head.group(1))
+    first = next(i for i, l in enumerate(lines) if l.strip())
+    intro = [l for l in lines[first + 1:] if not l.startswith("Solutions are in")]
+    tasks = []
+    for m in TASK_RE.finditer(s):
+        dl = doc_lines(m.group(1))
+        tasks.append({"title": dl[0], "text": dl[1:], "sig": m.group(2)})
+    return {"intro": intro, "tasks": tasks}
+
+
+def render_tasks(t, lang):
+    k, tk = t["key"], t["tasks"]
+    out = [f'<h2 class="group-title" data-id="{k}-tasks">{TASKS_TITLE[lang]}</h2>', '<section class="card">',
+           render_text(tk["intro"], k), "</section>"]
+    for task in tk["tasks"]:
+        out.append('<section class="card task">')
+        out.append(f'<h3>{inline(task["title"])}</h3>')
+        out.append(render_text(task["text"], k))
+        out.append(f'<div class="code"><pre><code>{highlight(task["sig"])}</code></pre></div>')
+        out.append("</section>")
+    return "\n".join(out)
+
+
+TASKS_TITLE = {"en": "Practice tasks", "ru": "Практические задачи"}
+
+
 def render_topic(t, lang):
     k = t["key"]
     ui = UI[lang]
@@ -246,7 +298,8 @@ def render_topic(t, lang):
         out.append("</ol></div>")
     out.append("</div>")
     if t["practice"]:
-        out.append(f'<p class="practice">{esc(t["practice"])}</p>')
+        extra = f' <a class="xref" href="#{k}-tasks">{TASKS_TITLE[lang]} ↓</a>' if t.get("tasks") else ""
+        out.append(f'<p class="practice">{esc(t["practice"])}{extra}</p>')
     out.append("</nav>")
 
     for g in t["groups"]:
@@ -264,6 +317,8 @@ def render_topic(t, lang):
                            f'data-copied="{ui["copied"]}">{ui["copy"]}</button>'
                            f"<pre><code>{highlight(code, k)}</code></pre></div>")
             out.append("</section>")
+    if t.get("tasks"):
+        out.append(render_tasks(t, lang))
     out.append("</div>")
     return "\n".join(out)
 
@@ -432,6 +487,11 @@ def main():
     for lang, folder in SRC.items():
         files = {p.stem: p for p in folder.glob("*Theory.java")}
         data[lang] = {n: parse(files[n]) for n in files}
+    for n, d in data["en"].items():
+        d["tasks"] = parse_tasks(n)
+    for n, d in data["ru"].items():
+        en_tasks = data["en"][n]["tasks"] if n in data["en"] else None
+        d["tasks"] = parse_tasks_ru(n, en_tasks) if en_tasks else None
     TOPIC_KEYS.update(d["key"] for d in data["en"].values())
     known = [n for g in GROUPS for n in g[3]]
     extra = sorted(n for n in data["en"] if n not in known)

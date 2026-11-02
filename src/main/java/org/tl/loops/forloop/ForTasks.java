@@ -105,9 +105,11 @@ public class ForTasks {
      * Ticket 11. Banner for the support page
      * The designer asks for a staircase made of stars, n rows high.
      * Print it: row 1 has one star, row 2 has two stars and so on. For n = 3:
+     *
      * *
      * **
      * ***
+     *
      */
     static void task11(int n) {
     }
