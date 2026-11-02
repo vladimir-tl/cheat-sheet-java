@@ -451,7 +451,7 @@ h2 { font-size: 20px; margin: 0 0 12px; }
 .card p { margin: 0 0 10px; }
 .card ul, .card > ol { margin: 0 0 10px; padding-left: 22px; }
 .card li { margin: 2px 0; }
-.contents .cols { columns: 2 280px; column-gap: 32px; }
+.contents .cols { columns: 1; }
 .group { break-inside: avoid; margin-bottom: 14px; }
 .group h4 { margin: 0 0 4px; font-size: 15px; }
 .group ol { margin: 0; padding-left: 26px; }
