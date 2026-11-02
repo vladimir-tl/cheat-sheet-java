@@ -55,10 +55,18 @@ public class ListTheory {
      * Представьте список как бумажный список покупок: можно дописывать строки и вычёркивать их.
      * Получить его можно четырьмя способами:
      *   - Пустой, заполнить позже: new ArrayList<>(). Как новая пустая тетрадь.
+     *     > List<String> empty = new ArrayList<>();            // []
+     *     > empty.add("milk");                                // [milk]
      *   - С начальными элементами, и потом его можно менять: new ArrayList<>(List.of(...)).
      *     List.of(...) даёт только начальные элементы; ArrayList копирует их в список, который можно менять.
+     *     > List<String> fruits = new ArrayList<>(List.of("apple", "pear")); // [apple, pear]
+     *     > fruits.add("plum");                                          // [apple, pear, plum]
      *   - С элементами, которые НЕЛЬЗЯ менять: List.of(...). Подходит для данных, которые не меняются, например дней недели.
+     *     > List<String> days = List.of("Mon", "Tue");   // [Mon, Tue]
+     *     > days.add("Wed");                           // UnsupportedOperationException
      *   - Из массива: new ArrayList<>(Arrays.asList(array)).
+     *     > String[] array = {"a", "b", "c"};
+     *     > List<String> fromArray = new ArrayList<>(Arrays.asList(array)); // [a, b, c]
      *
      * Какой выбрать? Если потом будете добавлять или удалять элементы: первый, второй или четвёртый. Если данные фиксированы: List.of.
      *

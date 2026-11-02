@@ -55,10 +55,18 @@ public class ListTheory {
      * Think of a list as a paper shopping list: you can write new lines and cross lines out.
      * There are four ways to get one:
      *   - Empty, fill it later: new ArrayList<>(). Like a new empty notebook.
+     *     > List<String> empty = new ArrayList<>();            // []
+     *     > empty.add("milk");                                // [milk]
      *   - With starting items, and you can change it later: new ArrayList<>(List.of(...)).
      *     List.of(...) only provides the starting items; ArrayList copies them into a list you can change.
+     *     > List<String> fruits = new ArrayList<>(List.of("apple", "pear")); // [apple, pear]
+     *     > fruits.add("plum");                                          // [apple, pear, plum]
      *   - With items that can NOT be changed: List.of(...). Good for data that never changes, like the days of the week.
+     *     > List<String> days = List.of("Mon", "Tue");   // [Mon, Tue]
+     *     > days.add("Wed");                           // UnsupportedOperationException
      *   - From an array: new ArrayList<>(Arrays.asList(array)).
+     *     > String[] array = {"a", "b", "c"};
+     *     > List<String> fromArray = new ArrayList<>(Arrays.asList(array)); // [a, b, c]
      *
      * Which one? You will add or remove items later: the first, second or fourth way. The data is fixed: List.of.
      *

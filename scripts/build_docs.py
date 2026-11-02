@@ -161,15 +161,20 @@ def render_text(lines, topic=None):
 
         def flush_items():
             if items:
-                out.append("<ul>" + "".join(f"<li>{inline(i, topic)}</li>" for i in items) + "</ul>")
+                out.append("<ul>" + "".join(
+                    f"<li>{inline(i, topic)}"
+                    + (f'<pre class="eg"><code>{highlight(chr(10).join(c), topic)}</code></pre>' if c else "")
+                    + "</li>" for i, c in items) + "</ul>")
                 items.clear()
 
         for l in p:
             if l.strip().startswith("- "):
                 flush_text()
-                items.append(l.strip()[2:])
+                items.append([l.strip()[2:], []])
+            elif items and l.strip().startswith("> "):
+                items[-1][1].append(l.strip()[2:])   # "> code" line: an example shown right under the bullet
             elif items:
-                items[-1] += " " + l.strip()
+                items[-1][0] += " " + l.strip()
             else:
                 flush_items()
                 text_buf.append(l.strip())
@@ -391,6 +396,8 @@ code { font: 0.9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; bac
 .code { position: relative; margin: 10px 0 2px; }
 .code pre { margin: 0; background: var(--code-bg); border-radius: 8px; padding: 14px 16px; }
 .code pre code { background: none; padding: 0; font-size: 13.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+pre.eg { background: var(--code-bg); border-radius: 6px; padding: 8px 12px; margin: 6px 0 10px; }
+pre.eg code { background: none; padding: 0; font-size: 13px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
 pre.plain { background: var(--code-bg); border-radius: 8px; padding: 12px 16px; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 10px;
   font: 13.5px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 .copy { position: absolute; top: 8px; right: 8px; font: 12px inherit; padding: 3px 8px; cursor: pointer;
