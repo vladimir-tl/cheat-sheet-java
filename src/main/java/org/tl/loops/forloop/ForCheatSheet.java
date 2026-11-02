@@ -3,18 +3,7 @@ package org.tl.loops.forloop;
 /**
  * CHEAT SHEET: the for loop
  *
- * THEORY
- * A loop repeats a block of code while a condition is true. Use for when you know
- * in advance how many times to repeat (or you need a counter). Use for-each when you
- * just walk through every element. Use while when the number of repetitions is unknown.
- *
- * The three parts of the header are all optional:
- *   - initialization: runs once, usually declares the counter (int i = 0)
- *   - condition: checked before every iteration; the loop stops when it is false
- *   - update: runs after every iteration, usually changes the counter (i++)
- *
- * The counter declared in the header exists only inside the loop.
- * break leaves the loop completely; continue skips the rest of the current iteration.
+ * Theory: see org.tl.theory.ForTheory
  *
  * Syntax:
  *   for (initialization; condition; update) { body }

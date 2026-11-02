@@ -3,29 +3,7 @@ package org.tl.loops.whileloop;
 /**
  * CHEAT SHEET: the while loop
  *
- * THEORY
- * while repeats a block of code as long as the condition is true. The condition is
- * checked BEFORE every iteration, so the body may never run (if the condition is
- * false from the start).
- *
- * Use while when you don't know in advance how many times to repeat
- * (read until the input ends, repeat until a value is found, etc.).
- * Use for when the number of repetitions is known or you need a counter.
- *
- * Syntax:
- *   while (condition) { body }
- *
- *   do { body } while (condition);   // do-while: condition is checked AFTER the body,
- *                                    // so the body runs at least once
- *
- * Execution order (while):
- *   1. check condition -> false: exit the loop
- *   2. body
- *   3. go back to step 1
- *
- * The body must change something that affects the condition,
- * otherwise the loop never ends.
- * break leaves the loop completely; continue jumps to the next condition check.
+ * Theory: see org.tl.theory.WhileTheory
  */
 public class WhileCheatSheet {
 

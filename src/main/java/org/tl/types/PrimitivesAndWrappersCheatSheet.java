@@ -3,30 +3,7 @@ package org.tl.types;
 /**
  * CHEAT SHEET: primitives and wrapper classes
  *
- * THEORY
- * Java has two kinds of types:
- *   - Primitives: store the value itself. Fast, never null, no methods.
- *   - Wrappers (classes): an object that holds a primitive value. Can be null,
- *     have useful methods, and are required by generics.
- *
- *   Primitive | Wrapper   | Size    | Default | Notes
- *   ----------|-----------|---------|---------|-----------------------------
- *   byte      | Byte      | 8 bit   | 0       | -128 .. 127
- *   short     | Short     | 16 bit  | 0       |
- *   int       | Integer   | 32 bit  | 0       | the default integer type
- *   long      | Long      | 64 bit  | 0L      | literal needs L: 10000000000L
- *   float     | Float     | 32 bit  | 0.0f    | literal needs f: 1.5f
- *   double    | Double    | 64 bit  | 0.0     | the default decimal type
- *   char      | Character | 16 bit  | 0 (nul) | single character in ''
- *   boolean   | Boolean   | n/a     | false   | true / false
- *
- * Wrapper default value (field or array element) is null, not 0.
- * String is NOT a primitive; it is a class.
- *
- * When to use which:
- *   - Primitive by default (counters, math, flags).
- *   - Wrapper when you need null ("no value"), or inside generics: Map<String, Long>.
- *     Generics cannot hold primitives: Map<String, long> does not compile.
+ * Theory: see org.tl.theory.PrimitivesAndWrappersTheory
  */
 public class PrimitivesAndWrappersCheatSheet {
 

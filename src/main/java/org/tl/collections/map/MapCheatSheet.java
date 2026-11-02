@@ -6,18 +6,7 @@ import java.util.Map;
 /**
  * CHEAT SHEET: Map
  *
- * THEORY
- * A Map stores key -> value pairs, like a dictionary. Keys are unique; putting an
- * existing key overwrites its value. Values can repeat. Lookup by key is fast.
- *
- *   - HashMap: the default choice; no guaranteed order.
- *   - LinkedHashMap: keeps insertion order.
- *   - TreeMap: keeps keys sorted.
- *   - Map.of(...): creates an immutable map.
- *   - Map is not part of the Collection hierarchy, so you can't iterate it directly:
- *     use entrySet() (pairs), keySet() (keys) or values().
- *   - Generics: Map<KeyType, ValueType>; primitives need wrappers (Map<String, Integer>).
- *   - Keys should be immutable and have proper equals()/hashCode() (String and Integer do).
+ * Theory: see org.tl.theory.MapTheory
  */
 public class MapCheatSheet {
 
