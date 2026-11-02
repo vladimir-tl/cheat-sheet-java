@@ -24,6 +24,7 @@ public class ListCheatSheet {
         iterateWithFor();
         iterateWithForEach();
         removeWhileIterating();
+        removeByIndexOrValue();
     }
 
     /** 1. for loop by index (collections use size(), not length) */
@@ -55,5 +56,13 @@ public class ListCheatSheet {
 
         // or simply:
         list.removeIf(x -> x > 2);
+    }
+
+    /** 4. List<Integer>.remove(): by index or by value? */
+    static void removeByIndexOrValue() {
+        List<Integer> list = new ArrayList<>(List.of(10, 20, 30));
+
+        list.remove(1);                    // int -> removes by INDEX -> [10, 30]
+        list.remove(Integer.valueOf(10));  // object -> removes by VALUE -> [30]
     }
 }

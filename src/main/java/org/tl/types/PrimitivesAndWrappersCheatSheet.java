@@ -1,8 +1,5 @@
 package org.tl.types;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * CHEAT SHEET: primitives and wrapper classes
  *
@@ -28,8 +25,8 @@ import java.util.List;
  *
  * When to use which:
  *   - Primitive by default (counters, math, flags).
- *   - Wrapper when you need null ("no value"), or inside generics: List<Integer>, Map<String, Long>.
- *     Generics cannot hold primitives: List<int> does not compile.
+ *   - Wrapper when you need null ("no value"), or inside generics: Map<String, Long>.
+ *     Generics cannot hold primitives: Map<String, long> does not compile.
  */
 public class PrimitivesAndWrappersCheatSheet {
 
@@ -39,7 +36,6 @@ public class PrimitivesAndWrappersCheatSheet {
         comparison();
         parsingAndConversion();
         usefulMethods();
-        collectionsPitfall();
         pitfalls();
     }
 
@@ -47,10 +43,6 @@ public class PrimitivesAndWrappersCheatSheet {
     static void autoboxing() {
         Integer boxed = 5;      // autoboxing: int -> Integer
         int primitive = boxed;  // unboxing:   Integer -> int
-
-        List<Integer> list = new ArrayList<>();
-        list.add(10);           // int is boxed to Integer automatically
-        int first = list.get(0); // and unboxed back
     }
 
     /** 2. Unboxing null throws NullPointerException */
@@ -105,15 +97,7 @@ public class PrimitivesAndWrappersCheatSheet {
         System.out.println(Character.toUpperCase('a')); // 'A'
     }
 
-    /** 6. Removing from List<Integer>: index or value? */
-    static void collectionsPitfall() {
-        List<Integer> list = new ArrayList<>(List.of(10, 20, 30));
-
-        list.remove(1);                      // int -> removes by INDEX -> [10, 30]
-        list.remove(Integer.valueOf(10));    // object -> removes by VALUE -> [30]
-    }
-
-    /** 7. Common mistakes */
+    /** 6. Common mistakes */
     static void pitfalls() {
         // integer division: 5 / 2 == 2, use 5 / 2.0 or (double) 5 / 2 for 2.5
         // int overflow: Integer.MAX_VALUE + 1 becomes a negative number; use long
