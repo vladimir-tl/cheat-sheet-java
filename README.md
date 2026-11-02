@@ -2,9 +2,13 @@
 
 Cheat sheets and practice tasks for the main Java topics.
 
+**Website:** https://vladimir-tl.github.io/cheat-sheet-java/
+
 ## Theory page
 
-Open [`docs/index.html`](docs/index.html) in a browser (double click, no server needed).
+Online: https://vladimir-tl.github.io/cheat-sheet-java/ (GitHub Pages, published from `docs/` on `main`;
+it updates a minute or two after a push).
+Locally: open [`docs/index.html`](docs/index.html) in a browser (double click, no server needed).
 It has a tab per topic, a table of contents, numbered sections with code and an **RU / EN** language switch
 (the choice is remembered; by default it follows the browser language).
 
