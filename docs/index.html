@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Java cheat sheet</title>
+<style>
+:root {
+  --bg: #f7f7f5; --card: #ffffff; --text: #1f2328; --muted: #656d76; --border: #e4e4df;
+  --accent: #2563eb; --code-bg: #efeeea; --inline-bg: #eeede9;
+  --kw: #8250df; --type: #0a6e8a; --str: #0a7d3e; --num: #b35900; --com: #7a828b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14161a; --card: #1c1f24; --text: #e6e8eb; --muted: #9aa3ad; --border: #2c3138;
+    --accent: #6ea0ff; --code-bg: #12141a; --inline-bg: #2a2e35;
+    --kw: #c297ff; --type: #5fd0e8; --str: #6fdc9a; --num: #ffb766; --com: #7f8a96;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14161a; --card: #1c1f24; --text: #e6e8eb; --muted: #9aa3ad; --border: #2c3138;
+  --accent: #6ea0ff; --code-bg: #12141a; --inline-bg: #2a2e35;
+  --kw: #c297ff; --type: #5fd0e8; --str: #6fdc9a; --num: #ffb766; --com: #7f8a96;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--border); }
+.bar { max-width: 900px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 20px; overflow-x: auto; }
+.brand { font-weight: 700; padding: 12px 0; white-space: nowrap; }
+.tabs { display: flex; gap: 4px; }
+.tabs a { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
+.tabs a:hover { color: var(--text); }
+.tabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+main { max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { margin: 8px 0 4px; font-size: 28px; }
+.lead { color: var(--muted); margin: 0 0 20px; }
+h2 { font-size: 20px; margin: 0 0 12px; }
+.group-title { margin: 36px 0 12px; font-size: 22px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 0 0 14px; }
+.card h3 { margin: 0 0 8px; font-size: 18px; }
+.card p { margin: 0 0 10px; }
+.card ul { margin: 0 0 10px; padding-left: 22px; }
+.card li { margin: 2px 0; }
+.contents .cols { columns: 2 280px; column-gap: 32px; }
+.group { break-inside: avoid; margin-bottom: 14px; }
+.group h4 { margin: 0 0 4px; font-size: 15px; }
+.group ol { margin: 0; padding-left: 26px; }
+.group li { margin: 3px 0; }
+.group a { color: var(--accent); text-decoration: none; }
+.group a:hover { text-decoration: underline; }
+.practice { color: var(--muted); font-size: 14px; margin: 8px 0 0; }
+code { font: 0.9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--inline-bg);
+  padding: 1px 5px; border-radius: 4px; }
+.code { position: relative; margin: 10px 0 2px; }
+.code pre { margin: 0; background: var(--code-bg); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+.code pre code { background: none; padding: 0; font-size: 13.5px; line-height: 1.5; white-space: pre; }
+pre.plain { background: var(--code-bg); border-radius: 8px; padding: 12px 16px; overflow-x: auto; margin: 0 0 10px;
+  font: 13.5px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.copy { position: absolute; top: 8px; right: 8px; font: 12px inherit; padding: 3px 8px; cursor: pointer;
+  background: var(--card); color: var(--muted); border: 1px solid var(--border); border-radius: 6px; opacity: 0; transition: opacity .15s; }
+.code:hover .copy, .copy:focus { opacity: 1; }
+.t-kw { color: var(--kw); } .t-type { color: var(--type); } .t-string { color: var(--str); }
+.t-number { color: var(--num); } .t-comment { color: var(--com); font-style: italic; }
+footer { max-width: 900px; margin: 0 auto; padding: 0 16px 32px; color: var(--muted); font-size: 13px; }
+.js .topic { display: none; } .js .topic.active { display: block; }
+section { scroll-margin-top: 64px; }
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="brand">Java cheat sheet</div>
+  <div class="tabs">
+    <a href="#for" data-key="for">The for loop</a>
+    <a href="#while" data-key="while">The while loop</a>
+    <a href="#switch" data-key="switch">Switch</a>
+    <a href="#list" data-key="list">List</a>
+    <a href="#map" data-key="map">Map</a>
+    <a href="#primitivesandwrappers" data-key="primitivesandwrappers">Primitives and wrapper classes</a>
+  </div>
+</div></header>
+<main>
+<div class="topic" id="topic-for" data-key="for">
+<h1>The for loop</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Basics</h4><ol>
+<li value="1"><a href="#for-1">Syntax and execution order: for (init; condition; update)</a></li>
+<li value="2"><a href="#for-2">Counting up, down and with a step</a></li>
+<li value="3"><a href="#for-3">Nested loops</a></li>
+</ol></div>
+<div class="group"><h4>Controlling a loop</h4><ol>
+<li value="4"><a href="#for-4">break and continue</a></li>
+<li value="5"><a href="#for-5">Infinite loop</a></li>
+</ol></div>
+<div class="group"><h4>Looping over data</h4><ol>
+<li value="6"><a href="#for-6">Array by index</a></li>
+<li value="7"><a href="#for-7">for-each</a></li>
+</ol></div>
+</div>
+<p class="practice">Practice: see org.tl.loops.forloop (ForCheatSheet, ForTasks, ForSolutions).</p>
+</nav>
+<h2 class="group-title">Basics</h2>
+<section class="card" id="for-1">
+<h3>1. Syntax and execution order: for (init; condition; update)</h3>
+<p>A loop repeats a block of code. Use for when you know in advance how many times to repeat, or when you need a counter.</p>
+<p>The header has three parts, all optional, separated by ;</p>
+<ul><li>init:      runs once, usually declares the counter (int i = 0)</li><li>condition: checked before every iteration; the loop stops when it is false</li><li>update:    runs after every iteration, usually changes the counter (i++)</li></ul>
+<p>Order: init <code>-&gt;</code> condition <code>-&gt;</code> body <code>-&gt;</code> update <code>-&gt;</code> condition <code>-&gt;</code> body <code>-&gt;</code> update ... <code>-&gt;</code> condition is false <code>-&gt;</code> exit.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-comment">// Print 0 1 2 3 4:</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">0</span>; i &lt; <span class="t-number">5</span>; i++) {
+    <span class="t-type">System</span>.out.println(i);
+}
+
+<span class="t-comment">// The counter exists only inside the loop. This does not compile:</span>
+<span class="t-comment">// System.out.println(i);</span></code></pre></div>
+</section>
+<section class="card" id="for-2">
+<h3>2. Counting up, down and with a step</h3>
+<p>Change the init, the condition and the update to get any sequence. i++ is the same as i += 1; i-- is the same as i -= 1.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-comment">// Up: 1 2 3 4 5</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">1</span>; i &lt;= <span class="t-number">5</span>; i++) {
+    <span class="t-type">System</span>.out.println(i);
+}
+
+<span class="t-comment">// Down: 5 4 3 2 1</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">5</span>; i &gt;= <span class="t-number">1</span>; i--) {
+    <span class="t-type">System</span>.out.println(i);
+}
+
+<span class="t-comment">// Step 2: 0 2 4 6 8 10</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">0</span>; i &lt;= <span class="t-number">10</span>; i += <span class="t-number">2</span>) {
+    <span class="t-type">System</span>.out.println(i);
+}
+
+<span class="t-comment">// &lt; excludes the end, &lt;= includes it.</span>
+<span class="t-comment">// for (int i = 0; i &lt; 3; i++)  -&gt; 0 1 2   (3 iterations)</span>
+<span class="t-comment">// for (int i = 0; i &lt;= 3; i++) -&gt; 0 1 2 3 (4 iterations)</span></code></pre></div>
+</section>
+<section class="card" id="for-3">
+<h3>3. Nested loops</h3>
+<p>A loop inside a loop. The inner loop runs fully for every iteration of the outer one: 3 x 3 iterations = 9 runs of the body.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-comment">// Multiplication table 3 x 3:</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">1</span>; i &lt;= <span class="t-number">3</span>; i++) {
+    <span class="t-kw">for</span> (<span class="t-kw">int</span> j = <span class="t-number">1</span>; j &lt;= <span class="t-number">3</span>; j++) {
+        <span class="t-type">System</span>.out.print(i * j + <span class="t-string">"\t"</span>);
+    }
+    <span class="t-type">System</span>.out.println(); <span class="t-comment">// new line after each row</span>
+}
+<span class="t-comment">// 1  2  3</span>
+<span class="t-comment">// 2  4  6</span>
+<span class="t-comment">// 3  6  9</span></code></pre></div>
+</section>
+<h2 class="group-title">Controlling a loop</h2>
+<section class="card" id="for-4">
+<h3>4. break and continue</h3>
+<p>break leaves the loop completely. continue skips the rest of the current iteration and goes to the update part.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-comment">// continue: skip 3 -&gt; 0 1 2 4 5 6 7 8 9</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">0</span>; i &lt; <span class="t-number">10</span>; i++) {
+    <span class="t-kw">if</span> (i == <span class="t-number">3</span>) <span class="t-kw">continue</span>;
+    <span class="t-type">System</span>.out.println(i);
+}
+
+<span class="t-comment">// break: stop at 6 -&gt; 0 1 2 3 4 5</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">0</span>; i &lt; <span class="t-number">10</span>; i++) {
+    <span class="t-kw">if</span> (i == <span class="t-number">6</span>) <span class="t-kw">break</span>;
+    <span class="t-type">System</span>.out.println(i);
+}
+
+<span class="t-comment">// In nested loops break leaves only the INNER loop.</span></code></pre></div>
+</section>
+<section class="card" id="for-5">
+<h3>5. Infinite loop</h3>
+<p>All three header parts are optional. Without a condition the loop never stops by itself: leave it with break or return.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> n = <span class="t-number">0</span>;
+<span class="t-kw">for</span> (;;) {
+    n++;
+    <span class="t-kw">if</span> (n &gt; <span class="t-number">3</span>) <span class="t-kw">break</span>;
+}
+
+<span class="t-comment">// A trap: a condition that is always true by mistake</span>
+<span class="t-comment">// for (int i = 0; i &gt;= 0; i++) { ... } // i never becomes negative (until overflow)</span></code></pre></div>
+</section>
+<h2 class="group-title">Looping over data</h2>
+<section class="card" id="for-6">
+<h3>6. Array by index</h3>
+<p>Use an index when you need the position or want to change elements. An array of length n has indexes 0 .. n-1. Length of an array is arr.length (no parentheses).</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span>[] arr = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-comment">// Print every element:</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">0</span>; i &lt; arr.length; i++) {
+    <span class="t-type">System</span>.out.println(arr[i]);
+}
+
+<span class="t-comment">// Double every element (changes the array):</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">0</span>; i &lt; arr.length; i++) {
+    arr[i] = arr[i] * <span class="t-number">2</span>; <span class="t-comment">// {20, 40, 60}</span>
+}
+
+<span class="t-comment">// A trap: &lt;= instead of &lt;. The array has 3 elements, index 3 does not exist:</span>
+<span class="t-comment">// for (int i = 0; i &lt;= arr.length; i++) { arr[i] }</span>
+<span class="t-comment">// -&gt; ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3</span></code></pre></div>
+</section>
+<section class="card" id="for-7">
+<h3>7. for-each</h3>
+<p>for (Type x : collection) takes elements one by one. It is shorter and has no index to get wrong. Use it when you only read the elements.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span>[] arr = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-kw">for</span> (<span class="t-kw">int</span> x : arr) {
+    <span class="t-type">System</span>.out.println(x);
+}
+
+<span class="t-comment">// x is a COPY of the element. Changing x does not change the array:</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> x : arr) {
+    x = x * <span class="t-number">2</span>; <span class="t-comment">// arr is still {10, 20, 30}</span>
+}
+
+<span class="t-comment">// Need the index or want to change the elements -&gt; use a loop by index (see 6).</span>
+<span class="t-comment">// Works the same for List: see ListTheory.</span>
+
+<span class="t-comment">// A trap: a semicolon after the for header is an EMPTY body.</span>
+<span class="t-comment">// The block below is not part of the loop and runs once:</span>
+<span class="t-comment">//</span>
+<span class="t-comment">//   for (int i = 0; i &lt; 5; i++);</span>
+<span class="t-comment">//   {</span>
+<span class="t-comment">//       System.out.println("hello"); // prints once, not 5 times</span>
+<span class="t-comment">//   }</span></code></pre></div>
+</section>
+</div>
+<div class="topic" id="topic-while" data-key="while">
+<h1>The while loop</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Basics</h4><ol>
+<li value="1"><a href="#while-1">Syntax: while (condition)</a></li>
+<li value="2"><a href="#while-2">while or for?</a></li>
+<li value="3"><a href="#while-3">Run at least once: do-while</a></li>
+</ol></div>
+<div class="group"><h4>Controlling a loop</h4><ol>
+<li value="4"><a href="#while-4">break and continue</a></li>
+<li value="5"><a href="#while-5">Infinite loop</a></li>
+</ol></div>
+</div>
+<p class="practice">Practice: see org.tl.loops.whileloop (WhileCheatSheet, WhileTasks, WhileSolutions).</p>
+</nav>
+<h2 class="group-title">Basics</h2>
+<section class="card" id="while-1">
+<h3>1. Syntax: while (condition)</h3>
+<p>while repeats the body as long as the condition is true. The condition is checked BEFORE every iteration, so the body may never run: if the condition is false from the start, nothing happens.</p>
+<p>Order: condition <code>-&gt;</code> body <code>-&gt;</code> condition <code>-&gt;</code> body ... <code>-&gt;</code> condition is false <code>-&gt;</code> exit.</p>
+<p>The counter lives outside the loop and YOU change it in the body. If nothing in the body affects the condition, the loop never ends.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-comment">// Print 0 1 2 3 4:</span>
+<span class="t-kw">int</span> i = <span class="t-number">0</span>;
+<span class="t-kw">while</span> (i &lt; <span class="t-number">5</span>) {
+    <span class="t-type">System</span>.out.println(i);
+    i++; <span class="t-comment">// without this line: infinite loop</span>
+}
+
+<span class="t-comment">// The condition is false from the start -&gt; the body never runs:</span>
+<span class="t-kw">int</span> x = <span class="t-number">10</span>;
+<span class="t-kw">while</span> (x &lt; <span class="t-number">5</span>) {
+    <span class="t-type">System</span>.out.println(x); <span class="t-comment">// not executed</span>
+}</code></pre></div>
+</section>
+<section class="card" id="while-2">
+<h3>2. while or for?</h3>
+<p>for: the number of repetitions is known, or you need a counter. while: the number of repetitions is not known in advance; you repeat until something happens.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-comment">// Known: exactly 5 times -&gt; for</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">0</span>; i &lt; <span class="t-number">5</span>; i++) {
+    <span class="t-type">System</span>.out.println(i);
+}
+
+<span class="t-comment">// Unknown: how many digits are in the number? It takes as many steps as it takes.</span>
+<span class="t-kw">int</span> number = <span class="t-number">12345</span>;
+<span class="t-kw">int</span> digits = <span class="t-number">0</span>;
+<span class="t-kw">while</span> (number &gt; <span class="t-number">0</span>) {
+    number /= <span class="t-number">10</span>; <span class="t-comment">// drop the last digit: 1234, 123, 12, 1, 0</span>
+    digits++;
+}
+<span class="t-type">System</span>.out.println(digits); <span class="t-comment">// 5</span></code></pre></div>
+</section>
+<section class="card" id="while-3">
+<h3>3. Run at least once: do-while</h3>
+<p>In do-while the condition is checked AFTER the body, so the body runs at least once. Note the semicolon after the closing parenthesis.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> x = <span class="t-number">10</span>;
+
+<span class="t-comment">// x &lt; 5 is false, but the body still runs once -&gt; prints 10:</span>
+<span class="t-kw">do</span> {
+    <span class="t-type">System</span>.out.println(x);
+} <span class="t-kw">while</span> (x &lt; <span class="t-number">5</span>);
+
+<span class="t-comment">// The same condition with plain while prints nothing:</span>
+<span class="t-kw">while</span> (x &lt; <span class="t-number">5</span>) {
+    <span class="t-type">System</span>.out.println(x);
+}</code></pre></div>
+</section>
+<h2 class="group-title">Controlling a loop</h2>
+<section class="card" id="while-4">
+<h3>4. break and continue</h3>
+<p>break leaves the loop completely. continue jumps straight to the next condition check.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-comment">// break: stop at 6 -&gt; 1 2 3 4 5</span>
+<span class="t-kw">int</span> i = <span class="t-number">0</span>;
+<span class="t-kw">while</span> (i &lt; <span class="t-number">10</span>) {
+    i++;
+    <span class="t-kw">if</span> (i == <span class="t-number">6</span>) <span class="t-kw">break</span>;
+    <span class="t-type">System</span>.out.println(i);
+}
+
+<span class="t-comment">// A trap: continue BEFORE the update. i never changes, the loop never ends:</span>
+<span class="t-comment">// int j = 0;</span>
+<span class="t-comment">// while (j &lt; 10) {</span>
+<span class="t-comment">//     if (j == 3) continue; // j stays 3 forever</span>
+<span class="t-comment">//     j++;</span>
+<span class="t-comment">// }</span>
+<span class="t-comment">// Update the counter before continue.</span></code></pre></div>
+</section>
+<section class="card" id="while-5">
+<h3>5. Infinite loop</h3>
+<p>while (true) is a normal way to say "repeat until I say stop". Leave it with break or return.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> n = <span class="t-number">0</span>;
+<span class="t-kw">while</span> (<span class="t-kw">true</span>) {
+    n++;
+    <span class="t-kw">if</span> (n &gt; <span class="t-number">3</span>) <span class="t-kw">break</span>;
+}
+
+<span class="t-comment">// A trap: a semicolon after while is an EMPTY body. The loop spins forever:</span>
+<span class="t-comment">// int i = 0;</span>
+<span class="t-comment">// while (i &lt; 5); { i++; }</span></code></pre></div>
+</section>
+</div>
+<div class="topic" id="topic-switch" data-key="switch">
+<h1>Switch</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Classic switch</h4><ol>
+<li value="1"><a href="#switch-1">Syntax: switch, case, default</a></li>
+<li value="2"><a href="#switch-2">break and fall-through</a></li>
+<li value="3"><a href="#switch-3">What you can switch on</a></li>
+</ol></div>
+<div class="group"><h4>Modern switch (Java 14+)</h4><ol>
+<li value="4"><a href="#switch-4">Arrow form: case <code>-&gt;</code></a></li>
+<li value="5"><a href="#switch-5">Switch as an expression: returns a value</a></li>
+<li value="6"><a href="#switch-6">Several values in one case</a></li>
+<li value="7"><a href="#switch-7">Block in a branch: yield</a></li>
+</ol></div>
+<div class="group"><h4>Choosing</h4><ol>
+<li value="8"><a href="#switch-8">switch or if-else?</a></li>
+</ol></div>
+</div>
+<p class="practice">Practice: see org.tl.conditions.switchcase (SwitchCheatSheet, SwitchTasks, SwitchSolutions).</p>
+</nav>
+<h2 class="group-title">Classic switch</h2>
+<section class="card" id="switch-1">
+<h3>1. Syntax: switch, case, default</h3>
+<p>switch compares one value with several constants and runs the code of the matching case. default runs when nothing matched (it is optional and can be anywhere, usually last).</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> day = <span class="t-number">3</span>;
+
+<span class="t-kw">switch</span> (day) {
+    <span class="t-kw">case</span> <span class="t-number">1</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Monday"</span>);
+        <span class="t-kw">break</span>;
+    <span class="t-kw">case</span> <span class="t-number">2</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Tuesday"</span>);
+        <span class="t-kw">break</span>;
+    <span class="t-kw">case</span> <span class="t-number">3</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Wednesday"</span>); <span class="t-comment">// this one runs</span>
+        <span class="t-kw">break</span>;
+    <span class="t-kw">default</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Another day"</span>);
+}
+
+<span class="t-comment">// case values must be constants: literals, final variables or enum constants.</span>
+<span class="t-comment">// case x: with a normal variable x does not compile.</span></code></pre></div>
+</section>
+<section class="card" id="switch-2">
+<h3>2. break and fall-through</h3>
+<p>In the classic switch, after the matching case Java keeps running ALL the next cases until it meets break (or the end of the switch). This is called fall-through. A forgotten break is the most common mistake with switch.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> n = <span class="t-number">1</span>;
+
+<span class="t-comment">// Forgot break: prints "one", "two" and "default"</span>
+<span class="t-kw">switch</span> (n) {
+    <span class="t-kw">case</span> <span class="t-number">1</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"one"</span>);
+    <span class="t-kw">case</span> <span class="t-number">2</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"two"</span>);
+    <span class="t-kw">default</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"default"</span>);
+}
+
+<span class="t-comment">// Fall-through can be useful on purpose, to group cases:</span>
+<span class="t-kw">switch</span> (n) {
+    <span class="t-kw">case</span> <span class="t-number">1</span>:
+    <span class="t-kw">case</span> <span class="t-number">2</span>:
+    <span class="t-kw">case</span> <span class="t-number">3</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"small"</span>); <span class="t-comment">// for 1, 2 and 3</span>
+        <span class="t-kw">break</span>;
+    <span class="t-kw">default</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"big"</span>);
+}</code></pre></div>
+</section>
+<section class="card" id="switch-3">
+<h3>3. What you can switch on</h3>
+<p>Allowed: int, short, byte, char (and their wrappers Integer, Short, Byte, Character), String and enum. NOT allowed: long, float, double, boolean. Use if-else for them.</p>
+<p>String is compared with <code>equals()</code>, so it is case-sensitive: "Yes" and "yes" are different. A <code>null</code> in switch throws NullPointerException.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">String</span> command = <span class="t-string">"stop"</span>;
+<span class="t-kw">switch</span> (command) {
+    <span class="t-kw">case</span> <span class="t-string">"start"</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Starting"</span>);
+        <span class="t-kw">break</span>;
+    <span class="t-kw">case</span> <span class="t-string">"stop"</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Stopping"</span>);
+        <span class="t-kw">break</span>;
+    <span class="t-kw">default</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Unknown command"</span>);
+}
+
+<span class="t-kw">char</span> grade = <span class="t-string">'B'</span>;
+<span class="t-kw">switch</span> (grade) {
+    <span class="t-kw">case</span> <span class="t-string">'A'</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Excellent"</span>);
+        <span class="t-kw">break</span>;
+    <span class="t-kw">case</span> <span class="t-string">'B'</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Good"</span>);
+        <span class="t-kw">break</span>;
+    <span class="t-kw">default</span>:
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Other"</span>);
+}
+
+<span class="t-comment">// long big = 5L;</span>
+<span class="t-comment">// switch (big) { ... } // does not compile</span></code></pre></div>
+</section>
+<h2 class="group-title">Modern switch (Java 14+)</h2>
+<section class="card" id="switch-4">
+<h3>4. Arrow form: case <code>-&gt;</code></h3>
+<p>With <code>-&gt;</code> only the code of the matching case runs. There is no fall-through, so break is not needed. Shorter and safer: prefer it.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> day = <span class="t-number">3</span>;
+
+<span class="t-kw">switch</span> (day) {
+    <span class="t-kw">case</span> <span class="t-number">1</span> -&gt; <span class="t-type">System</span>.out.println(<span class="t-string">"Monday"</span>);
+    <span class="t-kw">case</span> <span class="t-number">2</span> -&gt; <span class="t-type">System</span>.out.println(<span class="t-string">"Tuesday"</span>);
+    <span class="t-kw">case</span> <span class="t-number">3</span> -&gt; <span class="t-type">System</span>.out.println(<span class="t-string">"Wednesday"</span>);
+    <span class="t-kw">default</span> -&gt; <span class="t-type">System</span>.out.println(<span class="t-string">"Another day"</span>);
+}
+
+<span class="t-comment">// You can't mix case: and case -&gt; in one switch.</span></code></pre></div>
+</section>
+<section class="card" id="switch-5">
+<h3>5. Switch as an expression: returns a value</h3>
+<p>A switch can produce a value, so you can assign it or return it. Put ; after the closing brace. It must cover all the possible values: end it with default (or list every enum constant), otherwise it does not compile.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> day = <span class="t-number">3</span>;
+
+<span class="t-type">String</span> name = <span class="t-kw">switch</span> (day) {
+    <span class="t-kw">case</span> <span class="t-number">1</span> -&gt; <span class="t-string">"Monday"</span>;
+    <span class="t-kw">case</span> <span class="t-number">2</span> -&gt; <span class="t-string">"Tuesday"</span>;
+    <span class="t-kw">case</span> <span class="t-number">3</span> -&gt; <span class="t-string">"Wednesday"</span>;
+    <span class="t-kw">default</span> -&gt; <span class="t-string">"Another day"</span>;
+};
+<span class="t-type">System</span>.out.println(name); <span class="t-comment">// Wednesday</span>
+
+<span class="t-comment">// Without default it does not compile: "the switch expression does not cover all possible input values"</span></code></pre></div>
+</section>
+<section class="card" id="switch-6">
+<h3>6. Several values in one case</h3>
+<p>In the modern form list the values with commas. It replaces the grouped cases from section 2.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> month = <span class="t-number">7</span>;
+
+<span class="t-type">String</span> season = <span class="t-kw">switch</span> (month) {
+    <span class="t-kw">case</span> <span class="t-number">12</span>, <span class="t-number">1</span>, <span class="t-number">2</span> -&gt; <span class="t-string">"Winter"</span>;
+    <span class="t-kw">case</span> <span class="t-number">3</span>, <span class="t-number">4</span>, <span class="t-number">5</span> -&gt; <span class="t-string">"Spring"</span>;
+    <span class="t-kw">case</span> <span class="t-number">6</span>, <span class="t-number">7</span>, <span class="t-number">8</span> -&gt; <span class="t-string">"Summer"</span>;
+    <span class="t-kw">case</span> <span class="t-number">9</span>, <span class="t-number">10</span>, <span class="t-number">11</span> -&gt; <span class="t-string">"Autumn"</span>;
+    <span class="t-kw">default</span> -&gt; <span class="t-string">"Not a month"</span>;
+};
+<span class="t-type">System</span>.out.println(season); <span class="t-comment">// Summer</span></code></pre></div>
+</section>
+<section class="card" id="switch-7">
+<h3>7. Block in a branch: yield</h3>
+<p>If a branch needs several lines, use a block { } and return the value with yield. yield is for switch expressions, return would leave the whole method.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> score = <span class="t-number">85</span>;
+
+<span class="t-type">String</span> result = <span class="t-kw">switch</span> (score / <span class="t-number">10</span>) {
+    <span class="t-kw">case</span> <span class="t-number">10</span>, <span class="t-number">9</span> -&gt; <span class="t-string">"A"</span>;
+    <span class="t-kw">case</span> <span class="t-number">8</span> -&gt; {
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Almost excellent"</span>);
+        <span class="t-kw">yield</span> <span class="t-string">"B"</span>;
+    }
+    <span class="t-kw">default</span> -&gt; <span class="t-string">"C or lower"</span>;
+};
+<span class="t-type">System</span>.out.println(result); <span class="t-comment">// B</span></code></pre></div>
+</section>
+<h2 class="group-title">Choosing</h2>
+<section class="card" id="switch-8">
+<h3>8. switch or if-else?</h3>
+<p>switch: one variable compared with exact values (menu command, day of the week, enum). if-else: ranges and conditions (age &gt;= 18, x &gt; 0 &amp;&amp; x &lt; 10), booleans, long and double.</p>
+<p>A range in switch is not possible: write if-else for it.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> age = <span class="t-number">20</span>;
+
+<span class="t-comment">// Range -&gt; if-else</span>
+<span class="t-kw">if</span> (age &lt; <span class="t-number">18</span>) {
+    <span class="t-type">System</span>.out.println(<span class="t-string">"Minor"</span>);
+} <span class="t-kw">else</span> {
+    <span class="t-type">System</span>.out.println(<span class="t-string">"Adult"</span>);
+}</code></pre></div>
+</section>
+</div>
+<div class="topic" id="topic-list" data-key="list">
+<h1>List</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Creating a list</h4><ol>
+<li value="1"><a href="#list-1">What a List is</a></li>
+<li value="2"><a href="#list-2"><code>List&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>: what is on the left and on the right</a></li>
+<li value="3"><a href="#list-3">Immutable list: List.of</a></li>
+</ol></div>
+<div class="group"><h4>Working with elements</h4><ol>
+<li value="4"><a href="#list-4">Add, get, size, isEmpty</a></li>
+<li value="5"><a href="#list-5">Change and remove: set, remove, clear</a></li>
+<li value="6"><a href="#list-6">Searching: contains, indexOf</a></li>
+<li value="7"><a href="#list-7">Sorting: Collections.sort, reverse, max, min</a></li>
+</ol></div>
+<div class="group"><h4>Traps</h4><ol>
+<li value="8"><a href="#list-8"><code>remove(int)</code> or <code>remove(Object)</code>?</a></li>
+<li value="9"><a href="#list-9">IndexOutOfBoundsException</a></li>
+</ol></div>
+</div>
+<p class="practice">Practice: see org.tl.collections.list (ListCheatSheet, ListTasks, ListSolutions).</p>
+</nav>
+<h2 class="group-title">Creating a list</h2>
+<section class="card" id="list-1">
+<h3>1. What a List is</h3>
+<p>A List is an ordered collection that can contain duplicates. Every element has an index, starting at 0. Unlike an array, a List can grow and shrink.</p>
+<p>Size: an array has .length, a List has <code>.size()</code>. Elements are objects: <code>List&lt;Integer&gt;</code>, not <code>List&lt;int&gt;</code> (see PrimitivesAndWrappersTheory).</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-comment">// ["Anna", "Bob", "Anna"]</span>
+<span class="t-comment">//    0       1      2      &lt;- indexes</span></code></pre></div>
+</section>
+<section class="card" id="list-2">
+<h3>2. <code>List&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>: what is on the left and on the right</h3>
+<pre class="plain">  List&lt;String&gt;      - the TYPE of the variable (left side).
+                      List is an interface: it only describes WHAT a list can do
+                      (add, get, remove...), not HOW it is stored.
+                      &lt;String&gt; says that the list holds Strings.
+  names             - the variable name.
+  new ArrayList&lt;&gt;() - the actual OBJECT created in memory (right side).
+                      ArrayList is a class that implements List: it stores the
+                      elements in an array inside and knows HOW to do all the operations.
+  &lt;&gt;                - "diamond": the compiler infers &lt;String&gt; from the left side.</pre>
+<p>You can't write new <code>List&lt;&gt;()</code>: an interface can't be instantiated.</p>
+<p>Why not <code>ArrayList&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>? It works, but declaring the variable as List lets you switch the implementation later (e.g. new <code>LinkedList&lt;&gt;()</code>) by changing only the right side. The rest of the code uses only List methods and stays the same. The same idea for methods: accept <code>List&lt;String&gt;</code> as a parameter, not <code>ArrayList&lt;String&gt;</code>.</p>
+<p>ArrayList: stores elements in an array; fast get by index, slower insert/remove in the middle. The default choice.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(); <span class="t-comment">// empty list</span></code></pre></div>
+</section>
+<section class="card" id="list-3">
+<h3>3. Immutable list: List.of</h3>
+<p><code>List.of(...)</code> creates a list that cannot be changed. add, remove, set and sort throw UnsupportedOperationException.</p>
+<p>Need a list you can change? Copy it: new <code>ArrayList&lt;&gt;</code>(<code>List.of(...)</code>).</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; fixed = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>);
+<span class="t-comment">// fixed.add("Eve"); // UnsupportedOperationException</span>
+
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; changeable = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>));
+changeable.add(<span class="t-string">"Eve"</span>); <span class="t-comment">// OK -&gt; [Anna, Bob, Eve]</span></code></pre></div>
+</section>
+<h2 class="group-title">Working with elements</h2>
+<section class="card" id="list-4">
+<h3>4. Add, get, size, isEmpty</h3>
+<p><code>add(x)</code> adds to the end. <code>add(index, x)</code> inserts at the index and moves the rest to the right. <code>get(index)</code> returns the element. <code>size()</code> is the number of elements.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+
+names.add(<span class="t-string">"Anna"</span>);     <span class="t-comment">// [Anna]</span>
+names.add(<span class="t-string">"Bob"</span>);      <span class="t-comment">// [Anna, Bob]</span>
+names.add(<span class="t-number">0</span>, <span class="t-string">"Eve"</span>);   <span class="t-comment">// [Eve, Anna, Bob]</span>
+
+names.get(<span class="t-number">0</span>);          <span class="t-comment">// "Eve"</span>
+names.size();          <span class="t-comment">// 3</span>
+names.isEmpty();       <span class="t-comment">// false</span></code></pre></div>
+</section>
+<section class="card" id="list-5">
+<h3>5. Change and remove: set, remove, clear</h3>
+<p><code>set(index, x)</code> replaces the element and returns the old one. <code>remove(index)</code> deletes the element and shifts the rest to the left. <code>remove("value")</code> deletes the first match. <code>clear()</code> removes everything.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Eve"</span>, <span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>));
+
+names.set(<span class="t-number">1</span>, <span class="t-string">"Alex"</span>);  <span class="t-comment">// [Eve, Alex, Bob]</span>
+names.remove(<span class="t-number">0</span>);       <span class="t-comment">// by index -&gt; [Alex, Bob]</span>
+names.remove(<span class="t-string">"Bob"</span>);   <span class="t-comment">// by value -&gt; [Alex]</span>
+names.clear();         <span class="t-comment">// []</span></code></pre></div>
+</section>
+<section class="card" id="list-6">
+<h3>6. Searching: contains, indexOf</h3>
+<p><code>contains(x)</code> is true if the element is in the list. <code>indexOf(x)</code> is the index of the first match, or -1 if there is none. <code>lastIndexOf(x)</code> is the index of the last match.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Anna"</span>));
+
+names.contains(<span class="t-string">"Bob"</span>);      <span class="t-comment">// true</span>
+names.indexOf(<span class="t-string">"Anna"</span>);      <span class="t-comment">// 0</span>
+names.lastIndexOf(<span class="t-string">"Anna"</span>);  <span class="t-comment">// 2</span>
+names.indexOf(<span class="t-string">"Zed"</span>);       <span class="t-comment">// -1: not found</span></code></pre></div>
+</section>
+<section class="card" id="list-7">
+<h3>7. Sorting: Collections.sort, reverse, max, min</h3>
+<p>The Collections class has helpers for lists. They need a changeable list (not List.of): sort and reverse change the list itself.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">3</span>, <span class="t-number">1</span>, <span class="t-number">2</span>));
+
+<span class="t-type">Collections</span>.sort(numbers);          <span class="t-comment">// [1, 2, 3]</span>
+<span class="t-type">Collections</span>.reverse(numbers);       <span class="t-comment">// [3, 2, 1]</span>
+<span class="t-type">Collections</span>.max(numbers);           <span class="t-comment">// 3</span>
+<span class="t-type">Collections</span>.min(numbers);           <span class="t-comment">// 1</span></code></pre></div>
+</section>
+<h2 class="group-title">Traps</h2>
+<section class="card" id="list-8">
+<h3>8. <code>remove(int)</code> or <code>remove(Object)</code>?</h3>
+<p>A trap with <code>List&lt;Integer&gt;</code>. The list has two methods named remove: <code>remove(int index)</code> and <code>remove(Object value)</code>. With a plain number Java picks the index.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; list = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
+
+list.remove(<span class="t-number">1</span>);                    <span class="t-comment">// index 1 -&gt; removes 20 -&gt; [10, 30]</span>
+list.remove(<span class="t-type">Integer</span>.valueOf(<span class="t-number">10</span>));  <span class="t-comment">// the VALUE 10 -&gt; [30]</span></code></pre></div>
+</section>
+<section class="card" id="list-9">
+<h3>9. IndexOutOfBoundsException</h3>
+<p>A list of size n has indexes 0 .. n-1. Anything else throws an exception. The last element is list.get(<code>list.size()</code> - 1).</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>));
+
+names.get(<span class="t-number">2</span>);                   <span class="t-comment">// "Eve", the last one</span>
+names.get(names.size() - <span class="t-number">1</span>);    <span class="t-comment">// "Eve", the same</span>
+<span class="t-comment">// names.get(3);                // IndexOutOfBoundsException: Index 3 out of bounds for length 3</span>
+<span class="t-comment">// new ArrayList&lt;String&gt;().get(0); // the same for an empty list</span></code></pre></div>
+</section>
+</div>
+<div class="topic" id="topic-map" data-key="map">
+<h1>Map</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Basics</h4><ol>
+<li value="1"><a href="#map-1">What a Map is</a></li>
+<li value="2"><a href="#map-2">Put and get</a></li>
+<li value="3"><a href="#map-3">Missing key: <code>null</code> and getOrDefault</a></li>
+<li value="4"><a href="#map-4">Checking a key: containsKey</a></li>
+</ol></div>
+<div class="group"><h4>Kinds of Map</h4><ol>
+<li value="5"><a href="#map-5">HashMap, LinkedHashMap, TreeMap</a></li>
+</ol></div>
+<div class="group"><h4>Looping</h4><ol>
+<li value="6"><a href="#map-6">Iterating: entrySet, keySet, values</a></li>
+</ol></div>
+<div class="group"><h4>Traps</h4><ol>
+<li value="7"><a href="#map-7">Keys must be unique and comparable by equals/hashCode</a></li>
+</ol></div>
+</div>
+<p class="practice">Practice: see org.tl.collections.map (MapCheatSheet, MapTasks, MapSolutions).</p>
+</nav>
+<h2 class="group-title">Basics</h2>
+<section class="card" id="map-1">
+<h3>1. What a Map is</h3>
+<p>A Map stores key <code>-&gt;</code> value pairs, like a dictionary. You find a value by its key. Keys are unique. Values can repeat. Lookup by key is fast.</p>
+<p>Generics: <code>Map&lt;KeyType, ValueType&gt;</code>. Primitives need wrappers: <code>Map&lt;String, Integer&gt;</code>, not <code>Map&lt;String, int&gt;</code> (see PrimitivesAndWrappersTheory).</p>
+<p>Map is not a List: there are no indexes and you can't write <code>map.get(0)</code>.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-comment">// "Anna" -&gt; 25</span>
+<span class="t-comment">// "Bob"  -&gt; 30</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();</code></pre></div>
+</section>
+<section class="card" id="map-2">
+<h3>2. Put and get</h3>
+<p><code>put(key, value)</code> adds a pair. If the key already exists, its value is OVERWRITTEN. <code>get(key)</code> returns the value.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+
+ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">25</span>);   <span class="t-comment">// {Anna=25}</span>
+ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);    <span class="t-comment">// {Anna=25, Bob=30}</span>
+ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);   <span class="t-comment">// same key -&gt; {Anna=26, Bob=30}</span>
+
+ages.get(<span class="t-string">"Anna"</span>);       <span class="t-comment">// 26</span>
+ages.size();            <span class="t-comment">// 2: still two keys</span></code></pre></div>
+</section>
+<section class="card" id="map-3">
+<h3>3. Missing key: <code>null</code> and getOrDefault</h3>
+<p>get returns <code>null</code> when the key is not found. <code>getOrDefault(key, x)</code> returns x instead.</p>
+<p>A trap: unboxing <code>null</code>. int age = <code>ages.get("Zed")</code> throws NullPointerException, because <code>null</code> cannot become an int (see PrimitivesAndWrappersTheory).</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
+
+<span class="t-type">Integer</span> unknown = ages.get(<span class="t-string">"Zed"</span>);        <span class="t-comment">// null</span>
+<span class="t-kw">int</span> safe = ages.getOrDefault(<span class="t-string">"Zed"</span>, <span class="t-number">0</span>);   <span class="t-comment">// 0</span>
+<span class="t-comment">// int crash = ages.get("Zed");           // NullPointerException</span></code></pre></div>
+</section>
+<section class="card" id="map-4">
+<h3>4. Checking a key: containsKey</h3>
+<p><code>containsKey(key)</code> is true if the key is in the map. <code>containsValue(value)</code> checks values (it is slow: it looks through all of them).</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
+
+ages.containsKey(<span class="t-string">"Anna"</span>);   <span class="t-comment">// true</span>
+ages.containsKey(<span class="t-string">"Zed"</span>);    <span class="t-comment">// false</span>
+ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment">// true</span></code></pre></div>
+</section>
+<h2 class="group-title">Kinds of Map</h2>
+<section class="card" id="map-5">
+<h3>5. HashMap, LinkedHashMap, TreeMap</h3>
+<p>All three are used the same way. The difference is the order of the pairs.</p>
+<pre class="plain">  HashMap         - no guaranteed order. The default choice, the fastest.
+  LinkedHashMap   - keeps the insertion order.
+  TreeMap         - keeps the keys sorted (A to Z, smallest to largest).</pre>
+<p><code>Map.of(...)</code> creates an immutable map (put throws UnsupportedOperationException).</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; hash = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; linked = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; tree = <span class="t-kw">new</span> <span class="t-type">TreeMap</span>&lt;&gt;();
+
+<span class="t-comment">// After put("Bob", 1), put("Anna", 2), put("Eve", 3):</span>
+<span class="t-comment">//   HashMap:       any order</span>
+<span class="t-comment">//   LinkedHashMap: {Bob=1, Anna=2, Eve=3}</span>
+<span class="t-comment">//   TreeMap:       {Anna=2, Bob=1, Eve=3}</span></code></pre></div>
+</section>
+<h2 class="group-title">Looping</h2>
+<section class="card" id="map-6">
+<h3>6. Iterating: entrySet, keySet, values</h3>
+<pre class="plain">A Map can't be looped over directly. Choose what you need:
+  entrySet() - key and value together (pairs)
+  keySet()   - only keys
+  values()   - only values</pre>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
+ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
+ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
+
+<span class="t-comment">// Pairs: Anna=26, Bob=30</span>
+<span class="t-kw">for</span> (<span class="t-type">Map</span>.<span class="t-type">Entry</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; e : ages.entrySet()) {
+    <span class="t-type">System</span>.out.println(e.getKey() + <span class="t-string">"="</span> + e.getValue());
+}
+
+<span class="t-comment">// Keys: Anna, Bob</span>
+<span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
+    <span class="t-type">System</span>.out.println(name);
+}
+
+<span class="t-comment">// Values: 26, 30</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> age : ages.values()) {
+    <span class="t-type">System</span>.out.println(age);
+}</code></pre></div>
+</section>
+<h2 class="group-title">Traps</h2>
+<section class="card" id="map-7">
+<h3>7. Keys must be unique and comparable by equals/hashCode</h3>
+<p>A Map finds a key using <code>equals()</code> and <code>hashCode()</code>. String and Integer have them done right, so use them as keys. For your own classes you must write both methods, otherwise two "equal" objects become two different keys.</p>
+<p>Do not change an object after using it as a key: its hashCode changes and the map will not find it anymore.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+map.put(<span class="t-string">"Anna"</span>, <span class="t-number">1</span>);
+map.put(<span class="t-string">"anna"</span>, <span class="t-number">2</span>);  <span class="t-comment">// different key: String is case-sensitive -&gt; 2 entries</span>
+map.size();          <span class="t-comment">// 2</span></code></pre></div>
+</section>
+</div>
+<div class="topic" id="topic-primitivesandwrappers" data-key="primitivesandwrappers">
+<h1>Primitives and wrapper classes</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Basics</h4><ol>
+<li value="1"><a href="#primitivesandwrappers-1">Two kinds of types: primitives and wrappers</a></li>
+<li value="2"><a href="#primitivesandwrappers-2">The eight primitives and their wrappers</a></li>
+<li value="3"><a href="#primitivesandwrappers-3">When to use which</a></li>
+</ol></div>
+<div class="group"><h4>Converting</h4><ol>
+<li value="4"><a href="#primitivesandwrappers-4">Autoboxing and unboxing</a></li>
+<li value="5"><a href="#primitivesandwrappers-5">Parsing: String to number and back</a></li>
+<li value="6"><a href="#primitivesandwrappers-6">Casting: widening and narrowing</a></li>
+</ol></div>
+<div class="group"><h4>Traps</h4><ol>
+<li value="7"><a href="#primitivesandwrappers-7">Unboxing <code>null</code>: NullPointerException</a></li>
+<li value="8"><a href="#primitivesandwrappers-8">Comparing wrappers: <code>==</code> or equals?</a></li>
+<li value="9"><a href="#primitivesandwrappers-9">Integer division, overflow, double precision</a></li>
+</ol></div>
+</div>
+<p class="practice">Practice: see org.tl.types (PrimitivesAndWrappersCheatSheet).</p>
+</nav>
+<h2 class="group-title">Basics</h2>
+<section class="card" id="primitivesandwrappers-1">
+<h3>1. Two kinds of types: primitives and wrappers</h3>
+<p>Primitive: stores the value itself. Fast, never <code>null</code>, has no methods. Written in lower case: int, double, boolean.</p>
+<p>Wrapper: a class (an object) that holds a primitive. Can be <code>null</code>, has useful methods, and is required by generics. Written with a capital letter: Integer, Double, Boolean.</p>
+<p>String is NOT a primitive; it is a class.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> a = <span class="t-number">5</span>;          <span class="t-comment">// primitive: just the number 5</span>
+<span class="t-type">Integer</span> b = <span class="t-number">5</span>;      <span class="t-comment">// wrapper: an object holding 5</span>
+<span class="t-type">Integer</span> c = <span class="t-kw">null</span>;   <span class="t-comment">// possible only for a wrapper</span></code></pre></div>
+</section>
+<section class="card" id="primitivesandwrappers-2">
+<h3>2. The eight primitives and their wrappers</h3>
+<pre class="plain">  Primitive | Wrapper   | Size   | Default | Notes
+  ----------|-----------|--------|---------|---------------------------------
+  byte      | Byte      | 8 bit  | 0       | -128 .. 127
+  short     | Short     | 16 bit | 0       |
+  int       | Integer   | 32 bit | 0       | the default integer type
+  long      | Long      | 64 bit | 0L      | literal needs L: 10000000000L
+  float     | Float     | 32 bit | 0.0f    | literal needs f: 1.5f
+  double    | Double    | 64 bit | 0.0     | the default decimal type
+  char      | Character | 16 bit | 0 (nul) | one character in single quotes: 'a'
+  boolean   | Boolean   | n/a    | false   | true or false</pre>
+<p>The default is what a field or an array element gets if you set nothing. For every wrapper the default is <code>null</code>, not 0.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">long</span> big = <span class="t-number">10000000000L</span>;  <span class="t-comment">// without L: "integer number too large"</span>
+<span class="t-kw">float</span> f = <span class="t-number">1.5f</span>;           <span class="t-comment">// without f: 1.5 is a double and does not fit into float</span>
+<span class="t-kw">char</span> letter = <span class="t-string">'a'</span>;        <span class="t-comment">// single quotes for char, double quotes for String</span></code></pre></div>
+</section>
+<section class="card" id="primitivesandwrappers-3">
+<h3>3. When to use which</h3>
+<pre class="plain">  - Primitive by default: counters, math, flags.
+  - Wrapper when you need null ("no value"), or inside generics:
+    Map&lt;String, Long&gt;. Generics cannot hold primitives: Map&lt;String, long&gt; does not compile.</pre>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> count = <span class="t-number">0</span>;                    <span class="t-comment">// a counter: primitive</span>
+<span class="t-type">Integer</span> maybeAge = <span class="t-kw">null</span>;          <span class="t-comment">// age may be unknown: wrapper</span></code></pre></div>
+</section>
+<h2 class="group-title">Converting</h2>
+<section class="card" id="primitivesandwrappers-4">
+<h3>4. Autoboxing and unboxing</h3>
+<pre class="plain">Java converts between a primitive and its wrapper automatically.
+  boxing:   int -&gt; Integer
+  unboxing: Integer -&gt; int</pre>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">Integer</span> boxed = <span class="t-number">5</span>;       <span class="t-comment">// boxing</span>
+<span class="t-kw">int</span> primitive = boxed;   <span class="t-comment">// unboxing</span></code></pre></div>
+</section>
+<section class="card" id="primitivesandwrappers-5">
+<h3>5. Parsing: String to number and back</h3>
+<p><code>Integer.parseInt("42")</code> turns text into an int. <code>String.valueOf(42)</code> turns a number into text. Text that is not a number throws NumberFormatException.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> a = <span class="t-type">Integer</span>.parseInt(<span class="t-string">"42"</span>);             <span class="t-comment">// 42</span>
+<span class="t-kw">double</span> d = <span class="t-type">Double</span>.parseDouble(<span class="t-string">"3.14"</span>);      <span class="t-comment">// 3.14</span>
+<span class="t-type">String</span> text = <span class="t-type">String</span>.valueOf(<span class="t-number">42</span>);           <span class="t-comment">// "42"</span>
+<span class="t-type">Integer</span> boxed = <span class="t-type">Integer</span>.valueOf(<span class="t-number">42</span>);        <span class="t-comment">// 42 as an Integer</span>
+
+<span class="t-comment">// Integer.parseInt("abc");   // NumberFormatException: For input string: "abc"</span>
+<span class="t-comment">// Integer.parseInt("");      // NumberFormatException</span></code></pre></div>
+</section>
+<section class="card" id="primitivesandwrappers-6">
+<h3>6. Casting: widening and narrowing</h3>
+<p>Widening (smaller <code>-&gt;</code> bigger type) is automatic and safe: int <code>-&gt;</code> long <code>-&gt;</code> double. Narrowing (bigger <code>-&gt;</code> smaller) needs a cast in brackets and may lose data.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">long</span> big = <span class="t-number">5</span>;                   <span class="t-comment">// int -&gt; long, automatic</span>
+<span class="t-kw">double</span> dbl = <span class="t-number">5</span>;                 <span class="t-comment">// int -&gt; double, automatic: 5.0</span>
+
+<span class="t-kw">int</span> truncated = (<span class="t-kw">int</span>) <span class="t-number">3.99</span>;     <span class="t-comment">// 3: the decimals are CUT, not rounded</span>
+<span class="t-kw">byte</span> overflow = (<span class="t-kw">byte</span>) <span class="t-number">200</span>;     <span class="t-comment">// -56: 200 does not fit into byte (max 127)</span>
+<span class="t-kw">int</span> rounded = (<span class="t-kw">int</span>) <span class="t-type">Math</span>.round(<span class="t-number">3.99</span>); <span class="t-comment">// 4: use Math.round to round</span></code></pre></div>
+</section>
+<h2 class="group-title">Traps</h2>
+<section class="card" id="primitivesandwrappers-7">
+<h3>7. Unboxing <code>null</code>: NullPointerException</h3>
+<p>A wrapper may be <code>null</code>, a primitive may not. If you unbox a <code>null</code> wrapper, the program crashes.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-type">Integer</span> value = <span class="t-kw">null</span>;
+<span class="t-comment">// int x = value;   // NullPointerException</span>
+
+<span class="t-kw">int</span> safe = (value != <span class="t-kw">null</span>) ? value : <span class="t-number">0</span>;   <span class="t-comment">// check first -&gt; 0</span></code></pre></div>
+</section>
+<section class="card" id="primitivesandwrappers-8">
+<h3>8. Comparing wrappers: <code>==</code> or equals?</h3>
+<p>For primitives <code>==</code> compares values. For wrappers <code>==</code> compares REFERENCES (are these the same object?), not values. Always use <code>equals()</code> for wrappers.</p>
+<p>Integer caches the values -128 .. 127, so <code>==</code> "works" for small numbers by accident and fails for big ones. Do not rely on it.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-kw">int</span> a = <span class="t-number">1000</span>, b = <span class="t-number">1000</span>;
+<span class="t-type">System</span>.out.println(a == b);             <span class="t-comment">// true: primitives</span>
+
+<span class="t-type">Integer</span> c = <span class="t-number">1000</span>, d = <span class="t-number">1000</span>;
+<span class="t-type">System</span>.out.println(c == d);             <span class="t-comment">// false (!) two different objects</span>
+<span class="t-type">System</span>.out.println(c.equals(d));        <span class="t-comment">// true: compares values</span>
+
+<span class="t-type">Integer</span> e = <span class="t-number">100</span>, f = <span class="t-number">100</span>;
+<span class="t-type">System</span>.out.println(e == f);             <span class="t-comment">// true, only because 100 is cached</span></code></pre></div>
+</section>
+<section class="card" id="primitivesandwrappers-9">
+<h3>9. Integer division, overflow, double precision</h3>
+<p>Three classic surprises with numbers.</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="t-comment">// Integer division: int / int is an int, the decimals are cut</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">5</span> / <span class="t-number">2</span>);              <span class="t-comment">// 2, not 2.5</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">5</span> / <span class="t-number">2.0</span>);            <span class="t-comment">// 2.5: one operand is a double</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">5</span> % <span class="t-number">2</span>);              <span class="t-comment">// 1: the remainder</span>
+
+<span class="t-comment">// Overflow: int has no room for a bigger number and wraps around</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span>);      <span class="t-comment">// 2147483647</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span> + <span class="t-number">1</span>);  <span class="t-comment">// -2147483648 (!)</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span> + <span class="t-number">1L</span>); <span class="t-comment">// 2147483648: use long</span>
+
+<span class="t-comment">// Precision: double stores decimals approximately</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">0.1</span> + <span class="t-number">0.2</span>);              <span class="t-comment">// 0.30000000000000004</span>
+<span class="t-type">System</span>.out.println(<span class="t-number">0.1</span> + <span class="t-number">0.2</span> == <span class="t-number">0.3</span>);       <span class="t-comment">// false</span>
+<span class="t-comment">// For money use BigDecimal or whole cents in a long.</span></code></pre></div>
+</section>
+</div>
+</main>
+<footer>Generated from <code>src/main/java/org/tl/theory</code> by <code>scripts/build_docs.py</code>. Do not edit by hand.</footer>
+<script>
+document.documentElement.classList.add("js");
+const topics = [...document.querySelectorAll(".topic")];
+const tabs = [...document.querySelectorAll(".tabs a")];
+function route() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  let key = h.split("-")[0];
+  if (!topics.some(t => t.dataset.key === key)) key = topics[0].dataset.key;
+  topics.forEach(t => t.classList.toggle("active", t.dataset.key === key));
+  tabs.forEach(a => a.classList.toggle("active", a.dataset.key === key));
+  const target = h.includes("-") ? document.getElementById(h) : null;
+  if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+route();
+document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", async () => {
+  const text = b.parentElement.querySelector("code").innerText;
+  try { await navigator.clipboard.writeText(text); b.textContent = "Copied"; }
+  catch (e) { b.textContent = "Press Ctrl+C"; }
+  setTimeout(() => b.textContent = "Copy", 1500);
+}));
+</script>
+</body>
+</html>

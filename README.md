@@ -2,6 +2,21 @@
 
 Cheat sheets and practice tasks for the main Java topics.
 
+## Theory page
+
+Open [`docs/index.html`](docs/index.html) in a browser (double click, no server needed).
+It has a tab per topic, a table of contents and numbered sections with code.
+
+The page is generated from the `*Theory.java` files, so edit the theory there and rebuild:
+
+```bash
+python3 scripts/build_docs.py
+```
+
+Requires Python 3, no extra packages. Commit the updated `docs/index.html` together with the theory.
+When you add a new `*Theory.java`, add its name to `ORDER` in `scripts/build_docs.py` to place its tab
+(otherwise it goes to the end).
+
 ## Structure
 
 ```
@@ -17,6 +32,8 @@ src/main/java/org/tl/
     list/                      ListCheatSheet, ListTasks, ListSolutions
     map/                       MapCheatSheet, MapTasks, MapSolutions
   types/                       PrimitivesAndWrappersCheatSheet
+docs/index.html                theory page (generated)
+scripts/build_docs.py          generator of the theory page
 ```
 
 Every topic has the same files:
