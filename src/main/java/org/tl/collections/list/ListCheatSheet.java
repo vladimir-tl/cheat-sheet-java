@@ -6,6 +6,17 @@ import java.util.List;
 
 /**
  * CHEAT SHEET: List
+ *
+ * THEORY
+ * A List is an ordered collection of elements that can contain duplicates.
+ * Every element has an index starting at 0. Unlike an array, a List can grow and shrink.
+ *
+ *   - ArrayList: backed by an array; fast access by index (get), slower insert/remove in the middle.
+ *     The default choice.
+ *   - List.of(...): creates an immutable list; add/remove/set throw UnsupportedOperationException.
+ *   - Declare the variable with the interface type: List<String> list = new ArrayList<>();
+ *   - Generics (<String>) fix the element type; primitives need wrappers (List<Integer>, not List<int>).
+ *   - Size: arrays use .length, Lists use .size().
  */
 public class ListCheatSheet {
 
