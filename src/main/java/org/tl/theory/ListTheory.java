@@ -1,6 +1,7 @@
 package org.tl.theory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,18 +14,19 @@ import java.util.List;
  *
  * Creating a list
  *   1. What a List is
- *   2. List<String> names = new ArrayList<>(): what is on the left and on the right
- *   3. Immutable list: List.of
+  2. Creating a list: four ways
+ *   3. List<String> names = new ArrayList<>(): what is on the left and on the right
+ *   4. Immutable list: List.of
  *
  * Working with elements
- *   4. Add, get, size, isEmpty
- *   5. Change and remove: set, remove, clear
- *   6. Searching: contains, indexOf
- *   7. Sorting: Collections.sort, reverse, max, min
+ *   5. Add, get, size, isEmpty
+ *   6. Change and remove: set, remove, clear
+ *   7. Searching: contains, indexOf
+ *   8. Sorting: Collections.sort, reverse, max, min
  *
  * Traps
- *   8. remove(int) or remove(Object)?
- *   9. IndexOutOfBoundsException
+ *   9. remove(int) or remove(Object)?
+ *   10. IndexOutOfBoundsException
  *
  * Practice: see org.tl.collections.list (ListCheatSheet, ListTasks, ListSolutions).
  */
@@ -45,7 +47,38 @@ public class ListTheory {
     }
 
     /**
-     * 2. List<String> names = new ArrayList<>(): what is on the left and on the right
+     * 2. Creating a list: four ways
+     *
+     * Think of a list as a paper shopping list: you can write new lines and cross lines out.
+     * There are four ways to get one:
+     *   - Empty, fill it later: new ArrayList<>(). Like a new empty notebook.
+     *   - With starting items, and you can change it later: new ArrayList<>(List.of(...)).
+     *     List.of(...) only provides the starting items; ArrayList copies them into a list you can change.
+     *   - With items that can NOT be changed: List.of(...). Fine for data that never changes.
+     *   - From an array: new ArrayList<>(Arrays.asList(array)).
+     *
+     * Which one? You will add or remove items later: the first, second or fourth way.
+     * The data is fixed: List.of.
+     */
+    static void creating() {
+        // 1. Empty
+        List<String> empty = new ArrayList<>();                          // []
+
+        // 2. With items, changeable
+        List<String> fruits = new ArrayList<>(List.of("apple", "pear")); // [apple, pear]
+        fruits.add("plum");                                              // [apple, pear, plum]
+
+        // 3. With items, NOT changeable
+        List<String> days = List.of("Mon", "Tue");                       // [Mon, Tue]
+        // days.add("Wed");                                              // UnsupportedOperationException
+
+        // 4. From an array
+        String[] array = {"a", "b", "c"};
+        List<String> fromArray = new ArrayList<>(Arrays.asList(array));  // [a, b, c]
+    }
+
+    /**
+     * 3. List<String> names = new ArrayList<>(): what is on the left and on the right
      *
      *   List<String>      - the TYPE of the variable (left side).
      *                       List is an interface: it only describes WHAT a list can do
@@ -73,7 +106,7 @@ public class ListTheory {
     }
 
     /**
-     * 3. Immutable list: List.of
+     * 4. Immutable list: List.of
      *
      * List.of(...) creates a list that cannot be changed. add, remove, set and sort
      * throw UnsupportedOperationException.
@@ -89,25 +122,30 @@ public class ListTheory {
     }
 
     /**
-     * 4. Add, get, size, isEmpty
+     * 5. Add, get, size, isEmpty
      *
-     * add(x) adds to the end. add(index, x) inserts at the index and moves the rest to the right.
-     * get(index) returns the element. size() is the number of elements.
+     * A list grows by itself: just call add. No size to choose, no copying.
+     *   - add(x): put x at the END of the list.
+     *   - add(index, x): put x at that place; everything after it moves one step to the right.
+     *   - addAll(other): add all the elements of another list to the end.
+     * get(index) returns the element at the index. size() is the number of elements.
+     * isEmpty() is true when there is nothing in the list.
      */
     static void basics() {
         List<String> names = new ArrayList<>();
 
         names.add("Anna");     // [Anna]
         names.add("Bob");      // [Anna, Bob]
-        names.add(0, "Eve");   // [Eve, Anna, Bob]
+        names.add(0, "Eve");   // [Eve, Anna, Bob]: Eve is in front, the others moved right
+        names.addAll(List.of("Tom", "Kate")); // [Eve, Anna, Bob, Tom, Kate]
 
         names.get(0);          // "Eve"
-        names.size();          // 3
+        names.size();          // 5
         names.isEmpty();       // false
     }
 
     /**
-     * 5. Change and remove: set, remove, clear
+     * 6. Change and remove: set, remove, clear
      *
      * set(index, x) replaces the element and returns the old one. remove(index) deletes
      * the element and shifts the rest to the left. remove("value") deletes the first
@@ -123,7 +161,7 @@ public class ListTheory {
     }
 
     /**
-     * 6. Searching: contains, indexOf
+     * 7. Searching: contains, indexOf
      *
      * contains(x) is true if the element is in the list. indexOf(x) is the index of the
      * first match, or -1 if there is none. lastIndexOf(x) is the index of the last match.
@@ -138,7 +176,7 @@ public class ListTheory {
     }
 
     /**
-     * 7. Sorting: Collections.sort, reverse, max, min
+     * 8. Sorting: Collections.sort, reverse, max, min
      *
      * The Collections class has helpers for lists. They need a changeable list
      * (not List.of): sort and reverse change the list itself.
@@ -153,7 +191,7 @@ public class ListTheory {
     }
 
     /**
-     * 8. remove(int) or remove(Object)?
+     * 9. remove(int) or remove(Object)?
      *
      * A trap with List<Integer>. The list has two methods named remove:
      * remove(int index) and remove(Object value). With a plain number Java picks the index.
@@ -166,7 +204,7 @@ public class ListTheory {
     }
 
     /**
-     * 9. IndexOutOfBoundsException
+     * 10. IndexOutOfBoundsException
      *
      * A list of size n has indexes 0 .. n-1. Anything else throws an exception.
      * The last element is list.get(list.size() - 1).

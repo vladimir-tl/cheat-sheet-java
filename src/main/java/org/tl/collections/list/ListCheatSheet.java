@@ -1,6 +1,7 @@
 package org.tl.collections.list;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 public class ListCheatSheet {
 
     public static void main(String[] args) {
+        creating();
         basicOperations();
         searching();
         sorting();
@@ -22,22 +24,32 @@ public class ListCheatSheet {
         removeByIndexOrValue();
     }
 
+    /** 0. Creating a list: four ways */
+    static void creating() {
+        List<String> empty = new ArrayList<>();                          // empty, fill it later
+        List<String> fruits = new ArrayList<>(List.of("apple", "pear")); // with items, changeable
+        List<String> days = List.of("Mon", "Tue");                       // with items, NOT changeable
+        String[] array = {"a", "b", "c"};
+        List<String> fromArray = new ArrayList<>(Arrays.asList(array));  // from an array
+    }
+
     /** 1. Basic operations (no loops needed) */
     static void basicOperations() {
-        // Why List on the left and ArrayList on the right: see ListTheory, section 2
+        // Why List on the left and ArrayList on the right: see ListTheory, section 3
         List<String> names = new ArrayList<>(); // empty list
 
         names.add("Anna");          // add to the end -> [Anna]
         names.add("Bob");           // -> [Anna, Bob]
         names.add(0, "Eve");        // insert at index 0 -> [Eve, Anna, Bob]
+        names.addAll(List.of("Tom", "Kate")); // add many at the end -> [Eve, Anna, Bob, Tom, Kate]
 
         String first = names.get(0);    // "Eve" (index starts at 0)
-        int size = names.size();        // 3
+        int size = names.size();        // 5
         boolean empty = names.isEmpty(); // false
 
-        names.set(1, "Alex");       // replace element at index 1 -> [Eve, Alex, Bob]
-        names.remove(0);            // remove by index -> [Alex, Bob]
-        names.remove("Bob");        // remove by value -> [Alex]
+        names.set(1, "Alex");       // replace element at index 1 -> [Eve, Alex, Bob, Tom, Kate]
+        names.remove(0);            // remove by index -> [Alex, Bob, Tom, Kate]
+        names.remove("Bob");        // remove by value -> [Alex, Tom, Kate]
 
         names.clear();              // remove everything -> []
 

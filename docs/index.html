@@ -82,6 +82,7 @@ section { scroll-margin-top: 64px; }
     <a href="#while" data-key="while"><span class="l-en">The while loop</span><span class="l-ru">Цикл while</span></a>
     <a href="#ifelse" data-key="ifelse"><span class="l-en">If-else</span><span class="l-ru">If-else</span></a>
     <a href="#switch" data-key="switch"><span class="l-en">Switch</span><span class="l-ru">Switch</span></a>
+    <a href="#array" data-key="array"><span class="l-en">Arrays</span><span class="l-ru">Массивы</span></a>
     <a href="#list" data-key="list"><span class="l-en">List</span><span class="l-ru">List</span></a>
     <a href="#map" data-key="map"><span class="l-en">Map</span><span class="l-ru">Map</span></a>
     <a href="#primitivesandwrappers" data-key="primitivesandwrappers"><span class="l-en">Primitives and wrapper classes</span><span class="l-ru">Примитивы и классы-обёртки</span></a>
@@ -1321,6 +1322,343 @@ section { scroll-margin-top: 64px; }
 </section>
 </div>
 </div>
+<div class="topic" data-key="array">
+<div class="l-en">
+<h1>Arrays</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Basics</h4><ol>
+<li value="1"><a href="#array-1">What an array is</a></li>
+<li value="2"><a href="#array-2">Creating an array: with values or empty</a></li>
+<li value="3"><a href="#array-3">Default values</a></li>
+</ol></div>
+<div class="group"><h4>Working with elements</h4><ol>
+<li value="4"><a href="#array-4">Read and change an element</a></li>
+<li value="5"><a href="#array-5">Adding an element: arrays can't grow</a></li>
+<li value="6"><a href="#array-6">Printing an array</a></li>
+<li value="7"><a href="#array-7">Looping over an array</a></li>
+</ol></div>
+<div class="group"><h4>Traps</h4><ol>
+<li value="8"><a href="#array-8">ArrayIndexOutOfBoundsException, copying and comparing</a></li>
+</ol></div>
+<div class="group"><h4>Array or List?</h4><ol>
+<li value="9"><a href="#array-9">Array or List? Converting between them</a></li>
+</ol></div>
+</div>
+<p class="practice">Practice: see org.tl.arrays (ArrayCheatSheet, ArrayTasks, ArraySolutions).</p>
+</nav>
+<h2 class="group-title">Basics</h2>
+<section class="card" data-id="array-1">
+<h3>1. What an array is</h3>
+<p>An array is a row of numbered cells. All cells hold the same type: only ints, or only Strings, and so on.</p>
+<p>Think of an egg carton: it has a fixed number of slots, every slot holds one egg, and the slots are numbered. The numbers start from 0, not from 1. Once the carton is made, you can't add a slot: the size never changes.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// int[] numbers: a row of 3 cells</span>
+<span class="t-comment">//</span>
+<span class="t-comment">//   value:  [10] [20] [30]</span>
+<span class="t-comment">//   index:    0    1    2</span>
+<span class="t-comment">//</span>
+<span class="t-comment">// The first cell has index 0, the last one has index 2 (size minus 1).</span></code></pre></div>
+</section>
+<section class="card" data-id="array-2">
+<h3>2. Creating an array: with values or empty</h3>
+<p>Two ways, depending on what you know:</p>
+<ul><li>You know the values: write them in braces { }. The size is counted for you.</li><li>You know only the size: new Type[size]. You get that many empty cells.</li></ul>
+<p>The type is written with square brackets: int[] is "array of int", String[] is "array of String".</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// 1. I know the values</span>
+<span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};              <span class="t-comment">// 3 cells: 10, 20, 30</span>
+<span class="t-type">String</span>[] names = {<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>};          <span class="t-comment">// 2 cells: Anna, Bob</span>
+
+<span class="t-comment">// 2. I know only the size: 5 empty cells (for int they are filled with 0)</span>
+<span class="t-kw">int</span>[] empty = <span class="t-kw">new</span> <span class="t-kw">int</span>[<span class="t-number">5</span>];                  <span class="t-comment">// [0, 0, 0, 0, 0]</span>
+<span class="t-type">String</span>[] places = <span class="t-kw">new</span> <span class="t-type">String</span>[<span class="t-number">3</span>];           <span class="t-comment">// [null, null, null]</span>
+
+<span class="t-comment">// The size goes into [] after new. It can be a variable:</span>
+<span class="t-kw">int</span> size = <span class="t-number">4</span>;
+<span class="t-kw">double</span>[] prices = <span class="t-kw">new</span> <span class="t-kw">double</span>[size];        <span class="t-comment">// [0.0, 0.0, 0.0, 0.0]</span></code></pre></div>
+</section>
+<section class="card" data-id="array-3">
+<h3>3. Default values</h3>
+<pre class="plain">A new array is never "really empty": every cell already holds a default value.
+  int, long, short, byte  -&gt; 0
+  double, float           -&gt; 0.0
+  boolean                 -&gt; false
+  char                    -&gt; the character with code 0 (invisible)
+  String and any object   -&gt; null (means "nothing here yet")</pre>
+<p>A trap: a String cell holds <code>null</code>, and calling a method on <code>null</code> crashes the program.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">boolean</span>[] flags = <span class="t-kw">new</span> <span class="t-kw">boolean</span>[<span class="t-number">2</span>];          <span class="t-comment">// [false, false]</span>
+<span class="t-type">String</span>[] names = <span class="t-kw">new</span> <span class="t-type">String</span>[<span class="t-number">2</span>];            <span class="t-comment">// [null, null]</span>
+
+names[<span class="t-number">0</span>] = <span class="t-string">"Anna"</span>;                         <span class="t-comment">// [Anna, null]</span>
+<span class="t-comment">// names[1].length();                      // NullPointerException: cell 1 is still null</span></code></pre></div>
+</section>
+<h2 class="group-title">Working with elements</h2>
+<section class="card" data-id="array-4">
+<h3>4. Read and change an element</h3>
+<p>Square brackets with an index: array[index]. On the left side of = it writes a value, anywhere else it reads one. The size of an array is array.length (no parentheses, unlike <code>list.size()</code>). The last element is array[array.length - 1].</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-kw">int</span> first = numbers[<span class="t-number">0</span>];                    <span class="t-comment">// 10: read</span>
+numbers[<span class="t-number">1</span>] = <span class="t-number">99</span>;                           <span class="t-comment">// write: {10, 99, 30}</span>
+numbers[<span class="t-number">2</span>] = numbers[<span class="t-number">2</span>] + <span class="t-number">1</span>;               <span class="t-comment">// read, add 1, write back: {10, 99, 31}</span>
+
+<span class="t-kw">int</span> size = numbers.length;                 <span class="t-comment">// 3</span>
+<span class="t-kw">int</span> last = numbers[numbers.length - <span class="t-number">1</span>];    <span class="t-comment">// 31</span></code></pre></div>
+</section>
+<section class="card" data-id="array-5">
+<h3>5. Adding an element: arrays can't grow</h3>
+<p>You can't add a cell to an array: the egg carton has a fixed number of slots. numbers[3] = 40 on an array of 3 cells crashes.</p>
+<p>To "add" you make a NEW bigger array and copy the old values into it. <code>Arrays.copyOf(old, newSize)</code> does both steps at once: it makes a bigger array and copies the values. The new cells are empty (0 for int). Then you write the new value into the free cell.</p>
+<p>If you add often, use a List instead: it grows by itself (see ListTheory).</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-comment">// Step 1: a copy with one more cell</span>
+numbers = <span class="t-type">Arrays</span>.copyOf(numbers, numbers.length + <span class="t-number">1</span>);   <span class="t-comment">// {10, 20, 30, 0}</span>
+
+<span class="t-comment">// Step 2: write the new value into the free last cell</span>
+numbers[numbers.length - <span class="t-number">1</span>] = <span class="t-number">40</span>;                       <span class="t-comment">// {10, 20, 30, 40}</span>
+
+<span class="t-comment">// The same with a List, no copying:</span>
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; list = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
+list.add(<span class="t-number">40</span>);                                           <span class="t-comment">// [10, 20, 30, 40]</span></code></pre></div>
+</section>
+<section class="card" data-id="array-6">
+<h3>6. Printing an array</h3>
+<p><code>System.out.println(array)</code> does NOT print the values: it prints the type and an address, something like [I@1b6d3586. <code>Arrays.toString(array)</code> prints the values: [10, 20, 30].</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-type">System</span>.out.println(numbers);                    <span class="t-comment">// [I@1b6d3586 (junk)</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Arrays</span>.toString(numbers));   <span class="t-comment">// [10, 20, 30]</span></code></pre></div>
+</section>
+<section class="card" data-id="array-7">
+<h3>7. Looping over an array</h3>
+<p>To do something with every cell, use a loop (see ForTheory).</p>
+<ul><li>for by index: when you need the position or want to change the cells.</li><li>for-each: when you only read the values.</li></ul>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-comment">// By index: print the position and the value</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">0</span>; i &lt; numbers.length; i++) {
+    <span class="t-type">System</span>.out.println(i + <span class="t-string">": "</span> + numbers[i]);  <span class="t-comment">// 0: 10, 1: 20, 2: 30</span>
+}
+
+<span class="t-comment">// for-each: only the values</span>
+<span class="t-kw">int</span> sum = <span class="t-number">0</span>;
+<span class="t-kw">for</span> (<span class="t-kw">int</span> number : numbers) {
+    sum += number;
+}
+<span class="t-type">System</span>.out.println(sum);                        <span class="t-comment">// 60</span></code></pre></div>
+</section>
+<h2 class="group-title">Traps</h2>
+<section class="card" data-id="array-8">
+<h3>8. ArrayIndexOutOfBoundsException, copying and comparing</h3>
+<p>Three classic surprises.</p>
+<pre class="plain">1) Index out of range. An array of size n has indexes 0 .. n-1. Anything else
+   crashes with ArrayIndexOutOfBoundsException.
+2) int[] b = a does NOT copy. It gives the same array a second name: a and b are
+   two names of one egg carton, so changing b changes a.
+   A real copy: Arrays.copyOf(a, a.length).
+3) a == b compares whether it is the same array, not the values.
+   To compare the values use Arrays.equals(a, b).</pre>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span>[] a = {<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>};
+
+<span class="t-comment">// 1) a[3] -&gt; ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3</span>
+
+<span class="t-comment">// 2) Second name, not a copy</span>
+<span class="t-kw">int</span>[] b = a;
+b[<span class="t-number">0</span>] = <span class="t-number">100</span>;                                    <span class="t-comment">// a is {100, 2, 3} too!</span>
+
+<span class="t-kw">int</span>[] copy = <span class="t-type">Arrays</span>.copyOf(a, a.length);       <span class="t-comment">// a real copy</span>
+copy[<span class="t-number">0</span>] = <span class="t-number">5</span>;                                   <span class="t-comment">// a does not change</span>
+
+<span class="t-comment">// 3) Comparing</span>
+<span class="t-kw">int</span>[] x = {<span class="t-number">1</span>, <span class="t-number">2</span>};
+<span class="t-kw">int</span>[] y = {<span class="t-number">1</span>, <span class="t-number">2</span>};
+<span class="t-type">System</span>.out.println(x == y);                    <span class="t-comment">// false: two different arrays</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Arrays</span>.equals(x, y));       <span class="t-comment">// true: same values</span></code></pre></div>
+</section>
+<h2 class="group-title">Array or List?</h2>
+<section class="card" data-id="array-9">
+<h3>9. Array or List? Converting between them</h3>
+<p>Array: fixed size, can hold primitives (int[]), simple. List: grows and shrinks, has many ready methods (add, remove, contains...), holds objects (<code>List&lt;Integer&gt;</code>).</p>
+<p>Not sure? Take a List. Take an array when the size is fixed and known in advance.</p>
+<p>Converting:</p>
+<ul><li>array of objects <code>-&gt;</code> List: new <code>ArrayList&lt;&gt;</code>(<code>Arrays.asList(array)</code>)</li><li>List <code>-&gt;</code> array of objects: <code>list.toArray(new String[0])</code> Arrays.asList works for String[] and Integer[], but not for int[].</li></ul>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">String</span>[] array = {<span class="t-string">"a"</span>, <span class="t-string">"b"</span>, <span class="t-string">"c"</span>};
+
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">Arrays</span>.asList(array));  <span class="t-comment">// [a, b, c]</span>
+list.add(<span class="t-string">"d"</span>);                                              <span class="t-comment">// [a, b, c, d]</span>
+
+<span class="t-type">String</span>[] back = list.toArray(<span class="t-kw">new</span> <span class="t-type">String</span>[<span class="t-number">0</span>]);                <span class="t-comment">// {"a", "b", "c", "d"}</span></code></pre></div>
+</section>
+</div>
+<div class="l-ru">
+<h1>Массивы</h1>
+<p class="lead">Короткие примеры. Скопируйте любой из них в метод main и запустите.</p>
+<nav class="card contents"><h2>Содержание</h2><div class="cols">
+<div class="group"><h4>Основы</h4><ol>
+<li value="1"><a href="#array-1">Что такое массив</a></li>
+<li value="2"><a href="#array-2">Создание массива: со значениями или пустого</a></li>
+<li value="3"><a href="#array-3">Значения по умолчанию</a></li>
+</ol></div>
+<div class="group"><h4>Работа с элементами</h4><ol>
+<li value="4"><a href="#array-4">Прочитать и изменить элемент</a></li>
+<li value="5"><a href="#array-5">Добавление элемента: массив не растёт</a></li>
+<li value="6"><a href="#array-6">Вывод массива на экран</a></li>
+<li value="7"><a href="#array-7">Обход массива циклом</a></li>
+</ol></div>
+<div class="group"><h4>Ловушки</h4><ol>
+<li value="8"><a href="#array-8">ArrayIndexOutOfBoundsException, копирование и сравнение</a></li>
+</ol></div>
+<div class="group"><h4>Массив или List?</h4><ol>
+<li value="9"><a href="#array-9">Массив или List? Превращение одного в другой</a></li>
+</ol></div>
+</div>
+<p class="practice">Практика: см. org.tl.arrays (ArrayCheatSheet, ArrayTasks, ArraySolutions).</p>
+</nav>
+<h2 class="group-title">Основы</h2>
+<section class="card" data-id="array-1">
+<h3>1. Что такое массив</h3>
+<p>Массив это ряд пронумерованных ячеек. Во всех ячейках лежит один и тот же тип: только int, или только String, и так далее.</p>
+<p>Представьте контейнер для яиц: в нём фиксированное число гнёзд, в каждом лежит одно яйцо, и гнёзда пронумерованы. Нумерация идёт с 0, а не с 1. Когда контейнер сделан, добавить в него гнездо нельзя: размер никогда не меняется.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// int[] numbers: ряд из 3 ячеек</span>
+<span class="t-comment">//</span>
+<span class="t-comment">//   значение: [10] [20] [30]</span>
+<span class="t-comment">//   индекс:     0    1    2</span>
+<span class="t-comment">//</span>
+<span class="t-comment">// У первой ячейки индекс 0, у последней индекс 2 (размер минус 1).</span></code></pre></div>
+</section>
+<section class="card" data-id="array-2">
+<h3>2. Создание массива: со значениями или пустого</h3>
+<p>Два способа, в зависимости от того, что вы знаете:</p>
+<ul><li>Знаете значения: напишите их в фигурных скобках { }. Размер посчитается сам.</li><li>Знаете только размер: new Тип[размер]. Получите столько пустых ячеек.</li></ul>
+<p>Тип пишется с квадратными скобками: int[] это «массив int», String[] это «массив String».</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// 1. Знаю значения</span>
+<span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};              <span class="t-comment">// 3 ячейки: 10, 20, 30</span>
+<span class="t-type">String</span>[] names = {<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>};          <span class="t-comment">// 2 ячейки: Anna, Bob</span>
+
+<span class="t-comment">// 2. Знаю только размер: 5 пустых ячеек (для int они заполнены нулями)</span>
+<span class="t-kw">int</span>[] empty = <span class="t-kw">new</span> <span class="t-kw">int</span>[<span class="t-number">5</span>];                  <span class="t-comment">// [0, 0, 0, 0, 0]</span>
+<span class="t-type">String</span>[] places = <span class="t-kw">new</span> <span class="t-type">String</span>[<span class="t-number">3</span>];           <span class="t-comment">// [null, null, null]</span>
+
+<span class="t-comment">// Размер пишется в [] после new. Это может быть переменная:</span>
+<span class="t-kw">int</span> size = <span class="t-number">4</span>;
+<span class="t-kw">double</span>[] prices = <span class="t-kw">new</span> <span class="t-kw">double</span>[size];        <span class="t-comment">// [0.0, 0.0, 0.0, 0.0]</span></code></pre></div>
+</section>
+<section class="card" data-id="array-3">
+<h3>3. Значения по умолчанию</h3>
+<pre class="plain">Новый массив никогда не бывает «совсем пустым»: в каждой ячейке уже лежит значение
+по умолчанию.
+  int, long, short, byte  -&gt; 0
+  double, float           -&gt; 0.0
+  boolean                 -&gt; false
+  char                    -&gt; символ с кодом 0 (невидимый)
+  String и любой объект   -&gt; null (значит «здесь пока ничего нет»)</pre>
+<p>Ловушка: в ячейке String лежит <code>null</code>, а вызов метода у <code>null</code> роняет программу.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">boolean</span>[] flags = <span class="t-kw">new</span> <span class="t-kw">boolean</span>[<span class="t-number">2</span>];          <span class="t-comment">// [false, false]</span>
+<span class="t-type">String</span>[] names = <span class="t-kw">new</span> <span class="t-type">String</span>[<span class="t-number">2</span>];            <span class="t-comment">// [null, null]</span>
+
+names[<span class="t-number">0</span>] = <span class="t-string">"Anna"</span>;                         <span class="t-comment">// [Anna, null]</span>
+<span class="t-comment">// names[1].length();                      // NullPointerException: ячейка 1 всё ещё null</span></code></pre></div>
+</section>
+<h2 class="group-title">Работа с элементами</h2>
+<section class="card" data-id="array-4">
+<h3>4. Прочитать и изменить элемент</h3>
+<p>Квадратные скобки с индексом: array[index]. Слева от = это запись значения, в любом другом месте это чтение. Размер массива это array.length (без скобок, в отличие от <code>list.size()</code>). Последний элемент это array[array.length - 1].</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-kw">int</span> first = numbers[<span class="t-number">0</span>];                    <span class="t-comment">// 10: чтение</span>
+numbers[<span class="t-number">1</span>] = <span class="t-number">99</span>;                           <span class="t-comment">// запись: {10, 99, 30}</span>
+numbers[<span class="t-number">2</span>] = numbers[<span class="t-number">2</span>] + <span class="t-number">1</span>;               <span class="t-comment">// прочитать, прибавить 1, записать обратно: {10, 99, 31}</span>
+
+<span class="t-kw">int</span> size = numbers.length;                 <span class="t-comment">// 3</span>
+<span class="t-kw">int</span> last = numbers[numbers.length - <span class="t-number">1</span>];    <span class="t-comment">// 31</span></code></pre></div>
+</section>
+<section class="card" data-id="array-5">
+<h3>5. Добавление элемента: массив не растёт</h3>
+<p>Добавить ячейку в массив нельзя: в контейнере для яиц фиксированное число гнёзд. numbers[3] = 40 для массива из 3 ячеек роняет программу.</p>
+<p>Чтобы «добавить», создают НОВЫЙ массив побольше и копируют в него старые значения. <code>Arrays.copyOf(old, newSize)</code> делает оба шага сразу: создаёт больший массив и копирует значения. Новые ячейки пустые (0 для int). Затем новое значение записывают в свободную ячейку.</p>
+<p>Если добавлять приходится часто, используйте List: он растёт сам (см. ListTheory).</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-comment">// Шаг 1: копия с ещё одной ячейкой</span>
+numbers = <span class="t-type">Arrays</span>.copyOf(numbers, numbers.length + <span class="t-number">1</span>);   <span class="t-comment">// {10, 20, 30, 0}</span>
+
+<span class="t-comment">// Шаг 2: записать новое значение в свободную последнюю ячейку</span>
+numbers[numbers.length - <span class="t-number">1</span>] = <span class="t-number">40</span>;                       <span class="t-comment">// {10, 20, 30, 40}</span>
+
+<span class="t-comment">// То же самое со списком, без копирования:</span>
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; list = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
+list.add(<span class="t-number">40</span>);                                           <span class="t-comment">// [10, 20, 30, 40]</span></code></pre></div>
+</section>
+<section class="card" data-id="array-6">
+<h3>6. Вывод массива на экран</h3>
+<p><code>System.out.println(array)</code> НЕ печатает значения: он печатает тип и адрес, что-то вроде [I@1b6d3586. <code>Arrays.toString(array)</code> печатает значения: [10, 20, 30].</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-type">System</span>.out.println(numbers);                    <span class="t-comment">// [I@1b6d3586 (мусор)</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Arrays</span>.toString(numbers));   <span class="t-comment">// [10, 20, 30]</span></code></pre></div>
+</section>
+<section class="card" data-id="array-7">
+<h3>7. Обход массива циклом</h3>
+<p>Чтобы сделать что-то с каждой ячейкой, используйте цикл (см. ForTheory).</p>
+<ul><li>for по индексу: когда нужна позиция или нужно менять ячейки.</li><li>for-each: когда значения только читаются.</li></ul>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
+
+<span class="t-comment">// По индексу: вывести позицию и значение</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = <span class="t-number">0</span>; i &lt; numbers.length; i++) {
+    <span class="t-type">System</span>.out.println(i + <span class="t-string">": "</span> + numbers[i]);  <span class="t-comment">// 0: 10, 1: 20, 2: 30</span>
+}
+
+<span class="t-comment">// for-each: только значения</span>
+<span class="t-kw">int</span> sum = <span class="t-number">0</span>;
+<span class="t-kw">for</span> (<span class="t-kw">int</span> number : numbers) {
+    sum += number;
+}
+<span class="t-type">System</span>.out.println(sum);                        <span class="t-comment">// 60</span></code></pre></div>
+</section>
+<h2 class="group-title">Ловушки</h2>
+<section class="card" data-id="array-8">
+<h3>8. ArrayIndexOutOfBoundsException, копирование и сравнение</h3>
+<p>Три классических неожиданности.</p>
+<pre class="plain">1) Индекс вне диапазона. У массива размера n индексы 0 .. n-1. Любой другой
+   роняет программу с ArrayIndexOutOfBoundsException.
+2) int[] b = a НЕ копирует. Это второе имя для того же массива: a и b это
+   два имени одного контейнера, поэтому изменение b меняет a.
+   Настоящая копия: Arrays.copyOf(a, a.length).
+3) a == b проверяет, тот ли это же массив, а не одинаковы ли значения.
+   Чтобы сравнить значения, используйте Arrays.equals(a, b).</pre>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span>[] a = {<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>};
+
+<span class="t-comment">// 1) a[3] -&gt; ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3</span>
+
+<span class="t-comment">// 2) Второе имя, а не копия</span>
+<span class="t-kw">int</span>[] b = a;
+b[<span class="t-number">0</span>] = <span class="t-number">100</span>;                                    <span class="t-comment">// a теперь тоже {100, 2, 3}!</span>
+
+<span class="t-kw">int</span>[] copy = <span class="t-type">Arrays</span>.copyOf(a, a.length);       <span class="t-comment">// настоящая копия</span>
+copy[<span class="t-number">0</span>] = <span class="t-number">5</span>;                                   <span class="t-comment">// a не меняется</span>
+
+<span class="t-comment">// 3) Сравнение</span>
+<span class="t-kw">int</span>[] x = {<span class="t-number">1</span>, <span class="t-number">2</span>};
+<span class="t-kw">int</span>[] y = {<span class="t-number">1</span>, <span class="t-number">2</span>};
+<span class="t-type">System</span>.out.println(x == y);                    <span class="t-comment">// false: два разных массива</span>
+<span class="t-type">System</span>.out.println(<span class="t-type">Arrays</span>.equals(x, y));       <span class="t-comment">// true: значения одинаковы</span></code></pre></div>
+</section>
+<h2 class="group-title">Массив или List?</h2>
+<section class="card" data-id="array-9">
+<h3>9. Массив или List? Превращение одного в другой</h3>
+<p>Массив: фиксированный размер, может хранить примитивы (int[]), прост. List: растёт и уменьшается, имеет много готовых методов (add, remove, contains...), хранит объекты (<code>List&lt;Integer&gt;</code>).</p>
+<p>Не уверены? Берите List. Массив берите, когда размер фиксирован и известен заранее.</p>
+<p>Преобразование:</p>
+<ul><li>массив объектов <code>-&gt;</code> List: new <code>ArrayList&lt;&gt;</code>(<code>Arrays.asList(array)</code>)</li><li>List <code>-&gt;</code> массив объектов: <code>list.toArray(new String[0])</code> Arrays.asList работает для String[] и Integer[], но не для int[].</li></ul>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">String</span>[] array = {<span class="t-string">"a"</span>, <span class="t-string">"b"</span>, <span class="t-string">"c"</span>};
+
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">Arrays</span>.asList(array));  <span class="t-comment">// [a, b, c]</span>
+list.add(<span class="t-string">"d"</span>);                                              <span class="t-comment">// [a, b, c, d]</span>
+
+<span class="t-type">String</span>[] back = list.toArray(<span class="t-kw">new</span> <span class="t-type">String</span>[<span class="t-number">0</span>]);                <span class="t-comment">// {"a", "b", "c", "d"}</span></code></pre></div>
+</section>
+</div>
+</div>
 <div class="topic" data-key="list">
 <div class="l-en">
 <h1>List</h1>
@@ -1328,18 +1666,19 @@ section { scroll-margin-top: 64px; }
 <nav class="card contents"><h2>Contents</h2><div class="cols">
 <div class="group"><h4>Creating a list</h4><ol>
 <li value="1"><a href="#list-1">What a List is</a></li>
-<li value="2"><a href="#list-2"><code>List&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>: what is on the left and on the right</a></li>
-<li value="3"><a href="#list-3">Immutable list: List.of</a></li>
+<li value="2"><a href="#list-2">Creating a list: four ways</a></li>
+<li value="3"><a href="#list-3"><code>List&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>: what is on the left and on the right</a></li>
+<li value="4"><a href="#list-4">Immutable list: List.of</a></li>
 </ol></div>
 <div class="group"><h4>Working with elements</h4><ol>
-<li value="4"><a href="#list-4">Add, get, size, isEmpty</a></li>
-<li value="5"><a href="#list-5">Change and remove: set, remove, clear</a></li>
-<li value="6"><a href="#list-6">Searching: contains, indexOf</a></li>
-<li value="7"><a href="#list-7">Sorting: Collections.sort, reverse, max, min</a></li>
+<li value="5"><a href="#list-5">Add, get, size, isEmpty</a></li>
+<li value="6"><a href="#list-6">Change and remove: set, remove, clear</a></li>
+<li value="7"><a href="#list-7">Searching: contains, indexOf</a></li>
+<li value="8"><a href="#list-8">Sorting: Collections.sort, reverse, max, min</a></li>
 </ol></div>
 <div class="group"><h4>Traps</h4><ol>
-<li value="8"><a href="#list-8"><code>remove(int)</code> or <code>remove(Object)</code>?</a></li>
-<li value="9"><a href="#list-9">IndexOutOfBoundsException</a></li>
+<li value="9"><a href="#list-9"><code>remove(int)</code> or <code>remove(Object)</code>?</a></li>
+<li value="10"><a href="#list-10">IndexOutOfBoundsException</a></li>
 </ol></div>
 </div>
 <p class="practice">Practice: see org.tl.collections.list (ListCheatSheet, ListTasks, ListSolutions).</p>
@@ -1353,7 +1692,32 @@ section { scroll-margin-top: 64px; }
 <span class="t-comment">//    0       1      2      &lt;- indexes</span></code></pre></div>
 </section>
 <section class="card" data-id="list-2">
-<h3>2. <code>List&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>: what is on the left and on the right</h3>
+<h3>2. Creating a list: four ways</h3>
+<pre class="plain">Think of a list as a paper shopping list: you can write new lines and cross lines out.
+There are four ways to get one:
+  - Empty, fill it later: new ArrayList&lt;&gt;(). Like a new empty notebook.
+  - With starting items, and you can change it later: new ArrayList&lt;&gt;(List.of(...)).
+    List.of(...) only provides the starting items; ArrayList copies them into a list you can change.
+  - With items that can NOT be changed: List.of(...). Fine for data that never changes.
+  - From an array: new ArrayList&lt;&gt;(Arrays.asList(array)).</pre>
+<p>Which one? You will add or remove items later: the first, second or fourth way. The data is fixed: List.of.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// 1. Empty</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; empty = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();                          <span class="t-comment">// []</span>
+
+<span class="t-comment">// 2. With items, changeable</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; fruits = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"apple"</span>, <span class="t-string">"pear"</span>)); <span class="t-comment">// [apple, pear]</span>
+fruits.add(<span class="t-string">"plum"</span>);                                              <span class="t-comment">// [apple, pear, plum]</span>
+
+<span class="t-comment">// 3. With items, NOT changeable</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; days = <span class="t-type">List</span>.of(<span class="t-string">"Mon"</span>, <span class="t-string">"Tue"</span>);                       <span class="t-comment">// [Mon, Tue]</span>
+<span class="t-comment">// days.add("Wed");                                              // UnsupportedOperationException</span>
+
+<span class="t-comment">// 4. From an array</span>
+<span class="t-type">String</span>[] array = {<span class="t-string">"a"</span>, <span class="t-string">"b"</span>, <span class="t-string">"c"</span>};
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; fromArray = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">Arrays</span>.asList(array));  <span class="t-comment">// [a, b, c]</span></code></pre></div>
+</section>
+<section class="card" data-id="list-3">
+<h3>3. <code>List&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>: what is on the left and on the right</h3>
 <pre class="plain">  List&lt;String&gt;      - the TYPE of the variable (left side).
                       List is an interface: it only describes WHAT a list can do
                       (add, get, remove...), not HOW it is stored.
@@ -1368,8 +1732,8 @@ section { scroll-margin-top: 64px; }
 <p>ArrayList: stores elements in an array; fast get by index, slower insert/remove in the middle. The default choice.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(); <span class="t-comment">// empty list</span></code></pre></div>
 </section>
-<section class="card" data-id="list-3">
-<h3>3. Immutable list: List.of</h3>
+<section class="card" data-id="list-4">
+<h3>4. Immutable list: List.of</h3>
 <p><code>List.of(...)</code> creates a list that cannot be changed. add, remove, set and sort throw UnsupportedOperationException.</p>
 <p>Need a list you can change? Copy it: new <code>ArrayList&lt;&gt;</code>(<code>List.of(...)</code>).</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; fixed = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>);
@@ -1379,21 +1743,23 @@ section { scroll-margin-top: 64px; }
 changeable.add(<span class="t-string">"Eve"</span>); <span class="t-comment">// OK -&gt; [Anna, Bob, Eve]</span></code></pre></div>
 </section>
 <h2 class="group-title">Working with elements</h2>
-<section class="card" data-id="list-4">
-<h3>4. Add, get, size, isEmpty</h3>
-<p><code>add(x)</code> adds to the end. <code>add(index, x)</code> inserts at the index and moves the rest to the right. <code>get(index)</code> returns the element. <code>size()</code> is the number of elements.</p>
+<section class="card" data-id="list-5">
+<h3>5. Add, get, size, isEmpty</h3>
+<p>A list grows by itself: just call add. No size to choose, no copying.</p>
+<ul><li><code>add(x)</code>: put x at the END of the list.</li><li><code>add(index, x)</code>: put x at that place; everything after it moves one step to the right.</li><li><code>addAll(other)</code>: add all the elements of another list to the end. <code>get(index)</code> returns the element at the index. <code>size()</code> is the number of elements. <code>isEmpty()</code> is true when there is nothing in the list.</li></ul>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
 
 names.add(<span class="t-string">"Anna"</span>);     <span class="t-comment">// [Anna]</span>
 names.add(<span class="t-string">"Bob"</span>);      <span class="t-comment">// [Anna, Bob]</span>
-names.add(<span class="t-number">0</span>, <span class="t-string">"Eve"</span>);   <span class="t-comment">// [Eve, Anna, Bob]</span>
+names.add(<span class="t-number">0</span>, <span class="t-string">"Eve"</span>);   <span class="t-comment">// [Eve, Anna, Bob]: Eve is in front, the others moved right</span>
+names.addAll(<span class="t-type">List</span>.of(<span class="t-string">"Tom"</span>, <span class="t-string">"Kate"</span>)); <span class="t-comment">// [Eve, Anna, Bob, Tom, Kate]</span>
 
 names.get(<span class="t-number">0</span>);          <span class="t-comment">// "Eve"</span>
-names.size();          <span class="t-comment">// 3</span>
+names.size();          <span class="t-comment">// 5</span>
 names.isEmpty();       <span class="t-comment">// false</span></code></pre></div>
 </section>
-<section class="card" data-id="list-5">
-<h3>5. Change and remove: set, remove, clear</h3>
+<section class="card" data-id="list-6">
+<h3>6. Change and remove: set, remove, clear</h3>
 <p><code>set(index, x)</code> replaces the element and returns the old one. <code>remove(index)</code> deletes the element and shifts the rest to the left. <code>remove("value")</code> deletes the first match. <code>clear()</code> removes everything.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Eve"</span>, <span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>));
 
@@ -1402,8 +1768,8 @@ names.remove(<span class="t-number">0</span>);       <span class="t-comment">// 
 names.remove(<span class="t-string">"Bob"</span>);   <span class="t-comment">// by value -&gt; [Alex]</span>
 names.clear();         <span class="t-comment">// []</span></code></pre></div>
 </section>
-<section class="card" data-id="list-6">
-<h3>6. Searching: contains, indexOf</h3>
+<section class="card" data-id="list-7">
+<h3>7. Searching: contains, indexOf</h3>
 <p><code>contains(x)</code> is true if the element is in the list. <code>indexOf(x)</code> is the index of the first match, or -1 if there is none. <code>lastIndexOf(x)</code> is the index of the last match.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Anna"</span>));
 
@@ -1412,8 +1778,8 @@ names.indexOf(<span class="t-string">"Anna"</span>);      <span class="t-comment
 names.lastIndexOf(<span class="t-string">"Anna"</span>);  <span class="t-comment">// 2</span>
 names.indexOf(<span class="t-string">"Zed"</span>);       <span class="t-comment">// -1: not found</span></code></pre></div>
 </section>
-<section class="card" data-id="list-7">
-<h3>7. Sorting: Collections.sort, reverse, max, min</h3>
+<section class="card" data-id="list-8">
+<h3>8. Sorting: Collections.sort, reverse, max, min</h3>
 <p>The Collections class has helpers for lists. They need a changeable list (not List.of): sort and reverse change the list itself.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">3</span>, <span class="t-number">1</span>, <span class="t-number">2</span>));
 
@@ -1423,16 +1789,16 @@ names.indexOf(<span class="t-string">"Zed"</span>);       <span class="t-comment
 <span class="t-type">Collections</span>.min(numbers);           <span class="t-comment">// 1</span></code></pre></div>
 </section>
 <h2 class="group-title">Traps</h2>
-<section class="card" data-id="list-8">
-<h3>8. <code>remove(int)</code> or <code>remove(Object)</code>?</h3>
+<section class="card" data-id="list-9">
+<h3>9. <code>remove(int)</code> or <code>remove(Object)</code>?</h3>
 <p>A trap with <code>List&lt;Integer&gt;</code>. The list has two methods named remove: <code>remove(int index)</code> and <code>remove(Object value)</code>. With a plain number Java picks the index.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; list = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
 
 list.remove(<span class="t-number">1</span>);                    <span class="t-comment">// index 1 -&gt; removes 20 -&gt; [10, 30]</span>
 list.remove(<span class="t-type">Integer</span>.valueOf(<span class="t-number">10</span>));  <span class="t-comment">// the VALUE 10 -&gt; [30]</span></code></pre></div>
 </section>
-<section class="card" data-id="list-9">
-<h3>9. IndexOutOfBoundsException</h3>
+<section class="card" data-id="list-10">
+<h3>10. IndexOutOfBoundsException</h3>
 <p>A list of size n has indexes 0 .. n-1. Anything else throws an exception. The last element is list.get(<code>list.size()</code> - 1).</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>));
 
@@ -1448,18 +1814,19 @@ names.get(names.size() - <span class="t-number">1</span>);    <span class="t-com
 <nav class="card contents"><h2>Содержание</h2><div class="cols">
 <div class="group"><h4>Создание списка</h4><ol>
 <li value="1"><a href="#list-1">Что такое List</a></li>
-<li value="2"><a href="#list-2"><code>List&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>: что слева и что справа</a></li>
-<li value="3"><a href="#list-3">Неизменяемый список: List.of</a></li>
+<li value="2"><a href="#list-2">Создание списка: четыре способа</a></li>
+<li value="3"><a href="#list-3"><code>List&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>: что слева и что справа</a></li>
+<li value="4"><a href="#list-4">Неизменяемый список: List.of</a></li>
 </ol></div>
 <div class="group"><h4>Работа с элементами</h4><ol>
-<li value="4"><a href="#list-4">Добавить, получить, размер, пустой ли: add, get, size, isEmpty</a></li>
-<li value="5"><a href="#list-5">Изменить и удалить: set, remove, clear</a></li>
-<li value="6"><a href="#list-6">Поиск: contains, indexOf</a></li>
-<li value="7"><a href="#list-7">Сортировка: Collections.sort, reverse, max, min</a></li>
+<li value="5"><a href="#list-5">Добавить, получить, размер, пустой ли: add, get, size, isEmpty</a></li>
+<li value="6"><a href="#list-6">Изменить и удалить: set, remove, clear</a></li>
+<li value="7"><a href="#list-7">Поиск: contains, indexOf</a></li>
+<li value="8"><a href="#list-8">Сортировка: Collections.sort, reverse, max, min</a></li>
 </ol></div>
 <div class="group"><h4>Ловушки</h4><ol>
-<li value="8"><a href="#list-8"><code>remove(int)</code> или <code>remove(Object)</code>?</a></li>
-<li value="9"><a href="#list-9">IndexOutOfBoundsException</a></li>
+<li value="9"><a href="#list-9"><code>remove(int)</code> или <code>remove(Object)</code>?</a></li>
+<li value="10"><a href="#list-10">IndexOutOfBoundsException</a></li>
 </ol></div>
 </div>
 <p class="practice">Практика: см. org.tl.collections.list (ListCheatSheet, ListTasks, ListSolutions).</p>
@@ -1473,7 +1840,32 @@ names.get(names.size() - <span class="t-number">1</span>);    <span class="t-com
 <span class="t-comment">//    0       1      2      &lt;- индексы</span></code></pre></div>
 </section>
 <section class="card" data-id="list-2">
-<h3>2. <code>List&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>: что слева и что справа</h3>
+<h3>2. Создание списка: четыре способа</h3>
+<pre class="plain">Представьте список как бумажный список покупок: можно дописывать строки и вычёркивать их.
+Получить его можно четырьмя способами:
+  - Пустой, заполнить позже: new ArrayList&lt;&gt;(). Как новая пустая тетрадь.
+  - С начальными элементами, и потом его можно менять: new ArrayList&lt;&gt;(List.of(...)).
+    List.of(...) даёт только начальные элементы; ArrayList копирует их в список, который можно менять.
+  - С элементами, которые НЕЛЬЗЯ менять: List.of(...). Подходит для данных, которые не меняются.
+  - Из массива: new ArrayList&lt;&gt;(Arrays.asList(array)).</pre>
+<p>Какой выбрать? Если потом будете добавлять или удалять элементы: первый, второй или четвёртый. Если данные фиксированы: List.of.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// 1. Пустой</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; empty = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();                          <span class="t-comment">// []</span>
+
+<span class="t-comment">// 2. С элементами, изменяемый</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; fruits = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"apple"</span>, <span class="t-string">"pear"</span>)); <span class="t-comment">// [apple, pear]</span>
+fruits.add(<span class="t-string">"plum"</span>);                                              <span class="t-comment">// [apple, pear, plum]</span>
+
+<span class="t-comment">// 3. С элементами, НЕизменяемый</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; days = <span class="t-type">List</span>.of(<span class="t-string">"Mon"</span>, <span class="t-string">"Tue"</span>);                       <span class="t-comment">// [Mon, Tue]</span>
+<span class="t-comment">// days.add("Wed");                                              // UnsupportedOperationException</span>
+
+<span class="t-comment">// 4. Из массива</span>
+<span class="t-type">String</span>[] array = {<span class="t-string">"a"</span>, <span class="t-string">"b"</span>, <span class="t-string">"c"</span>};
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; fromArray = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">Arrays</span>.asList(array));  <span class="t-comment">// [a, b, c]</span></code></pre></div>
+</section>
+<section class="card" data-id="list-3">
+<h3>3. <code>List&lt;String&gt;</code> names = new <code>ArrayList&lt;&gt;()</code>: что слева и что справа</h3>
 <pre class="plain">  List&lt;String&gt;      - ТИП переменной (левая часть).
                       List это интерфейс: он описывает только ЧТО умеет список
                       (add, get, remove...), но не КАК он хранится.
@@ -1488,8 +1880,8 @@ names.get(names.size() - <span class="t-number">1</span>);    <span class="t-com
 <p>ArrayList: хранит элементы в массиве; быстрый get по индексу, вставка и удаление в середине медленнее. Выбор по умолчанию.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(); <span class="t-comment">// пустой список</span></code></pre></div>
 </section>
-<section class="card" data-id="list-3">
-<h3>3. Неизменяемый список: List.of</h3>
+<section class="card" data-id="list-4">
+<h3>4. Неизменяемый список: List.of</h3>
 <p><code>List.of(...)</code> создаёт список, который нельзя менять. add, remove, set и sort бросают UnsupportedOperationException.</p>
 <p>Нужен изменяемый список? Скопируйте его: new <code>ArrayList&lt;&gt;</code>(<code>List.of(...)</code>).</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; fixed = <span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>);
@@ -1499,21 +1891,23 @@ names.get(names.size() - <span class="t-number">1</span>);    <span class="t-com
 changeable.add(<span class="t-string">"Eve"</span>); <span class="t-comment">// OK -&gt; [Anna, Bob, Eve]</span></code></pre></div>
 </section>
 <h2 class="group-title">Работа с элементами</h2>
-<section class="card" data-id="list-4">
-<h3>4. Добавить, получить, размер, пустой ли: add, get, size, isEmpty</h3>
-<p><code>add(x)</code> добавляет в конец. <code>add(index, x)</code> вставляет по индексу и сдвигает остальные вправо. <code>get(index)</code> возвращает элемент. <code>size()</code> это количество элементов.</p>
+<section class="card" data-id="list-5">
+<h3>5. Добавить, получить, размер, пустой ли: add, get, size, isEmpty</h3>
+<p>Список растёт сам: достаточно вызвать add. Не нужно выбирать размер и копировать.</p>
+<ul><li><code>add(x)</code>: положить x в КОНЕЦ списка.</li><li><code>add(index, x)</code>: положить x на это место; всё, что после него, сдвигается на шаг вправо.</li><li><code>addAll(other)</code>: добавить в конец все элементы другого списка. <code>get(index)</code> возвращает элемент по индексу. <code>size()</code> это количество элементов. <code>isEmpty()</code> истинно, когда в списке ничего нет.</li></ul>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
 
 names.add(<span class="t-string">"Anna"</span>);     <span class="t-comment">// [Anna]</span>
 names.add(<span class="t-string">"Bob"</span>);      <span class="t-comment">// [Anna, Bob]</span>
-names.add(<span class="t-number">0</span>, <span class="t-string">"Eve"</span>);   <span class="t-comment">// [Eve, Anna, Bob]</span>
+names.add(<span class="t-number">0</span>, <span class="t-string">"Eve"</span>);   <span class="t-comment">// [Eve, Anna, Bob]: Eve впереди, остальные сдвинулись вправо</span>
+names.addAll(<span class="t-type">List</span>.of(<span class="t-string">"Tom"</span>, <span class="t-string">"Kate"</span>)); <span class="t-comment">// [Eve, Anna, Bob, Tom, Kate]</span>
 
 names.get(<span class="t-number">0</span>);          <span class="t-comment">// "Eve"</span>
-names.size();          <span class="t-comment">// 3</span>
+names.size();          <span class="t-comment">// 5</span>
 names.isEmpty();       <span class="t-comment">// false</span></code></pre></div>
 </section>
-<section class="card" data-id="list-5">
-<h3>5. Изменить и удалить: set, remove, clear</h3>
+<section class="card" data-id="list-6">
+<h3>6. Изменить и удалить: set, remove, clear</h3>
 <p><code>set(index, x)</code> заменяет элемент и возвращает старый. <code>remove(index)</code> удаляет элемент и сдвигает остальные влево. <code>remove("value")</code> удаляет первое совпадение. <code>clear()</code> удаляет всё.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Eve"</span>, <span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>));
 
@@ -1522,8 +1916,8 @@ names.remove(<span class="t-number">0</span>);       <span class="t-comment">// 
 names.remove(<span class="t-string">"Bob"</span>);   <span class="t-comment">// по значению -&gt; [Alex]</span>
 names.clear();         <span class="t-comment">// []</span></code></pre></div>
 </section>
-<section class="card" data-id="list-6">
-<h3>6. Поиск: contains, indexOf</h3>
+<section class="card" data-id="list-7">
+<h3>7. Поиск: contains, indexOf</h3>
 <p><code>contains(x)</code> истинно, если элемент есть в списке. <code>indexOf(x)</code> это индекс первого совпадения или -1, если его нет. <code>lastIndexOf(x)</code> это индекс последнего совпадения.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Anna"</span>));
 
@@ -1532,8 +1926,8 @@ names.indexOf(<span class="t-string">"Anna"</span>);      <span class="t-comment
 names.lastIndexOf(<span class="t-string">"Anna"</span>);  <span class="t-comment">// 2</span>
 names.indexOf(<span class="t-string">"Zed"</span>);       <span class="t-comment">// -1: не найден</span></code></pre></div>
 </section>
-<section class="card" data-id="list-7">
-<h3>7. Сортировка: Collections.sort, reverse, max, min</h3>
+<section class="card" data-id="list-8">
+<h3>8. Сортировка: Collections.sort, reverse, max, min</h3>
 <p>В классе Collections есть вспомогательные методы для списков. Им нужен изменяемый список (не List.of): sort и reverse меняют сам список.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">3</span>, <span class="t-number">1</span>, <span class="t-number">2</span>));
 
@@ -1543,16 +1937,16 @@ names.indexOf(<span class="t-string">"Zed"</span>);       <span class="t-comment
 <span class="t-type">Collections</span>.min(numbers);           <span class="t-comment">// 1</span></code></pre></div>
 </section>
 <h2 class="group-title">Ловушки</h2>
-<section class="card" data-id="list-8">
-<h3>8. <code>remove(int)</code> или <code>remove(Object)</code>?</h3>
+<section class="card" data-id="list-9">
+<h3>9. <code>remove(int)</code> или <code>remove(Object)</code>?</h3>
 <p>Ловушка со списком <code>List&lt;Integer&gt;</code>. У списка два метода с именем remove: <code>remove(int index)</code> и <code>remove(Object value)</code>. С обычным числом Java выбирает индекс.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; list = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
 
 list.remove(<span class="t-number">1</span>);                    <span class="t-comment">// индекс 1 -&gt; удаляет 20 -&gt; [10, 30]</span>
 list.remove(<span class="t-type">Integer</span>.valueOf(<span class="t-number">10</span>));  <span class="t-comment">// ЗНАЧЕНИЕ 10 -&gt; [30]</span></code></pre></div>
 </section>
-<section class="card" data-id="list-9">
-<h3>9. IndexOutOfBoundsException</h3>
+<section class="card" data-id="list-10">
+<h3>10. IndexOutOfBoundsException</h3>
 <p>У списка размера n индексы 0 .. n-1. Любой другой индекс бросает исключение. Последний элемент это list.get(<code>list.size()</code> - 1).</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>));
 

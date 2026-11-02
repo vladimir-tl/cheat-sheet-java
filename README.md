@@ -30,7 +30,7 @@ The Java cheat sheets, tasks and solutions have English comments only; the langu
 ```
 src/main/java/org/tl/
   theory/                      theory in the style of a cheat sheet: contents + numbered sections
-    ForTheory, WhileTheory, IfElseTheory, SwitchTheory, ListTheory, MapTheory, PrimitivesAndWrappersTheory
+    ForTheory, WhileTheory, IfElseTheory, SwitchTheory, ArrayTheory, ListTheory, MapTheory, PrimitivesAndWrappersTheory
     ru/                        the same files in Russian
   loops/
     forloop/                   ForCheatSheet, ForTasks, ForSolutions
@@ -38,6 +38,7 @@ src/main/java/org/tl/
   conditions/
     ifelse/                    IfElseCheatSheet, IfElseTasks, IfElseSolutions
     switchcase/                SwitchCheatSheet, SwitchTasks, SwitchSolutions
+  arrays/                      ArrayCheatSheet, ArrayTasks, ArraySolutions
   collections/
     list/                      ListCheatSheet, ListTasks, ListSolutions
     map/                       MapCheatSheet, MapTasks, MapSolutions
@@ -82,6 +83,7 @@ java -cp out org.tl.loops.forloop.ForCheatSheet
 java -cp out org.tl.loops.whileloop.WhileCheatSheet
 java -cp out org.tl.conditions.ifelse.IfElseCheatSheet
 java -cp out org.tl.conditions.switchcase.SwitchCheatSheet
+java -cp out org.tl.arrays.ArrayCheatSheet
 java -cp out org.tl.collections.list.ListCheatSheet
 java -cp out org.tl.collections.map.MapCheatSheet
 java -cp out org.tl.types.PrimitivesAndWrappersCheatSheet

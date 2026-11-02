@@ -1,6 +1,7 @@
 package org.tl.theory.ru;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,18 +14,19 @@ import java.util.List;
  *
  * Создание списка
  *   1. Что такое List
- *   2. List<String> names = new ArrayList<>(): что слева и что справа
- *   3. Неизменяемый список: List.of
+  2. Создание списка: четыре способа
+ *   3. List<String> names = new ArrayList<>(): что слева и что справа
+ *   4. Неизменяемый список: List.of
  *
  * Работа с элементами
- *   4. Добавить, получить, размер, пустой ли: add, get, size, isEmpty
- *   5. Изменить и удалить: set, remove, clear
- *   6. Поиск: contains, indexOf
- *   7. Сортировка: Collections.sort, reverse, max, min
+ *   5. Добавить, получить, размер, пустой ли: add, get, size, isEmpty
+ *   6. Изменить и удалить: set, remove, clear
+ *   7. Поиск: contains, indexOf
+ *   8. Сортировка: Collections.sort, reverse, max, min
  *
  * Ловушки
- *   8. remove(int) или remove(Object)?
- *   9. IndexOutOfBoundsException
+ *   9. remove(int) или remove(Object)?
+ *   10. IndexOutOfBoundsException
  *
  * Практика: см. org.tl.collections.list (ListCheatSheet, ListTasks, ListSolutions).
  */
@@ -45,7 +47,38 @@ public class ListTheory {
     }
 
     /**
-     * 2. List<String> names = new ArrayList<>(): что слева и что справа
+     * 2. Создание списка: четыре способа
+     *
+     * Представьте список как бумажный список покупок: можно дописывать строки и вычёркивать их.
+     * Получить его можно четырьмя способами:
+     *   - Пустой, заполнить позже: new ArrayList<>(). Как новая пустая тетрадь.
+     *   - С начальными элементами, и потом его можно менять: new ArrayList<>(List.of(...)).
+     *     List.of(...) даёт только начальные элементы; ArrayList копирует их в список, который можно менять.
+     *   - С элементами, которые НЕЛЬЗЯ менять: List.of(...). Подходит для данных, которые не меняются.
+     *   - Из массива: new ArrayList<>(Arrays.asList(array)).
+     *
+     * Какой выбрать? Если потом будете добавлять или удалять элементы: первый, второй или четвёртый.
+     * Если данные фиксированы: List.of.
+     */
+    static void creating() {
+        // 1. Пустой
+        List<String> empty = new ArrayList<>();                          // []
+
+        // 2. С элементами, изменяемый
+        List<String> fruits = new ArrayList<>(List.of("apple", "pear")); // [apple, pear]
+        fruits.add("plum");                                              // [apple, pear, plum]
+
+        // 3. С элементами, НЕизменяемый
+        List<String> days = List.of("Mon", "Tue");                       // [Mon, Tue]
+        // days.add("Wed");                                              // UnsupportedOperationException
+
+        // 4. Из массива
+        String[] array = {"a", "b", "c"};
+        List<String> fromArray = new ArrayList<>(Arrays.asList(array));  // [a, b, c]
+    }
+
+    /**
+     * 3. List<String> names = new ArrayList<>(): что слева и что справа
      *
      *   List<String>      - ТИП переменной (левая часть).
      *                       List это интерфейс: он описывает только ЧТО умеет список
@@ -73,7 +106,7 @@ public class ListTheory {
     }
 
     /**
-     * 3. Неизменяемый список: List.of
+     * 4. Неизменяемый список: List.of
      *
      * List.of(...) создаёт список, который нельзя менять. add, remove, set и sort
      * бросают UnsupportedOperationException.
@@ -89,25 +122,30 @@ public class ListTheory {
     }
 
     /**
-     * 4. Добавить, получить, размер, пустой ли: add, get, size, isEmpty
+     * 5. Добавить, получить, размер, пустой ли: add, get, size, isEmpty
      *
-     * add(x) добавляет в конец. add(index, x) вставляет по индексу и сдвигает остальные вправо.
-     * get(index) возвращает элемент. size() это количество элементов.
+     * Список растёт сам: достаточно вызвать add. Не нужно выбирать размер и копировать.
+     *   - add(x): положить x в КОНЕЦ списка.
+     *   - add(index, x): положить x на это место; всё, что после него, сдвигается на шаг вправо.
+     *   - addAll(other): добавить в конец все элементы другого списка.
+     * get(index) возвращает элемент по индексу. size() это количество элементов.
+     * isEmpty() истинно, когда в списке ничего нет.
      */
     static void basics() {
         List<String> names = new ArrayList<>();
 
         names.add("Anna");     // [Anna]
         names.add("Bob");      // [Anna, Bob]
-        names.add(0, "Eve");   // [Eve, Anna, Bob]
+        names.add(0, "Eve");   // [Eve, Anna, Bob]: Eve впереди, остальные сдвинулись вправо
+        names.addAll(List.of("Tom", "Kate")); // [Eve, Anna, Bob, Tom, Kate]
 
         names.get(0);          // "Eve"
-        names.size();          // 3
+        names.size();          // 5
         names.isEmpty();       // false
     }
 
     /**
-     * 5. Изменить и удалить: set, remove, clear
+     * 6. Изменить и удалить: set, remove, clear
      *
      * set(index, x) заменяет элемент и возвращает старый. remove(index) удаляет элемент
      * и сдвигает остальные влево. remove("value") удаляет первое совпадение. clear() удаляет всё.
@@ -122,7 +160,7 @@ public class ListTheory {
     }
 
     /**
-     * 6. Поиск: contains, indexOf
+     * 7. Поиск: contains, indexOf
      *
      * contains(x) истинно, если элемент есть в списке. indexOf(x) это индекс первого
      * совпадения или -1, если его нет. lastIndexOf(x) это индекс последнего совпадения.
@@ -137,7 +175,7 @@ public class ListTheory {
     }
 
     /**
-     * 7. Сортировка: Collections.sort, reverse, max, min
+     * 8. Сортировка: Collections.sort, reverse, max, min
      *
      * В классе Collections есть вспомогательные методы для списков. Им нужен изменяемый
      * список (не List.of): sort и reverse меняют сам список.
@@ -152,7 +190,7 @@ public class ListTheory {
     }
 
     /**
-     * 8. remove(int) или remove(Object)?
+     * 9. remove(int) или remove(Object)?
      *
      * Ловушка со списком List<Integer>. У списка два метода с именем remove:
      * remove(int index) и remove(Object value). С обычным числом Java выбирает индекс.
@@ -165,7 +203,7 @@ public class ListTheory {
     }
 
     /**
-     * 9. IndexOutOfBoundsException
+     * 10. IndexOutOfBoundsException
      *
      * У списка размера n индексы 0 .. n-1. Любой другой индекс бросает исключение.
      * Последний элемент это list.get(list.size() - 1).
