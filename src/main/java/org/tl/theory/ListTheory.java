@@ -57,11 +57,20 @@ public class ListTheory {
      *   - Empty, fill it later: new ArrayList<>(). Like a new empty notebook.
      *   - With starting items, and you can change it later: new ArrayList<>(List.of(...)).
      *     List.of(...) only provides the starting items; ArrayList copies them into a list you can change.
-     *   - With items that can NOT be changed: List.of(...). Fine for data that never changes.
+     *   - With items that can NOT be changed: List.of(...). Good for data that never changes, like the days of the week.
      *   - From an array: new ArrayList<>(Arrays.asList(array)).
      *
-     * Which one? You will add or remove items later: the first, second or fourth way.
-     * The data is fixed: List.of.
+     * Which one? You will add or remove items later: the first, second or fourth way. The data is fixed: List.of.
+     *
+     * What does "can change" mean? A list is changeable (the technical word is mutable) if after it is created you can still change what is inside: add an element (add), remove one (remove, clear), replace one (set) or reorder the list (sort). Reading is allowed in ANY list: get, size, contains, loops. A list that can NOT be changed (immutable, read-only) is filled once when it is created and stays exactly like that forever.
+     *
+     * Why can't a List.of(...) list be changed? It is read-only on purpose. First, safety: a list of fixed data (days of the week, country codes) can't be broken by a mistake in another part of the program. Second, it can be shared freely: everybody sees the same data and nobody needs a protective copy. Third, it is simpler and faster inside, because it never has to grow. If you still try to change it, Java stops the program with UnsupportedOperationException ("this operation is not supported").
+     *
+     * Note: What is new ArrayList<>() and why can't it be written differently?
+     *   - ArrayList is a class: a ready-made "machine" that knows how to store and change items (it keeps them in an array inside). The word new tells Java: build a new object of this class in memory. So new ArrayList<>() means "build me a new empty list".
+     *   - The variable type List is only a description of what a list can do (add, get, remove...). It has no code for storing items, so you can't build an object from it: new List<>() does not compile (error: List is abstract; cannot be instantiated). You must name a real class: ArrayList (the usual choice) or LinkedList.
+     *   - List.of(...) is the exception: it is a ready method that builds a read-only list for you, so no new is needed.
+     *   - The <> (diamond) saves you from writing the element type twice: Java takes it from the left side. More about the left and right side: section 3.
      */
     static void creating() {
         // 1. Empty
@@ -69,15 +78,22 @@ public class ListTheory {
 
         // 2. With items, changeable
         List<String> fruits = new ArrayList<>(List.of("apple", "pear")); // [apple, pear]
-        fruits.add("plum");                                              // [apple, pear, plum]
+        fruits.add("plum");                                              // OK: [apple, pear, plum]
 
         // 3. With items, NOT changeable
         List<String> days = List.of("Mon", "Tue");                       // [Mon, Tue]
+        days.get(0);                                                     // OK: reading is allowed
+        days.size();                                                     // OK
         // days.add("Wed");                                              // UnsupportedOperationException
+        // days.remove(0);                                               // UnsupportedOperationException
+        // days.set(0, "Sun");                                           // UnsupportedOperationException
 
         // 4. From an array
         String[] array = {"a", "b", "c"};
         List<String> fromArray = new ArrayList<>(Arrays.asList(array));  // [a, b, c]
+
+        // The wrong way: you can't build an object from an interface
+        // List<String> broken = new List<>();   // compile error: List is abstract; cannot be instantiated
     }
 
     /**

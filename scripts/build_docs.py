@@ -36,7 +36,7 @@ TOKEN = re.compile(r"""
   | (?P<word>\b[A-Za-z_]\w*\b)
 """, re.X | re.S)
 
-INLINE = re.compile(r"[\w.]+\([^()]*\)|\b[A-Z]\w*<[^<>]*(?:<[^<>]*>)?[^<>]*>(?:\(\))?|\bnull\b|==|!=|->")
+INLINE = re.compile(r"(?:new\s+)?[A-Z]\w*<[^<>]*>\((?:[^()]|\([^()]*\))*\)|[\w.]+\([^()]*\)|\b[A-Z]\w*<[^<>]*(?:<[^<>]*>)?[^<>]*>(?:\(\))?|\bnull\b|==|!=|->")
 
 
 TITLE_RE = re.compile(r"^(?:THEORY|ТЕОРИЯ): (.*)")
@@ -51,11 +51,34 @@ UI = {
 }
 
 
+TOPIC_KEYS = set()
+
+# "XTheory" -> topic X; "section N" / "раздел N" -> section N of the same topic; "(see N)" / "(см. N)"
+XREF = re.compile(r"\b([A-Z]\w*)Theory\b|\b(?:section|раздел(?:а|е)?)\s+(\d+)|\((?:see|см\.)\s+(\d+)\)")
+
+
+def link(escaped, cur):
+    """Turns cross-references in already escaped text into links. cur = key of the current topic."""
+    if cur is None:
+        return escaped
+
+    def sub(m):
+        if m.group(1):
+            key = m.group(1).lower()
+            return f'<a class="xref" href="#{key}">{m.group(0)}</a>' if key in TOPIC_KEYS else m.group(0)
+        n = m.group(2) or m.group(3)
+        text = m.group(0)
+        i = text.rindex(n)
+        return f'{text[:i]}<a class="xref" href="#{cur}-{n}">{n}</a>{text[i + len(n):]}'
+
+    return XREF.sub(sub, escaped)
+
+
 def esc(s):
     return html.escape(s, quote=False)
 
 
-def highlight(code):
+def highlight(code, cur=None):
     out, pos = [], 0
     for m in TOKEN.finditer(code):
         out.append(esc(code[pos:m.start()]))
@@ -69,19 +92,20 @@ def highlight(code):
                 out.append(esc(text))
                 pos = m.end()
                 continue
-        out.append(f'<span class="t-{kind}">{esc(text)}</span>')
+        shown = link(esc(text), cur) if kind == "comment" else esc(text)
+        out.append(f'<span class="t-{kind}">{shown}</span>')
         pos = m.end()
     out.append(esc(code[pos:]))
     return "".join(out)
 
 
-def inline(text):
+def inline(text, cur=None):
     out, pos = [], 0
     for m in INLINE.finditer(text):
-        out.append(esc(text[pos:m.start()]))
+        out.append(link(esc(text[pos:m.start()]), cur))
         out.append(f"<code>{esc(m.group())}</code>")
         pos = m.end()
-    out.append(esc(text[pos:]))
+    out.append(link(esc(text[pos:]), cur))
     return "".join(out)
 
 
@@ -89,8 +113,24 @@ def doc_lines(block):
     return [re.sub(r"^\s*\* ?", "", l.rstrip()) for l in block.split("\n")]
 
 
-def render_text(lines):
-    """Javadoc lines -> HTML: paragraphs, bullet lists, preformatted blocks."""
+NOTE_RE = re.compile(r"^(Note|Заметка):\s*(.*)")
+
+
+def is_preformatted(p):
+    """A table or aligned columns: keep as is. Indented lines after a bullet are just its continuation."""
+    if any("|" in l for l in p):
+        return True
+    seen_bullet = False
+    for l in p:
+        if l.strip().startswith("- "):
+            seen_bullet = True
+        elif l.startswith("  ") and not seen_bullet:
+            return True
+    return False
+
+
+def render_text(lines, topic=None):
+    """Javadoc lines -> HTML: paragraphs, bullet lists, preformatted blocks and notes ("Note:" / "Заметка:")."""
     paras, cur = [], []
     for l in lines:
         if l.strip():
@@ -103,21 +143,25 @@ def render_text(lines):
 
     out = []
     for p in paras:
-        bullets = [l for l in p if l.strip().startswith("- ")]
-        indented_other = [l for l in p if l.startswith("  ") and not l.strip().startswith("- ")]
-        if indented_other or any("|" in l for l in p):
-            out.append("<pre class=\"plain\">" + esc("\n".join(p)) + "</pre>")
+        note = NOTE_RE.match(p[0])
+        if note:
+            p = ([note.group(2)] if note.group(2) else []) + p[1:]
+        start = len(out)
+
+        if not note and is_preformatted(p):
+            out.append("<pre class=\"plain\">" + link(esc("\n".join(p)), topic) + "</pre>")
             continue
+
         text_buf, items = [], []
 
         def flush_text():
             if text_buf:
-                out.append("<p>" + inline(" ".join(text_buf)) + "</p>")
+                out.append("<p>" + inline(" ".join(text_buf), topic) + "</p>")
                 text_buf.clear()
 
         def flush_items():
             if items:
-                out.append("<ul>" + "".join(f"<li>{inline(i)}</li>" for i in items) + "</ul>")
+                out.append("<ul>" + "".join(f"<li>{inline(i, topic)}</li>" for i in items) + "</ul>")
                 items.clear()
 
         for l in p:
@@ -127,9 +171,16 @@ def render_text(lines):
             elif items:
                 items[-1] += " " + l.strip()
             else:
+                flush_items()
                 text_buf.append(l.strip())
         flush_text()
         flush_items()
+
+        if note:
+            body = out[start:]
+            del out[start:]
+            out.append(f'<div class="note"><div class="note-title">{esc(note.group(1))}</div>'
+                       + "\n".join(body) + "</div>")
     return "\n".join(out)
 
 
@@ -206,12 +257,12 @@ def render_topic(t, lang):
                 continue
             out.append(f'<section class="card" data-id="{k}-{sec["n"]}">')
             out.append(f'<h3>{sec["n"]}. {inline(sec["title"])}</h3>')
-            out.append(render_text(sec["text"]))
+            out.append(render_text(sec["text"], k))
             code = "\n".join(sec["code"]).strip("\n")
             if code.strip():
                 out.append(f'<div class="code"><button class="copy" type="button" data-copy="{ui["copy"]}" '
                            f'data-copied="{ui["copied"]}">{ui["copy"]}</button>'
-                           f"<pre><code>{highlight(code)}</code></pre></div>")
+                           f"<pre><code>{highlight(code, k)}</code></pre></div>")
             out.append("</section>")
     out.append("</div>")
     return "\n".join(out)
@@ -275,12 +326,17 @@ h2 { font-size: 20px; margin: 0 0 12px; }
 .group a { color: var(--accent); text-decoration: none; }
 .group a:hover { text-decoration: underline; }
 .practice { color: var(--muted); font-size: 14px; margin: 8px 0 0; }
+.note { border-left: 4px solid var(--accent); background: var(--inline-bg); border-radius: 6px; padding: 10px 16px; margin: 0 0 12px; }
+.note-title { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); margin-bottom: 4px; }
+.note p, .note ul { margin-bottom: 6px; } .note ul { margin-top: 4px; }
+.xref { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
+.xref:hover { border-bottom-style: solid; }
 code { font: 0.9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--inline-bg);
   padding: 1px 5px; border-radius: 4px; }
 .code { position: relative; margin: 10px 0 2px; }
-.code pre { margin: 0; background: var(--code-bg); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
-.code pre code { background: none; padding: 0; font-size: 13.5px; line-height: 1.5; white-space: pre; }
-pre.plain { background: var(--code-bg); border-radius: 8px; padding: 12px 16px; overflow-x: auto; margin: 0 0 10px;
+.code pre { margin: 0; background: var(--code-bg); border-radius: 8px; padding: 14px 16px; }
+.code pre code { background: none; padding: 0; font-size: 13.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+pre.plain { background: var(--code-bg); border-radius: 8px; padding: 12px 16px; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 10px;
   font: 13.5px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 .copy { position: absolute; top: 8px; right: 8px; font: 12px inherit; padding: 3px 8px; cursor: pointer;
   background: var(--card); color: var(--muted); border: 1px solid var(--border); border-radius: 6px; opacity: 0; transition: opacity .15s; }
@@ -376,6 +432,7 @@ def main():
     for lang, folder in SRC.items():
         files = {p.stem: p for p in folder.glob("*Theory.java")}
         data[lang] = {n: parse(files[n]) for n in files}
+    TOPIC_KEYS.update(d["key"] for d in data["en"].values())
     known = [n for g in GROUPS for n in g[3]]
     extra = sorted(n for n in data["en"] if n not in known)
     groups = [(k, e, r, [n for n in ns if n in data["en"]]) for k, e, r, ns in GROUPS]
