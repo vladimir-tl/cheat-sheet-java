@@ -113,16 +113,17 @@ def doc_lines(block):
     return [re.sub(r"^\s*\* ?", "", l.rstrip()) for l in block.split("\n")]
 
 
+OL_RE = re.compile(r"(\d+)\) (.*)")   # "1) text": an item of a numbered list
 NOTE_RE = re.compile(r"^(Note|Заметка):\s*(.*)")
 
 
 def is_preformatted(p):
     """A table or aligned columns: keep as is. Indented lines after a bullet are just its continuation."""
-    if any("|" in l for l in p) or all(re.fullmatch(r"\*+", l.strip()) for l in p):
+    if any(re.search(r"\s\|\s", l) for l in p) or all(re.fullmatch(r"\*+", l.strip()) for l in p):
         return True
     seen_bullet = False
     for l in p:
-        if l.strip().startswith("- "):
+        if l.strip().startswith("- ") or OL_RE.match(l.strip()):
             seen_bullet = True
         elif l.startswith("  ") and not seen_bullet:
             return True
@@ -152,7 +153,7 @@ def render_text(lines, topic=None):
             out.append("<pre class=\"plain\">" + link(esc("\n".join(p)), topic) + "</pre>")
             continue
 
-        text_buf, items = [], []
+        text_buf, items, ordered = [], [], [False]
 
         def flush_text():
             if text_buf:
@@ -161,16 +162,21 @@ def render_text(lines, topic=None):
 
         def flush_items():
             if items:
-                out.append("<ul>" + "".join(
+                tag = "ol" if ordered[0] else "ul"
+                out.append(f"<{tag}>" + "".join(
                     f"<li>{inline(i, topic)}"
                     + (f'<pre class="eg"><code>{highlight(chr(10).join(c), topic)}</code></pre>' if c else "")
-                    + "</li>" for i, c in items) + "</ul>")
+                    + "</li>" for i, c in items) + f"</{tag}>")
                 items.clear()
 
         for l in p:
-            if l.strip().startswith("- "):
+            ol = OL_RE.match(l.strip())
+            if l.strip().startswith("- ") or ol:
                 flush_text()
-                items.append([l.strip()[2:], []])
+                if items and ordered[0] != bool(ol):
+                    flush_items()
+                ordered[0] = bool(ol)
+                items.append([ol.group(2) if ol else l.strip()[2:], []])
             elif items and l.strip().startswith("> "):
                 items[-1][1].append(l.strip()[2:])   # "> code" line: an example shown right under the bullet
             elif items:
@@ -302,12 +308,6 @@ def render_topic(t, lang):
             out.append(f'<li value="{n}"><a href="#{k}-{n}">{inline(name)}</a></li>')
         out.append("</ol></div>")
     out.append("</div>")
-    if t["practice"]:
-        target = f"#{k}-tasks" if t.get("tasks") else f"#{k}"
-        practice = re.sub(r"\borg\.tl(?:\.\w+)+",
-                          lambda m: f'<a class="xref" href="{target}">{m.group(0)}</a>', esc(t["practice"]))
-        extra = f' <a class="xref" href="#{k}-tasks">{TASKS_TITLE[lang]} ↓</a>' if t.get("tasks") else ""
-        out.append(f'<p class="practice">{practice}{extra}</p>')
     out.append("</nav>")
 
     for g in t["groups"]:
@@ -360,15 +360,15 @@ body { margin: 0; background: var(--bg); color: var(--text);
   font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--border); }
 .bar { max-width: 1040px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 20px; }
+.subbar .bar { gap: 4px; }
 .brand { font-weight: 700; padding: 12px 0; white-space: nowrap; flex: none; }
 .tabs { display: flex; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
-.tabs a, .subtabs a { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
-.tabs a:hover, .subtabs a:hover { color: var(--text); }
-.tabs a.active, .subtabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
-.practice-link { margin-left: auto; flex: none; padding: 4px 12px; margin-top: 4px; margin-bottom: 4px; border: 1px solid var(--accent); border-radius: 6px; color: var(--accent); text-decoration: none; font-size: 14px; white-space: nowrap; }
-.practice-link:hover { background: var(--inline-bg); }
-.practice-link.hidden { visibility: hidden; }
+.tabs a, .subtabs a, .practice-link { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
+.tabs a:hover, .subtabs a:hover, .practice-link:hover { color: var(--text); }
+.tabs a.active, .subtabs a.active, .practice-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+.practice-link { padding: 8px 10px; font-size: 14px; flex: none; }
+.practice-link.hidden { display: none; }
 .subbar { border-top: 1px solid var(--border); background: var(--bg); }
 .subbar.hidden { display: none; }
 .subtabs { display: none; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
@@ -382,7 +382,7 @@ h2 { font-size: 20px; margin: 0 0 12px; }
 .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 0 0 14px; }
 .card h3 { margin: 0 0 8px; font-size: 18px; }
 .card p { margin: 0 0 10px; }
-.card ul { margin: 0 0 10px; padding-left: 22px; }
+.card ul, .card > ol { margin: 0 0 10px; padding-left: 22px; }
 .card li { margin: 2px 0; }
 .contents .cols { columns: 2 280px; column-gap: 32px; }
 .group { break-inside: avoid; margin-bottom: 14px; }
@@ -391,7 +391,6 @@ h2 { font-size: 20px; margin: 0 0 12px; }
 .group li { margin: 3px 0; }
 .group a { color: var(--accent); text-decoration: none; }
 .group a:hover { text-decoration: underline; }
-.practice { color: var(--muted); font-size: 14px; margin: 8px 0 0; }
 .note { border-left: 4px solid var(--accent); background: var(--inline-bg); border-radius: 6px; padding: 10px 16px; margin: 0 0 12px; }
 .note-title { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); margin-bottom: 4px; }
 .note p, .note ul { margin-bottom: 6px; } .note ul { margin-top: 4px; }
@@ -478,6 +477,7 @@ function route() {
   subbar.classList.toggle("hidden", !hasSub && !hasTasks);
   practiceLink.classList.toggle("hidden", !hasTasks);
   practiceLink.href = "#" + key + "-tasks";
+  practiceLink.classList.toggle("active", h === key + "-tasks");
   const target = h.includes("-") ? document.querySelector('.l-' + lang + ' [data-id="' + h + '"]') : null;
   if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
 }

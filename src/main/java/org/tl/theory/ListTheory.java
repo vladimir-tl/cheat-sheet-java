@@ -70,9 +70,16 @@ public class ListTheory {
      *
      * Which one? You will add or remove items later: the first, second or fourth way. The data is fixed: List.of.
      *
-     * What does "can change" mean? A list is changeable (the technical word is mutable) if after it is created you can still change what is inside: add an element (add), remove one (remove, clear), replace one (set) or reorder the list (sort). Reading is allowed in ANY list: get, size, contains, loops. A list that can NOT be changed (immutable, read-only) is filled once when it is created and stays exactly like that forever.
+     * What does "can change" mean?
+     *   - Changeable (mutable): after it is created you can still add (add), remove (remove, clear), replace (set) or reorder (sort) elements.
+     *   - Read-only (immutable): filled once when it is created and stays exactly like that forever.
+     *   - Reading works in ANY list: get, size, contains, loops.
      *
-     * Why can't a List.of(...) list be changed? It is read-only on purpose. First, safety: a list of fixed data (days of the week, country codes) can't be broken by a mistake in another part of the program. Second, it can be shared freely: everybody sees the same data and nobody needs a protective copy. Third, it is simpler and faster inside, because it never has to grow. If you still try to change it, Java stops the program with UnsupportedOperationException ("this operation is not supported").
+     * Note: Why can't a List.of(...) list be changed? It is read-only on purpose:
+     *   - Safety: a list of fixed data (days of the week, country codes) can't be broken by a mistake in another part of the program.
+     *   - Easy to share: everybody sees the same data, nobody needs a protective copy.
+     *   - Simpler and faster: it never has to grow.
+     *   - If you still try to change it: Java stops the program with UnsupportedOperationException ("this operation is not supported").
      *
      * Note: What is new ArrayList<>() and why can't it be written differently?
      *   - ArrayList is a class: a ready-made "machine" that knows how to store and change items (it keeps them in an array inside). The word new tells Java: build a new object of this class in memory. So new ArrayList<>() means "build me a new empty list".

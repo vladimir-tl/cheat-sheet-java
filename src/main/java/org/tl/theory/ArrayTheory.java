@@ -97,10 +97,9 @@ public class ArrayTheory {
     /**
      * 4. Read and change an element
      *
-     * Square brackets with an index: array[index]. On the left side of = it writes a value,
-     * anywhere else it reads one.
-     * The size of an array is array.length (no parentheses, unlike list.size()).
-     * The last element is array[array.length - 1].
+     *   - array[index] on the left side of = writes a value, anywhere else it reads one.
+     *   - Size: array.length (no parentheses, unlike list.size()).
+     *   - Last element: array[array.length - 1].
      */
     static void readAndChange() {
         int[] numbers = {10, 20, 30};

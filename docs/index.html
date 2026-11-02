@@ -27,15 +27,15 @@ body { margin: 0; background: var(--bg); color: var(--text);
   font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--border); }
 .bar { max-width: 1040px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 20px; }
+.subbar .bar { gap: 4px; }
 .brand { font-weight: 700; padding: 12px 0; white-space: nowrap; flex: none; }
 .tabs { display: flex; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
-.tabs a, .subtabs a { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
-.tabs a:hover, .subtabs a:hover { color: var(--text); }
-.tabs a.active, .subtabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
-.practice-link { margin-left: auto; flex: none; padding: 4px 12px; margin-top: 4px; margin-bottom: 4px; border: 1px solid var(--accent); border-radius: 6px; color: var(--accent); text-decoration: none; font-size: 14px; white-space: nowrap; }
-.practice-link:hover { background: var(--inline-bg); }
-.practice-link.hidden { visibility: hidden; }
+.tabs a, .subtabs a, .practice-link { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
+.tabs a:hover, .subtabs a:hover, .practice-link:hover { color: var(--text); }
+.tabs a.active, .subtabs a.active, .practice-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+.practice-link { padding: 8px 10px; font-size: 14px; flex: none; }
+.practice-link.hidden { display: none; }
 .subbar { border-top: 1px solid var(--border); background: var(--bg); }
 .subbar.hidden { display: none; }
 .subtabs { display: none; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
@@ -49,7 +49,7 @@ h2 { font-size: 20px; margin: 0 0 12px; }
 .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 0 0 14px; }
 .card h3 { margin: 0 0 8px; font-size: 18px; }
 .card p { margin: 0 0 10px; }
-.card ul { margin: 0 0 10px; padding-left: 22px; }
+.card ul, .card > ol { margin: 0 0 10px; padding-left: 22px; }
 .card li { margin: 2px 0; }
 .contents .cols { columns: 2 280px; column-gap: 32px; }
 .group { break-inside: avoid; margin-bottom: 14px; }
@@ -58,7 +58,6 @@ h2 { font-size: 20px; margin: 0 0 12px; }
 .group li { margin: 3px 0; }
 .group a { color: var(--accent); text-decoration: none; }
 .group a:hover { text-decoration: underline; }
-.practice { color: var(--muted); font-size: 14px; margin: 8px 0 0; }
 .note { border-left: 4px solid var(--accent); background: var(--inline-bg); border-radius: 6px; padding: 10px 16px; margin: 0 0 12px; }
 .note-title { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); margin-bottom: 4px; }
 .note p, .note ul { margin-bottom: 6px; } .note ul { margin-top: 4px; }
@@ -130,7 +129,6 @@ section { scroll-margin-top: 110px; }
 <li value="9"><a href="#primitivesandwrappers-9">Integer division, overflow, double precision</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see <a class="xref" href="#primitivesandwrappers">org.tl.types</a> (PrimitivesAndWrappersCheatSheet).</p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="primitivesandwrappers-1">
@@ -257,7 +255,6 @@ section { scroll-margin-top: 110px; }
 <li value="9"><a href="#primitivesandwrappers-9">Целочисленное деление, переполнение, точность double</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. <a class="xref" href="#primitivesandwrappers">org.tl.types</a> (PrimitivesAndWrappersCheatSheet).</p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="primitivesandwrappers-1">
@@ -384,7 +381,6 @@ section { scroll-margin-top: 110px; }
 <li value="7"><a href="#for-7">for-each</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see <a class="xref" href="#for-tasks">org.tl.loops.forloop</a> (ForCheatSheet, ForTasks, ForSolutions). <a class="xref" href="#for-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="for-1">
@@ -598,7 +594,6 @@ section { scroll-margin-top: 110px; }
 <li value="7"><a href="#for-7">for-each</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. <a class="xref" href="#for-tasks">org.tl.loops.forloop</a> (ForCheatSheet, ForTasks, ForSolutions). <a class="xref" href="#for-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="for-1">
@@ -810,7 +805,6 @@ section { scroll-margin-top: 110px; }
 <li value="5"><a href="#while-5">Infinite loop</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see <a class="xref" href="#while-tasks">org.tl.loops.whileloop</a> (WhileCheatSheet, WhileTasks, WhileSolutions). <a class="xref" href="#while-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="while-1">
@@ -965,7 +959,6 @@ section { scroll-margin-top: 110px; }
 <li value="5"><a href="#while-5">Бесконечный цикл</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. <a class="xref" href="#while-tasks">org.tl.loops.whileloop</a> (WhileCheatSheet, WhileTasks, WhileSolutions). <a class="xref" href="#while-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="while-1">
@@ -1127,7 +1120,6 @@ section { scroll-margin-top: 110px; }
 <li value="8"><a href="#ifelse-8">Braces, semicolon, = instead of <code>==</code>, order of conditions</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see <a class="xref" href="#ifelse-tasks">org.tl.conditions.ifelse</a> (IfElseCheatSheet, IfElseTasks, IfElseSolutions). <a class="xref" href="#ifelse-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="ifelse-1">
@@ -1181,7 +1173,7 @@ section { scroll-margin-top: 110px; }
   &amp;&amp;  AND: both parts must be true
   ||  OR: at least one part must be true
   !   NOT: turns true into false and back</pre>
-<pre class="plain">&amp;&amp; is evaluated before ||. Use brackets when you mix them.</pre>
+<p>&amp;&amp; is evaluated before ||. Use brackets when you mix them.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> age = <span class="t-number">20</span>;
 <span class="t-kw">boolean</span> hasTicket = <span class="t-kw">true</span>;
 
@@ -1380,7 +1372,6 @@ section { scroll-margin-top: 110px; }
 <li value="8"><a href="#ifelse-8">Скобки, точка с запятой, = вместо <code>==</code>, порядок условий</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. <a class="xref" href="#ifelse-tasks">org.tl.conditions.ifelse</a> (IfElseCheatSheet, IfElseTasks, IfElseSolutions). <a class="xref" href="#ifelse-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="ifelse-1">
@@ -1434,7 +1425,7 @@ section { scroll-margin-top: 110px; }
   &amp;&amp;  И: обе части должны быть истинны
   ||  ИЛИ: хотя бы одна часть должна быть истинна
   !   НЕ: меняет true на false и обратно</pre>
-<pre class="plain">&amp;&amp; вычисляется раньше ||. Когда смешиваете их, ставьте скобки.</pre>
+<p>&amp;&amp; вычисляется раньше ||. Когда смешиваете их, ставьте скобки.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> age = <span class="t-number">20</span>;
 <span class="t-kw">boolean</span> hasTicket = <span class="t-kw">true</span>;
 
@@ -1635,7 +1626,6 @@ section { scroll-margin-top: 110px; }
 <li value="8"><a href="#switch-8">switch or if-else?</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see <a class="xref" href="#switch-tasks">org.tl.conditions.switchcase</a> (SwitchCheatSheet, SwitchTasks, SwitchSolutions). <a class="xref" href="#switch-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Classic switch</h2>
 <section class="card" data-id="switch-1">
@@ -1864,7 +1854,6 @@ section { scroll-margin-top: 110px; }
 <li value="8"><a href="#switch-8">switch или if-else?</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. <a class="xref" href="#switch-tasks">org.tl.conditions.switchcase</a> (SwitchCheatSheet, SwitchTasks, SwitchSolutions). <a class="xref" href="#switch-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Классический switch</h2>
 <section class="card" data-id="switch-1">
@@ -2098,7 +2087,6 @@ section { scroll-margin-top: 110px; }
 <li value="9"><a href="#array-9">Array or List? Converting between them</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see <a class="xref" href="#array-tasks">org.tl.arrays</a> (ArrayCheatSheet, ArrayTasks, ArraySolutions). <a class="xref" href="#array-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="array-1">
@@ -2147,7 +2135,7 @@ names[<span class="t-number">0</span>] = <span class="t-string">"Anna"</span>;  
 <h2 class="group-title">Working with elements</h2>
 <section class="card" data-id="array-4">
 <h3>4. Read and change an element</h3>
-<p>Square brackets with an index: array[index]. On the left side of = it writes a value, anywhere else it reads one. The size of an array is array.length (no parentheses, unlike <code>list.size()</code>). The last element is array[array.length - 1].</p>
+<ul><li>array[index] on the left side of = writes a value, anywhere else it reads one.</li><li>Size: array.length (no parentheses, unlike <code>list.size()</code>).</li><li>Last element: array[array.length - 1].</li></ul>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
 
 <span class="t-kw">int</span> first = numbers[<span class="t-number">0</span>];                    <span class="t-comment">// 10: read</span>
@@ -2204,13 +2192,7 @@ list.add(<span class="t-number">40</span>);                                     
 <section class="card" data-id="array-8">
 <h3>8. ArrayIndexOutOfBoundsException, copying and comparing</h3>
 <p>Three classic surprises.</p>
-<pre class="plain">1) Index out of range. An array of size n has indexes 0 .. n-1. Anything else
-   crashes with ArrayIndexOutOfBoundsException.
-2) int[] b = a does NOT copy. It gives the same array a second name: a and b are
-   two names of one egg carton, so changing b changes a.
-   A real copy: Arrays.copyOf(a, a.length).
-3) a == b compares whether it is the same array, not the values.
-   To compare the values use Arrays.equals(a, b).</pre>
+<ol><li>Index out of range. An array of size n has indexes 0 .. n-1. Anything else crashes with ArrayIndexOutOfBoundsException.</li><li>int[] b = a does NOT copy. It gives the same array a second name: a and b are two names of one egg carton, so changing b changes a. A real copy: <code>Arrays.copyOf(a, a.length)</code>.</li><li>a <code>==</code> b compares whether it is the same array, not the values. To compare the values use <code>Arrays.equals(a, b)</code>.</li></ol>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span>[] a = {<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>};
 
 <span class="t-comment">// 1) a[3] -&gt; ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3</span>
@@ -2319,7 +2301,6 @@ list.add(<span class="t-string">"d"</span>);                                    
 <li value="9"><a href="#array-9">Массив или List? Превращение одного в другой</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. <a class="xref" href="#array-tasks">org.tl.arrays</a> (ArrayCheatSheet, ArrayTasks, ArraySolutions). <a class="xref" href="#array-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="array-1">
@@ -2369,7 +2350,7 @@ names[<span class="t-number">0</span>] = <span class="t-string">"Anna"</span>;  
 <h2 class="group-title">Работа с элементами</h2>
 <section class="card" data-id="array-4">
 <h3>4. Прочитать и изменить элемент</h3>
-<p>Квадратные скобки с индексом: array[index]. Слева от = это запись значения, в любом другом месте это чтение. Размер массива это array.length (без скобок, в отличие от <code>list.size()</code>). Последний элемент это array[array.length - 1].</p>
+<ul><li>array[index] слева от = записывает значение, в любом другом месте читает.</li><li>Размер: array.length (без скобок, в отличие от <code>list.size()</code>).</li><li>Последний элемент: array[array.length - 1].</li></ul>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>};
 
 <span class="t-kw">int</span> first = numbers[<span class="t-number">0</span>];                    <span class="t-comment">// 10: чтение</span>
@@ -2426,13 +2407,7 @@ list.add(<span class="t-number">40</span>);                                     
 <section class="card" data-id="array-8">
 <h3>8. ArrayIndexOutOfBoundsException, копирование и сравнение</h3>
 <p>Три классических неожиданности.</p>
-<pre class="plain">1) Индекс вне диапазона. У массива размера n индексы 0 .. n-1. Любой другой
-   роняет программу с ArrayIndexOutOfBoundsException.
-2) int[] b = a НЕ копирует. Это второе имя для того же массива: a и b это
-   два имени одного контейнера, поэтому изменение b меняет a.
-   Настоящая копия: Arrays.copyOf(a, a.length).
-3) a == b проверяет, тот ли это же массив, а не одинаковы ли значения.
-   Чтобы сравнить значения, используйте Arrays.equals(a, b).</pre>
+<ol><li>Индекс вне диапазона. У массива размера n индексы 0 .. n-1. Любой другой роняет программу с ArrayIndexOutOfBoundsException.</li><li>int[] b = a НЕ копирует. Это второе имя для того же массива: a и b это два имени одного контейнера, поэтому изменение b меняет a. Настоящая копия: <code>Arrays.copyOf(a, a.length)</code>.</li><li>a <code>==</code> b проверяет, тот ли это же массив, а не одинаковы ли значения. Чтобы сравнить значения, используйте <code>Arrays.equals(a, b)</code>.</li></ol>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span>[] a = {<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>};
 
 <span class="t-comment">// 1) a[3] -&gt; ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3</span>
@@ -2545,7 +2520,6 @@ list.add(<span class="t-string">"d"</span>);                                    
 <li value="11"><a href="#list-11">All basic methods in one table</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see <a class="xref" href="#list-tasks">org.tl.collections.list</a> (ListCheatSheet, ListTasks, ListSolutions). <a class="xref" href="#list-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Creating a list</h2>
 <section class="card" data-id="list-1">
@@ -2564,8 +2538,10 @@ fruits.add(<span class="t-string">"plum"</span>);                               
 days.add(<span class="t-string">"Wed"</span>);                           <span class="t-comment">// UnsupportedOperationException</span></code></pre></li><li>From an array: <code>new ArrayList&lt;&gt;(Arrays.asList(array))</code>.<pre class="eg"><code><span class="t-type">String</span>[] array = {<span class="t-string">"a"</span>, <span class="t-string">"b"</span>, <span class="t-string">"c"</span>};
 <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; fromArray = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">Arrays</span>.asList(array)); <span class="t-comment">// [a, b, c]</span></code></pre></li></ul>
 <p>Which one? You will add or remove items later: the first, second or fourth way. The data is fixed: List.of.</p>
-<p>What does "can change" mean? A list is changeable (the technical word is mutable) if after it is created you can still change what is inside: add an element (add), remove one (remove, clear), replace one (set) or reorder the list (sort). Reading is allowed in ANY list: get, size, contains, loops. A list that can NOT be changed (immutable, read-only) is filled once when it is created and stays exactly like that forever.</p>
-<p>Why can't a <code>List.of(...)</code> list be changed? It is read-only on purpose. First, safety: a list of fixed data (days of the week, country codes) can't be broken by a mistake in another part of the program. Second, it can be shared freely: everybody sees the same data and nobody needs a protective copy. Third, it is simpler and faster inside, because it never has to grow. If you still try to change it, Java stops the program with UnsupportedOperationException ("this operation is not supported").</p>
+<p>What does "can change" mean?</p>
+<ul><li>Changeable (mutable): after it is created you can still add (add), remove (remove, clear), replace (set) or reorder (sort) elements.</li><li>Read-only (immutable): filled once when it is created and stays exactly like that forever.</li><li>Reading works in ANY list: get, size, contains, loops.</li></ul>
+<div class="note"><div class="note-title">Note</div><p>Why can't a <code>List.of(...)</code> list be changed? It is read-only on purpose:</p>
+<ul><li>Safety: a list of fixed data (days of the week, country codes) can't be broken by a mistake in another part of the program.</li><li>Easy to share: everybody sees the same data, nobody needs a protective copy.</li><li>Simpler and faster: it never has to grow.</li><li>If you still try to change it: Java stops the program with UnsupportedOperationException ("this operation is not supported").</li></ul></div>
 <div class="note"><div class="note-title">Note</div><p>What is <code>new ArrayList&lt;&gt;()</code> and why can't it be written differently?</p>
 <ul><li>ArrayList is a class: a ready-made "machine" that knows how to store and change items (it keeps them in an array inside). The word new tells Java: build a new object of this class in memory. So <code>new ArrayList&lt;&gt;()</code> means "build me a new empty list".</li><li>The variable type List is only a description of what a list can do (add, get, remove...). It has no code for storing items, so you can't build an object from it: <code>new List&lt;&gt;()</code> does not compile (error: List is abstract; cannot be instantiated). You must name a real class: ArrayList (the usual choice) or LinkedList.</li><li><code>List.of(...)</code> is the exception: it is a ready method that builds a read-only list for you, so no new is needed.</li><li>The &lt;&gt; (diamond) saves you from writing the element type twice: Java takes it from the left side. More about the left and right side: section <a class="xref" href="#list-3">3</a>.</li></ul></div>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// 1. Empty</span>
@@ -2815,7 +2791,6 @@ names.clear();              <span class="t-comment">// []</span></code></pre></d
 <li value="11"><a href="#list-11">Все базовые методы в одной таблице</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. <a class="xref" href="#list-tasks">org.tl.collections.list</a> (ListCheatSheet, ListTasks, ListSolutions). <a class="xref" href="#list-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Создание списка</h2>
 <section class="card" data-id="list-1">
@@ -2834,8 +2809,10 @@ fruits.add(<span class="t-string">"plum"</span>);                               
 days.add(<span class="t-string">"Wed"</span>);                           <span class="t-comment">// UnsupportedOperationException</span></code></pre></li><li>Из массива: <code>new ArrayList&lt;&gt;(Arrays.asList(array))</code>.<pre class="eg"><code><span class="t-type">String</span>[] array = {<span class="t-string">"a"</span>, <span class="t-string">"b"</span>, <span class="t-string">"c"</span>};
 <span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; fromArray = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">Arrays</span>.asList(array)); <span class="t-comment">// [a, b, c]</span></code></pre></li></ul>
 <p>Какой выбрать? Если потом будете добавлять или удалять элементы: первый, второй или четвёртый. Если данные фиксированы: List.of.</p>
-<p>Что значит «можно менять»? Список изменяемый (технический термин mutable), если после создания в нём можно изменить содержимое: добавить элемент (add), удалить (remove, clear), заменить (set) или переставить (sort). Читать можно в ЛЮБОМ списке: get, size, contains, циклы. Список, который НЕЛЬЗЯ менять (immutable, «только для чтения»), заполняется один раз при создании и навсегда остаётся таким.</p>
-<p>Почему список из <code>List.of(...)</code> нельзя менять? Он сделан «только для чтения» намеренно. Во-первых, безопасность: список с постоянными данными (дни недели, коды стран) нельзя испортить ошибкой в другой части программы. Во-вторых, им можно свободно делиться: все видят одни и те же данные, и защитная копия никому не нужна. В-третьих, внутри он проще и быстрее, потому что ему никогда не нужно расти. Если всё же попытаться его изменить, Java остановит программу с UnsupportedOperationException («эта операция не поддерживается»).</p>
+<p>Что значит «можно менять»?</p>
+<ul><li>Изменяемый (mutable): после создания можно добавлять (add), удалять (remove, clear), заменять (set) и переставлять (sort) элементы.</li><li>Только для чтения (immutable): заполняется один раз при создании и навсегда остаётся таким.</li><li>Читать можно в ЛЮБОМ списке: get, size, contains, циклы.</li></ul>
+<div class="note"><div class="note-title">Заметка</div><p>Почему список из <code>List.of(...)</code> нельзя менять? Он сделан «только для чтения» намеренно:</p>
+<ul><li>Безопасность: список с постоянными данными (дни недели, коды стран) нельзя испортить ошибкой в другой части программы.</li><li>Можно делиться: все видят одни и те же данные, защитная копия никому не нужна.</li><li>Проще и быстрее: ему никогда не нужно расти.</li><li>Если всё же попытаться изменить: Java остановит программу с UnsupportedOperationException («эта операция не поддерживается»).</li></ul></div>
 <div class="note"><div class="note-title">Заметка</div><p>Что такое <code>new ArrayList&lt;&gt;()</code> и почему нельзя написать иначе?</p>
 <ul><li>ArrayList это класс: готовая «машина», которая умеет хранить и менять элементы (внутри она держит их в массиве). Слово new говорит Java: создай в памяти новый объект этого класса. Значит, <code>new ArrayList&lt;&gt;()</code> означает «создай мне новый пустой список».</li><li>Тип переменной List это только описание того, что умеет список (add, get, remove...). В нём нет кода для хранения элементов, поэтому создать из него объект нельзя: <code>new List&lt;&gt;()</code> не компилируется (ошибка: List is abstract; cannot be instantiated). Нужно назвать настоящий класс: ArrayList (обычный выбор) или LinkedList.</li><li><code>List.of(...)</code> это исключение: это готовый метод, который сам создаёт список «только для чтения», поэтому new не нужен.</li><li>Ромбовидный оператор &lt;&gt; избавляет от необходимости писать тип элементов дважды: Java берёт его из левой части. Подробнее про левую и правую часть: раздел <a class="xref" href="#list-3">3</a>.</li></ul></div>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// 1. Пустой</span>
@@ -3087,7 +3064,6 @@ names.clear();              <span class="t-comment">// []</span></code></pre></d
 <li value="9"><a href="#set-9">List, Set or Map?</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see <a class="xref" href="#set-tasks">org.tl.collections.set</a> (SetCheatSheet, SetTasks, SetSolutions). <a class="xref" href="#set-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="set-1">
@@ -3129,7 +3105,7 @@ names.add(<span class="t-string">"Anna"</span>);     <span class="t-comment">// 
 <h2 class="group-title">Working with elements</h2>
 <section class="card" data-id="set-4">
 <h3>4. Checking and removing: contains, remove, size</h3>
-<p><code>contains(x)</code> answers "is x in the set?" and it is FAST, much faster than list.contains on a big collection. <code>remove(x)</code> deletes x (true if it was there). <code>size()</code> is the number of elements. <code>isEmpty()</code> and <code>clear()</code> work like in a List.</p>
+<ul><li><code>contains(x)</code>: "is x in the set?" It is FAST, much faster than list.contains on a big collection.</li><li><code>remove(x)</code>: deletes x (true if it was there).</li><li><code>size()</code>: the number of elements.</li><li><code>isEmpty()</code> and <code>clear()</code>: work like in a List.</li></ul>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>));
 
 names.contains(<span class="t-string">"Bob"</span>);     <span class="t-comment">// true</span>
@@ -3188,12 +3164,7 @@ names.isEmpty();           <span class="t-comment">// true</span></code></pre></
 <section class="card" data-id="set-8">
 <h3>8. No index, no order, equals and hashCode</h3>
 <p>Three things to remember.</p>
-<pre class="plain">1) No index and no order in a HashSet: you can't ask for "the first element".
-2) A set decides "is it the same?" with equals() and hashCode(). String and Integer
-   do it right. For your own classes you must write both methods, otherwise two
-   "equal" objects both get into the set.
-3) Don't change a set while you loop over it with for-each: ConcurrentModificationException.
-   Use an Iterator or removeIf (see <a class="xref" href="#list">ListTheory</a>).</pre>
+<ol><li>No index and no order in a HashSet: you can't ask for "the first element".</li><li>A set decides "is it the same?" with <code>equals()</code> and <code>hashCode()</code>. String and Integer do it right. For your own classes you must write both methods, otherwise two "equal" objects both get into the set.</li><li>Don't change a set while you loop over it with for-each: ConcurrentModificationException. Use an Iterator or removeIf (see <a class="xref" href="#list">ListTheory</a>).</li></ol>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();
 names.add(<span class="t-string">"Anna"</span>);
 names.add(<span class="t-string">"anna"</span>);           <span class="t-comment">// a different string (case matters) -&gt; both are stored</span>
@@ -3291,7 +3262,6 @@ names.size();                <span class="t-comment">// 2</span></code></pre></d
 <li value="9"><a href="#set-9">List, Set или Map?</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. <a class="xref" href="#set-tasks">org.tl.collections.set</a> (SetCheatSheet, SetTasks, SetSolutions). <a class="xref" href="#set-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="set-1">
@@ -3333,7 +3303,7 @@ names.add(<span class="t-string">"Anna"</span>);     <span class="t-comment">// 
 <h2 class="group-title">Работа с элементами</h2>
 <section class="card" data-id="set-4">
 <h3>4. Проверка и удаление: contains, remove, size</h3>
-<p><code>contains(x)</code> отвечает «x есть в множестве?» и работает БЫСТРО, намного быстрее, чем list.contains на большой коллекции. <code>remove(x)</code> удаляет x (true, если он был). <code>size()</code> это количество элементов. <code>isEmpty()</code> и <code>clear()</code> работают как в List.</p>
+<ul><li><code>contains(x)</code>: «x есть в множестве?» Работает БЫСТРО, намного быстрее, чем list.contains на большой коллекции.</li><li><code>remove(x)</code>: удаляет x (true, если он был).</li><li><code>size()</code>: количество элементов.</li><li><code>isEmpty()</code> и <code>clear()</code>: работают как в List.</li></ul>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>));
 
 names.contains(<span class="t-string">"Bob"</span>);     <span class="t-comment">// true</span>
@@ -3392,12 +3362,7 @@ names.isEmpty();           <span class="t-comment">// true</span></code></pre></
 <section class="card" data-id="set-8">
 <h3>8. Нет индекса, нет порядка, equals и hashCode</h3>
 <p>Три вещи, которые нужно помнить.</p>
-<pre class="plain">1) В HashSet нет индекса и нет порядка: нельзя попросить «первый элемент».
-2) Множество решает «это то же самое?» через equals() и hashCode(). У String и Integer
-   они сделаны правильно. Для своих классов нужно написать оба метода, иначе два
-   «равных» объекта попадут в множество оба.
-3) Не меняйте множество во время обхода for-each: будет ConcurrentModificationException.
-   Используйте Iterator или removeIf (см. <a class="xref" href="#list">ListTheory</a>).</pre>
+<ol><li>В HashSet нет индекса и нет порядка: нельзя попросить «первый элемент».</li><li>Множество решает «это то же самое?» через <code>equals()</code> и <code>hashCode()</code>. У String и Integer они сделаны правильно. Для своих классов нужно написать оба метода, иначе два «равных» объекта попадут в множество оба.</li><li>Не меняйте множество во время обхода for-each: будет ConcurrentModificationException. Используйте Iterator или removeIf (см. <a class="xref" href="#list">ListTheory</a>).</li></ol>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();
 names.add(<span class="t-string">"Anna"</span>);
 names.add(<span class="t-string">"anna"</span>);           <span class="t-comment">// другая строка (регистр важен) -&gt; сохранятся обе</span>
@@ -3493,7 +3458,6 @@ names.size();                <span class="t-comment">// 2</span></code></pre></d
 <li value="7"><a href="#map-7">Keys must be unique and comparable by equals/hashCode</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see <a class="xref" href="#map-tasks">org.tl.collections.map</a> (MapCheatSheet, MapTasks, MapSolutions). <a class="xref" href="#map-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="map-1">
@@ -3651,7 +3615,6 @@ map.size();          <span class="t-comment">// 2</span></code></pre></div>
 <li value="7"><a href="#map-7">Ключи уникальны и сравниваются через equals/hashCode</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. <a class="xref" href="#map-tasks">org.tl.collections.map</a> (MapCheatSheet, MapTasks, MapSolutions). <a class="xref" href="#map-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="map-1">
@@ -3818,7 +3781,6 @@ map.size();          <span class="t-comment">// 2</span></code></pre></div>
 <li value="12"><a href="#stream-12">One use only, no terminal operation, effectively final</a></li>
 </ol></div>
 </div>
-<p class="practice">Practice: see <a class="xref" href="#stream-tasks">org.tl.streams</a> (StreamCheatSheet, StreamTasks, StreamSolutions). <a class="xref" href="#stream-tasks">Practice tasks ↓</a></p>
 </nav>
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="stream-1">
@@ -3991,12 +3953,7 @@ names.forEach(<span class="t-type">System</span>.out::println);                <
 <section class="card" data-id="stream-12">
 <h3>12. One use only, no terminal operation, effectively final</h3>
 <p>Three classic traps.</p>
-<pre class="plain">1) A stream can be used ONCE. A second use throws IllegalStateException
-   ("stream has already been operated upon or closed"). Make a new stream from the list.
-2) Without a terminal operation nothing happens. filter and map only describe the
-   conveyor; it starts when you call toList, count, forEach and so on.
-3) A lambda can only read local variables that never change (effectively final).
-   You can't count with an outside counter++ inside a lambda. Use count() or sum() instead.</pre>
+<ol><li>A stream can be used ONCE. A second use throws IllegalStateException ("stream has already been operated upon or closed"). Make a new stream from the list.</li><li>Without a terminal operation nothing happens. filter and map only describe the conveyor; it starts when you call toList, count, forEach and so on.</li><li>A lambda can only read local variables that never change (effectively final). You can't count with an outside counter++ inside a lambda. Use <code>count()</code> or <code>sum()</code> instead.</li></ol>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>);
 
 <span class="t-type">Stream</span>&lt;<span class="t-type">Integer</span>&gt; stream = totals.stream();
@@ -4111,7 +4068,6 @@ totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>);     <spa
 <li value="12"><a href="#stream-12">Один раз, нет терминальной операции, effectively final</a></li>
 </ol></div>
 </div>
-<p class="practice">Практика: см. <a class="xref" href="#stream-tasks">org.tl.streams</a> (StreamCheatSheet, StreamTasks, StreamSolutions). <a class="xref" href="#stream-tasks">Практические задачи ↓</a></p>
 </nav>
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="stream-1">
@@ -4284,12 +4240,7 @@ names.forEach(<span class="t-type">System</span>.out::println);                <
 <section class="card" data-id="stream-12">
 <h3>12. Один раз, нет терминальной операции, effectively final</h3>
 <p>Три классические ловушки.</p>
-<pre class="plain">1) Поток можно использовать ОДИН раз. Повторное использование бросает IllegalStateException
-   ("stream has already been operated upon or closed"). Создайте новый поток из списка.
-2) Без терминальной операции ничего не происходит. filter и map только описывают
-   конвейер; он запускается, когда вы вызываете toList, count, forEach и так далее.
-3) Лямбда может только читать локальные переменные, которые не меняются (effectively final).
-   Считать внешним counter++ внутри лямбды нельзя. Используйте count() или sum().</pre>
+<ol><li>Поток можно использовать ОДИН раз. Повторное использование бросает IllegalStateException ("stream has already been operated upon or closed"). Создайте новый поток из списка.</li><li>Без терминальной операции ничего не происходит. filter и map только описывают конвейер; он запускается, когда вы вызываете toList, count, forEach и так далее.</li><li>Лямбда может только читать локальные переменные, которые не меняются (effectively final). Считать внешним counter++ внутри лямбды нельзя. Используйте <code>count()</code> или <code>sum()</code>.</li></ol>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals = <span class="t-type">List</span>.of(<span class="t-number">5</span>, <span class="t-number">12</span>, <span class="t-number">8</span>);
 
 <span class="t-type">Stream</span>&lt;<span class="t-type">Integer</span>&gt; stream = totals.stream();
@@ -4420,6 +4371,7 @@ function route() {
   subbar.classList.toggle("hidden", !hasSub && !hasTasks);
   practiceLink.classList.toggle("hidden", !hasTasks);
   practiceLink.href = "#" + key + "-tasks";
+  practiceLink.classList.toggle("active", h === key + "-tasks");
   const target = h.includes("-") ? document.querySelector('.l-' + lang + ' [data-id="' + h + '"]') : null;
   if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
 }

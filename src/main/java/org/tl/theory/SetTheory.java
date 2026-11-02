@@ -96,10 +96,10 @@ public class SetTheory {
     /**
      * 4. Checking and removing: contains, remove, size
      *
-     * contains(x) answers "is x in the set?" and it is FAST, much faster than
-     * list.contains on a big collection.
-     * remove(x) deletes x (true if it was there). size() is the number of elements.
-     * isEmpty() and clear() work like in a List.
+     *   - contains(x): "is x in the set?" It is FAST, much faster than list.contains on a big collection.
+     *   - remove(x): deletes x (true if it was there).
+     *   - size(): the number of elements.
+     *   - isEmpty() and clear(): work like in a List.
      */
     static void checkAndRemove() {
         Set<String> names = new HashSet<>(List.of("Anna", "Bob", "Eve"));

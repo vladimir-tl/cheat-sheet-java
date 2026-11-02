@@ -96,10 +96,10 @@ public class SetTheory {
     /**
      * 4. Проверка и удаление: contains, remove, size
      *
-     * contains(x) отвечает «x есть в множестве?» и работает БЫСТРО, намного быстрее, чем
-     * list.contains на большой коллекции.
-     * remove(x) удаляет x (true, если он был). size() это количество элементов.
-     * isEmpty() и clear() работают как в List.
+     *   - contains(x): «x есть в множестве?» Работает БЫСТРО, намного быстрее, чем list.contains на большой коллекции.
+     *   - remove(x): удаляет x (true, если он был).
+     *   - size(): количество элементов.
+     *   - isEmpty() и clear(): работают как в List.
      */
     static void checkAndRemove() {
         Set<String> names = new HashSet<>(List.of("Anna", "Bob", "Eve"));
