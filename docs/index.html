@@ -84,6 +84,7 @@ section { scroll-margin-top: 64px; }
     <a href="#switch" data-key="switch"><span class="l-en">Switch</span><span class="l-ru">Switch</span></a>
     <a href="#array" data-key="array"><span class="l-en">Arrays</span><span class="l-ru">Массивы</span></a>
     <a href="#list" data-key="list"><span class="l-en">List</span><span class="l-ru">List</span></a>
+    <a href="#set" data-key="set"><span class="l-en">Set and HashSet</span><span class="l-ru">Set и HashSet</span></a>
     <a href="#map" data-key="map"><span class="l-en">Map</span><span class="l-ru">Map</span></a>
     <a href="#primitivesandwrappers" data-key="primitivesandwrappers"><span class="l-en">Primitives and wrapper classes</span><span class="l-ru">Примитивы и классы-обёртки</span></a>
   </div>
@@ -1680,6 +1681,9 @@ list.add(<span class="t-string">"d"</span>);                                    
 <li value="9"><a href="#list-9"><code>remove(int)</code> or <code>remove(Object)</code>?</a></li>
 <li value="10"><a href="#list-10">IndexOutOfBoundsException</a></li>
 </ol></div>
+<div class="group"><h4>Summary</h4><ol>
+<li value="11"><a href="#list-11">All basic methods in one table</a></li>
+</ol></div>
 </div>
 <p class="practice">Practice: see org.tl.collections.list (ListCheatSheet, ListTasks, ListSolutions).</p>
 </nav>
@@ -1807,6 +1811,41 @@ names.get(names.size() - <span class="t-number">1</span>);    <span class="t-com
 <span class="t-comment">// names.get(3);                // IndexOutOfBoundsException: Index 3 out of bounds for length 3</span>
 <span class="t-comment">// new ArrayList&lt;String&gt;().get(0); // the same for an empty list</span></code></pre></div>
 </section>
+<h2 class="group-title">Summary</h2>
+<section class="card" data-id="list-11">
+<h3>11. All basic methods in one table</h3>
+<pre class="plain">  Method              | What it does
+  --------------------|----------------------------------------
+  add(value)          | Add an element (to the end)
+  get(index)          | Get an element
+  set(index, value)   | Replace an element
+  remove(index)       | Remove by index
+  remove(value)       | Remove by value
+  size()              | Get the number of elements
+  contains(value)     | Check that the element is in the list
+  isEmpty()           | Check that the list is empty
+  clear()             | Remove all elements
+  indexOf(value)      | Find the index of an element (-1 if not found)</pre>
+<p>With <code>List&lt;Integer&gt;</code> remember the trap from section 9: <code>remove(1)</code> is an INDEX.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+
+names.add(<span class="t-string">"Anna"</span>);          <span class="t-comment">// [Anna]</span>
+names.add(<span class="t-string">"Bob"</span>);           <span class="t-comment">// [Anna, Bob]</span>
+names.add(<span class="t-string">"Eve"</span>);           <span class="t-comment">// [Anna, Bob, Eve]</span>
+
+names.get(<span class="t-number">0</span>);               <span class="t-comment">// "Anna"</span>
+names.set(<span class="t-number">1</span>, <span class="t-string">"Alex"</span>);       <span class="t-comment">// [Anna, Alex, Eve]</span>
+names.remove(<span class="t-number">0</span>);            <span class="t-comment">// by index: [Alex, Eve]</span>
+names.remove(<span class="t-string">"Eve"</span>);        <span class="t-comment">// by value: [Alex]</span>
+
+names.size();               <span class="t-comment">// 1</span>
+names.contains(<span class="t-string">"Alex"</span>);     <span class="t-comment">// true</span>
+names.isEmpty();            <span class="t-comment">// false</span>
+names.indexOf(<span class="t-string">"Alex"</span>);      <span class="t-comment">// 0</span>
+names.indexOf(<span class="t-string">"Zed"</span>);       <span class="t-comment">// -1: not found</span>
+
+names.clear();              <span class="t-comment">// []</span></code></pre></div>
+</section>
 </div>
 <div class="l-ru">
 <h1>List</h1>
@@ -1827,6 +1866,9 @@ names.get(names.size() - <span class="t-number">1</span>);    <span class="t-com
 <div class="group"><h4>Ловушки</h4><ol>
 <li value="9"><a href="#list-9"><code>remove(int)</code> или <code>remove(Object)</code>?</a></li>
 <li value="10"><a href="#list-10">IndexOutOfBoundsException</a></li>
+</ol></div>
+<div class="group"><h4>Итог</h4><ol>
+<li value="11"><a href="#list-11">Все базовые методы в одной таблице</a></li>
 </ol></div>
 </div>
 <p class="practice">Практика: см. org.tl.collections.list (ListCheatSheet, ListTasks, ListSolutions).</p>
@@ -1955,6 +1997,349 @@ names.get(names.size() - <span class="t-number">1</span>);    <span class="t-com
 <span class="t-comment">// names.get(3);                // IndexOutOfBoundsException: Index 3 out of bounds for length 3</span>
 <span class="t-comment">// new ArrayList&lt;String&gt;().get(0); // то же для пустого списка</span></code></pre></div>
 </section>
+<h2 class="group-title">Итог</h2>
+<section class="card" data-id="list-11">
+<h3>11. Все базовые методы в одной таблице</h3>
+<pre class="plain">  Метод               | Что делает
+  --------------------|----------------------------------------
+  add(value)          | Добавить элемент (в конец)
+  get(index)          | Получить элемент
+  set(index, value)   | Заменить элемент
+  remove(index)       | Удалить по индексу
+  remove(value)       | Удалить по значению
+  size()              | Узнать количество элементов
+  contains(value)     | Проверить наличие элемента
+  isEmpty()           | Проверить, пуст ли список
+  clear()             | Удалить все элементы
+  indexOf(value)      | Найти индекс элемента (-1, если его нет)</pre>
+<p>Со списком <code>List&lt;Integer&gt;</code> помните ловушку из раздела 9: <code>remove(1)</code> это ИНДЕКС.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+
+names.add(<span class="t-string">"Anna"</span>);          <span class="t-comment">// [Anna]</span>
+names.add(<span class="t-string">"Bob"</span>);           <span class="t-comment">// [Anna, Bob]</span>
+names.add(<span class="t-string">"Eve"</span>);           <span class="t-comment">// [Anna, Bob, Eve]</span>
+
+names.get(<span class="t-number">0</span>);               <span class="t-comment">// "Anna"</span>
+names.set(<span class="t-number">1</span>, <span class="t-string">"Alex"</span>);       <span class="t-comment">// [Anna, Alex, Eve]</span>
+names.remove(<span class="t-number">0</span>);            <span class="t-comment">// по индексу: [Alex, Eve]</span>
+names.remove(<span class="t-string">"Eve"</span>);        <span class="t-comment">// по значению: [Alex]</span>
+
+names.size();               <span class="t-comment">// 1</span>
+names.contains(<span class="t-string">"Alex"</span>);     <span class="t-comment">// true</span>
+names.isEmpty();            <span class="t-comment">// false</span>
+names.indexOf(<span class="t-string">"Alex"</span>);      <span class="t-comment">// 0</span>
+names.indexOf(<span class="t-string">"Zed"</span>);       <span class="t-comment">// -1: not found</span>
+
+names.clear();              <span class="t-comment">// []</span></code></pre></div>
+</section>
+</div>
+</div>
+<div class="topic" data-key="set">
+<div class="l-en">
+<h1>Set and HashSet</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Basics</h4><ol>
+<li value="1"><a href="#set-1">What a Set is</a></li>
+<li value="2"><a href="#set-2">Creating a set</a></li>
+<li value="3"><a href="#set-3">Adding: duplicates are ignored</a></li>
+</ol></div>
+<div class="group"><h4>Working with elements</h4><ol>
+<li value="4"><a href="#set-4">Checking and removing: contains, remove, size</a></li>
+<li value="5"><a href="#set-5">Removing duplicates from a list</a></li>
+<li value="6"><a href="#set-6">Looping over a set</a></li>
+</ol></div>
+<div class="group"><h4>Kinds of Set</h4><ol>
+<li value="7"><a href="#set-7">HashSet, LinkedHashSet, TreeSet</a></li>
+</ol></div>
+<div class="group"><h4>Traps</h4><ol>
+<li value="8"><a href="#set-8">No index, no order, equals and hashCode</a></li>
+</ol></div>
+<div class="group"><h4>Choosing</h4><ol>
+<li value="9"><a href="#set-9">List, Set or Map?</a></li>
+</ol></div>
+</div>
+<p class="practice">Practice: see org.tl.collections.set (SetCheatSheet, SetTasks, SetSolutions).</p>
+</nav>
+<h2 class="group-title">Basics</h2>
+<section class="card" data-id="set-1">
+<h3>1. What a Set is</h3>
+<p>A Set is a collection of UNIQUE elements: the same value can be in it only once. It is good for two things: getting rid of duplicates and quickly checking whether a value is present.</p>
+<p>Think of a guest list at the door: a name is either on the list or not. Writing the same name twice changes nothing.</p>
+<p>A Set has no indexes: there is no <code>set.get(0)</code>. HashSet is the most common Set.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// Added: Anna, Bob, Anna, Eve, Bob</span>
+<span class="t-comment">// The set holds: Anna, Bob, Eve   (every name once, in any order)</span></code></pre></div>
+</section>
+<section class="card" data-id="set-2">
+<h3>2. Creating a set</h3>
+<pre class="plain">  - Empty, fill it later: new HashSet&lt;&gt;().
+  - From another collection: new HashSet&lt;&gt;(list). Duplicates disappear on the way.
+  - Fixed items that can NOT be changed: Set.of(...). It throws an exception if you
+    give it the same value twice.</pre>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// 1. Empty</span>
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();                      <span class="t-comment">// {}</span>
+
+<span class="t-comment">// 2. From a list</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list = <span class="t-type">List</span>.of(<span class="t-string">"a"</span>, <span class="t-string">"b"</span>, <span class="t-string">"a"</span>);
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; fromList = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;(list);               <span class="t-comment">// {a, b}</span>
+
+<span class="t-comment">// 3. Fixed, NOT changeable</span>
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; fixed = <span class="t-type">Set</span>.of(<span class="t-string">"Mon"</span>, <span class="t-string">"Tue"</span>);                 <span class="t-comment">// {Mon, Tue}</span>
+<span class="t-comment">// fixed.add("Wed");                                      // UnsupportedOperationException</span>
+<span class="t-comment">// Set.of("a", "a");                                      // IllegalArgumentException: duplicate element</span></code></pre></div>
+</section>
+<section class="card" data-id="set-3">
+<h3>3. Adding: duplicates are ignored</h3>
+<pre class="plain">add(x) puts x into the set and returns a boolean:
+  true  - the value was new and was added
+  false - the value was already there, nothing changed</pre>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();
+
+names.add(<span class="t-string">"Anna"</span>);     <span class="t-comment">// true,  {Anna}</span>
+names.add(<span class="t-string">"Bob"</span>);      <span class="t-comment">// true,  {Anna, Bob}</span>
+names.add(<span class="t-string">"Anna"</span>);     <span class="t-comment">// false, Anna is already there: still {Anna, Bob}</span>
+
+<span class="t-type">System</span>.out.println(names.size());   <span class="t-comment">// 2, not 3</span></code></pre></div>
+</section>
+<h2 class="group-title">Working with elements</h2>
+<section class="card" data-id="set-4">
+<h3>4. Checking and removing: contains, remove, size</h3>
+<p><code>contains(x)</code> answers "is x in the set?" and it is FAST, much faster than list.contains on a big collection. <code>remove(x)</code> deletes x (true if it was there). <code>size()</code> is the number of elements. <code>isEmpty()</code> and <code>clear()</code> work like in a List.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>));
+
+names.contains(<span class="t-string">"Bob"</span>);     <span class="t-comment">// true</span>
+names.contains(<span class="t-string">"Zed"</span>);     <span class="t-comment">// false</span>
+
+names.remove(<span class="t-string">"Bob"</span>);       <span class="t-comment">// true,  {Anna, Eve}</span>
+names.remove(<span class="t-string">"Zed"</span>);       <span class="t-comment">// false, nothing to remove</span>
+names.size();              <span class="t-comment">// 2</span>
+
+names.clear();             <span class="t-comment">// {}</span>
+names.isEmpty();           <span class="t-comment">// true</span></code></pre></div>
+</section>
+<section class="card" data-id="set-5">
+<h3>5. Removing duplicates from a list</h3>
+<p>The classic use of a Set. Put the list into a HashSet: the duplicates vanish. If you need a list again, copy the set back into an ArrayList.</p>
+<p>To keep the original order of the first appearances use LinkedHashSet (see 7).</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-type">List</span>.of(<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">2</span>, <span class="t-number">3</span>, <span class="t-number">3</span>, <span class="t-number">3</span>);
+
+<span class="t-type">Set</span>&lt;<span class="t-type">Integer</span>&gt; unique = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;(numbers);                    <span class="t-comment">// {1, 2, 3}</span>
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; withoutDuplicates = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(unique);       <span class="t-comment">// [1, 2, 3]</span>
+
+<span class="t-comment">// How many different values are there?</span>
+<span class="t-type">System</span>.out.println(unique.size());                               <span class="t-comment">// 3</span>
+
+<span class="t-comment">// Are there duplicates at all?</span>
+<span class="t-kw">boolean</span> hasDuplicates = numbers.size() != unique.size();         <span class="t-comment">// true</span></code></pre></div>
+</section>
+<section class="card" data-id="set-6">
+<h3>6. Looping over a set</h3>
+<p>A Set has no indexes, so use for-each (see ForTheory). The order of the elements in a HashSet is not guaranteed.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>));
+
+<span class="t-kw">for</span> (<span class="t-type">String</span> name : names) {
+    <span class="t-type">System</span>.out.println(name);      <span class="t-comment">// all three, in any order</span>
+}
+
+<span class="t-comment">// for (int i = 0; i &lt; names.size(); i++) { names.get(i) }  // does not compile: no get(i)</span></code></pre></div>
+</section>
+<h2 class="group-title">Kinds of Set</h2>
+<section class="card" data-id="set-7">
+<h3>7. HashSet, LinkedHashSet, TreeSet</h3>
+<p>All three are used the same way. The difference is the order of the elements.</p>
+<pre class="plain">  HashSet         - no guaranteed order. The default choice, the fastest.
+  LinkedHashSet   - keeps the insertion order.
+  TreeSet         - keeps the elements sorted (A to Z, smallest to largest).</pre>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; hash = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; linked = <span class="t-kw">new</span> <span class="t-type">LinkedHashSet</span>&lt;&gt;();
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; tree = <span class="t-kw">new</span> <span class="t-type">TreeSet</span>&lt;&gt;();
+
+<span class="t-comment">// After add("Bob"), add("Anna"), add("Eve"):</span>
+<span class="t-comment">//   HashSet:       any order</span>
+<span class="t-comment">//   LinkedHashSet: [Bob, Anna, Eve]</span>
+<span class="t-comment">//   TreeSet:       [Anna, Bob, Eve]</span></code></pre></div>
+</section>
+<h2 class="group-title">Traps</h2>
+<section class="card" data-id="set-8">
+<h3>8. No index, no order, equals and hashCode</h3>
+<p>Three things to remember.</p>
+<pre class="plain">1) No index and no order in a HashSet: you can't ask for "the first element".
+2) A set decides "is it the same?" with equals() and hashCode(). String and Integer
+   do it right. For your own classes you must write both methods, otherwise two
+   "equal" objects both get into the set.
+3) Don't change a set while you loop over it with for-each: ConcurrentModificationException.
+   Use an Iterator or removeIf (see ListTheory).</pre>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();
+names.add(<span class="t-string">"Anna"</span>);
+names.add(<span class="t-string">"anna"</span>);           <span class="t-comment">// a different string (case matters) -&gt; both are stored</span>
+names.size();                <span class="t-comment">// 2</span></code></pre></div>
+</section>
+<h2 class="group-title">Choosing</h2>
+<section class="card" data-id="set-9">
+<h3>9. List, Set or Map?</h3>
+<pre class="plain">  List - ordered, access by index, duplicates allowed.
+         "A queue of people": the order and repeats matter.
+  Set  - unique elements, fast "is it there?", no index.
+         "A guest list": only presence matters.
+  Map  - pairs key -&gt; value, find a value by its key.
+         "A phone book": name -&gt; number.</pre>
+<p>Technically List and Set belong to the Collection family (they have add, remove, contains, size). Map is a separate interface and does not extend Collection (see MapTheory).</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; queue = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();   <span class="t-comment">// order and duplicates matter</span>
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; guests = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();     <span class="t-comment">// only "is this name here?" matters</span></code></pre></div>
+</section>
+</div>
+<div class="l-ru">
+<h1>Set и HashSet</h1>
+<p class="lead">Короткие примеры. Скопируйте любой из них в метод main и запустите.</p>
+<nav class="card contents"><h2>Содержание</h2><div class="cols">
+<div class="group"><h4>Основы</h4><ol>
+<li value="1"><a href="#set-1">Что такое Set</a></li>
+<li value="2"><a href="#set-2">Создание множества</a></li>
+<li value="3"><a href="#set-3">Добавление: дубликаты игнорируются</a></li>
+</ol></div>
+<div class="group"><h4>Работа с элементами</h4><ol>
+<li value="4"><a href="#set-4">Проверка и удаление: contains, remove, size</a></li>
+<li value="5"><a href="#set-5">Удаление дубликатов из списка</a></li>
+<li value="6"><a href="#set-6">Обход множества циклом</a></li>
+</ol></div>
+<div class="group"><h4>Виды Set</h4><ol>
+<li value="7"><a href="#set-7">HashSet, LinkedHashSet, TreeSet</a></li>
+</ol></div>
+<div class="group"><h4>Ловушки</h4><ol>
+<li value="8"><a href="#set-8">Нет индекса, нет порядка, equals и hashCode</a></li>
+</ol></div>
+<div class="group"><h4>Выбор</h4><ol>
+<li value="9"><a href="#set-9">List, Set или Map?</a></li>
+</ol></div>
+</div>
+<p class="practice">Практика: см. org.tl.collections.set (SetCheatSheet, SetTasks, SetSolutions).</p>
+</nav>
+<h2 class="group-title">Основы</h2>
+<section class="card" data-id="set-1">
+<h3>1. Что такое Set</h3>
+<p>Set это коллекция УНИКАЛЬНЫХ элементов: одно и то же значение в ней может быть только один раз. Она хороша для двух вещей: избавляться от дубликатов и быстро проверять, есть ли значение.</p>
+<p>Представьте список гостей у входа: имя либо есть в списке, либо нет. Если записать одно имя дважды, ничего не изменится.</p>
+<p>У Set нет индексов: <code>set.get(0)</code> не существует. HashSet это самый частый вид Set.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// Добавили: Anna, Bob, Anna, Eve, Bob</span>
+<span class="t-comment">// В множестве: Anna, Bob, Eve   (каждое имя один раз, в любом порядке)</span></code></pre></div>
+</section>
+<section class="card" data-id="set-2">
+<h3>2. Создание множества</h3>
+<pre class="plain">  - Пустое, заполнить позже: new HashSet&lt;&gt;().
+  - Из другой коллекции: new HashSet&lt;&gt;(list). Дубликаты исчезают по пути.
+  - Фиксированные элементы, которые НЕЛЬЗЯ менять: Set.of(...). Если дать ему
+    одно значение дважды, он бросит исключение.</pre>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// 1. Пустое</span>
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();                      <span class="t-comment">// {}</span>
+
+<span class="t-comment">// 2. Из списка</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; list = <span class="t-type">List</span>.of(<span class="t-string">"a"</span>, <span class="t-string">"b"</span>, <span class="t-string">"a"</span>);
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; fromList = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;(list);               <span class="t-comment">// {a, b}</span>
+
+<span class="t-comment">// 3. Фиксированное, НЕизменяемое</span>
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; fixed = <span class="t-type">Set</span>.of(<span class="t-string">"Mon"</span>, <span class="t-string">"Tue"</span>);                 <span class="t-comment">// {Mon, Tue}</span>
+<span class="t-comment">// fixed.add("Wed");                                      // UnsupportedOperationException</span>
+<span class="t-comment">// Set.of("a", "a");                                      // IllegalArgumentException: duplicate element</span></code></pre></div>
+</section>
+<section class="card" data-id="set-3">
+<h3>3. Добавление: дубликаты игнорируются</h3>
+<pre class="plain">add(x) кладёт x в множество и возвращает boolean:
+  true  - значение было новым и добавилось
+  false - значение уже было, ничего не изменилось</pre>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();
+
+names.add(<span class="t-string">"Anna"</span>);     <span class="t-comment">// true,  {Anna}</span>
+names.add(<span class="t-string">"Bob"</span>);      <span class="t-comment">// true,  {Anna, Bob}</span>
+names.add(<span class="t-string">"Anna"</span>);     <span class="t-comment">// false, Anna уже есть: по-прежнему {Anna, Bob}</span>
+
+<span class="t-type">System</span>.out.println(names.size());   <span class="t-comment">// 2, а не 3</span></code></pre></div>
+</section>
+<h2 class="group-title">Работа с элементами</h2>
+<section class="card" data-id="set-4">
+<h3>4. Проверка и удаление: contains, remove, size</h3>
+<p><code>contains(x)</code> отвечает «x есть в множестве?» и работает БЫСТРО, намного быстрее, чем list.contains на большой коллекции. <code>remove(x)</code> удаляет x (true, если он был). <code>size()</code> это количество элементов. <code>isEmpty()</code> и <code>clear()</code> работают как в List.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>));
+
+names.contains(<span class="t-string">"Bob"</span>);     <span class="t-comment">// true</span>
+names.contains(<span class="t-string">"Zed"</span>);     <span class="t-comment">// false</span>
+
+names.remove(<span class="t-string">"Bob"</span>);       <span class="t-comment">// true,  {Anna, Eve}</span>
+names.remove(<span class="t-string">"Zed"</span>);       <span class="t-comment">// false, удалять нечего</span>
+names.size();              <span class="t-comment">// 2</span>
+
+names.clear();             <span class="t-comment">// {}</span>
+names.isEmpty();           <span class="t-comment">// true</span></code></pre></div>
+</section>
+<section class="card" data-id="set-5">
+<h3>5. Удаление дубликатов из списка</h3>
+<p>Классическое применение Set. Положите список в HashSet: дубликаты исчезнут. Если снова нужен список, скопируйте множество обратно в ArrayList.</p>
+<p>Чтобы сохранить исходный порядок первых появлений, используйте LinkedHashSet (см. 7).</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-type">List</span>.of(<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">2</span>, <span class="t-number">3</span>, <span class="t-number">3</span>, <span class="t-number">3</span>);
+
+<span class="t-type">Set</span>&lt;<span class="t-type">Integer</span>&gt; unique = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;(numbers);                    <span class="t-comment">// {1, 2, 3}</span>
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; withoutDuplicates = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(unique);       <span class="t-comment">// [1, 2, 3]</span>
+
+<span class="t-comment">// Сколько разных значений?</span>
+<span class="t-type">System</span>.out.println(unique.size());                               <span class="t-comment">// 3</span>
+
+<span class="t-comment">// Есть ли вообще дубликаты?</span>
+<span class="t-kw">boolean</span> hasDuplicates = numbers.size() != unique.size();         <span class="t-comment">// true</span></code></pre></div>
+</section>
+<section class="card" data-id="set-6">
+<h3>6. Обход множества циклом</h3>
+<p>У Set нет индексов, поэтому используйте for-each (см. ForTheory). Порядок элементов в HashSet не гарантирован.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Anna"</span>, <span class="t-string">"Bob"</span>, <span class="t-string">"Eve"</span>));
+
+<span class="t-kw">for</span> (<span class="t-type">String</span> name : names) {
+    <span class="t-type">System</span>.out.println(name);      <span class="t-comment">// все три, в любом порядке</span>
+}
+
+<span class="t-comment">// for (int i = 0; i &lt; names.size(); i++) { names.get(i) }  // не компилируется: нет get(i)</span></code></pre></div>
+</section>
+<h2 class="group-title">Виды Set</h2>
+<section class="card" data-id="set-7">
+<h3>7. HashSet, LinkedHashSet, TreeSet</h3>
+<p>Все три используются одинаково. Разница в порядке элементов.</p>
+<pre class="plain">  HashSet         - порядок не гарантирован. Выбор по умолчанию, самый быстрый.
+  LinkedHashSet   - сохраняет порядок добавления.
+  TreeSet         - хранит элементы отсортированными (от A до Z, от меньшего к большему).</pre>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; hash = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; linked = <span class="t-kw">new</span> <span class="t-type">LinkedHashSet</span>&lt;&gt;();
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; tree = <span class="t-kw">new</span> <span class="t-type">TreeSet</span>&lt;&gt;();
+
+<span class="t-comment">// После add("Bob"), add("Anna"), add("Eve"):</span>
+<span class="t-comment">//   HashSet:       любой порядок</span>
+<span class="t-comment">//   LinkedHashSet: [Bob, Anna, Eve]</span>
+<span class="t-comment">//   TreeSet:       [Anna, Bob, Eve]</span></code></pre></div>
+</section>
+<h2 class="group-title">Ловушки</h2>
+<section class="card" data-id="set-8">
+<h3>8. Нет индекса, нет порядка, equals и hashCode</h3>
+<p>Три вещи, которые нужно помнить.</p>
+<pre class="plain">1) В HashSet нет индекса и нет порядка: нельзя попросить «первый элемент».
+2) Множество решает «это то же самое?» через equals() и hashCode(). У String и Integer
+   они сделаны правильно. Для своих классов нужно написать оба метода, иначе два
+   «равных» объекта попадут в множество оба.
+3) Не меняйте множество во время обхода for-each: будет ConcurrentModificationException.
+   Используйте Iterator или removeIf (см. ListTheory).</pre>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();
+names.add(<span class="t-string">"Anna"</span>);
+names.add(<span class="t-string">"anna"</span>);           <span class="t-comment">// другая строка (регистр важен) -&gt; сохранятся обе</span>
+names.size();                <span class="t-comment">// 2</span></code></pre></div>
+</section>
+<h2 class="group-title">Выбор</h2>
+<section class="card" data-id="set-9">
+<h3>9. List, Set или Map?</h3>
+<pre class="plain">  List - упорядочен, доступ по индексу, дубликаты разрешены.
+         «Очередь людей»: важны порядок и повторы.
+  Set  - уникальные элементы, быстрое «есть ли он?», нет индекса.
+         «Список гостей»: важно только наличие.
+  Map  - пары ключ -&gt; значение, значение находят по ключу.
+         «Телефонная книга»: имя -&gt; номер.</pre>
+<p>Технически List и Set относятся к семейству Collection (у них есть add, remove, contains, size). Map это отдельный интерфейс и он не наследует Collection (см. MapTheory).</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; queue = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();   <span class="t-comment">// порядок и дубликаты важны</span>
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; guests = <span class="t-kw">new</span> <span class="t-type">HashSet</span>&lt;&gt;();     <span class="t-comment">// важно только «есть ли здесь это имя?»</span></code></pre></div>
+</section>
 </div>
 </div>
 <div class="topic" data-key="map">
@@ -1986,9 +2371,14 @@ names.get(names.size() - <span class="t-number">1</span>);    <span class="t-com
 <p>A Map stores key <code>-&gt;</code> value pairs, like a dictionary. You find a value by its key. Keys are unique. Values can repeat. Lookup by key is fast.</p>
 <p>Generics: <code>Map&lt;KeyType, ValueType&gt;</code>. Primitives need wrappers: <code>Map&lt;String, Integer&gt;</code>, not <code>Map&lt;String, int&gt;</code> (see PrimitivesAndWrappersTheory).</p>
 <p>Map is not a List: there are no indexes and you can't write <code>map.get(0)</code>.</p>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// "Anna" -&gt; 25</span>
-<span class="t-comment">// "Bob"  -&gt; 30</span>
-<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();</code></pre></div>
+<p>Technically Map is a separate interface: it does NOT extend Collection (List and Set do). That is why a Map has no <code>add(x)</code> (there is <code>put(key, value)</code>) and you can't loop over it directly (see section 6).</p>
+<p>A typical example: an employee name and the salary of this employee.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// Employee name -&gt; salary:</span>
+<span class="t-comment">//   "Anna" -&gt; 3000</span>
+<span class="t-comment">//   "Bob"  -&gt; 2500</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; salaries = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+salaries.put(<span class="t-string">"Anna"</span>, <span class="t-number">3000</span>);
+salaries.put(<span class="t-string">"Bob"</span>, <span class="t-number">2500</span>);</code></pre></div>
 </section>
 <section class="card" data-id="map-2">
 <h3>2. Put and get</h3>
@@ -2105,9 +2495,14 @@ map.size();          <span class="t-comment">// 2</span></code></pre></div>
 <p>Map хранит пары ключ <code>-&gt;</code> значение, как словарь. Значение находят по ключу. Ключи уникальны. Значения могут повторяться. Поиск по ключу быстрый.</p>
 <p>Generics: <code>Map&lt;ТипКлюча, ТипЗначения&gt;</code>. Примитивам нужны обёртки: <code>Map&lt;String, Integer&gt;</code>, а не <code>Map&lt;String, int&gt;</code> (см. PrimitivesAndWrappersTheory).</p>
 <p>Map это не List: индексов нет, и <code>map.get(0)</code> писать нельзя.</p>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// "Anna" -&gt; 25</span>
-<span class="t-comment">// "Bob"  -&gt; 30</span>
-<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();</code></pre></div>
+<p>Технически Map это отдельный интерфейс: он НЕ наследует Collection (а List и Set наследуют). Поэтому у Map нет <code>add(x)</code> (есть <code>put(key, value)</code>), и по нему нельзя пройти циклом напрямую (см. раздел 6).</p>
+<p>Типичный пример: имя сотрудника и его зарплата.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// Employee name -&gt; salary:</span>
+<span class="t-comment">//   "Anna" -&gt; 3000</span>
+<span class="t-comment">//   "Bob"  -&gt; 2500</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; salaries = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+salaries.put(<span class="t-string">"Anna"</span>, <span class="t-number">3000</span>);
+salaries.put(<span class="t-string">"Bob"</span>, <span class="t-number">2500</span>);</code></pre></div>
 </section>
 <section class="card" data-id="map-2">
 <h3>2. Положить и получить: put и get</h3>

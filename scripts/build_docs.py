@@ -15,7 +15,7 @@ SRC = {"en": ROOT / "src/main/java/org/tl/theory",
 OUT = ROOT / "docs/index.html"
 
 # Order of the tabs. Theory files not listed here are added at the end.
-ORDER = ["ForTheory", "WhileTheory", "IfElseTheory", "SwitchTheory", "ArrayTheory", "ListTheory", "MapTheory",
+ORDER = ["ForTheory", "WhileTheory", "IfElseTheory", "SwitchTheory", "ArrayTheory", "ListTheory", "SetTheory", "MapTheory",
          "PrimitivesAndWrappersTheory"]
 
 KEYWORDS = set("""abstract boolean break byte case catch char class continue default do double else enum

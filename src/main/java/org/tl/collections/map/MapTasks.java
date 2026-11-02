@@ -5,8 +5,9 @@ import java.util.Map;
 /**
  * PRACTICE TASKS: Map
  *
- * Implement the methods and check them in main. Solutions are in MapSolutions.java;
- * peek only after you've tried.
+ * You work in the support team of an online music store. Every task is a small
+ * situation from work. Implement the methods and check them in main.
+ * Solutions are in MapSolutions.java; peek only after you've tried.
  */
 public class MapTasks {
 
@@ -14,31 +15,54 @@ public class MapTasks {
         // check your solutions here
     }
 
-    /** 1. Create a Map<String, Integer> with three names and their ages, and return it. */
+    /**
+     * Ticket 1. Customer cards
+     * The CRM stores a customer name and the age of the customer. Create a Map<String, Integer>
+     * with three customers and their ages and return it.
+     */
     static Map<String, Integer> task1() {
         return null;
     }
 
-    /** 2. Return the value for the given key, or -1 if the key is missing. */
+    /**
+     * Ticket 2. Lookup in the CRM
+     * A customer calls and gives their name. Return the age stored for this name,
+     * or -1 if there is no such customer.
+     */
     static int task2(Map<String, Integer> map, String key) {
         return 0;
     }
 
-    /** 3. Check whether the map contains the given key. */
+    /**
+     * Ticket 3. Is the customer registered?
+     * Return true if the map has a card for the given name.
+     */
     static boolean task3(Map<String, Integer> map, String key) {
         return false;
     }
 
-    /** 4. Print all key-value pairs as "key=value". */
+    /**
+     * Ticket 4. List for the manager
+     * The manager wants to see all customer cards. Print every pair as "name=age",
+     * each on its own line.
+     */
     static void task4(Map<String, Integer> map) {
     }
 
-    /** 5. Return the sum of all values. */
+    /**
+     * Ticket 5. Total of the order
+     * The map holds the products of an order and their prices. Return the total price
+     * (the sum of all values).
+     */
     static int task5(Map<String, Integer> map) {
         return 0;
     }
 
-    /** 6. Count how many times each character appears in a string. "aab" -> {a=2, b=1}. */
+    /**
+     * Ticket 6. Typo statistics
+     * The quality team studies the messages of customers. Count how many times every character
+     * appears in the text. "aab" -> {a=2, b=1}.
+     */
     static Map<Character, Integer> task6(String s) {
         return null;
     }

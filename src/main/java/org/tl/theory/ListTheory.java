@@ -28,6 +28,9 @@ import java.util.List;
  *   9. remove(int) or remove(Object)?
  *   10. IndexOutOfBoundsException
  *
+ * Summary
+ *   11. All basic methods in one table
+ *
  * Practice: see org.tl.collections.list (ListCheatSheet, ListTasks, ListSolutions).
  */
 public class ListTheory {
@@ -216,5 +219,44 @@ public class ListTheory {
         names.get(names.size() - 1);    // "Eve", the same
         // names.get(3);                // IndexOutOfBoundsException: Index 3 out of bounds for length 3
         // new ArrayList<String>().get(0); // the same for an empty list
+    }
+
+    /**
+     * 11. All basic methods in one table
+     *
+     *   Method              | What it does
+     *   --------------------|----------------------------------------
+     *   add(value)          | Add an element (to the end)
+     *   get(index)          | Get an element
+     *   set(index, value)   | Replace an element
+     *   remove(index)       | Remove by index
+     *   remove(value)       | Remove by value
+     *   size()              | Get the number of elements
+     *   contains(value)     | Check that the element is in the list
+     *   isEmpty()           | Check that the list is empty
+     *   clear()             | Remove all elements
+     *   indexOf(value)      | Find the index of an element (-1 if not found)
+     *
+     * With List<Integer> remember the trap from section 9: remove(1) is an INDEX.
+     */
+    static void allMethods() {
+        List<String> names = new ArrayList<>();
+
+        names.add("Anna");          // [Anna]
+        names.add("Bob");           // [Anna, Bob]
+        names.add("Eve");           // [Anna, Bob, Eve]
+
+        names.get(0);               // "Anna"
+        names.set(1, "Alex");       // [Anna, Alex, Eve]
+        names.remove(0);            // by index: [Alex, Eve]
+        names.remove("Eve");        // by value: [Alex]
+
+        names.size();               // 1
+        names.contains("Alex");     // true
+        names.isEmpty();            // false
+        names.indexOf("Alex");      // 0
+        names.indexOf("Zed");       // -1: not found
+
+        names.clear();              // []
     }
 }

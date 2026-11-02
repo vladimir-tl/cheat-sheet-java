@@ -30,7 +30,7 @@ The Java cheat sheets, tasks and solutions have English comments only; the langu
 ```
 src/main/java/org/tl/
   theory/                      theory in the style of a cheat sheet: contents + numbered sections
-    ForTheory, WhileTheory, IfElseTheory, SwitchTheory, ArrayTheory, ListTheory, MapTheory, PrimitivesAndWrappersTheory
+    ForTheory, WhileTheory, IfElseTheory, SwitchTheory, ArrayTheory, ListTheory, SetTheory, MapTheory, PrimitivesAndWrappersTheory
     ru/                        the same files in Russian
   loops/
     forloop/                   ForCheatSheet, ForTasks, ForSolutions
@@ -41,6 +41,7 @@ src/main/java/org/tl/
   arrays/                      ArrayCheatSheet, ArrayTasks, ArraySolutions
   collections/
     list/                      ListCheatSheet, ListTasks, ListSolutions
+    set/                       SetCheatSheet, SetTasks, SetSolutions
     map/                       MapCheatSheet, MapTasks, MapSolutions
   types/                       PrimitivesAndWrappersCheatSheet
 docs/index.html                theory page (generated)
@@ -53,7 +54,7 @@ Every topic has the same files:
 |---------------------|---------------------------------------------------------------------------|
 | `*Theory`           | Theory with a table of contents. Read it, nothing to run.                 |
 | `*CheatSheet`       | Runnable code examples with comments.                                     |
-| `*Tasks`            | Practice tasks: empty methods that you implement.                         |
+| `*Tasks`            | Practice tasks as small support tickets of an online music store: empty methods that you implement. |
 | `*Solutions`        | Solutions. Look only after you have tried.                                |
 
 ## Requirements
@@ -85,6 +86,7 @@ java -cp out org.tl.conditions.ifelse.IfElseCheatSheet
 java -cp out org.tl.conditions.switchcase.SwitchCheatSheet
 java -cp out org.tl.arrays.ArrayCheatSheet
 java -cp out org.tl.collections.list.ListCheatSheet
+java -cp out org.tl.collections.set.SetCheatSheet
 java -cp out org.tl.collections.map.MapCheatSheet
 java -cp out org.tl.types.PrimitivesAndWrappersCheatSheet
 ```

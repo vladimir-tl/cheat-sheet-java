@@ -41,11 +41,20 @@ public class MapTheory {
      * а не Map<String, int> (см. PrimitivesAndWrappersTheory).
      *
      * Map это не List: индексов нет, и map.get(0) писать нельзя.
+     *
+     * Технически Map это отдельный интерфейс: он НЕ наследует Collection (а List и Set наследуют).
+     * Поэтому у Map нет add(x) (есть put(key, value)), и по нему нельзя пройти циклом
+     * напрямую (см. раздел 6).
+     *
+     * Типичный пример: имя сотрудника и его зарплата.
      */
     static void whatIsMap() {
-        // "Anna" -> 25
-        // "Bob"  -> 30
-        Map<String, Integer> ages = new HashMap<>();
+        // Employee name -> salary:
+        //   "Anna" -> 3000
+        //   "Bob"  -> 2500
+        Map<String, Integer> salaries = new HashMap<>();
+        salaries.put("Anna", 3000);
+        salaries.put("Bob", 2500);
     }
 
     /**

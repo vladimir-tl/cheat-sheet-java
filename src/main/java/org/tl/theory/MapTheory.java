@@ -41,11 +41,20 @@ public class MapTheory {
      * not Map<String, int> (see PrimitivesAndWrappersTheory).
      *
      * Map is not a List: there are no indexes and you can't write map.get(0).
+     *
+     * Technically Map is a separate interface: it does NOT extend Collection (List and Set do).
+     * That is why a Map has no add(x) (there is put(key, value)) and you can't loop over it
+     * directly (see section 6).
+     *
+     * A typical example: an employee name and the salary of this employee.
      */
     static void whatIsMap() {
-        // "Anna" -> 25
-        // "Bob"  -> 30
-        Map<String, Integer> ages = new HashMap<>();
+        // Employee name -> salary:
+        //   "Anna" -> 3000
+        //   "Bob"  -> 2500
+        Map<String, Integer> salaries = new HashMap<>();
+        salaries.put("Anna", 3000);
+        salaries.put("Bob", 2500);
     }
 
     /**
