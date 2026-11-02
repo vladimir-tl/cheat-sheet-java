@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Builds docs/index.html from the *Theory.java files in src/main/java/org/tl/theory.
+"""Builds docs/index.html from the *Theory.java files in src/main/java/org/tl/theory
+(English) and src/main/java/org/tl/theory/ru (Russian). The page has an RU / EN switch.
 
 Usage:  python3 scripts/build_docs.py
 No dependencies: the generated page is one self-contained HTML file.
@@ -9,11 +10,12 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "src/main/java/org/tl/theory"
+SRC = {"en": ROOT / "src/main/java/org/tl/theory",
+       "ru": ROOT / "src/main/java/org/tl/theory/ru"}
 OUT = ROOT / "docs/index.html"
 
 # Order of the tabs. Theory files not listed here are added at the end.
-ORDER = ["ForTheory", "WhileTheory", "SwitchTheory", "ListTheory", "MapTheory",
+ORDER = ["ForTheory", "WhileTheory", "IfElseTheory", "SwitchTheory", "ListTheory", "MapTheory",
          "PrimitivesAndWrappersTheory"]
 
 KEYWORDS = set("""abstract boolean break byte case catch char class continue default do double else enum
@@ -28,6 +30,18 @@ TOKEN = re.compile(r"""
 """, re.X | re.S)
 
 INLINE = re.compile(r"[\w.]+\([^()]*\)|\b[A-Z]\w*<[^<>]*(?:<[^<>]*>)?[^<>]*>(?:\(\))?|\bnull\b|==|!=|->")
+
+
+TITLE_RE = re.compile(r"^(?:THEORY|ТЕОРИЯ): (.*)")
+
+UI = {
+    "en": {"contents": "Contents", "copy": "Copy", "copied": "Copied",
+           "footer": "Generated from <code>src/main/java/org/tl/theory</code> by "
+                     "<code>scripts/build_docs.py</code>. Do not edit by hand."},
+    "ru": {"contents": "Содержание", "copy": "Копировать", "copied": "Скопировано",
+           "footer": "Сгенерировано из <code>src/main/java/org/tl/theory/ru</code> скриптом "
+                     "<code>scripts/build_docs.py</code>. Не редактируйте вручную."},
+}
 
 
 def esc(s):
@@ -119,18 +133,19 @@ def parse(path):
 
     head = re.search(r"/\*\*(.*?)\*/\s*public class", s, re.S)
     lines = doc_lines(head.group(1))
-    title = next(re.match(r"THEORY: (.*)", l).group(1) for l in lines if l.startswith("THEORY:"))
-    intro = next((l for l in lines[lines.index(next(x for x in lines if x.startswith("THEORY:"))) + 1:] if l.strip()), "")
+    title_idx = next(i for i, l in enumerate(lines) if TITLE_RE.match(l))
+    title = TITLE_RE.match(lines[title_idx]).group(1)
+    intro = next((l for l in lines[title_idx + 1:] if l.strip()), "")
 
     groups, practice, cur_group = [], "", None
     started = False
     for l in lines:
-        if l.strip() == "Contents":
+        if l.strip() in ("Contents", "Содержание"):
             started = True
             continue
         if not started or not l.strip():
             continue
-        if l.startswith("Practice:"):
+        if l.startswith(("Practice:", "Практика:")):
             practice = l
             continue
         m = re.match(r"\s+(\d+)\.\s+(.*)", l)
@@ -159,12 +174,13 @@ def parse(path):
             "practice": practice, "sections": sections}
 
 
-def render_topic(t):
+def render_topic(t, lang):
     k = t["key"]
-    out = [f'<div class="topic" id="topic-{k}" data-key="{k}">',
+    ui = UI[lang]
+    out = [f'<div class="l-{lang}">',
            f'<h1>{esc(t["title"][0].upper() + t["title"][1:])}</h1>',
            f'<p class="lead">{esc(t["intro"])}</p>',
-           '<nav class="card contents"><h2>Contents</h2><div class="cols">']
+           f'<nav class="card contents"><h2>{ui["contents"]}</h2><div class="cols">']
     for g in t["groups"]:
         out.append(f'<div class="group"><h4>{esc(g["name"])}</h4><ol>')
         for n, name in g["items"]:
@@ -181,12 +197,13 @@ def render_topic(t):
         for sec in t["sections"]:
             if sec["n"] not in wanted:
                 continue
-            out.append(f'<section class="card" id="{k}-{sec["n"]}">')
+            out.append(f'<section class="card" data-id="{k}-{sec["n"]}">')
             out.append(f'<h3>{sec["n"]}. {inline(sec["title"])}</h3>')
             out.append(render_text(sec["text"]))
             code = "\n".join(sec["code"]).strip("\n")
             if code.strip():
-                out.append('<div class="code"><button class="copy" type="button">Copy</button>'
+                out.append(f'<div class="code"><button class="copy" type="button" data-copy="{ui["copy"]}" '
+                           f'data-copied="{ui["copied"]}">{ui["copy"]}</button>'
                            f"<pre><code>{highlight(code)}</code></pre></div>")
             out.append("</section>")
     out.append("</div>")
@@ -221,9 +238,10 @@ PAGE = """<!doctype html>
 body { margin: 0; background: var(--bg); color: var(--text);
   font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--border); }
-.bar { max-width: 900px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 20px; overflow-x: auto; }
-.brand { font-weight: 700; padding: 12px 0; white-space: nowrap; }
-.tabs { display: flex; gap: 4px; }
+.bar { max-width: 1040px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 20px; }
+.brand { font-weight: 700; padding: 12px 0; white-space: nowrap; flex: none; }
+.tabs { display: flex; gap: 4px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
 .tabs a { padding: 12px 10px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
 .tabs a:hover { color: var(--text); }
 .tabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
@@ -259,6 +277,12 @@ pre.plain { background: var(--code-bg); border-radius: 8px; padding: 12px 16px; 
 .t-number { color: var(--num); } .t-comment { color: var(--com); font-style: italic; }
 footer { max-width: 900px; margin: 0 auto; padding: 0 16px 32px; color: var(--muted); font-size: 13px; }
 .js .topic { display: none; } .js .topic.active { display: block; }
+html:not([lang="ru"]) .l-ru, html[lang="ru"] .l-en { display: none; }
+.lang { margin-left: auto; flex: none; display: flex; gap: 2px; padding: 8px 0; }
+.lang button { font: 600 13px inherit; padding: 4px 9px; cursor: pointer; background: none; color: var(--muted);
+  border: 1px solid var(--border); }
+.lang button:first-child { border-radius: 6px 0 0 6px; } .lang button:last-child { border-radius: 0 6px 6px 0; }
+.lang button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 section { scroll-margin-top: 64px; }
 </style>
 </head>
@@ -268,31 +292,48 @@ section { scroll-margin-top: 64px; }
   <div class="tabs">
 __TABS__
   </div>
+  <div class="lang"><button type="button" data-lang="ru">RU</button><button type="button" data-lang="en">EN</button></div>
 </div></header>
 <main>
 __TOPICS__
 </main>
-<footer>Generated from <code>src/main/java/org/tl/theory</code> by <code>scripts/build_docs.py</code>. Do not edit by hand.</footer>
+<footer>
+<span class="l-en">__FOOTER_EN__</span><span class="l-ru">__FOOTER_RU__</span>
+</footer>
 <script>
 document.documentElement.classList.add("js");
 const topics = [...document.querySelectorAll(".topic")];
 const tabs = [...document.querySelectorAll(".tabs a")];
+let lang = "en";
+try { lang = localStorage.getItem("lang") || ""; } catch (e) {}
+if (lang !== "ru" && lang !== "en") lang = (navigator.language || "").toLowerCase().startsWith("ru") ? "ru" : "en";
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
+  try { localStorage.setItem("lang", l); } catch (e) {}
+}
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => {
+  setLang(b.dataset.lang);
+  route();
+}));
 function route() {
   const h = decodeURIComponent(location.hash.slice(1));
   let key = h.split("-")[0];
   if (!topics.some(t => t.dataset.key === key)) key = topics[0].dataset.key;
   topics.forEach(t => t.classList.toggle("active", t.dataset.key === key));
   tabs.forEach(a => a.classList.toggle("active", a.dataset.key === key));
-  const target = h.includes("-") ? document.getElementById(h) : null;
+  const target = h.includes("-") ? document.querySelector('.l-' + lang + ' [data-id="' + h + '"]') : null;
   if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
 }
 window.addEventListener("hashchange", route);
+setLang(lang);
 route();
 document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", async () => {
   const text = b.parentElement.querySelector("code").innerText;
-  try { await navigator.clipboard.writeText(text); b.textContent = "Copied"; }
-  catch (e) { b.textContent = "Press Ctrl+C"; }
-  setTimeout(() => b.textContent = "Copy", 1500);
+  try { await navigator.clipboard.writeText(text); b.textContent = b.dataset.copied; }
+  catch (e) { b.textContent = "Ctrl+C"; }
+  setTimeout(() => b.textContent = b.dataset.copy, 1500);
 }));
 </script>
 </body>
@@ -300,23 +341,51 @@ document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", asyn
 """
 
 
-def main():
-    files = {p.stem: p for p in SRC.glob("*Theory.java")}
-    names = [n for n in ORDER if n in files] + sorted(n for n in files if n not in ORDER)
-    topics = [parse(files[n]) for n in names]
+def cap(t):
+    return t[0].upper() + t[1:]
 
-    tabs = "\n".join(
-        f'    <a href="#{t["key"]}" data-key="{t["key"]}">{esc(t["title"][0].upper() + t["title"][1:])}</a>'
-        for t in topics)
-    page = PAGE.replace("__TABS__", tabs).replace("__TOPICS__", "\n".join(render_topic(t) for t in topics))
+
+def main():
+    data = {}
+    for lang, folder in SRC.items():
+        files = {p.stem: p for p in folder.glob("*Theory.java")}
+        data[lang] = {n: parse(files[n]) for n in files}
+    names = [n for n in ORDER if n in data["en"]] + sorted(n for n in data["en"] if n not in ORDER)
+
+    tabs = []
+    for n in names:
+        en = data["en"][n]
+        ru = data["ru"].get(n, en)
+        k = en["key"]
+        tabs.append(f'    <a href="#{k}" data-key="{k}"><span class="l-en">{esc(cap(en["title"]))}</span>'
+                    f'<span class="l-ru">{esc(cap(ru["title"]))}</span></a>')
+
+    topics = []
+    for n in names:
+        en = data["en"][n]
+        ru = data["ru"].get(n, en)
+        topics.append(f'<div class="topic" data-key="{en["key"]}">\n{render_topic(en, "en")}\n'
+                      f'{render_topic(ru, "ru")}\n</div>')
+
+    page = (PAGE.replace("__TABS__", "\n".join(tabs)).replace("__TOPICS__", "\n".join(topics))
+            .replace("__FOOTER_EN__", UI["en"]["footer"]).replace("__FOOTER_RU__", UI["ru"]["footer"]))
 
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(page, encoding="utf-8")
-    for t in topics:
-        listed = sum(len(g["items"]) for g in t["groups"])
-        flag = "" if listed == len(t["sections"]) else "   <-- contents and sections do not match!"
-        print(f'{t["cls"]}: {len(t["sections"])} sections{flag}')
-    print(f"Written {OUT.relative_to(ROOT)}")
+    ok = True
+    for n in names:
+        en, ru = data["en"][n], data["ru"].get(n)
+        if ru is None:
+            print(f"{n}: NO RUSSIAN VERSION")
+            ok = False
+            continue
+        en_nums = [sec["n"] for sec in en["sections"]]
+        ru_nums = [sec["n"] for sec in ru["sections"]]
+        listed = sum(len(g["items"]) for g in en["groups"])
+        bad = en_nums != ru_nums or listed != len(en_nums)
+        ok = ok and not bad
+        print(f"{n}: {len(en_nums)} sections" + ("   <-- en/ru or contents mismatch!" if bad else ""))
+    print(f"Written {OUT.relative_to(ROOT)}" + ("" if ok else "  (with problems, see above)"))
 
 
 if __name__ == "__main__":

@@ -5,28 +5,38 @@ Cheat sheets and practice tasks for the main Java topics.
 ## Theory page
 
 Open [`docs/index.html`](docs/index.html) in a browser (double click, no server needed).
-It has a tab per topic, a table of contents and numbered sections with code.
+It has a tab per topic, a table of contents, numbered sections with code and an **RU / EN** language switch
+(the choice is remembered; by default it follows the browser language).
 
-The page is generated from the `*Theory.java` files, so edit the theory there and rebuild:
+The page is generated from the theory files, so edit the theory there and rebuild:
+
+- English: `src/main/java/org/tl/theory/*Theory.java`
+- Russian: `src/main/java/org/tl/theory/ru/*Theory.java` (same file names, same sections and code, translated text and comments)
+
+The two versions must have the same numbered sections; the script reports a mismatch.
 
 ```bash
 python3 scripts/build_docs.py
 ```
 
 Requires Python 3, no extra packages. Commit the updated `docs/index.html` together with the theory.
-When you add a new `*Theory.java`, add its name to `ORDER` in `scripts/build_docs.py` to place its tab
-(otherwise it goes to the end).
+When you add a new topic, create `*Theory.java` in both folders and add its name to `ORDER` in
+`scripts/build_docs.py` to place its tab (otherwise it goes to the end).
+
+The Java cheat sheets, tasks and solutions have English comments only; the language switch applies to the theory page.
 
 ## Structure
 
 ```
 src/main/java/org/tl/
   theory/                      theory in the style of a cheat sheet: contents + numbered sections
-    ForTheory, WhileTheory, SwitchTheory, ListTheory, MapTheory, PrimitivesAndWrappersTheory
+    ForTheory, WhileTheory, IfElseTheory, SwitchTheory, ListTheory, MapTheory, PrimitivesAndWrappersTheory
+    ru/                        the same files in Russian
   loops/
     forloop/                   ForCheatSheet, ForTasks, ForSolutions
     whileloop/                 WhileCheatSheet, WhileTasks, WhileSolutions
   conditions/
+    ifelse/                    IfElseCheatSheet, IfElseTasks, IfElseSolutions
     switchcase/                SwitchCheatSheet, SwitchTasks, SwitchSolutions
   collections/
     list/                      ListCheatSheet, ListTasks, ListSolutions
@@ -70,6 +80,7 @@ Run any class that has `main` by its full name:
 ```bash
 java -cp out org.tl.loops.forloop.ForCheatSheet
 java -cp out org.tl.loops.whileloop.WhileCheatSheet
+java -cp out org.tl.conditions.ifelse.IfElseCheatSheet
 java -cp out org.tl.conditions.switchcase.SwitchCheatSheet
 java -cp out org.tl.collections.list.ListCheatSheet
 java -cp out org.tl.collections.map.MapCheatSheet
