@@ -1,7 +1,7 @@
 package org.tl.theory;
 
 /**
- * THEORY: warm-up patterns for the first LeetCode-style problems
+ * THEORY: Warm-up: arrays and loops
  *
  * Short sample snippets. Copy any of them into a main method and run it.
  *

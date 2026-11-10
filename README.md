@@ -36,7 +36,7 @@ The Java cheat sheets, tasks and solutions have English comments only; the langu
 ```
 src/main/java/org/tl/
   theory/                      theory in the style of a cheat sheet: contents + numbered sections
-    ForTheory, WhileTheory, IfElseTheory, SwitchTheory, ArrayTheory, ListTheory, SetTheory, MapTheory, StreamTheory, PrimitivesAndWrappersTheory, WarmupTheory
+    ForTheory, WhileTheory, IfElseTheory, SwitchTheory, ArrayTheory, ListTheory, SetTheory, MapTheory, StreamTheory, PrimitivesAndWrappersTheory, WarmupTheory, WarmupListTheory
     ru/                        the same files in Russian
   loops/
     forloop/                   ForCheatSheet, ForTasks, ForSolutions
@@ -52,6 +52,7 @@ src/main/java/org/tl/
   streams/                     StreamCheatSheet, StreamTasks, StreamSolutions
   types/                       PrimitivesAndWrappersCheatSheet
   warmup/                      WarmupCheatSheet, WarmupTasks, WarmupSolutions (LeetCode-easy style)
+                               WarmupListCheatSheet, WarmupListTasks, WarmupListSolutions (ArrayList)
 docs/index.html                theory page (generated)
 scripts/build_docs.py          generator of the theory page
 ```

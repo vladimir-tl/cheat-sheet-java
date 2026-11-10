@@ -112,7 +112,7 @@ section { scroll-margin-top: 110px; }
   <div class="subtabs" data-group="loops"><a href="#for" data-key="for"><span class="l-en">The for loop</span><span class="l-ru">Цикл for</span></a><a href="#while" data-key="while"><span class="l-en">The while loop</span><span class="l-ru">Цикл while</span></a></div>
   <div class="subtabs" data-group="conditions"><a href="#ifelse" data-key="ifelse"><span class="l-en">If-else</span><span class="l-ru">If-else</span></a><a href="#switch" data-key="switch"><span class="l-en">Switch</span><span class="l-ru">Switch</span></a></div>
   <div class="subtabs" data-group="arrays"><a href="#array" data-key="array"><span class="l-en">Arrays</span><span class="l-ru">Массивы</span></a></div>
-  <div class="subtabs" data-group="warmup"><a href="#warmup" data-key="warmup"><span class="l-en">Warm-up patterns for the first LeetCode-style problems</span><span class="l-ru">Разминка, приёмы для первых задач в стиле LeetCode</span></a></div>
+  <div class="subtabs" data-group="warmup"><a href="#warmup" data-key="warmup"><span class="l-en">Warm-up: arrays and loops</span><span class="l-ru">Разминка: массивы и циклы</span></a><a href="#warmuplist" data-key="warmuplist"><span class="l-en">Warm-up: ArrayList</span><span class="l-ru">Разминка: ArrayList</span></a></div>
   <div class="subtabs" data-group="collections"><a href="#list" data-key="list"><span class="l-en">List</span><span class="l-ru">List</span></a><a href="#set" data-key="set"><span class="l-en">Set and HashSet</span><span class="l-ru">Set и HashSet</span></a><a href="#map" data-key="map"><span class="l-en">Map</span><span class="l-ru">Map</span></a></div>
   <div class="subtabs" data-group="streams"><a href="#stream" data-key="stream"><span class="l-en">Stream API</span><span class="l-ru">Stream API</span></a></div>
   <a class="practice-link" id="practice-link" href="#"><span class="l-en">Practice tasks</span><span class="l-ru">Практика</span></a>
@@ -3199,7 +3199,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 </div>
 <div class="topic" data-key="warmup" data-group="warmup">
 <div class="l-en">
-<h1>Warm-up patterns for the first LeetCode-style problems</h1>
+<h1>Warm-up: arrays and loops</h1>
 <p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
 <nav class="card contents"><h2>Contents</h2><div class="cols">
 <div class="group"><h4>Arrays</h4><ol>
@@ -3465,7 +3465,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 </section>
 </div>
 <div class="l-ru">
-<h1>Разминка, приёмы для первых задач в стиле LeetCode</h1>
+<h1>Разминка: массивы и циклы</h1>
 <p class="lead">Короткие примеры. Скопируйте любой из них в метод main и запустите.</p>
 <nav class="card contents"><h2>Содержание</h2><div class="cols">
 <div class="group"><h4>Массивы</h4><ol>
@@ -3728,6 +3728,202 @@ list.add(<span class="t-string">"d"</span>);                                    
 <ul><li><code>totalPrice(3, 4)</code> <code>-&gt;</code> 12</li><li><code>totalPrice(2000000000, 3)</code> <code>-&gt;</code> 6000000000 (слишком много для int)</li></ul>
 <div class="code"><pre><code><span class="t-kw">long</span> totalPrice(<span class="t-kw">int</span> price, <span class="t-kw">int</span> quantity)</code></pre></div>
 <details class="hint"><summary>Подсказка</summary><p><code>price * quantity</code> считается в int и может переполниться раньше, чем попадёт в long. Сделайте так, чтобы вычисление шло в long.</p></details>
+</section>
+</div>
+</div>
+<div class="topic" data-key="warmuplist" data-group="warmup">
+<div class="l-en">
+<h1>Warm-up: ArrayList</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Basic operations</h4><ol>
+<li value="1"><a href="#warmuplist-1">size: how many elements</a></li>
+<li value="2"><a href="#warmuplist-2">get: read an element by its position</a></li>
+<li value="3"><a href="#warmuplist-3">add: put an element at the end</a></li>
+<li value="4"><a href="#warmuplist-4">Collections.reverse: reverse the same list</a></li>
+</ol></div>
+</div>
+</nav>
+<h2 class="group-title">Basic operations</h2>
+<section class="card" data-id="warmuplist-1">
+<h3>1. size: how many elements</h3>
+<p><code>size()</code> returns the number of elements in the list. For an empty list it returns 0. An array has the field length, a list has the method <code>size()</code>, with parentheses.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
+<span class="t-type">System</span>.out.println(numbers.size());   <span class="t-comment">// 3</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-2">
+<h3>2. get: read an element by its position</h3>
+<p><code>get(position)</code> returns the element at this position. Positions start from 0. If the position does not exist, Java throws IndexOutOfBoundsException.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
+<span class="t-type">System</span>.out.println(numbers.get(<span class="t-number">1</span>));   <span class="t-comment">// 20</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-3">
+<h3>3. add: put an element at the end</h3>
+<p><code>add(element)</code> puts the element at the end of the list, and the list grows by one. This is the main difference from an array, whose size never changes.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+numbers.add(<span class="t-number">10</span>);
+numbers.add(<span class="t-number">20</span>);
+<span class="t-type">System</span>.out.println(numbers);          <span class="t-comment">// [10, 20]</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-4">
+<h3>4. Collections.reverse: reverse the same list</h3>
+<p><code>Collections.reverse(list)</code> reverses the order of the elements. It returns nothing and changes the list you pass to it. The class needs an import: java.util.Collections.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>));
+<span class="t-type">Collections</span>.reverse(numbers);
+<span class="t-type">System</span>.out.println(numbers);          <span class="t-comment">// [3, 2, 1]</span></code></pre></div>
+</section>
+<h2 class="group-title" data-id="warmuplist-tasks">Practice tasks</h2>
+<section class="card">
+<p>You work in the support team of an online music store. Every ticket below is a small situation from work and one method that you have to create. The ticket says what the method is called and which parameters it takes. Its template is shown under the ticket (in WarmupListTasks.java it is already there), so you only have to write the body. You need only four operations: size, get, add and reverse.</p>
+<p>How to read a ticket:</p>
+<ul><li><strong>What to do:</strong> which method to create, with which parameters, and what it must do.</li><li><strong>Input:</strong> the values the method receives.</li><li><strong>Return:</strong> what the method must give back. If it returns nothing (void), it changes the list it received.</li><li><strong>Examples:</strong> <code>countTracks(["Intro", "Solo"]) -&gt; 2</code> means "call the method with this list, and it must return 2".</li><li>The notation <code>["Intro", "Solo"]</code> is a short way to show a list. In Java code write <code>new ArrayList&lt;&gt;(List.of("Intro", "Solo"))</code>.</li><li>Run the examples in main to check yourself. A list can be printed directly: <code>System.out.println(tracks)</code>.</li></ul>
+</section>
+<section class="card task">
+<h3>Ticket 1. How many tracks are in the playlist?</h3>
+<p>A playlist is stored as a list of track titles. The playlist page must show how many tracks it has.</p>
+<p>What to do: create a method <code>countTracks</code> with one parameter: a list of strings <code>tracks</code>. The method must return the number of elements in the list.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles.</li><li><strong>Return:</strong> the number of tracks. For an empty list, 0.</li></ul>
+<p>Examples:</p>
+<ul><li><code>countTracks(["Intro", "Solo"])</code> <code>-&gt;</code> 2</li><li><code>countTracks([])</code> <code>-&gt;</code> 0 (the playlist is empty)</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> countTracks(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>A list knows how many elements it holds. Look at the method <code>size()</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 2. The first track</h3>
+<p>When a customer presses "Play", the first track of the playlist starts.</p>
+<p>What to do: create a method <code>getFirstTrack</code> with one parameter: a list of strings <code>tracks</code>. The method must return the first element of the list. If the list is empty, it must return <code>null</code>.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles.</li><li><strong>Return:</strong> the first title. For an empty list, <code>null</code>.</li></ul>
+<p>Examples:</p>
+<ul><li><code>getFirstTrack(["Intro", "Solo"])</code> <code>-&gt;</code> "Intro"</li><li><code>getFirstTrack([])</code> <code>-&gt;</code> <code>null</code> (there is no first track)</li></ul>
+<div class="code"><pre><code><span class="t-type">String</span> getFirstTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Positions in a list are counted from 0, and <code>get(position)</code> reads an element. Reading from an empty list throws an exception, so check the size first.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 3. The last track</h3>
+<p>The playlist page shows which track will play at the very end.</p>
+<p>What to do: create a method <code>getLastTrack</code> with one parameter: a list of strings <code>tracks</code>. The method must return the last element of the list. If the list is empty, it must return <code>null</code>.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles.</li><li><strong>Return:</strong> the last title. For an empty list, <code>null</code>.</li></ul>
+<p>Examples:</p>
+<ul><li><code>getLastTrack(["Intro", "Solo"])</code> <code>-&gt;</code> "Solo"</li><li><code>getLastTrack(["Intro"])</code> <code>-&gt;</code> "Intro" (the only track is also the last one)</li><li><code>getLastTrack([])</code> <code>-&gt;</code> <code>null</code> (there is no last track)</li></ul>
+<div class="code"><pre><code><span class="t-type">String</span> getLastTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Positions start from 0, so in a list of 3 elements the last position is 2. Think how to get this number from the size.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 4. Add a track</h3>
+<p>A customer presses "Add to playlist", and the new track goes to the very end.</p>
+<p>What to do: create a method <code>addTrack</code> with two parameters: the first is a list of strings <code>tracks</code>, the second is a string <code>track</code>. The method must add <code>track</code> to the end of the list. It returns nothing, it changes <code>tracks</code> itself.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles; track, the title to add.</li><li><strong>Return:</strong> nothing (void). Change the list tracks itself.</li></ul>
+<p>Examples:</p>
+<ul><li>tracks = ["Intro"], <code>addTrack(tracks, "Solo")</code> <code>-&gt;</code> tracks becomes ["Intro", "Solo"]</li><li>tracks = [], <code>addTrack(tracks, "Solo")</code> <code>-&gt;</code> tracks becomes ["Solo"]</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> addTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>The method <code>add(element)</code> puts an element at the end of a list.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 5. Reverse the playlist</h3>
+<p>A customer pressed "Play from the end": the playlist must go in the opposite order.</p>
+<p>What to do: create a method <code>reversePlaylist</code> with one parameter: a list of strings <code>tracks</code>. The method must reverse the order of the elements in this same list. It returns nothing, it changes <code>tracks</code> itself.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles.</li><li><strong>Return:</strong> nothing (void). Change the list tracks itself.</li></ul>
+<p>Examples:</p>
+<ul><li>tracks = ["a", "b", "c"], <code>reversePlaylist(tracks)</code> <code>-&gt;</code> tracks becomes ["c", "b", "a"]</li><li>tracks = [], <code>reversePlaylist(tracks)</code> <code>-&gt;</code> tracks stays [] (there is nothing to reverse)</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> reversePlaylist(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>The class <code>Collections</code> from java.util already has a method that reverses a list. Don't forget the import.</p></details>
+</section>
+</div>
+<div class="l-ru">
+<h1>Разминка: ArrayList</h1>
+<p class="lead">Короткие примеры. Скопируйте любой из них в метод main и запустите.</p>
+<nav class="card contents"><h2>Содержание</h2><div class="cols">
+<div class="group"><h4>Основные операции</h4><ol>
+<li value="1"><a href="#warmuplist-1">size: сколько элементов</a></li>
+<li value="2"><a href="#warmuplist-2">get: прочитать элемент по позиции</a></li>
+<li value="3"><a href="#warmuplist-3">add: добавить элемент в конец</a></li>
+<li value="4"><a href="#warmuplist-4">Collections.reverse: развернуть тот же список</a></li>
+</ol></div>
+</div>
+</nav>
+<h2 class="group-title">Основные операции</h2>
+<section class="card" data-id="warmuplist-1">
+<h3>1. size: сколько элементов</h3>
+<p><code>size()</code> возвращает количество элементов в списке. Для пустого списка вернёт 0. У массива есть поле length, а у списка метод <code>size()</code>, со скобками.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
+<span class="t-type">System</span>.out.println(numbers.size());   <span class="t-comment">// 3</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-2">
+<h3>2. get: прочитать элемент по позиции</h3>
+<p><code>get(позиция)</code> возвращает элемент на этой позиции. Позиции считаются с 0. Если такой позиции нет, Java бросает IndexOutOfBoundsException.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
+<span class="t-type">System</span>.out.println(numbers.get(<span class="t-number">1</span>));   <span class="t-comment">// 20</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-3">
+<h3>3. add: добавить элемент в конец</h3>
+<p><code>add(элемент)</code> ставит элемент в конец списка, и список становится на один длиннее. В этом главное отличие от массива, размер которого никогда не меняется.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+numbers.add(<span class="t-number">10</span>);
+numbers.add(<span class="t-number">20</span>);
+<span class="t-type">System</span>.out.println(numbers);          <span class="t-comment">// [10, 20]</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-4">
+<h3>4. Collections.reverse: развернуть тот же список</h3>
+<p><code>Collections.reverse(список)</code> меняет порядок элементов на обратный. Метод ничего не возвращает и меняет переданный ему список. Классу нужен импорт: java.util.Collections.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>));
+<span class="t-type">Collections</span>.reverse(numbers);
+<span class="t-type">System</span>.out.println(numbers);          <span class="t-comment">// [3, 2, 1]</span></code></pre></div>
+</section>
+<h2 class="group-title" data-id="warmuplist-tasks">Практические задачи</h2>
+<section class="card">
+<p>Вы работаете в службе поддержки интернет-магазина музыки. Каждый тикет ниже — это небольшая рабочая ситуация и один метод, который нужно создать. В тикете сказано, как называется метод и какие у него параметры. Заготовка показана под условием (в WarmupListTasks.java она уже есть), так что остаётся написать тело метода. Понадобятся всего четыре операции: size, get, add и reverse.</p>
+<p>Как читать тикет:</p>
+<ul><li><strong>Что сделать:</strong> какой метод создать, с какими параметрами и что он должен делать.</li><li><strong>Дано:</strong> значения, которые получает метод.</li><li><strong>Вернуть:</strong> что метод должен вернуть. Если он ничего не возвращает (void), он меняет полученный список.</li><li><strong>Примеры:</strong> <code>countTracks(["Intro", "Solo"]) -&gt; 2</code> значит «вызываем метод с таким списком, и он должен вернуть 2».</li><li>Запись <code>["Intro", "Solo"]</code> — это короткий способ показать список. В коде на Java пишите <code>new ArrayList&lt;&gt;(List.of("Intro", "Solo"))</code>.</li><li>Запускайте примеры в main, чтобы проверить себя. Список можно вывести на экран напрямую: <code>System.out.println(tracks)</code>.</li></ul>
+</section>
+<section class="card task">
+<h3>Тикет 1. Сколько треков в плейлисте?</h3>
+<p>Плейлист хранится как список названий треков. На странице плейлиста нужно показать, сколько в нём треков.</p>
+<p>Что сделать: создайте метод <code>countTracks</code> с одним параметром: список строк <code>tracks</code>. Метод должен вернуть количество элементов в списке.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков.</li><li><strong>Вернуть:</strong> количество треков. Для пустого списка 0.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>countTracks(["Intro", "Solo"])</code> <code>-&gt;</code> 2</li><li><code>countTracks([])</code> <code>-&gt;</code> 0 (плейлист пустой)</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> countTracks(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Список знает, сколько в нём элементов. Посмотрите на метод <code>size()</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 2. Первый трек</h3>
+<p>Когда покупатель нажимает «Играть», начинается первый трек плейлиста.</p>
+<p>Что сделать: создайте метод <code>getFirstTrack</code> с одним параметром: список строк <code>tracks</code>. Метод должен вернуть первый элемент списка. Если список пустой, метод должен вернуть <code>null</code>.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков.</li><li><strong>Вернуть:</strong> первое название. Для пустого списка <code>null</code>.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>getFirstTrack(["Intro", "Solo"])</code> <code>-&gt;</code> "Intro"</li><li><code>getFirstTrack([])</code> <code>-&gt;</code> <code>null</code> (первого трека нет)</li></ul>
+<div class="code"><pre><code><span class="t-type">String</span> getFirstTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Позиции в списке считаются с 0, а <code>get(позиция)</code> читает элемент. Чтение из пустого списка бросает исключение, поэтому сначала проверьте размер.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 3. Последний трек</h3>
+<p>На странице плейлиста показано, какой трек будет играть в самом конце.</p>
+<p>Что сделать: создайте метод <code>getLastTrack</code> с одним параметром: список строк <code>tracks</code>. Метод должен вернуть последний элемент списка. Если список пустой, метод должен вернуть <code>null</code>.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков.</li><li><strong>Вернуть:</strong> последнее название. Для пустого списка <code>null</code>.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>getLastTrack(["Intro", "Solo"])</code> <code>-&gt;</code> "Solo"</li><li><code>getLastTrack(["Intro"])</code> <code>-&gt;</code> "Intro" (единственный трек он же и последний)</li><li><code>getLastTrack([])</code> <code>-&gt;</code> <code>null</code> (последнего трека нет)</li></ul>
+<div class="code"><pre><code><span class="t-type">String</span> getLastTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Позиции считаются с 0, поэтому в списке из 3 элементов последняя позиция — 2. Подумайте, как получить это число из размера.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 4. Добавить трек</h3>
+<p>Покупатель нажимает «Добавить в плейлист», и новый трек попадает в самый конец.</p>
+<p>Что сделать: создайте метод <code>addTrack</code> с двумя параметрами: первый — список строк <code>tracks</code>, второй — строка <code>track</code>. Метод должен добавить <code>track</code> в конец списка. Он ничего не возвращает, а меняет сам <code>tracks</code>.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков; track — название, которое нужно добавить.</li><li><strong>Вернуть:</strong> ничего (void). Измените сам список tracks.</li></ul>
+<p>Примеры:</p>
+<ul><li>tracks = ["Intro"], <code>addTrack(tracks, "Solo")</code> <code>-&gt;</code> tracks станет ["Intro", "Solo"]</li><li>tracks = [], <code>addTrack(tracks, "Solo")</code> <code>-&gt;</code> tracks станет ["Solo"]</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> addTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Метод <code>add(элемент)</code> ставит элемент в конец списка.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 5. Перевернуть плейлист</h3>
+<p>Покупатель нажал «Играть с конца»: плейлист должен идти в обратном порядке.</p>
+<p>Что сделать: создайте метод <code>reversePlaylist</code> с одним параметром: список строк <code>tracks</code>. Метод должен поменять порядок элементов на обратный в этом же списке. Он ничего не возвращает, а меняет сам <code>tracks</code>.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков.</li><li><strong>Вернуть:</strong> ничего (void). Измените сам список tracks.</li></ul>
+<p>Примеры:</p>
+<ul><li>tracks = ["a", "b", "c"], <code>reversePlaylist(tracks)</code> <code>-&gt;</code> tracks станет ["c", "b", "a"]</li><li>tracks = [], <code>reversePlaylist(tracks)</code> <code>-&gt;</code> tracks останется [] (разворачивать нечего)</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> reversePlaylist(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>В классе <code>Collections</code> из java.util уже есть метод, который разворачивает список. Не забудьте импорт.</p></details>
 </section>
 </div>
 </div>
