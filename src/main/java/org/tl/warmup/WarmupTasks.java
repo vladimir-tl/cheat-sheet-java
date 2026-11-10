@@ -4,11 +4,13 @@ package org.tl.warmup;
  * PRACTICE TASKS: warm-up (the first LeetCode-style problems)
  *
  * You work in the support team of an online music store. Every ticket below is a small
- * situation from work and one empty method that you have to finish.
+ * situation from work and one method that you have to create. The ticket says what the method
+ * is called and which parameters it takes. Its template is shown under the ticket (in WarmupTasks.java
+ * it is already there), so you only have to write the body.
  * The tasks use only arrays, loops, primitives and null. They go from easy to a bit harder.
  *
  * How to read a ticket:
- * - What to do: the job in one sentence.
+ * - What to do: which method to create, with which parameters, and what it must do.
  * - Input: the values the method receives.
  * - Return: what the method must give back. If it returns nothing (void), it changes the array it received.
  * - Examples: `findBestSeller([3, 17, 9]) -> 17` means "call the method with this array, and it must return 17".
@@ -28,7 +30,7 @@ public class WarmupTasks {
      * A playlist is stored as an array of numbers: each number is the id of one track.
      * A customer asks: "Is this track in my playlist?"
      *
-     * What to do: check whether the number target is in the array ids.
+     * What to do: create a method `containsTrack` with two parameters: the first is an array of numbers `ids`, the second is a number `target`. The method must check whether `target` is in the array `ids` and return true or false.
      *
      * - Input: ids, the array of track ids; target, the track id to look for.
      * - Return: true if target is in the array, otherwise false. For an empty array, also false.
@@ -49,7 +51,7 @@ public class WarmupTasks {
      * Each number in the array shows how many copies of one album were sold today.
      * The manager wants to know the best result of the day.
      *
-     * What to do: find the biggest number in the array.
+     * What to do: create a method `findBestSeller` with one parameter: an array of numbers `sales`. The method must find the biggest number in the array and return it.
      *
      * - Input: sales, the array of sold copies (every number is 0 or more).
      * - Return: the biggest number. If the array is empty, there is nothing to compare, so return -1.
@@ -70,7 +72,7 @@ public class WarmupTasks {
      * A customer drags one track onto the place of another, and these two tracks change places.
      * All other tracks stay where they were.
      *
-     * What to do: swap the elements at positions i and j. Positions (indexes) are counted from 0.
+     * What to do: create a method `swapTracks` with three parameters: the first is an array of numbers `arr`, the second is a number `i`, the third is a number `j`. The numbers `i` and `j` are positions (indexes) in the array, counted from 0. The method must swap the elements at these two positions. It returns nothing, it changes `arr` itself.
      *
      * - Input: arr, the playlist; i and j, two indexes. Both always exist in the array.
      * - Return: nothing (void). Change the array arr itself.
@@ -88,8 +90,7 @@ public class WarmupTasks {
      * Ticket 4. Play it backwards
      * A customer pressed "Play from the end": the playlist must go in the opposite order.
      *
-     * What to do: reverse the array, so the last element becomes the first, the second to last
-     * becomes the second, and so on. Change this same array, do not create a second one.
+     * What to do: create a method `reversePlaylist` with one parameter: an array of numbers `arr`. The method must reverse the array: the last element becomes the first, the second to last becomes the second, and so on. Change this same array, do not create a second one. The method returns nothing.
      *
      * - Input: arr, the playlist.
      * - Return: nothing (void). Change the array arr itself.
@@ -109,8 +110,7 @@ public class WarmupTasks {
      * The store page must show prices from the cheapest to the most expensive.
      * Before publishing the list, somebody has to check it.
      *
-     * What to do: check that every price is not smaller than the price right before it.
-     * Two equal prices in a row are fine.
+     * What to do: create a method `arePricesInOrder` with one parameter: an array of numbers `prices`. The method must check that every price is not smaller than the price right before it and return true or false. Two equal prices in a row are fine.
      *
      * - Input: prices, the array of prices.
      * - Return: true if the prices are in order, otherwise false. For an empty array or one price, return true.
@@ -131,8 +131,7 @@ public class WarmupTasks {
      * Each number is the count of downloads in one day; 0 means there were no downloads.
      * The report must show the days with downloads first and the empty days at the end.
      *
-     * What to do: move all zeros to the end of the array. The other numbers must keep their order.
-     * Change this same array, do not create a second one.
+     * What to do: create a method `moveZerosToEnd` with one parameter: an array of numbers `arr`. The method must move all zeros to the end of the array, and the other numbers must keep their order. Change this same array, do not create a second one. The method returns nothing.
      *
      * - Input: arr, the downloads per day.
      * - Return: nothing (void). Change the array arr itself.
@@ -151,8 +150,7 @@ public class WarmupTasks {
      * Each number is the revenue of one day.
      * The report must show how much the store has earned in total by the end of every day.
      *
-     * What to do: create a new array in which every element is the sum of all numbers of arr
-     * from the beginning up to this position, including this position.
+     * What to do: create a method `runningTotal` with one parameter: an array of numbers `arr`. The method must create and return a new array in which every element is the sum of all numbers of `arr` from the beginning up to this position, including this position.
      *
      * - Input: arr, the revenue per day.
      * - Return: a new array of the same length. Do not change arr. For an empty array, return an empty array.
@@ -172,8 +170,7 @@ public class WarmupTasks {
      * Ticket 8. Two albums for the gift card
      * A customer has a gift card and wants to spend all of it on exactly two different albums.
      *
-     * What to do: find two different positions in the array whose prices add up exactly to amount.
-     * Return these positions (indexes), not the prices.
+     * What to do: create a method `findAlbumsForGiftCard` with two parameters: the first is an array of numbers `prices`, the second is a number `amount`. The method must find two different positions in the array whose prices add up exactly to `amount` and return these positions (indexes, not the prices) as an array.
      *
      * - Input: prices, the album prices; amount, the money on the gift card.
      * - Return: an array of two indexes, the smaller one first. If there is no such pair, return an empty array. If there are several pairs, return any of them.
@@ -194,7 +191,7 @@ public class WarmupTasks {
      * Concert tickets have the numbers 0, 1, 2, ... up to some number n, one ticket per number.
      * One ticket is lost. The array holds the numbers of all the other tickets, in any order.
      *
-     * What to do: find the number of the lost ticket.
+     * What to do: create a method `findLostTicket` with one parameter: an array of numbers `arr`. The method must find the number of the lost ticket and return it.
      *
      * - Input: arr, the numbers of the remaining tickets, without repeats. The biggest possible number n equals arr.length.
      * - Return: the number from 0 to n that is not in the array.
@@ -214,7 +211,7 @@ public class WarmupTasks {
      * Ticket 10. Music quiz labels
      * The quiz page shows the numbers from 1 to n, but some numbers are replaced with words.
      *
-     * What to do: build one string with a label for every number from 1 to n. The label of a number is:
+     * What to do: create a method `buildQuizLabels` with one parameter: a number `n`. The method must build and return one string with a label for every number from 1 to `n`. The label of a number is:
      * - "FizzBuzz" if the number is divisible by both 3 and 5;
      * - "Fizz" if it is divisible only by 3;
      * - "Buzz" if it is divisible only by 5;
@@ -241,7 +238,7 @@ public class WarmupTasks {
      * A promo code works only if it is a prime number. A prime number is bigger than 1
      * and can be divided without a remainder only by 1 and by itself: 2, 3, 5, 7, 11, ...
      *
-     * What to do: check whether the number n is prime.
+     * What to do: create a method `isPrime` with one parameter: a number `n`. The method must check whether `n` is prime and return true or false.
      *
      * - Input: n, the promo code.
      * - Return: true if n is prime, otherwise false.
@@ -263,8 +260,7 @@ public class WarmupTasks {
      * Some titles read the same from left to right and from right to left, like "level".
      * Such a word is called a palindrome, and the store wants to mark these albums.
      *
-     * What to do: check whether the string s is a palindrome.
-     * Capital and small letters are different, so "Level" is not a palindrome.
+     * What to do: create a method `isPalindrome` with one parameter: a string `s`. The method must check whether `s` is a palindrome and return true or false. Capital and small letters are different, so "Level" is not a palindrome.
      *
      * - Input: s, the title. It can be null, which means there is no title at all.
      * - Return: true if s is a palindrome, otherwise false. An empty string and a string of one letter are palindromes. For null, return false.
@@ -287,7 +283,7 @@ public class WarmupTasks {
      * Vinyl box sets are made only with 1, 2, 4, 8, 16, ... records: every size is twice the size
      * before it. Such numbers are called powers of two. A customer asks for a box of n records.
      *
-     * What to do: check whether n is one of these sizes.
+     * What to do: create a method `isPowerOfTwo` with one parameter: a number `n`. The method must check whether `n` is one of these sizes and return true or false.
      *
      * - Input: n, the requested size. It can also be 0 or negative.
      * - Return: true if n is a power of two (1, 2, 4, 8, ...), otherwise false.
@@ -311,7 +307,7 @@ public class WarmupTasks {
      * because an Integer can be null: it means the system does not know the points of this customer.
      * Sometimes the whole array is null: the system has sent nothing.
      *
-     * What to do: add up all the known points and skip every null.
+     * What to do: create a method `sumBonusPoints` with one parameter: an array `bonuses` of type `Integer[]`. The method must add up all the known points, skip every null and return the sum.
      *
      * - Input: bonuses, the array of points; it can be null and can contain null elements.
      * - Return: the sum of all numbers in the array. If the array is null, return 0.
@@ -332,7 +328,7 @@ public class WarmupTasks {
      * Customers can add a comment to an order. If they leave the field empty, the site
      * can send null, an empty string, or a string of spaces. None of these is a real comment.
      *
-     * What to do: check that the comment has real text: it is not null and has at least one character that is not a space.
+     * What to do: create a method `hasCommentText` with one parameter: a string `s`. The method must check that the comment has real text (it is not null and has at least one character that is not a space) and return true or false.
      *
      * - Input: s, the comment. It can be null.
      * - Return: true if there is real text, otherwise false.
@@ -354,7 +350,7 @@ public class WarmupTasks {
      * A serial number is read one character at a time. The character '7' and the number 7 are
      * different things: inside Java the character '7' is stored as the code 55.
      *
-     * What to do: turn a digit character into the number it shows. If the character is not a digit, return -1.
+     * What to do: create a method `digitFromChar` with one parameter: a character `c` of type `char`. The method must turn a digit character into the number it shows and return this number. If the character is not a digit, it must return -1.
      *
      * - Input: c, one character.
      * - Return: a number from 0 to 9 if c is one of the characters '0' to '9', otherwise -1.
@@ -375,7 +371,7 @@ public class WarmupTasks {
      * The total of an order is price * quantity. An int can hold numbers up to about 2.1 billion.
      * If the result is bigger, Java does not report an error: you just get a wrong number. This is called overflow.
      *
-     * What to do: multiply price by quantity and return the exact result, even if it does not fit in an int.
+     * What to do: create a method `totalPrice` with two parameters: the first is a number `price`, the second is a number `quantity`, both of type `int`. The method must multiply them and return the exact result as a `long`, even if it does not fit in an `int`.
      *
      * - Input: price and quantity, two numbers of type int.
      * - Return: the exact result of the multiplication as a long.

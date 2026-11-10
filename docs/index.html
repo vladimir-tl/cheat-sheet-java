@@ -3286,14 +3286,14 @@ list.add(<span class="t-string">"d"</span>);                                    
 </section>
 <h2 class="group-title" data-id="warmup-tasks">Practice tasks</h2>
 <section class="card">
-<p>You work in the support team of an online music store. Every ticket below is a small situation from work and one empty method that you have to finish. The tasks use only arrays, loops, primitives and <code>null</code>. They go from easy to a bit harder.</p>
+<p>You work in the support team of an online music store. Every ticket below is a small situation from work and one method that you have to create. The ticket says what the method is called and which parameters it takes. Its template is shown under the ticket (in WarmupTasks.java it is already there), so you only have to write the body. The tasks use only arrays, loops, primitives and <code>null</code>. They go from easy to a bit harder.</p>
 <p>How to read a ticket:</p>
-<ul><li><strong>What to do:</strong> the job in one sentence.</li><li><strong>Input:</strong> the values the method receives.</li><li><strong>Return:</strong> what the method must give back. If it returns nothing (void), it changes the array it received.</li><li><strong>Examples:</strong> <code>findBestSeller([3, 17, 9]) -&gt; 17</code> means "call the method with this array, and it must return 17".</li><li>The notation <code>[3, 17, 9]</code> is a short way to show an array. In Java code write <code>new int[]{3, 17, 9}</code>.</li><li>Run the examples in main to check yourself. To print an array, use <code>Arrays.toString(arr)</code>.</li></ul>
+<ul><li><strong>What to do:</strong> which method to create, with which parameters, and what it must do.</li><li><strong>Input:</strong> the values the method receives.</li><li><strong>Return:</strong> what the method must give back. If it returns nothing (void), it changes the array it received.</li><li><strong>Examples:</strong> <code>findBestSeller([3, 17, 9]) -&gt; 17</code> means "call the method with this array, and it must return 17".</li><li>The notation <code>[3, 17, 9]</code> is a short way to show an array. In Java code write <code>new int[]{3, 17, 9}</code>.</li><li>Run the examples in main to check yourself. To print an array, use <code>Arrays.toString(arr)</code>.</li></ul>
 </section>
 <section class="card task">
 <h3>Ticket 1. Is the track in the playlist?</h3>
 <p>A playlist is stored as an array of numbers: each number is the id of one track. A customer asks: "Is this track in my playlist?"</p>
-<p>What to do: check whether the number target is in the array ids.</p>
+<p>What to do: create a method <code>containsTrack</code> with two parameters: the first is an array of numbers <code>ids</code>, the second is a number <code>target</code>. The method must check whether <code>target</code> is in the array <code>ids</code> and return true or false.</p>
 <ul><li><strong>Input:</strong> ids, the array of track ids; target, the track id to look for.</li><li><strong>Return:</strong> true if target is in the array, otherwise false. For an empty array, also false.</li></ul>
 <p>Examples:</p>
 <ul><li><code>containsTrack([5, 8, 12], 8)</code> <code>-&gt;</code> true (8 is in the array)</li><li><code>containsTrack([5, 8, 12], 7)</code> <code>-&gt;</code> false (there is no 7)</li><li><code>containsTrack([], 7)</code> <code>-&gt;</code> false (the playlist is empty)</li></ul>
@@ -3303,7 +3303,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 2. Best seller</h3>
 <p>Each number in the array shows how many copies of one album were sold today. The manager wants to know the best result of the day.</p>
-<p>What to do: find the biggest number in the array.</p>
+<p>What to do: create a method <code>findBestSeller</code> with one parameter: an array of numbers <code>sales</code>. The method must find the biggest number in the array and return it.</p>
 <ul><li><strong>Input:</strong> sales, the array of sold copies (every number is 0 or more).</li><li><strong>Return:</strong> the biggest number. If the array is empty, there is nothing to compare, so return -1.</li></ul>
 <p>Examples:</p>
 <ul><li><code>findBestSeller([3, 17, 9])</code> <code>-&gt;</code> 17</li><li><code>findBestSeller([4])</code> <code>-&gt;</code> 4 (the only number is the biggest)</li><li><code>findBestSeller([])</code> <code>-&gt;</code> -1 (the array is empty)</li></ul>
@@ -3313,7 +3313,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 3. Swap two tracks</h3>
 <p>A customer drags one track onto the place of another, and these two tracks change places. All other tracks stay where they were.</p>
-<p>What to do: swap the elements at positions i and j. Positions (indexes) are counted from 0.</p>
+<p>What to do: create a method <code>swapTracks</code> with three parameters: the first is an array of numbers <code>arr</code>, the second is a number <code>i</code>, the third is a number <code>j</code>. The numbers <code>i</code> and <code>j</code> are positions (indexes) in the array, counted from 0. The method must swap the elements at these two positions. It returns nothing, it changes <code>arr</code> itself.</p>
 <ul><li><strong>Input:</strong> arr, the playlist; i and j, two indexes. Both always exist in the array.</li><li><strong>Return:</strong> nothing (void). Change the array arr itself.</li></ul>
 <p>Examples:</p>
 <ul><li>arr = [1, 2, 3, 4], <code>swapTracks(arr, 0, 3)</code> <code>-&gt;</code> arr becomes [4, 2, 3, 1] (the first and the last changed places)</li><li>arr = [1, 2, 3], <code>swapTracks(arr, 1, 1)</code> <code>-&gt;</code> arr stays [1, 2, 3] (i and j are the same position)</li></ul>
@@ -3323,7 +3323,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 4. Play it backwards</h3>
 <p>A customer pressed "Play from the end": the playlist must go in the opposite order.</p>
-<p>What to do: reverse the array, so the last element becomes the first, the second to last becomes the second, and so on. Change this same array, do not create a second one.</p>
+<p>What to do: create a method <code>reversePlaylist</code> with one parameter: an array of numbers <code>arr</code>. The method must reverse the array: the last element becomes the first, the second to last becomes the second, and so on. Change this same array, do not create a second one. The method returns nothing.</p>
 <ul><li><strong>Input:</strong> arr, the playlist.</li><li><strong>Return:</strong> nothing (void). Change the array arr itself.</li></ul>
 <p>Examples:</p>
 <ul><li>arr = [1, 2, 3, 4, 5], <code>reversePlaylist(arr)</code> <code>-&gt;</code> arr becomes [5, 4, 3, 2, 1]</li><li>arr = [7, 8], <code>reversePlaylist(arr)</code> <code>-&gt;</code> arr becomes [8, 7]</li><li>arr = [], <code>reversePlaylist(arr)</code> <code>-&gt;</code> arr stays [] (there is nothing to reverse)</li></ul>
@@ -3333,7 +3333,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 5. Are the prices in order?</h3>
 <p>The store page must show prices from the cheapest to the most expensive. Before publishing the list, somebody has to check it.</p>
-<p>What to do: check that every price is not smaller than the price right before it. Two equal prices in a row are fine.</p>
+<p>What to do: create a method <code>arePricesInOrder</code> with one parameter: an array of numbers <code>prices</code>. The method must check that every price is not smaller than the price right before it and return true or false. Two equal prices in a row are fine.</p>
 <ul><li><strong>Input:</strong> prices, the array of prices.</li><li><strong>Return:</strong> true if the prices are in order, otherwise false. For an empty array or one price, return true.</li></ul>
 <p>Examples:</p>
 <ul><li><code>arePricesInOrder([1, 3, 3, 8])</code> <code>-&gt;</code> true (every price is not smaller than the one before it)</li><li><code>arePricesInOrder([1, 5, 4])</code> <code>-&gt;</code> false (4 comes after 5)</li><li><code>arePricesInOrder([])</code> <code>-&gt;</code> true (no prices, so nothing is out of order)</li></ul>
@@ -3343,7 +3343,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 6. Zeros to the end</h3>
 <p>Each number is the count of downloads in one day; 0 means there were no downloads. The report must show the days with downloads first and the empty days at the end.</p>
-<p>What to do: move all zeros to the end of the array. The other numbers must keep their order. Change this same array, do not create a second one.</p>
+<p>What to do: create a method <code>moveZerosToEnd</code> with one parameter: an array of numbers <code>arr</code>. The method must move all zeros to the end of the array, and the other numbers must keep their order. Change this same array, do not create a second one. The method returns nothing.</p>
 <ul><li><strong>Input:</strong> arr, the downloads per day.</li><li><strong>Return:</strong> nothing (void). Change the array arr itself.</li></ul>
 <p>Examples:</p>
 <ul><li>arr = [0, 4, 0, 7, 9], <code>moveZerosToEnd(arr)</code> <code>-&gt;</code> arr becomes [4, 7, 9, 0, 0] (4, 7, 9 are still in the same order)</li><li>arr = [1, 2], <code>moveZerosToEnd(arr)</code> <code>-&gt;</code> arr stays [1, 2] (there are no zeros)</li></ul>
@@ -3353,7 +3353,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 7. Running total</h3>
 <p>Each number is the revenue of one day. The report must show how much the store has earned in total by the end of every day.</p>
-<p>What to do: create a new array in which every element is the sum of all numbers of arr from the beginning up to this position, including this position.</p>
+<p>What to do: create a method <code>runningTotal</code> with one parameter: an array of numbers <code>arr</code>. The method must create and return a new array in which every element is the sum of all numbers of <code>arr</code> from the beginning up to this position, including this position.</p>
 <ul><li><strong>Input:</strong> arr, the revenue per day.</li><li><strong>Return:</strong> a new array of the same length. Do not change arr. For an empty array, return an empty array.</li></ul>
 <p>Examples:</p>
 <ul><li><code>runningTotal([1, 2, 3, 4])</code> <code>-&gt;</code> [1, 3, 6, 10] (1, then 1+2, then 1+2+3, then 1+2+3+4)</li><li><code>runningTotal([5, -2, 4])</code> <code>-&gt;</code> [5, 3, 7] (5, then 5-2, then 5-2+4)</li><li><code>runningTotal([])</code> <code>-&gt;</code> []</li></ul>
@@ -3363,7 +3363,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 8. Two albums for the gift card</h3>
 <p>A customer has a gift card and wants to spend all of it on exactly two different albums.</p>
-<p>What to do: find two different positions in the array whose prices add up exactly to amount. Return these positions (indexes), not the prices.</p>
+<p>What to do: create a method <code>findAlbumsForGiftCard</code> with two parameters: the first is an array of numbers <code>prices</code>, the second is a number <code>amount</code>. The method must find two different positions in the array whose prices add up exactly to <code>amount</code> and return these positions (indexes, not the prices) as an array.</p>
 <ul><li><strong>Input:</strong> prices, the album prices; amount, the money on the gift card.</li><li><strong>Return:</strong> an array of two indexes, the smaller one first. If there is no such pair, return an empty array. If there are several pairs, return any of them.</li></ul>
 <p>Examples:</p>
 <ul><li><code>findAlbumsForGiftCard([2, 7, 11, 15], 9)</code> <code>-&gt;</code> [0, 1] (the prices at indexes 0 and 1 are 2 and 7, and <code>2 + 7 = 9</code>)</li><li><code>findAlbumsForGiftCard([3, 2, 4], 6)</code> <code>-&gt;</code> [1, 2] (<code>2 + 4 = 6</code>; the album with price 3 can't be taken twice)</li><li><code>findAlbumsForGiftCard([1, 2], 10)</code> <code>-&gt;</code> [] (no two prices give 10)</li></ul>
@@ -3373,7 +3373,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 9. The lost ticket number</h3>
 <p>Concert tickets have the numbers 0, 1, 2, ... up to some number n, one ticket per number. One ticket is lost. The array holds the numbers of all the other tickets, in any order.</p>
-<p>What to do: find the number of the lost ticket.</p>
+<p>What to do: create a method <code>findLostTicket</code> with one parameter: an array of numbers <code>arr</code>. The method must find the number of the lost ticket and return it.</p>
 <ul><li><strong>Input:</strong> arr, the numbers of the remaining tickets, without repeats. The biggest possible number n equals arr.length.</li><li><strong>Return:</strong> the number from 0 to n that is not in the array.</li></ul>
 <p>Examples:</p>
 <ul><li><code>findLostTicket([3, 0, 1])</code> <code>-&gt;</code> 2 (n is 3, so the tickets were 0, 1, 2, 3, and 2 is missing)</li><li><code>findLostTicket([0, 1])</code> <code>-&gt;</code> 2 (n is 2, so the tickets were 0, 1, 2, and 2 is missing)</li><li><code>findLostTicket([1])</code> <code>-&gt;</code> 0 (n is 1, so the tickets were 0, 1, and 0 is missing)</li></ul>
@@ -3383,7 +3383,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 10. Music quiz labels</h3>
 <p>The quiz page shows the numbers from 1 to n, but some numbers are replaced with words.</p>
-<p>What to do: build one string with a label for every number from 1 to n. The label of a number is:</p>
+<p>What to do: create a method <code>buildQuizLabels</code> with one parameter: a number <code>n</code>. The method must build and return one string with a label for every number from 1 to <code>n</code>. The label of a number is:</p>
 <ul><li>"FizzBuzz" if the number is divisible by both 3 and 5;</li><li>"Fizz" if it is divisible only by 3;</li><li>"Buzz" if it is divisible only by 5;</li><li>the number itself in all other cases.</li></ul>
 <p>"Divisible" means there is no remainder after division.</p>
 <ul><li><strong>Input:</strong> n, how many numbers to show (n is 0 or more).</li><li><strong>Return:</strong> one String with all labels separated by a comma and a space. For <code>n = 0</code>, return an empty string "".</li></ul>
@@ -3395,7 +3395,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 11. Special offer code</h3>
 <p>A promo code works only if it is a prime number. A prime number is bigger than 1 and can be divided without a remainder only by 1 and by itself: 2, 3, 5, 7, 11, ...</p>
-<p>What to do: check whether the number n is prime.</p>
+<p>What to do: create a method <code>isPrime</code> with one parameter: a number <code>n</code>. The method must check whether <code>n</code> is prime and return true or false.</p>
 <ul><li><strong>Input:</strong> n, the promo code.</li><li><strong>Return:</strong> true if n is prime, otherwise false.</li></ul>
 <p>Examples:</p>
 <ul><li><code>isPrime(7)</code> <code>-&gt;</code> true (7 is divided only by 1 and 7)</li><li><code>isPrime(12)</code> <code>-&gt;</code> false (12 is also divided by 2, 3, 4 and 6)</li><li><code>isPrime(1)</code> <code>-&gt;</code> false (a prime number must be bigger than 1)</li><li><code>isPrime(2)</code> <code>-&gt;</code> true (the smallest prime number)</li></ul>
@@ -3405,7 +3405,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 12. Mirror album title</h3>
 <p>Some titles read the same from left to right and from right to left, like "level". Such a word is called a palindrome, and the store wants to mark these albums.</p>
-<p>What to do: check whether the string s is a palindrome. Capital and small letters are different, so "Level" is not a palindrome.</p>
+<p>What to do: create a method <code>isPalindrome</code> with one parameter: a string <code>s</code>. The method must check whether <code>s</code> is a palindrome and return true or false. Capital and small letters are different, so "Level" is not a palindrome.</p>
 <ul><li><strong>Input:</strong> s, the title. It can be <code>null</code>, which means there is no title at all.</li><li><strong>Return:</strong> true if s is a palindrome, otherwise false. An empty string and a string of one letter are palindromes. For <code>null</code>, return false.</li></ul>
 <p>Examples:</p>
 <ul><li><code>isPalindrome("level")</code> <code>-&gt;</code> true</li><li><code>isPalindrome("abca")</code> <code>-&gt;</code> false (the second letter is b, the second to last is c)</li><li><code>isPalindrome("Level")</code> <code>-&gt;</code> false (L and l are different)</li><li><code>isPalindrome("")</code> <code>-&gt;</code> true</li><li><code>isPalindrome(null)</code> <code>-&gt;</code> false</li></ul>
@@ -3415,7 +3415,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 13. Vinyl box sets</h3>
 <p>Vinyl box sets are made only with 1, 2, 4, 8, 16, ... records: every size is twice the size before it. Such numbers are called powers of two. A customer asks for a box of n records.</p>
-<p>What to do: check whether n is one of these sizes.</p>
+<p>What to do: create a method <code>isPowerOfTwo</code> with one parameter: a number <code>n</code>. The method must check whether <code>n</code> is one of these sizes and return true or false.</p>
 <ul><li><strong>Input:</strong> n, the requested size. It can also be 0 or negative.</li><li><strong>Return:</strong> true if n is a power of two (1, 2, 4, 8, ...), otherwise false.</li></ul>
 <p>Examples:</p>
 <ul><li><code>isPowerOfTwo(16)</code> <code>-&gt;</code> true</li><li><code>isPowerOfTwo(12)</code> <code>-&gt;</code> false (the sizes jump from 8 to 16)</li><li><code>isPowerOfTwo(1)</code> <code>-&gt;</code> true (the smallest size)</li><li><code>isPowerOfTwo(0)</code> <code>-&gt;</code> false</li><li><code>isPowerOfTwo(-8)</code> <code>-&gt;</code> false (a negative size does not exist)</li></ul>
@@ -3425,7 +3425,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 14. Total bonus points</h3>
 <p>Bonus points come from another system. The array has the type Integer[] and not int[], because an Integer can be <code>null</code>: it means the system does not know the points of this customer. Sometimes the whole array is <code>null</code>: the system has sent nothing.</p>
-<p>What to do: add up all the known points and skip every <code>null</code>.</p>
+<p>What to do: create a method <code>sumBonusPoints</code> with one parameter: an array <code>bonuses</code> of type <code>Integer[]</code>. The method must add up all the known points, skip every <code>null</code> and return the sum.</p>
 <ul><li><strong>Input:</strong> bonuses, the array of points; it can be <code>null</code> and can contain <code>null</code> elements.</li><li><strong>Return:</strong> the sum of all numbers in the array. If the array is <code>null</code>, return 0.</li></ul>
 <p>Examples:</p>
 <ul><li><code>sumBonusPoints([10, null, 5])</code> <code>-&gt;</code> 15 (<code>10 + 5</code>, <code>null</code> is skipped)</li><li><code>sumBonusPoints([null, null])</code> <code>-&gt;</code> 0 (no known points)</li><li><code>sumBonusPoints(null)</code> <code>-&gt;</code> 0 (there is no array at all)</li></ul>
@@ -3435,7 +3435,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 15. Is there a comment?</h3>
 <p>Customers can add a comment to an order. If they leave the field empty, the site can send <code>null</code>, an empty string, or a string of spaces. None of these is a real comment.</p>
-<p>What to do: check that the comment has real text: it is not <code>null</code> and has at least one character that is not a space.</p>
+<p>What to do: create a method <code>hasCommentText</code> with one parameter: a string <code>s</code>. The method must check that the comment has real text (it is not <code>null</code> and has at least one character that is not a space) and return true or false.</p>
 <ul><li><strong>Input:</strong> s, the comment. It can be <code>null</code>.</li><li><strong>Return:</strong> true if there is real text, otherwise false.</li></ul>
 <p>Examples:</p>
 <ul><li><code>hasCommentText("great album")</code> <code>-&gt;</code> true</li><li><code>hasCommentText("   ")</code> <code>-&gt;</code> false (only spaces)</li><li><code>hasCommentText("")</code> <code>-&gt;</code> false (an empty string)</li><li><code>hasCommentText(null)</code> <code>-&gt;</code> false (no comment at all)</li></ul>
@@ -3445,7 +3445,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 16. Digit from a character</h3>
 <p>A serial number is read one character at a time. The character '7' and the number 7 are different things: inside Java the character '7' is stored as the code 55.</p>
-<p>What to do: turn a digit character into the number it shows. If the character is not a digit, return -1.</p>
+<p>What to do: create a method <code>digitFromChar</code> with one parameter: a character <code>c</code> of type <code>char</code>. The method must turn a digit character into the number it shows and return this number. If the character is not a digit, it must return -1.</p>
 <ul><li><strong>Input:</strong> c, one character.</li><li><strong>Return:</strong> a number from 0 to 9 if c is one of the characters '0' to '9', otherwise -1.</li></ul>
 <p>Examples:</p>
 <ul><li><code>digitFromChar('7')</code> <code>-&gt;</code> 7</li><li><code>digitFromChar('0')</code> <code>-&gt;</code> 0</li><li><code>digitFromChar('a')</code> <code>-&gt;</code> -1 (a is not a digit)</li></ul>
@@ -3455,7 +3455,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Ticket 17. Total price without overflow</h3>
 <p>The total of an order is <code>price * quantity</code>. An int can hold numbers up to about 2.1 billion. If the result is bigger, Java does not report an error: you just get a wrong number. This is called overflow.</p>
-<p>What to do: multiply price by quantity and return the exact result, even if it does not fit in an int.</p>
+<p>What to do: create a method <code>totalPrice</code> with two parameters: the first is a number <code>price</code>, the second is a number <code>quantity</code>, both of type <code>int</code>. The method must multiply them and return the exact result as a <code>long</code>, even if it does not fit in an <code>int</code>.</p>
 <ul><li><strong>Input:</strong> price and quantity, two numbers of type int.</li><li><strong>Return:</strong> the exact result of the multiplication as a long.</li></ul>
 <p>Examples:</p>
 <ul><li><code>totalPrice(3, 4)</code> <code>-&gt;</code> 12</li><li><code>totalPrice(2000000000, 3)</code> <code>-&gt;</code> 6000000000 (too big for an int)</li></ul>
@@ -3552,14 +3552,14 @@ list.add(<span class="t-string">"d"</span>);                                    
 </section>
 <h2 class="group-title" data-id="warmup-tasks">Практические задачи</h2>
 <section class="card">
-<p>Вы работаете в службе поддержки интернет-магазина музыки. Каждый тикет ниже — это небольшая рабочая ситуация и один пустой метод, который нужно дописать. В задачах только массивы, циклы, примитивы и <code>null</code>. Они идут от простых к чуть более сложным.</p>
+<p>Вы работаете в службе поддержки интернет-магазина музыки. Каждый тикет ниже — это небольшая рабочая ситуация и один метод, который нужно создать. В тикете сказано, как называется метод и какие у него параметры. Заготовка показана под условием (в WarmupTasks.java она уже есть), так что остаётся написать тело метода. В задачах только массивы, циклы, примитивы и <code>null</code>. Они идут от простых к чуть более сложным.</p>
 <p>Как читать тикет:</p>
-<ul><li><strong>Что сделать:</strong> задача одним предложением.</li><li><strong>Дано:</strong> значения, которые получает метод.</li><li><strong>Вернуть:</strong> что метод должен вернуть. Если он ничего не возвращает (void), он меняет полученный массив.</li><li><strong>Примеры:</strong> <code>findBestSeller([3, 17, 9]) -&gt; 17</code> значит «вызываем метод с таким массивом, и он должен вернуть 17».</li><li>Запись <code>[3, 17, 9]</code> — это короткий способ показать массив. В коде на Java пишите <code>new int[]{3, 17, 9}</code>.</li><li>Запускайте примеры в main, чтобы проверить себя. Чтобы вывести массив на экран, используйте <code>Arrays.toString(arr)</code>.</li></ul>
+<ul><li><strong>Что сделать:</strong> какой метод создать, с какими параметрами и что он должен делать.</li><li><strong>Дано:</strong> значения, которые получает метод.</li><li><strong>Вернуть:</strong> что метод должен вернуть. Если он ничего не возвращает (void), он меняет полученный массив.</li><li><strong>Примеры:</strong> <code>findBestSeller([3, 17, 9]) -&gt; 17</code> значит «вызываем метод с таким массивом, и он должен вернуть 17».</li><li>Запись <code>[3, 17, 9]</code> — это короткий способ показать массив. В коде на Java пишите <code>new int[]{3, 17, 9}</code>.</li><li>Запускайте примеры в main, чтобы проверить себя. Чтобы вывести массив на экран, используйте <code>Arrays.toString(arr)</code>.</li></ul>
 </section>
 <section class="card task">
 <h3>Тикет 1. Есть ли трек в плейлисте?</h3>
 <p>Плейлист хранится как массив чисел: каждое число — это id одного трека. Покупатель спрашивает: «Есть ли этот трек в моём плейлисте?»</p>
-<p>Что сделать: проверьте, есть ли число target в массиве ids.</p>
+<p>Что сделать: создайте метод <code>containsTrack</code> с двумя параметрами: первый — массив чисел <code>ids</code>, второй — число <code>target</code>. Метод должен проверить, есть ли <code>target</code> в массиве <code>ids</code>, и вернуть true или false.</p>
 <ul><li><strong>Дано:</strong> ids — массив id треков; target — id трека, который ищем.</li><li><strong>Вернуть:</strong> true, если target есть в массиве, иначе false. Для пустого массива тоже false.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>containsTrack([5, 8, 12], 8)</code> <code>-&gt;</code> true (8 есть в массиве)</li><li><code>containsTrack([5, 8, 12], 7)</code> <code>-&gt;</code> false (числа 7 нет)</li><li><code>containsTrack([], 7)</code> <code>-&gt;</code> false (плейлист пустой)</li></ul>
@@ -3569,7 +3569,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 2. Бестселлер</h3>
 <p>Каждое число в массиве показывает, сколько копий одного альбома продано сегодня. Менеджер хочет узнать лучший результат дня.</p>
-<p>Что сделать: найдите самое большое число в массиве.</p>
+<p>Что сделать: создайте метод <code>findBestSeller</code> с одним параметром: массив чисел <code>sales</code>. Метод должен найти самое большое число в массиве и вернуть его.</p>
 <ul><li><strong>Дано:</strong> sales — массив проданных копий (каждое число 0 или больше).</li><li><strong>Вернуть:</strong> самое большое число. Если массив пустой, сравнивать нечего, поэтому верните -1.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>findBestSeller([3, 17, 9])</code> <code>-&gt;</code> 17</li><li><code>findBestSeller([4])</code> <code>-&gt;</code> 4 (единственное число и есть самое большое)</li><li><code>findBestSeller([])</code> <code>-&gt;</code> -1 (массив пустой)</li></ul>
@@ -3579,7 +3579,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 3. Поменять два трека местами</h3>
 <p>Покупатель перетаскивает один трек на место другого, и эти два трека меняются местами. Все остальные треки остаются там же, где были.</p>
-<p>Что сделать: поменяйте местами элементы на позициях i и j. Позиции (индексы) считаются с 0.</p>
+<p>Что сделать: создайте метод <code>swapTracks</code> с тремя параметрами: первый — массив чисел <code>arr</code>, второй — число <code>i</code>, третий — число <code>j</code>. Числа <code>i</code> и <code>j</code> — это позиции (индексы) в массиве, они считаются с 0. Метод должен поменять местами элементы на этих двух позициях. Он ничего не возвращает, а меняет сам <code>arr</code>.</p>
 <ul><li><strong>Дано:</strong> arr — плейлист; i и j — два индекса. Оба всегда есть в массиве.</li><li><strong>Вернуть:</strong> ничего (void). Измените сам массив arr.</li></ul>
 <p>Примеры:</p>
 <ul><li>arr = [1, 2, 3, 4], <code>swapTracks(arr, 0, 3)</code> <code>-&gt;</code> arr станет [4, 2, 3, 1] (первый и последний поменялись местами)</li><li>arr = [1, 2, 3], <code>swapTracks(arr, 1, 1)</code> <code>-&gt;</code> arr останется [1, 2, 3] (i и j — одна и та же позиция)</li></ul>
@@ -3589,7 +3589,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 4. Играть задом наперёд</h3>
 <p>Покупатель нажал «Играть с конца»: плейлист должен идти в обратном порядке.</p>
-<p>Что сделать: разверните массив, чтобы последний элемент стал первым, предпоследний — вторым и так далее. Меняйте этот же массив, второй не создавайте.</p>
+<p>Что сделать: создайте метод <code>reversePlaylist</code> с одним параметром: массив чисел <code>arr</code>. Метод должен развернуть массив: последний элемент становится первым, предпоследний — вторым и так далее. Меняйте этот же массив, второй не создавайте. Метод ничего не возвращает.</p>
 <ul><li><strong>Дано:</strong> arr — плейлист.</li><li><strong>Вернуть:</strong> ничего (void). Измените сам массив arr.</li></ul>
 <p>Примеры:</p>
 <ul><li>arr = [1, 2, 3, 4, 5], <code>reversePlaylist(arr)</code> <code>-&gt;</code> arr станет [5, 4, 3, 2, 1]</li><li>arr = [7, 8], <code>reversePlaylist(arr)</code> <code>-&gt;</code> arr станет [8, 7]</li><li>arr = [], <code>reversePlaylist(arr)</code> <code>-&gt;</code> arr останется [] (разворачивать нечего)</li></ul>
@@ -3599,7 +3599,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 5. Цены идут по порядку?</h3>
 <p>На странице магазина цены должны идти от самой низкой к самой высокой. Перед публикацией список нужно проверить.</p>
-<p>Что сделать: проверьте, что каждая цена не меньше цены прямо перед ней. Две одинаковые цены подряд — это нормально.</p>
+<p>Что сделать: создайте метод <code>arePricesInOrder</code> с одним параметром: массив чисел <code>prices</code>. Метод должен проверить, что каждая цена не меньше цены прямо перед ней, и вернуть true или false. Две одинаковые цены подряд — это нормально.</p>
 <ul><li><strong>Дано:</strong> prices — массив цен.</li><li><strong>Вернуть:</strong> true, если цены идут по порядку, иначе false. Для пустого массива или одной цены верните true.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>arePricesInOrder([1, 3, 3, 8])</code> <code>-&gt;</code> true (каждая цена не меньше предыдущей)</li><li><code>arePricesInOrder([1, 5, 4])</code> <code>-&gt;</code> false (4 идёт после 5)</li><li><code>arePricesInOrder([])</code> <code>-&gt;</code> true (цен нет, значит, и беспорядка нет)</li></ul>
@@ -3609,7 +3609,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 6. Нули в конец</h3>
 <p>Каждое число — это количество скачиваний за один день; 0 значит, что скачиваний не было. В отчёте сначала должны идти дни со скачиваниями, а пустые дни — в конце.</p>
-<p>Что сделать: перенесите все нули в конец массива. Остальные числа должны сохранить свой порядок. Меняйте этот же массив, второй не создавайте.</p>
+<p>Что сделать: создайте метод <code>moveZerosToEnd</code> с одним параметром: массив чисел <code>arr</code>. Метод должен перенести все нули в конец массива, а остальные числа должны сохранить свой порядок. Меняйте этот же массив, второй не создавайте. Метод ничего не возвращает.</p>
 <ul><li><strong>Дано:</strong> arr — скачивания по дням.</li><li><strong>Вернуть:</strong> ничего (void). Измените сам массив arr.</li></ul>
 <p>Примеры:</p>
 <ul><li>arr = [0, 4, 0, 7, 9], <code>moveZerosToEnd(arr)</code> <code>-&gt;</code> arr станет [4, 7, 9, 0, 0] (4, 7, 9 идут в том же порядке)</li><li>arr = [1, 2], <code>moveZerosToEnd(arr)</code> <code>-&gt;</code> arr останется [1, 2] (нулей нет)</li></ul>
@@ -3619,7 +3619,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 7. Нарастающий итог</h3>
 <p>Каждое число — это выручка за один день. В отчёте нужно показать, сколько магазин заработал всего к концу каждого дня.</p>
-<p>Что сделать: создайте новый массив, в котором каждый элемент — это сумма всех чисел arr от начала до этой позиции включительно.</p>
+<p>Что сделать: создайте метод <code>runningTotal</code> с одним параметром: массив чисел <code>arr</code>. Метод должен создать и вернуть новый массив, в котором каждый элемент — это сумма всех чисел <code>arr</code> от начала до этой позиции включительно.</p>
 <ul><li><strong>Дано:</strong> arr — выручка по дням.</li><li><strong>Вернуть:</strong> новый массив той же длины. Сам arr не меняйте. Для пустого массива верните пустой массив.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>runningTotal([1, 2, 3, 4])</code> <code>-&gt;</code> [1, 3, 6, 10] (1, затем 1+2, затем 1+2+3, затем 1+2+3+4)</li><li><code>runningTotal([5, -2, 4])</code> <code>-&gt;</code> [5, 3, 7] (5, затем 5-2, затем 5-2+4)</li><li><code>runningTotal([])</code> <code>-&gt;</code> []</li></ul>
@@ -3629,7 +3629,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 8. Два альбома на подарочную карту</h3>
 <p>У покупателя есть подарочная карта, и он хочет потратить её полностью ровно на два разных альбома.</p>
-<p>Что сделать: найдите две разные позиции в массиве, цены на которых в сумме дают ровно amount. Верните эти позиции (индексы), а не цены.</p>
+<p>Что сделать: создайте метод <code>findAlbumsForGiftCard</code> с двумя параметрами: первый — массив чисел <code>prices</code>, второй — число <code>amount</code>. Метод должен найти две разные позиции в массиве, цены на которых в сумме дают ровно <code>amount</code>, и вернуть эти позиции (индексы, а не цены) в виде массива.</p>
 <ul><li><strong>Дано:</strong> prices — цены альбомов; amount — сумма на подарочной карте.</li><li><strong>Вернуть:</strong> массив из двух индексов, сначала меньший. Если такой пары нет, верните пустой массив. Если пар несколько, верните любую.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>findAlbumsForGiftCard([2, 7, 11, 15], 9)</code> <code>-&gt;</code> [0, 1] (на индексах 0 и 1 стоят цены 2 и 7, а <code>2 + 7 = 9</code>)</li><li><code>findAlbumsForGiftCard([3, 2, 4], 6)</code> <code>-&gt;</code> [1, 2] (<code>2 + 4 = 6</code>; альбом с ценой 3 нельзя взять дважды)</li><li><code>findAlbumsForGiftCard([1, 2], 10)</code> <code>-&gt;</code> [] (никакие две цены не дают 10)</li></ul>
@@ -3639,7 +3639,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 9. Потерянный номер билета</h3>
 <p>У билетов на концерт номера 0, 1, 2, ... до некоторого числа n, на каждый номер один билет. Один билет потерялся. В массиве лежат номера всех остальных билетов, в любом порядке.</p>
-<p>Что сделать: найдите номер потерянного билета.</p>
+<p>Что сделать: создайте метод <code>findLostTicket</code> с одним параметром: массив чисел <code>arr</code>. Метод должен найти номер потерянного билета и вернуть его.</p>
 <ul><li><strong>Дано:</strong> arr — номера оставшихся билетов, без повторов. Самый большой возможный номер n равен arr.length.</li><li><strong>Вернуть:</strong> число от 0 до n, которого нет в массиве.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>findLostTicket([3, 0, 1])</code> <code>-&gt;</code> 2 (n равно 3, значит, были билеты 0, 1, 2, 3, и не хватает 2)</li><li><code>findLostTicket([0, 1])</code> <code>-&gt;</code> 2 (n равно 2, значит, были билеты 0, 1, 2, и не хватает 2)</li><li><code>findLostTicket([1])</code> <code>-&gt;</code> 0 (n равно 1, значит, были билеты 0, 1, и не хватает 0)</li></ul>
@@ -3649,7 +3649,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 10. Подписи для музыкальной викторины</h3>
 <p>На странице викторины показаны числа от 1 до n, но некоторые числа заменены словами.</p>
-<p>Что сделать: соберите одну строку с подписью для каждого числа от 1 до n. Подпись числа такая:</p>
+<p>Что сделать: создайте метод <code>buildQuizLabels</code> с одним параметром: число <code>n</code>. Метод должен собрать и вернуть одну строку с подписью для каждого числа от 1 до <code>n</code>. Подпись числа такая:</p>
 <ul><li>"FizzBuzz", если число делится и на 3, и на 5;</li><li>"Fizz", если оно делится только на 3;</li><li>"Buzz", если оно делится только на 5;</li><li>само число во всех остальных случаях.</li></ul>
 <p>«Делится» значит, что при делении нет остатка.</p>
 <ul><li><strong>Дано:</strong> n — сколько чисел показать (n равно 0 или больше).</li><li><strong>Вернуть:</strong> одну строку String со всеми подписями через запятую и пробел. При <code>n = 0</code> верните пустую строку "".</li></ul>
@@ -3661,7 +3661,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 11. Код специального предложения</h3>
 <p>Промокод работает, только если он простое число. Простое число больше 1 и делится без остатка только на 1 и на само себя: 2, 3, 5, 7, 11, ...</p>
-<p>Что сделать: проверьте, простое ли число n.</p>
+<p>Что сделать: создайте метод <code>isPrime</code> с одним параметром: число <code>n</code>. Метод должен проверить, простое ли число <code>n</code>, и вернуть true или false.</p>
 <ul><li><strong>Дано:</strong> n — промокод.</li><li><strong>Вернуть:</strong> true, если n простое, иначе false.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>isPrime(7)</code> <code>-&gt;</code> true (7 делится только на 1 и на 7)</li><li><code>isPrime(12)</code> <code>-&gt;</code> false (12 делится ещё на 2, 3, 4 и 6)</li><li><code>isPrime(1)</code> <code>-&gt;</code> false (простое число должно быть больше 1)</li><li><code>isPrime(2)</code> <code>-&gt;</code> true (самое маленькое простое число)</li></ul>
@@ -3671,7 +3671,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 12. Зеркальное название альбома</h3>
 <p>Некоторые названия читаются одинаково слева направо и справа налево, например "level". Такое слово называется палиндромом, и магазин хочет отмечать такие альбомы.</p>
-<p>Что сделать: проверьте, является ли строка s палиндромом. Заглавные и строчные буквы считаются разными, поэтому "Level" — не палиндром.</p>
+<p>Что сделать: создайте метод <code>isPalindrome</code> с одним параметром: строка <code>s</code>. Метод должен проверить, является ли <code>s</code> палиндромом, и вернуть true или false. Заглавные и строчные буквы считаются разными, поэтому "Level" — не палиндром.</p>
 <ul><li><strong>Дано:</strong> s — название. Может быть <code>null</code>: это значит, что названия нет совсем.</li><li><strong>Вернуть:</strong> true, если s — палиндром, иначе false. Пустая строка и строка из одной буквы — палиндромы. Для <code>null</code> верните false.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>isPalindrome("level")</code> <code>-&gt;</code> true</li><li><code>isPalindrome("abca")</code> <code>-&gt;</code> false (вторая буква b, предпоследняя c)</li><li><code>isPalindrome("Level")</code> <code>-&gt;</code> false (L и l — разные буквы)</li><li><code>isPalindrome("")</code> <code>-&gt;</code> true</li><li><code>isPalindrome(null)</code> <code>-&gt;</code> false</li></ul>
@@ -3681,7 +3681,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 13. Наборы пластинок</h3>
 <p>Наборы пластинок выпускают только по 1, 2, 4, 8, 16, ... штук: каждый размер вдвое больше предыдущего. Такие числа называются степенями двойки. Покупатель просит набор из n пластинок.</p>
-<p>Что сделать: проверьте, является ли n одним из этих размеров.</p>
+<p>Что сделать: создайте метод <code>isPowerOfTwo</code> с одним параметром: число <code>n</code>. Метод должен проверить, является ли <code>n</code> одним из этих размеров, и вернуть true или false.</p>
 <ul><li><strong>Дано:</strong> n — запрошенный размер. Может быть также 0 или отрицательным.</li><li><strong>Вернуть:</strong> true, если n — степень двойки (1, 2, 4, 8, ...), иначе false.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>isPowerOfTwo(16)</code> <code>-&gt;</code> true</li><li><code>isPowerOfTwo(12)</code> <code>-&gt;</code> false (после 8 сразу идёт 16)</li><li><code>isPowerOfTwo(1)</code> <code>-&gt;</code> true (самый маленький размер)</li><li><code>isPowerOfTwo(0)</code> <code>-&gt;</code> false</li><li><code>isPowerOfTwo(-8)</code> <code>-&gt;</code> false (отрицательного размера не бывает)</li></ul>
@@ -3691,7 +3691,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 14. Сумма бонусных баллов</h3>
 <p>Бонусные баллы приходят из другой системы. У массива тип Integer[], а не int[], потому что Integer может быть <code>null</code>: это значит, что система не знает баллы этого клиента. Иногда <code>null</code> весь массив: система ничего не прислала.</p>
-<p>Что сделать: сложите все известные баллы, а каждый <code>null</code> пропустите.</p>
+<p>Что сделать: создайте метод <code>sumBonusPoints</code> с одним параметром: массив <code>bonuses</code> типа <code>Integer[]</code>. Метод должен сложить все известные баллы, пропустить каждый <code>null</code> и вернуть сумму.</p>
 <ul><li><strong>Дано:</strong> bonuses — массив баллов; он сам может быть <code>null</code> и может содержать элементы <code>null</code>.</li><li><strong>Вернуть:</strong> сумму всех чисел в массиве. Если массив равен <code>null</code>, верните 0.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>sumBonusPoints([10, null, 5])</code> <code>-&gt;</code> 15 (<code>10 + 5</code>, <code>null</code> пропущен)</li><li><code>sumBonusPoints([null, null])</code> <code>-&gt;</code> 0 (известных баллов нет)</li><li><code>sumBonusPoints(null)</code> <code>-&gt;</code> 0 (массива нет совсем)</li></ul>
@@ -3701,7 +3701,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 15. Есть ли комментарий?</h3>
 <p>Покупатели могут оставить комментарий к заказу. Если поле оставили пустым, сайт может прислать <code>null</code>, пустую строку или строку из пробелов. Всё это не настоящий комментарий.</p>
-<p>Что сделать: проверьте, что в комментарии есть настоящий текст: он не <code>null</code> и в нём есть хотя бы один символ, кроме пробела.</p>
+<p>Что сделать: создайте метод <code>hasCommentText</code> с одним параметром: строка <code>s</code>. Метод должен проверить, что в комментарии есть настоящий текст (он не <code>null</code> и в нём есть хотя бы один символ, кроме пробела), и вернуть true или false.</p>
 <ul><li><strong>Дано:</strong> s — комментарий. Может быть <code>null</code>.</li><li><strong>Вернуть:</strong> true, если есть настоящий текст, иначе false.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>hasCommentText("great album")</code> <code>-&gt;</code> true</li><li><code>hasCommentText("   ")</code> <code>-&gt;</code> false (только пробелы)</li><li><code>hasCommentText("")</code> <code>-&gt;</code> false (пустая строка)</li><li><code>hasCommentText(null)</code> <code>-&gt;</code> false (комментария нет совсем)</li></ul>
@@ -3711,7 +3711,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 16. Цифра из символа</h3>
 <p>Серийный номер читают по одному символу. Символ '7' и число 7 — это разные вещи: внутри Java символ '7' хранится как код 55.</p>
-<p>Что сделать: превратите символ-цифру в число, которое она обозначает. Если символ не цифра, верните -1.</p>
+<p>Что сделать: создайте метод <code>digitFromChar</code> с одним параметром: символ <code>c</code> типа <code>char</code>. Метод должен превратить символ-цифру в число, которое она обозначает, и вернуть это число. Если символ не цифра, метод должен вернуть -1.</p>
 <ul><li><strong>Дано:</strong> c — один символ.</li><li><strong>Вернуть:</strong> число от 0 до 9, если c — один из символов от '0' до '9', иначе -1.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>digitFromChar('7')</code> <code>-&gt;</code> 7</li><li><code>digitFromChar('0')</code> <code>-&gt;</code> 0</li><li><code>digitFromChar('a')</code> <code>-&gt;</code> -1 (a — не цифра)</li></ul>
@@ -3721,7 +3721,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <section class="card task">
 <h3>Тикет 17. Сумма заказа без переполнения</h3>
 <p>Сумма заказа равна <code>price * quantity</code>. В int помещаются числа примерно до 2,1 миллиарда. Если результат больше, Java не сообщает об ошибке: вы просто получаете неверное число. Это называется переполнением.</p>
-<p>Что сделать: умножьте price на quantity и верните точный результат, даже если он не помещается в int.</p>
+<p>Что сделать: создайте метод <code>totalPrice</code> с двумя параметрами: первый — число <code>price</code>, второй — число <code>quantity</code>, оба типа <code>int</code>. Метод должен перемножить их и вернуть точный результат в виде <code>long</code>, даже если он не помещается в <code>int</code>.</p>
 <ul><li><strong>Дано:</strong> price и quantity — два числа типа int.</li><li><strong>Вернуть:</strong> точный результат умножения в виде long.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>totalPrice(3, 4)</code> <code>-&gt;</code> 12</li><li><code>totalPrice(2000000000, 3)</code> <code>-&gt;</code> 6000000000 (слишком много для int)</li></ul>
