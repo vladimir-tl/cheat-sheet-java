@@ -21,6 +21,7 @@ GROUPS = [
     ("loops", "Loops", "Циклы", ["ForTheory", "WhileTheory"]),
     ("conditions", "Conditions", "Условия", ["IfElseTheory", "SwitchTheory"]),
     ("arrays", "Arrays", "Массивы", ["ArrayTheory"]),
+    ("warmup", "Warm-up", "Разминка", ["WarmupTheory"]),
     ("collections", "Collections", "Коллекции", ["ListTheory", "SetTheory", "MapTheory"]),
     ("streams", "Stream API", "Stream API", ["StreamTheory"]),
 ]

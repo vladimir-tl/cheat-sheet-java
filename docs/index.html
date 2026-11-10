@@ -100,6 +100,7 @@ section { scroll-margin-top: 110px; }
     <a href="#for" data-group="loops"><span class="l-en">Loops</span><span class="l-ru">Циклы</span></a>
     <a href="#ifelse" data-group="conditions"><span class="l-en">Conditions</span><span class="l-ru">Условия</span></a>
     <a href="#array" data-group="arrays"><span class="l-en">Arrays</span><span class="l-ru">Массивы</span></a>
+    <a href="#warmup" data-group="warmup"><span class="l-en">Warm-up</span><span class="l-ru">Разминка</span></a>
     <a href="#list" data-group="collections"><span class="l-en">Collections</span><span class="l-ru">Коллекции</span></a>
     <a href="#stream" data-group="streams"><span class="l-en">Stream API</span><span class="l-ru">Stream API</span></a>
   </div>
@@ -110,6 +111,7 @@ section { scroll-margin-top: 110px; }
   <div class="subtabs" data-group="loops"><a href="#for" data-key="for"><span class="l-en">The for loop</span><span class="l-ru">Цикл for</span></a><a href="#while" data-key="while"><span class="l-en">The while loop</span><span class="l-ru">Цикл while</span></a></div>
   <div class="subtabs" data-group="conditions"><a href="#ifelse" data-key="ifelse"><span class="l-en">If-else</span><span class="l-ru">If-else</span></a><a href="#switch" data-key="switch"><span class="l-en">Switch</span><span class="l-ru">Switch</span></a></div>
   <div class="subtabs" data-group="arrays"><a href="#array" data-key="array"><span class="l-en">Arrays</span><span class="l-ru">Массивы</span></a></div>
+  <div class="subtabs" data-group="warmup"><a href="#warmup" data-key="warmup"><span class="l-en">Warm-up patterns for the first LeetCode-style problems</span><span class="l-ru">Разминка, приёмы для первых задач в стиле LeetCode</span></a></div>
   <div class="subtabs" data-group="collections"><a href="#list" data-key="list"><span class="l-en">List</span><span class="l-ru">List</span></a><a href="#set" data-key="set"><span class="l-en">Set and HashSet</span><span class="l-ru">Set и HashSet</span></a><a href="#map" data-key="map"><span class="l-en">Map</span><span class="l-ru">Map</span></a></div>
   <div class="subtabs" data-group="streams"><a href="#stream" data-key="stream"><span class="l-en">Stream API</span><span class="l-ru">Stream API</span></a></div>
   <a class="practice-link" id="practice-link" href="#"><span class="l-en">Practice tasks</span><span class="l-ru">Практика</span></a>
@@ -3191,6 +3193,500 @@ list.add(<span class="t-string">"d"</span>);                                    
 <ul><li>[5, 10, 15] <code>-&gt;</code> [5, 10, 15]; после <code>copy[0] = 99</code> оригинал по-прежнему [5, 10, 15]</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span>[] task10(<span class="t-kw">int</span>[] arr)</code></pre></div>
 <details class="hint"><summary>Подсказка</summary><p><code>Arrays.copyOf</code> с той же длиной создаёт новый, независимый массив.</p></details>
+</section>
+</div>
+</div>
+<div class="topic" data-key="warmup" data-group="warmup">
+<div class="l-en">
+<h1>Warm-up patterns for the first LeetCode-style problems</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Arrays</h4><ol>
+<li value="1"><a href="#warmup-1">Scan: one pass and keep an answer</a></li>
+<li value="2"><a href="#warmup-2">Two pointers: from both ends to the middle</a></li>
+<li value="3"><a href="#warmup-3">Write pointer: write into the same array</a></li>
+</ol></div>
+<div class="group"><h4>Numbers and chars</h4><ol>
+<li value="4"><a href="#warmup-4">Digits and chars: % 10, / 10 and char difference</a></li>
+</ol></div>
+<div class="group"><h4>Traps</h4><ol>
+<li value="5"><a href="#warmup-5">Null guard and edge cases</a></li>
+<li value="6"><a href="#warmup-6">int overflow</a></li>
+</ol></div>
+</div>
+</nav>
+<h2 class="group-title">Arrays</h2>
+<section class="card" data-id="warmup-1">
+<h3>1. Scan: one pass and keep an answer</h3>
+<p>Most easy problems are one loop over the array with a variable that keeps the answer so far: a sum, a counter, "found or not".</p>
+<p>Think where to start the variable and what must happen with an empty array.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">4</span>, <span class="t-number">9</span>, <span class="t-number">2</span>, <span class="t-number">8</span>, <span class="t-number">6</span>};
+<span class="t-kw">int</span> evenCount = <span class="t-number">0</span>;                     <span class="t-comment">// the answer so far</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> x : numbers) {
+    <span class="t-kw">if</span> (x % <span class="t-number">2</span> == <span class="t-number">0</span>) {
+        evenCount++;
+    }
+}
+<span class="t-type">System</span>.out.println(evenCount);         <span class="t-comment">// 4</span></code></pre></div>
+</section>
+<section class="card" data-id="warmup-2">
+<h3>2. Two pointers: from both ends to the middle</h3>
+<p>Two pointers: one index at the start (left), one at the end (right). Do something with both, move them towards each other, stop when they meet. This is how you handle pairs from both ends.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>, <span class="t-number">4</span>, <span class="t-number">5</span>, <span class="t-number">6</span>};
+<span class="t-kw">int</span> left = <span class="t-number">0</span>;
+<span class="t-kw">int</span> right = numbers.length - <span class="t-number">1</span>;
+<span class="t-kw">while</span> (left &lt; right) {
+    <span class="t-type">System</span>.out.println(numbers[left] + numbers[right]);   <span class="t-comment">// 7, 7, 7</span>
+    left++;
+    right--;
+}</code></pre></div>
+</section>
+<section class="card" data-id="warmup-3">
+<h3>3. Write pointer: write into the same array</h3>
+<p>Sometimes the result must be stored in the array itself, without a second one. Keep an index pos: the place for the next good element. Read with the loop, write with pos. Here: even numbers are collected at the start of the array.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">3</span>, <span class="t-number">8</span>, <span class="t-number">5</span>, <span class="t-number">6</span>, <span class="t-number">1</span>};
+<span class="t-kw">int</span> pos = <span class="t-number">0</span>;                           <span class="t-comment">// the place for the next even number</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> x : numbers) {
+    <span class="t-kw">if</span> (x % <span class="t-number">2</span> == <span class="t-number">0</span>) {
+        numbers[pos] = x;
+        pos++;
+    }
+}
+<span class="t-comment">// the first pos cells now hold the even numbers: [8, 6, ...]</span>
+<span class="t-type">System</span>.out.println(pos);               <span class="t-comment">// 2</span></code></pre></div>
+</section>
+<h2 class="group-title">Numbers and chars</h2>
+<section class="card" data-id="warmup-4">
+<h3>4. Digits and chars: % 10, / 10 and char difference</h3>
+<p><code>n % 10</code> is the last digit of n, <code>n / 10</code> cuts it off.</p>
+<p>A char is a number: 'a' is 97, 'b' is 98, and so on. Letters go one after another, so the difference of two chars is the distance between them.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> n = <span class="t-number">4072</span>;
+<span class="t-type">System</span>.out.println(n % <span class="t-number">10</span>);            <span class="t-comment">// 2: the last digit</span>
+<span class="t-type">System</span>.out.println(n / <span class="t-number">10</span>);            <span class="t-comment">// 407: without the last digit</span>
+<span class="t-type">System</span>.out.println(<span class="t-string">'d'</span> - <span class="t-string">'a'</span>);         <span class="t-comment">// 3: the position of the letter in the alphabet</span></code></pre></div>
+</section>
+<h2 class="group-title">Traps</h2>
+<section class="card" data-id="warmup-5">
+<h3>5. Null guard and edge cases</h3>
+<p>Before you use a value that can be <code>null</code>, check it. Calling a method on <code>null</code> throws NullPointerException. &amp;&amp; stops at the first false, so the check goes first.</p>
+<p>Also try every task with: an empty array, one element, all equal elements, zero, a negative number.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">String</span> name = <span class="t-kw">null</span>;
+<span class="t-type">String</span> shown = name == <span class="t-kw">null</span> ? <span class="t-string">"guest"</span> : name;
+<span class="t-type">System</span>.out.println(shown);                          <span class="t-comment">// guest</span>
+<span class="t-kw">boolean</span> longName = name != <span class="t-kw">null</span> &amp;&amp; name.length() &gt; <span class="t-number">3</span>;
+<span class="t-type">System</span>.out.println(longName);                       <span class="t-comment">// false: name.length() is never called</span></code></pre></div>
+</section>
+<section class="card" data-id="warmup-6">
+<h3>6. int overflow</h3>
+<p>int arithmetic is done in int. If the result does not fit (the maximum is about 2.1 billion), the number silently wraps around to a wrong one. Use long for an exact result; Math.addExact and similar methods throw an exception instead of giving a wrong number.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-kw">int</span> max = <span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span>;           <span class="t-comment">// 2147483647</span>
+<span class="t-type">System</span>.out.println(max + <span class="t-number">1</span>);           <span class="t-comment">// -2147483648: wraps around, no error</span>
+<span class="t-type">System</span>.out.println((<span class="t-kw">long</span>) max + <span class="t-number">1</span>);    <span class="t-comment">// 2147483648</span>
+<span class="t-comment">// Math.addExact(max, 1) would throw ArithmeticException instead of a wrong number</span></code></pre></div>
+</section>
+<h2 class="group-title" data-id="warmup-tasks">Practice tasks</h2>
+<section class="card">
+<p>You work in the support team of an online music store. Every ticket below is a small situation from work, and every ticket is one method that you have to finish. The tasks use only arrays, loops, primitives and <code>null</code>; no collections. They go from easy to a bit harder. Always think about the edge cases: an empty array, <code>null</code>, zero.</p>
+<ul><li><strong>Input:</strong> the parameters the method gets.</li><li><strong>Return:</strong> what the method must give back (or how it must change the array).</li><li><strong>Examples:</strong> inputs with their expected results. Run them in main to check yourself.</li></ul>
+</section>
+<section class="card task">
+<h3>Ticket 1. Is the track in the playlist?</h3>
+<p>A playlist is an array of track ids. A customer asks whether one track is in it.</p>
+<ul><li><strong>Input:</strong> ids, the track ids in the playlist; target, the id to look for.</li><li><strong>Return:</strong> true if target is in ids, otherwise false (also false for an empty array).</li></ul>
+<p>Examples:</p>
+<ul><li><code>task1([5, 8, 12], 8)</code> <code>-&gt;</code> true</li><li><code>task1([5, 8, 12], 7)</code> <code>-&gt;</code> false</li><li><code>task1([], 7)</code> <code>-&gt;</code> false</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task1(<span class="t-kw">int</span>[] ids, <span class="t-kw">int</span> target)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Go through the array with a for loop and <code>return true</code> as soon as you meet the target; <code>return false</code> after the loop.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 2. Best seller</h3>
+<p>The array holds how many copies of each album were sold today. Find the biggest number.</p>
+<ul><li><strong>Input:</strong> sales, the numbers of sold copies (all are 0 or more).</li><li><strong>Return:</strong> the biggest element, or -1 if the array is empty.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task2([3, 17, 9])</code> <code>-&gt;</code> 17</li><li><code>task2([4])</code> <code>-&gt;</code> 4</li><li><code>task2([])</code> <code>-&gt;</code> -1</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> task2(<span class="t-kw">int</span>[] sales)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Start with the first element as the current maximum and compare every other element with it. Do not start with 0 if the data could be negative.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 3. Swap two tracks</h3>
+<p>Two tracks in a playlist have to change places.</p>
+<ul><li><strong>Input:</strong> arr, the playlist; i and j, two valid indexes in it.</li><li><strong>Return:</strong> nothing. Change the array itself.</li></ul>
+<p>Examples:</p>
+<ul><li>arr = [1, 2, 3, 4], <code>task3(arr, 0, 3)</code> <code>-&gt;</code> arr becomes [4, 2, 3, 1]</li><li>arr = [1, 2, 3], <code>task3(arr, 1, 1)</code> <code>-&gt;</code> arr stays [1, 2, 3]</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> task3(<span class="t-kw">int</span>[] arr, <span class="t-kw">int</span> i, <span class="t-kw">int</span> j)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>You need a third variable: save <code>arr[i]</code> in <code>temp</code>, then <code>arr[i] = arr[j]</code>, then <code>arr[j] = temp</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 4. Play it backwards</h3>
+<p>Turn a playlist upside down: the last track becomes first, and so on. Do it in the same array, do not create a new one.</p>
+<ul><li><strong>Input:</strong> arr, the playlist.</li><li><strong>Return:</strong> nothing. Change the array itself.</li></ul>
+<p>Examples:</p>
+<ul><li>arr = [1, 2, 3, 4, 5], <code>task4(arr)</code> <code>-&gt;</code> arr becomes [5, 4, 3, 2, 1]</li><li>arr = [7, 8], <code>task4(arr)</code> <code>-&gt;</code> arr becomes [8, 7]</li><li>arr = [], <code>task4(arr)</code> <code>-&gt;</code> arr stays []</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> task4(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Two indexes, <code>left = 0</code> and <code>right = arr.length - 1</code>. Swap the elements, move both indexes towards each other, stop when <code>left &gt;= right</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 5. Is the chart sorted?</h3>
+<p>Check that a list of prices goes from the smallest to the biggest. Equal neighbours are fine.</p>
+<ul><li><strong>Input:</strong> prices, the array of prices.</li><li><strong>Return:</strong> true if every element is not smaller than the one before it. An empty array and an array of one element are sorted.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task5([1, 3, 3, 8])</code> <code>-&gt;</code> true</li><li><code>task5([1, 5, 4])</code> <code>-&gt;</code> false</li><li><code>task5([])</code> <code>-&gt;</code> true</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task5(<span class="t-kw">int</span>[] prices)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Compare each element with the previous one, starting from index 1. Find one pair that is in the wrong order and you can <code>return false</code> at once.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 6. Zeros to the end</h3>
+<p>A report shows the number of downloads per day. Days without downloads are 0. Move all zeros to the end, and keep the order of the other numbers. Do it in the same array.</p>
+<ul><li><strong>Input:</strong> arr, the downloads per day.</li><li><strong>Return:</strong> nothing. Change the array itself.</li></ul>
+<p>Examples:</p>
+<ul><li>arr = [0, 4, 0, 7, 9], <code>task6(arr)</code> <code>-&gt;</code> arr becomes [4, 7, 9, 0, 0]</li><li>arr = [1, 2], <code>task6(arr)</code> <code>-&gt;</code> arr stays [1, 2]</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> task6(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Keep a <code>pos</code> index, the place for the next non-zero number. Copy every non-zero element to <code>arr[pos++]</code>, then fill the rest of the array with zeros.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 7. Running total</h3>
+<p>The array holds the revenue for each day. For every day, the report must show the total revenue from the first day up to that day.</p>
+<ul><li><strong>Input:</strong> arr, the revenue per day.</li><li><strong>Return:</strong> a new array of the same length. The element at index i is the sum of arr[0..i].</li></ul>
+<p>Examples:</p>
+<ul><li><code>task7([1, 2, 3, 4])</code> <code>-&gt;</code> [1, 3, 6, 10]</li><li><code>task7([5, -2, 4])</code> <code>-&gt;</code> [5, 3, 7]</li><li><code>task7([])</code> <code>-&gt;</code> []</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task7(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Keep one variable <code>sum</code>. In a loop add <code>arr[i]</code> to it and write <code>sum</code> to <code>result[i]</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 8. Two albums for the gift card</h3>
+<p>A gift card has an exact amount. Find two different albums whose prices add up to it.</p>
+<ul><li><strong>Input:</strong> prices, the album prices; amount, the gift card amount.</li><li><strong>Return:</strong> an array of two indexes {i, j} with <code>i &lt; j</code> and <code>prices[i] + prices[j] == amount</code>. If there is no such pair, return an empty array. If there are several pairs, any one is fine.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task8([2, 7, 11, 15], 9)</code> <code>-&gt;</code> [0, 1]</li><li><code>task8([3, 2, 4], 6)</code> <code>-&gt;</code> [1, 2]</li><li><code>task8([1, 2], 10)</code> <code>-&gt;</code> []</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task8(<span class="t-kw">int</span>[] prices, <span class="t-kw">int</span> amount)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Two loops, one inside the other. The inner one starts at <code>i + 1</code>, so you never use the same album twice.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 9. The lost ticket number</h3>
+<p>The tickets of a concert are numbered 0, 1, 2, ..., n. One number is missing from the array, and the array is in no particular order.</p>
+<ul><li><strong>Input:</strong> arr, with n elements, all different, each in the range 0..n.</li><li><strong>Return:</strong> the one number from 0..n that is not in the array.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task9([3, 0, 1])</code> <code>-&gt;</code> 2</li><li><code>task9([0, 1])</code> <code>-&gt;</code> 2</li><li><code>task9([1])</code> <code>-&gt;</code> 0</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> task9(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>You know what the sum of all numbers 0..n should be. Compare it with the real sum of the array.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 10. Chart labels</h3>
+<p>The chart page shows a label for each position from 1 to n: "FizzBuzz" if the position is divisible by both 3 and 5, "Fizz" if by 3, "Buzz" if by 5, and the position itself in all other cases.</p>
+<ul><li><strong>Input:</strong> n, the number of positions (<code>n &gt;= 0</code>).</li><li><strong>Return:</strong> one String with all labels separated by a comma and a space (", "), or "" for <code>n = 0</code>.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task10(5)</code> <code>-&gt;</code> "1, 2, Fizz, 4, Buzz"</li><li><code>task10(15)</code> <code>-&gt;</code> "1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz"</li><li><code>task10(0)</code> <code>-&gt;</code> ""</li></ul>
+<div class="code"><pre><code><span class="t-type">String</span> task10(<span class="t-kw">int</span> n)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Check "divisible by both 3 and 5" first, otherwise "Fizz" would win. Use <code>i % 3 == 0</code>. Append with StringBuilder, and add ", " only before every label except the first.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 11. Special offer code</h3>
+<p>A promo code is valid only if it is a prime number: it is bigger than 1 and divisible only by 1 and by itself.</p>
+<ul><li><strong>Input:</strong> n, the code.</li><li><strong>Return:</strong> true if n is prime, otherwise false.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task11(7)</code> <code>-&gt;</code> true</li><li><code>task11(12)</code> <code>-&gt;</code> false</li><li><code>task11(1)</code> <code>-&gt;</code> false</li><li><code>task11(2)</code> <code>-&gt;</code> true</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task11(<span class="t-kw">int</span> n)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Handle <code>n &lt; 2</code> first. Then try the divisors 2, 3, ... while <code>d * d &lt;= n</code>; if any divides n evenly, it is not prime.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 12. Mirror album title</h3>
+<p>Some album titles read the same forwards and backwards, like "level". Check a title. Compare the characters exactly, upper and lower case letters are different.</p>
+<ul><li><strong>Input:</strong> s, the title; it can be <code>null</code>.</li><li><strong>Return:</strong> true if s is a palindrome. Empty and one-letter strings are palindromes. For <code>null</code> return false.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task12("level")</code> <code>-&gt;</code> true</li><li><code>task12("abca")</code> <code>-&gt;</code> false</li><li><code>task12("")</code> <code>-&gt;</code> true</li><li><code>task12(null)</code> <code>-&gt;</code> false</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task12(<span class="t-type">String</span> s)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Check for <code>null</code> first. Then compare <code>s.charAt(left)</code> and <code>s.charAt(right)</code> while <code>left &lt; right</code>, moving both inwards.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 13. Server rack size</h3>
+<p>A rack can only be ordered in sizes that are a power of two: 1, 2, 4, 8, 16, ... Check a requested size.</p>
+<ul><li><strong>Input:</strong> n, the requested size (can be 0 or negative).</li><li><strong>Return:</strong> true if n is 1, 2, 4, 8, ... and false otherwise.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task13(16)</code> <code>-&gt;</code> true</li><li><code>task13(12)</code> <code>-&gt;</code> false</li><li><code>task13(1)</code> <code>-&gt;</code> true</li><li><code>task13(0)</code> <code>-&gt;</code> false</li><li><code>task13(-8)</code> <code>-&gt;</code> false</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task13(<span class="t-kw">int</span> n)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>While n is even, divide it by 2. In the end a power of two becomes exactly 1. Do not forget that <code>n &lt;= 0</code> is never a power of two.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 14. Total bonus points</h3>
+<p>Bonus points come from another system as an array of Integer. A customer without data has <code>null</code> instead of a number. The array itself can also be <code>null</code>.</p>
+<ul><li><strong>Input:</strong> bonuses, the points; <code>null</code> elements mean "unknown".</li><li><strong>Return:</strong> the sum of all known points. Unknown points count as 0. For a <code>null</code> array return 0.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task14([10, null, 5])</code> <code>-&gt;</code> 15</li><li><code>task14([null, null])</code> <code>-&gt;</code> 0</li><li><code>task14(null)</code> <code>-&gt;</code> 0</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> task14(<span class="t-type">Integer</span>[] bonuses)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>The array can be <code>null</code>, and so can each element. Unboxing <code>null</code> throws NullPointerException.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 15. Is the comment empty?</h3>
+<p>A customer sent a comment. A comment has text only if it is not <code>null</code> and contains at least one character that is not a space.</p>
+<ul><li><strong>Input:</strong> s, the comment; it can be <code>null</code>.</li><li><strong>Return:</strong> true if s has text, otherwise false.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task15("great album")</code> <code>-&gt;</code> true</li><li><code>task15("   ")</code> <code>-&gt;</code> false</li><li><code>task15("")</code> <code>-&gt;</code> false</li><li><code>task15(null)</code> <code>-&gt;</code> false</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task15(<span class="t-type">String</span> s)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Check <code>s == null</code> first, and only then call methods on s. Spaces at the start and end can be cut with <code>trim()</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 16. Digit from a character</h3>
+<p>A serial number is read character by character. Turn a digit character into its number.</p>
+<ul><li><strong>Input:</strong> c, one character.</li><li><strong>Return:</strong> the number 0..9 if c is a digit character '0'..'9', otherwise -1.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task16('7')</code> <code>-&gt;</code> 7</li><li><code>task16('0')</code> <code>-&gt;</code> 0</li><li><code>task16('a')</code> <code>-&gt;</code> -1</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> task16(<span class="t-kw">char</span> c)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>A char is a number in disguise. The characters '0'..'9' go one after another, so <code>c - '0'</code> gives the digit.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 17. Total price without overflow</h3>
+<p>The total price of an order is <code>price * quantity</code>. Both numbers are ints, but the result can be bigger than the biggest int (about 2.1 billion).</p>
+<ul><li><strong>Input:</strong> price and quantity, two ints.</li><li><strong>Return:</strong> the exact product as a long.</li></ul>
+<p>Examples:</p>
+<ul><li><code>task17(3, 4)</code> <code>-&gt;</code> 12</li><li><code>task17(2000000000, 3)</code> <code>-&gt;</code> 6000000000</li></ul>
+<div class="code"><pre><code><span class="t-kw">long</span> task17(<span class="t-kw">int</span> price, <span class="t-kw">int</span> quantity)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p><code>price * quantity</code> is calculated in int and may overflow before it reaches the long. Make the calculation happen in long.</p></details>
+</section>
+</div>
+<div class="l-ru">
+<h1>Разминка, приёмы для первых задач в стиле LeetCode</h1>
+<p class="lead">Короткие примеры. Скопируйте любой из них в метод main и запустите.</p>
+<nav class="card contents"><h2>Содержание</h2><div class="cols">
+<div class="group"><h4>Массивы</h4><ol>
+<li value="1"><a href="#warmup-1">Проход: один цикл и ответ «на сейчас»</a></li>
+<li value="2"><a href="#warmup-2">Два указателя: с обоих концов к середине</a></li>
+<li value="3"><a href="#warmup-3">Указатель записи: пишем в тот же массив</a></li>
+</ol></div>
+<div class="group"><h4>Числа и символы</h4><ol>
+<li value="4"><a href="#warmup-4">Цифры и символы: % 10, / 10 и разница символов</a></li>
+</ol></div>
+<div class="group"><h4>Ловушки</h4><ol>
+<li value="5"><a href="#warmup-5">Проверка на <code>null</code> и крайние случаи</a></li>
+<li value="6"><a href="#warmup-6">Переполнение int</a></li>
+</ol></div>
+</div>
+</nav>
+<h2 class="group-title">Массивы</h2>
+<section class="card" data-id="warmup-1">
+<h3>1. Проход: один цикл и ответ «на сейчас»</h3>
+<p>Большинство простых задач это один цикл по массиву и переменная, в которой лежит ответ на данный момент: сумма, счётчик, «нашли или нет».</p>
+<p>Подумайте, с какого значения начать переменную и что должно произойти с пустым массивом.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">4</span>, <span class="t-number">9</span>, <span class="t-number">2</span>, <span class="t-number">8</span>, <span class="t-number">6</span>};
+<span class="t-kw">int</span> evenCount = <span class="t-number">0</span>;                     <span class="t-comment">// ответ на данный момент</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> x : numbers) {
+    <span class="t-kw">if</span> (x % <span class="t-number">2</span> == <span class="t-number">0</span>) {
+        evenCount++;
+    }
+}
+<span class="t-type">System</span>.out.println(evenCount);         <span class="t-comment">// 4</span></code></pre></div>
+</section>
+<section class="card" data-id="warmup-2">
+<h3>2. Два указателя: с обоих концов к середине</h3>
+<p>Два указателя: один индекс в начале (left), другой в конце (right). Сделайте что-то с обоими, двигайте их навстречу друг другу, остановитесь, когда они встретятся. Так обрабатывают пары с двух концов.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>, <span class="t-number">4</span>, <span class="t-number">5</span>, <span class="t-number">6</span>};
+<span class="t-kw">int</span> left = <span class="t-number">0</span>;
+<span class="t-kw">int</span> right = numbers.length - <span class="t-number">1</span>;
+<span class="t-kw">while</span> (left &lt; right) {
+    <span class="t-type">System</span>.out.println(numbers[left] + numbers[right]);   <span class="t-comment">// 7, 7, 7</span>
+    left++;
+    right--;
+}</code></pre></div>
+</section>
+<section class="card" data-id="warmup-3">
+<h3>3. Указатель записи: пишем в тот же массив</h3>
+<p>Иногда результат нужно складывать в сам массив, не создавая второй. Заведите индекс pos: место для следующего подходящего элемента. Читайте циклом, пишите через pos. Здесь: чётные числа собираются в начале массива.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span>[] numbers = {<span class="t-number">3</span>, <span class="t-number">8</span>, <span class="t-number">5</span>, <span class="t-number">6</span>, <span class="t-number">1</span>};
+<span class="t-kw">int</span> pos = <span class="t-number">0</span>;                           <span class="t-comment">// место для следующего чётного числа</span>
+<span class="t-kw">for</span> (<span class="t-kw">int</span> x : numbers) {
+    <span class="t-kw">if</span> (x % <span class="t-number">2</span> == <span class="t-number">0</span>) {
+        numbers[pos] = x;
+        pos++;
+    }
+}
+<span class="t-comment">// первые pos ячеек теперь хранят чётные числа: [8, 6, ...]</span>
+<span class="t-type">System</span>.out.println(pos);               <span class="t-comment">// 2</span></code></pre></div>
+</section>
+<h2 class="group-title">Числа и символы</h2>
+<section class="card" data-id="warmup-4">
+<h3>4. Цифры и символы: % 10, / 10 и разница символов</h3>
+<p><code>n % 10</code> это последняя цифра числа n, <code>n / 10</code> отрезает её.</p>
+<p>char это число: 'a' равен 97, 'b' равен 98 и так далее. Буквы идут подряд, поэтому разница символов показывает расстояние между ними.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> n = <span class="t-number">4072</span>;
+<span class="t-type">System</span>.out.println(n % <span class="t-number">10</span>);            <span class="t-comment">// 2: последняя цифра</span>
+<span class="t-type">System</span>.out.println(n / <span class="t-number">10</span>);            <span class="t-comment">// 407: without последняя цифра</span>
+<span class="t-type">System</span>.out.println(<span class="t-string">'d'</span> - <span class="t-string">'a'</span>);         <span class="t-comment">// 3: номер буквы в алфавите</span></code></pre></div>
+</section>
+<h2 class="group-title">Ловушки</h2>
+<section class="card" data-id="warmup-5">
+<h3>5. Проверка на <code>null</code> и крайние случаи</h3>
+<p>Перед использованием значения, которое может быть <code>null</code>, проверьте его. Вызов метода у <code>null</code> бросает NullPointerException. &amp;&amp; останавливается на первом false, поэтому проверка идёт первой.</p>
+<p>Пробуйте каждую задачу с: пустым массивом, одним элементом, одинаковыми элементами, нулём, отрицательным числом.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">String</span> name = <span class="t-kw">null</span>;
+<span class="t-type">String</span> shown = name == <span class="t-kw">null</span> ? <span class="t-string">"guest"</span> : name;
+<span class="t-type">System</span>.out.println(shown);                          <span class="t-comment">// guest</span>
+<span class="t-kw">boolean</span> longName = name != <span class="t-kw">null</span> &amp;&amp; name.length() &gt; <span class="t-number">3</span>;
+<span class="t-type">System</span>.out.println(longName);                       <span class="t-comment">// false: name.length() is не вызывается</span></code></pre></div>
+</section>
+<section class="card" data-id="warmup-6">
+<h3>6. Переполнение int</h3>
+<p>int считается в int. Если результат не помещается (максимум около 2,1 миллиарда), число молча «заворачивается» в неверное. Чтобы получить точный результат, используют long; Math.addExact и подобные методы вместо неверного числа бросают исключение.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-kw">int</span> max = <span class="t-type">Integer</span>.<span class="t-type">MAX_VALUE</span>;           <span class="t-comment">// 2147483647</span>
+<span class="t-type">System</span>.out.println(max + <span class="t-number">1</span>);           <span class="t-comment">// -2147483648: заворачивается, ошибки нет</span>
+<span class="t-type">System</span>.out.println((<span class="t-kw">long</span>) max + <span class="t-number">1</span>);    <span class="t-comment">// 2147483648</span>
+<span class="t-comment">// Math.addExact(max, 1) бросило бы ArithmeticException вместо неверного числа</span></code></pre></div>
+</section>
+<h2 class="group-title" data-id="warmup-tasks">Практические задачи</h2>
+<section class="card">
+<p>Вы работаете в службе поддержки интернет-магазина музыки. Каждый тикет ниже — небольшая рабочая ситуация, и каждый тикет — это один метод, который нужно дописать. В задачах только массивы, циклы, примитивы и <code>null</code>, без коллекций. Они идут от простых к чуть более сложным. Всегда думайте о крайних случаях: пустой массив, <code>null</code>, ноль.</p>
+<ul><li><strong>Дано:</strong> параметры, которые получает метод.</li><li><strong>Вернуть:</strong> что метод должен вернуть (или как изменить массив).</li><li><strong>Примеры:</strong> входные данные и ожидаемые результаты. Запустите их в main, чтобы проверить себя.</li></ul>
+</section>
+<section class="card task">
+<h3>Тикет 1. Есть ли трек в плейлисте?</h3>
+<p>Плейлист — это массив id треков. Покупатель спрашивает, есть ли в нём один трек.</p>
+<ul><li><strong>Дано:</strong> ids — id треков в плейлисте; target — id, который ищем.</li><li><strong>Вернуть:</strong> true, если target есть в ids, иначе false (для пустого массива тоже false).</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task1([5, 8, 12], 8)</code> <code>-&gt;</code> true</li><li><code>task1([5, 8, 12], 7)</code> <code>-&gt;</code> false</li><li><code>task1([], 7)</code> <code>-&gt;</code> false</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task1(<span class="t-kw">int</span>[] ids, <span class="t-kw">int</span> target)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Пройдите по массиву циклом for и сразу делайте <code>return true</code>, как только встретили target; после цикла <code>return false</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 2. Бестселлер</h3>
+<p>В массиве лежит, сколько копий каждого альбома продано сегодня. Найдите самое большое число.</p>
+<ul><li><strong>Дано:</strong> sales — числа проданных копий (все 0 или больше).</li><li><strong>Вернуть:</strong> самый большой элемент или -1, если массив пустой.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task2([3, 17, 9])</code> <code>-&gt;</code> 17</li><li><code>task2([4])</code> <code>-&gt;</code> 4</li><li><code>task2([])</code> <code>-&gt;</code> -1</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> task2(<span class="t-kw">int</span>[] sales)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Возьмите первый элемент как текущий максимум и сравнивайте с ним все остальные. Не начинайте с 0, если данные могут быть отрицательными.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 3. Поменять два трека местами</h3>
+<p>Два трека в плейлисте нужно поменять местами.</p>
+<ul><li><strong>Дано:</strong> arr — плейлист; i и j — два допустимых индекса в нём.</li><li><strong>Вернуть:</strong> ничего. Измените сам массив.</li></ul>
+<p>Примеры:</p>
+<ul><li>arr = [1, 2, 3, 4], <code>task3(arr, 0, 3)</code> <code>-&gt;</code> arr станет [4, 2, 3, 1]</li><li>arr = [1, 2, 3], <code>task3(arr, 1, 1)</code> <code>-&gt;</code> arr останется [1, 2, 3]</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> task3(<span class="t-kw">int</span>[] arr, <span class="t-kw">int</span> i, <span class="t-kw">int</span> j)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Нужна третья переменная: сохраните <code>arr[i]</code> в <code>temp</code>, затем <code>arr[i] = arr[j]</code>, затем <code>arr[j] = temp</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 4. Играть задом наперёд</h3>
+<p>Переверните плейлист: последний трек становится первым и так далее. Сделайте это в том же массиве, новый не создавайте.</p>
+<ul><li><strong>Дано:</strong> arr — плейлист.</li><li><strong>Вернуть:</strong> ничего. Измените сам массив.</li></ul>
+<p>Примеры:</p>
+<ul><li>arr = [1, 2, 3, 4, 5], <code>task4(arr)</code> <code>-&gt;</code> arr станет [5, 4, 3, 2, 1]</li><li>arr = [7, 8], <code>task4(arr)</code> <code>-&gt;</code> arr станет [8, 7]</li><li>arr = [], <code>task4(arr)</code> <code>-&gt;</code> arr останется []</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> task4(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Два индекса: <code>left = 0</code> и <code>right = arr.length - 1</code>. Меняйте элементы местами, двигайте оба индекса навстречу друг другу, остановитесь при <code>left &gt;= right</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 5. Чарт отсортирован?</h3>
+<p>Проверьте, что список цен идёт от меньшей к большей. Равные соседи допустимы.</p>
+<ul><li><strong>Дано:</strong> prices — массив цен.</li><li><strong>Вернуть:</strong> true, если каждый элемент не меньше предыдущего. Пустой массив и массив из одного элемента считаются отсортированными.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task5([1, 3, 3, 8])</code> <code>-&gt;</code> true</li><li><code>task5([1, 5, 4])</code> <code>-&gt;</code> false</li><li><code>task5([])</code> <code>-&gt;</code> true</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task5(<span class="t-kw">int</span>[] prices)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Сравнивайте каждый элемент с предыдущим, начиная с индекса 1. Нашли одну пару в неправильном порядке — можно сразу <code>return false</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 6. Нули в конец</h3>
+<p>В отчёте показано число скачиваний по дням. Дни без скачиваний равны 0. Перенесите все нули в конец, порядок остальных чисел сохраните. Сделайте это в том же массиве.</p>
+<ul><li><strong>Дано:</strong> arr — скачивания по дням.</li><li><strong>Вернуть:</strong> ничего. Измените сам массив.</li></ul>
+<p>Примеры:</p>
+<ul><li>arr = [0, 4, 0, 7, 9], <code>task6(arr)</code> <code>-&gt;</code> arr станет [4, 7, 9, 0, 0]</li><li>arr = [1, 2], <code>task6(arr)</code> <code>-&gt;</code> arr останется [1, 2]</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> task6(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Заведите индекс <code>pos</code> — место для следующего ненулевого числа. Копируйте каждый ненулевой элемент в <code>arr[pos++]</code>, потом заполните остаток массива нулями.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 7. Нарастающий итог</h3>
+<p>В массиве лежит выручка по дням. Для каждого дня отчёт должен показать общую выручку с первого дня до этого дня включительно.</p>
+<ul><li><strong>Дано:</strong> arr — выручка по дням.</li><li><strong>Вернуть:</strong> новый массив той же длины. Элемент с индексом i — это сумма arr[0..i].</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task7([1, 2, 3, 4])</code> <code>-&gt;</code> [1, 3, 6, 10]</li><li><code>task7([5, -2, 4])</code> <code>-&gt;</code> [5, 3, 7]</li><li><code>task7([])</code> <code>-&gt;</code> []</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task7(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Заведите одну переменную <code>sum</code>. В цикле прибавляйте к ней <code>arr[i]</code> и записывайте <code>sum</code> в <code>result[i]</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 8. Два альбома на подарочную карту</h3>
+<p>На подарочной карте точная сумма. Найдите два разных альбома, цены которых в сумме дают её.</p>
+<ul><li><strong>Дано:</strong> prices — цены альбомов; amount — сумма на карте.</li><li><strong>Вернуть:</strong> массив из двух индексов {i, j}, где <code>i &lt; j</code> и <code>prices[i] + prices[j] == amount</code>. Если такой пары нет, верните пустой массив. Если пар несколько, подойдёт любая.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task8([2, 7, 11, 15], 9)</code> <code>-&gt;</code> [0, 1]</li><li><code>task8([3, 2, 4], 6)</code> <code>-&gt;</code> [1, 2]</li><li><code>task8([1, 2], 10)</code> <code>-&gt;</code> []</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span>[] task8(<span class="t-kw">int</span>[] prices, <span class="t-kw">int</span> amount)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Два цикла, один внутри другого. Внутренний начинается с <code>i + 1</code>, чтобы не брать один альбом дважды.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 9. Потерянный номер билета</h3>
+<p>Билеты на концерт пронумерованы 0, 1, 2, ..., n. Один номер в массиве отсутствует, а сам массив идёт в произвольном порядке.</p>
+<ul><li><strong>Дано:</strong> arr из n элементов, все разные, каждый в диапазоне 0..n.</li><li><strong>Вернуть:</strong> единственное число из 0..n, которого нет в массиве.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task9([3, 0, 1])</code> <code>-&gt;</code> 2</li><li><code>task9([0, 1])</code> <code>-&gt;</code> 2</li><li><code>task9([1])</code> <code>-&gt;</code> 0</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> task9(<span class="t-kw">int</span>[] arr)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Вы знаете, чему должна равняться сумма всех чисел 0..n. Сравните её с реальной суммой массива.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 10. Подписи в чарте</h3>
+<p>На странице чарта для каждой позиции от 1 до n показана подпись: "FizzBuzz", если позиция делится и на 3, и на 5, "Fizz", если на 3, "Buzz", если на 5, и сама позиция во всех остальных случаях.</p>
+<ul><li><strong>Дано:</strong> n — число позиций (<code>n &gt;= 0</code>).</li><li><strong>Вернуть:</strong> одну строку String со всеми подписями через запятую и пробел (", "), или "" при <code>n = 0</code>.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task10(5)</code> <code>-&gt;</code> "1, 2, Fizz, 4, Buzz"</li><li><code>task10(15)</code> <code>-&gt;</code> "1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz"</li><li><code>task10(0)</code> <code>-&gt;</code> ""</li></ul>
+<div class="code"><pre><code><span class="t-type">String</span> task10(<span class="t-kw">int</span> n)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Сначала проверьте «делится и на 3, и на 5», иначе победит "Fizz". Используйте <code>i % 3 == 0</code>. Собирайте строку через StringBuilder и добавляйте ", " перед каждой подписью, кроме первой.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 11. Код специального предложения</h3>
+<p>Промокод действителен, только если он простое число: больше 1 и делится только на 1 и на само себя.</p>
+<ul><li><strong>Дано:</strong> n — код.</li><li><strong>Вернуть:</strong> true, если n простое, иначе false.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task11(7)</code> <code>-&gt;</code> true</li><li><code>task11(12)</code> <code>-&gt;</code> false</li><li><code>task11(1)</code> <code>-&gt;</code> false</li><li><code>task11(2)</code> <code>-&gt;</code> true</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task11(<span class="t-kw">int</span> n)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Сначала обработайте <code>n &lt; 2</code>. Затем пробуйте делители 2, 3, ... пока <code>d * d &lt;= n</code>; если какой-то делит n нацело, число не простое.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 12. Зеркальное название альбома</h3>
+<p>Некоторые названия альбомов читаются одинаково слева направо и справа налево, например "level". Проверьте название. Сравнивайте символы точно, заглавные и строчные буквы считаются разными.</p>
+<ul><li><strong>Дано:</strong> s — название; может быть <code>null</code>.</li><li><strong>Вернуть:</strong> true, если s — палиндром. Пустая строка и строка из одной буквы — палиндромы. Для <code>null</code> верните false.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task12("level")</code> <code>-&gt;</code> true</li><li><code>task12("abca")</code> <code>-&gt;</code> false</li><li><code>task12("")</code> <code>-&gt;</code> true</li><li><code>task12(null)</code> <code>-&gt;</code> false</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task12(<span class="t-type">String</span> s)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Сначала проверьте <code>null</code>. Затем сравнивайте <code>s.charAt(left)</code> и <code>s.charAt(right)</code>, пока <code>left &lt; right</code>, двигая оба индекса к середине.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 13. Размер серверной стойки</h3>
+<p>Стойку можно заказать только размера, который является степенью двойки: 1, 2, 4, 8, 16, ... Проверьте запрошенный размер.</p>
+<ul><li><strong>Дано:</strong> n — запрошенный размер (может быть 0 или отрицательным).</li><li><strong>Вернуть:</strong> true, если n равно 1, 2, 4, 8, ... и false в остальных случаях.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task13(16)</code> <code>-&gt;</code> true</li><li><code>task13(12)</code> <code>-&gt;</code> false</li><li><code>task13(1)</code> <code>-&gt;</code> true</li><li><code>task13(0)</code> <code>-&gt;</code> false</li><li><code>task13(-8)</code> <code>-&gt;</code> false</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task13(<span class="t-kw">int</span> n)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Пока n чётное, делите его на 2. В конце степень двойки превратится ровно в 1. Не забудьте, что <code>n &lt;= 0</code> никогда не степень двойки.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 14. Сумма бонусных баллов</h3>
+<p>Бонусные баллы приходят из другой системы как массив Integer. У клиента без данных вместо числа стоит <code>null</code>. Сам массив тоже может быть <code>null</code>.</p>
+<ul><li><strong>Дано:</strong> bonuses — баллы; элементы <code>null</code> означают «неизвестно».</li><li><strong>Вернуть:</strong> сумму всех известных баллов. Неизвестные считаются как 0. Для массива <code>null</code> верните 0.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task14([10, null, 5])</code> <code>-&gt;</code> 15</li><li><code>task14([null, null])</code> <code>-&gt;</code> 0</li><li><code>task14(null)</code> <code>-&gt;</code> 0</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> task14(<span class="t-type">Integer</span>[] bonuses)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p><code>null</code> может быть и сам массив, и любой элемент. Распаковка <code>null</code> бросает NullPointerException.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 15. Комментарий пустой?</h3>
+<p>Клиент прислал комментарий. В комментарии есть текст, только если он не <code>null</code> и содержит хотя бы один символ, не являющийся пробелом.</p>
+<ul><li><strong>Дано:</strong> s — комментарий; может быть <code>null</code>.</li><li><strong>Вернуть:</strong> true, если в s есть текст, иначе false.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task15("great album")</code> <code>-&gt;</code> true</li><li><code>task15("   ")</code> <code>-&gt;</code> false</li><li><code>task15("")</code> <code>-&gt;</code> false</li><li><code>task15(null)</code> <code>-&gt;</code> false</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> task15(<span class="t-type">String</span> s)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Сначала проверьте <code>s == null</code>, и только потом вызывайте методы у s. Пробелы в начале и в конце можно убрать через <code>trim()</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 16. Цифра из символа</h3>
+<p>Серийный номер читают по одному символу. Превратите символ-цифру в её число.</p>
+<ul><li><strong>Дано:</strong> c — один символ.</li><li><strong>Вернуть:</strong> число 0..9, если c это символ-цифра '0'..'9', иначе -1.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task16('7')</code> <code>-&gt;</code> 7</li><li><code>task16('0')</code> <code>-&gt;</code> 0</li><li><code>task16('a')</code> <code>-&gt;</code> -1</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> task16(<span class="t-kw">char</span> c)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>char это число в маскировке. Символы '0'..'9' идут подряд, поэтому <code>c - '0'</code> даёт цифру.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 17. Сумма заказа без переполнения</h3>
+<p>Общая цена заказа равна <code>price * quantity</code>. Оба числа типа int, но результат может оказаться больше максимального int (около 2,1 миллиарда).</p>
+<ul><li><strong>Дано:</strong> price и quantity — два числа int.</li><li><strong>Вернуть:</strong> точное произведение в виде long.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>task17(3, 4)</code> <code>-&gt;</code> 12</li><li><code>task17(2000000000, 3)</code> <code>-&gt;</code> 6000000000</li></ul>
+<div class="code"><pre><code><span class="t-kw">long</span> task17(<span class="t-kw">int</span> price, <span class="t-kw">int</span> quantity)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p><code>price * quantity</code> считается в int и может переполниться раньше, чем попадёт в long. Сделайте так, чтобы вычисление шло в long.</p></details>
 </section>
 </div>
 </div>
