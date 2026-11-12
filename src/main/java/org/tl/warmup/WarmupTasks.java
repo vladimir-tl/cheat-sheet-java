@@ -208,33 +208,7 @@ public class WarmupTasks {
     }
 
     /**
-     * Ticket 10. Music quiz labels
-     * The quiz page shows the numbers from 1 to n, but some numbers are replaced with words.
-     *
-     * What to do: create a method `buildQuizLabels` with one parameter: a number `n`. The method must build and return one string with a label for every number from 1 to `n`. The label of a number is:
-     * - "FizzBuzz" if the number is divisible by both 3 and 5;
-     * - "Fizz" if it is divisible only by 3;
-     * - "Buzz" if it is divisible only by 5;
-     * - the number itself in all other cases.
-     *
-     * "Divisible" means there is no remainder after division.
-     *
-     * - Input: n, how many numbers to show (n is 0 or more).
-     * - Return: one String with all labels separated by a comma and a space. For n = 0, return an empty string "".
-     *
-     * Examples:
-     * - buildQuizLabels(5) -> "1, 2, Fizz, 4, Buzz"
-     * - buildQuizLabels(15) -> "1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz"
-     * - buildQuizLabels(0) -> ""
-     *
-     * Hint: The order of checks matters: 15 is also divisible by 3, so decide which check must go first. The comma goes only between labels, not after the last one.
-     */
-    static String buildQuizLabels(int n) {
-        return null;
-    }
-
-    /**
-     * Ticket 11. Special offer code
+     * Ticket 10. Special offer code
      * A promo code works only if it is a prime number. A prime number is bigger than 1
      * and can be divided without a remainder only by 1 and by itself: 2, 3, 5, 7, 11, ...
      *
@@ -256,7 +230,7 @@ public class WarmupTasks {
     }
 
     /**
-     * Ticket 12. Mirror album title
+     * Ticket 11. Mirror album title
      * Some titles read the same from left to right and from right to left, like "level".
      * Such a word is called a palindrome, and the store wants to mark these albums.
      *
@@ -279,7 +253,7 @@ public class WarmupTasks {
     }
 
     /**
-     * Ticket 13. Vinyl box sets
+     * Ticket 12. Vinyl box sets
      * Vinyl box sets are made only with 1, 2, 4, 8, 16, ... records: every size is twice the size
      * before it. Such numbers are called powers of two. A customer asks for a box of n records.
      *
@@ -302,7 +276,7 @@ public class WarmupTasks {
     }
 
     /**
-     * Ticket 14. Total bonus points
+     * Ticket 13. Total bonus points
      * Bonus points come from another system. The array has the type Integer[] and not int[],
      * because an Integer can be null: it means the system does not know the points of this customer.
      * Sometimes the whole array is null: the system has sent nothing.
@@ -324,7 +298,7 @@ public class WarmupTasks {
     }
 
     /**
-     * Ticket 15. Is there a comment?
+     * Ticket 14. Is there a comment?
      * Customers can add a comment to an order. If they leave the field empty, the site
      * can send null, an empty string, or a string of spaces. None of these is a real comment.
      *
@@ -346,7 +320,7 @@ public class WarmupTasks {
     }
 
     /**
-     * Ticket 16. Digit from a character
+     * Ticket 15. Digit from a character
      * A serial number is read one character at a time. The character '7' and the number 7 are
      * different things: inside Java the character '7' is stored as the code 55.
      *
@@ -367,7 +341,7 @@ public class WarmupTasks {
     }
 
     /**
-     * Ticket 17. Total price without overflow
+     * Ticket 16. Total price without overflow
      * The total of an order is price * quantity. An int can hold numbers up to about 2.1 billion.
      * If the result is bigger, Java does not report an error: you just get a wrong number. This is called overflow.
      *

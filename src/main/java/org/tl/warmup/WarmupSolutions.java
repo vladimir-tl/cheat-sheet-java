@@ -23,7 +23,6 @@ public class WarmupSolutions {
         System.out.println(Arrays.toString(runningTotal(new int[]{1, 2, 3, 4}))); // [1, 3, 6, 10]
         System.out.println(Arrays.toString(findAlbumsForGiftCard(new int[]{2, 7, 11, 15}, 9))); // [0, 1]
         System.out.println(findLostTicket(new int[]{3, 0, 1}));               // 2
-        System.out.println(buildQuizLabels(5));                               // 1, 2, Fizz, 4, Buzz
         System.out.println(isPrime(7));                               // true
         System.out.println(isPalindrome("level"));                         // true
         System.out.println(isPowerOfTwo(16));                              // true
@@ -126,25 +125,6 @@ public class WarmupSolutions {
         }
         int expected = n * (n + 1) / 2;       // sum of 0..n
         return expected - actual;
-    }
-
-    static String buildQuizLabels(int n) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= n; i++) {
-            if (i > 1) {
-                sb.append(", ");
-            }
-            if (i % 15 == 0) {                // both 3 and 5: must be checked first
-                sb.append("FizzBuzz");
-            } else if (i % 3 == 0) {
-                sb.append("Fizz");
-            } else if (i % 5 == 0) {
-                sb.append("Buzz");
-            } else {
-                sb.append(i);
-            }
-        }
-        return sb.toString();
     }
 
     static boolean isPrime(int n) {

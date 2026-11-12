@@ -3382,19 +3382,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Hint</summary><p>First find the biggest number in the array, that is n. Then work out what the sum of all numbers from 0 to n should be and compare it with the real sum of the array.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 10. Music quiz labels</h3>
-<p>The quiz page shows the numbers from 1 to n, but some numbers are replaced with words.</p>
-<p>What to do: create a method <code>buildQuizLabels</code> with one parameter: a number <code>n</code>. The method must build and return one string with a label for every number from 1 to <code>n</code>. The label of a number is:</p>
-<ul><li>"FizzBuzz" if the number is divisible by both 3 and 5;</li><li>"Fizz" if it is divisible only by 3;</li><li>"Buzz" if it is divisible only by 5;</li><li>the number itself in all other cases.</li></ul>
-<p>"Divisible" means there is no remainder after division.</p>
-<ul><li><strong>Input:</strong> n, how many numbers to show (n is 0 or more).</li><li><strong>Return:</strong> one String with all labels separated by a comma and a space. For <code>n = 0</code>, return an empty string "".</li></ul>
-<p>Examples:</p>
-<ul><li><code>buildQuizLabels(5)</code> <code>-&gt;</code> "1, 2, Fizz, 4, Buzz"</li><li><code>buildQuizLabels(15)</code> <code>-&gt;</code> "1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz"</li><li><code>buildQuizLabels(0)</code> <code>-&gt;</code> ""</li></ul>
-<div class="code"><pre><code><span class="t-type">String</span> buildQuizLabels(<span class="t-kw">int</span> n)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p>The order of checks matters: 15 is also divisible by 3, so decide which check must go first. The comma goes only between labels, not after the last one.</p></details>
-</section>
-<section class="card task">
-<h3>Ticket 11. Special offer code</h3>
+<h3>Ticket 10. Special offer code</h3>
 <p>A promo code works only if it is a prime number. A prime number is bigger than 1 and can be divided without a remainder only by 1 and by itself: 2, 3, 5, 7, 11, ...</p>
 <p>What to do: create a method <code>isPrime</code> with one parameter: a number <code>n</code>. The method must check whether <code>n</code> is prime and return true or false.</p>
 <ul><li><strong>Input:</strong> n, the promo code.</li><li><strong>Return:</strong> true if n is prime, otherwise false.</li></ul>
@@ -3404,7 +3392,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Hint</summary><p>Try to divide n by 2, 3, 4, and so on. If any of them divides n without a remainder, n is not prime. Numbers smaller than 2 are never prime, so handle them first.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 12. Mirror album title</h3>
+<h3>Ticket 11. Mirror album title</h3>
 <p>Some titles read the same from left to right and from right to left, like "level". Such a word is called a palindrome, and the store wants to mark these albums.</p>
 <p>What to do: create a method <code>isPalindrome</code> with one parameter: a string <code>s</code>. The method must check whether <code>s</code> is a palindrome and return true or false. Capital and small letters are different, so "Level" is not a palindrome.</p>
 <ul><li><strong>Input:</strong> s, the title. It can be <code>null</code>, which means there is no title at all.</li><li><strong>Return:</strong> true if s is a palindrome, otherwise false. An empty string and a string of one letter are palindromes. For <code>null</code>, return false.</li></ul>
@@ -3414,7 +3402,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Hint</summary><p>First deal with <code>null</code>. Then compare the first letter with the last, the second with the second to last, and so on up to the middle. <code>s.charAt(i)</code> gives the letter at position i.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 13. Vinyl box sets</h3>
+<h3>Ticket 12. Vinyl box sets</h3>
 <p>Vinyl box sets are made only with 1, 2, 4, 8, 16, ... records: every size is twice the size before it. Such numbers are called powers of two. A customer asks for a box of n records.</p>
 <p>What to do: create a method <code>isPowerOfTwo</code> with one parameter: a number <code>n</code>. The method must check whether <code>n</code> is one of these sizes and return true or false.</p>
 <ul><li><strong>Input:</strong> n, the requested size. It can also be 0 or negative.</li><li><strong>Return:</strong> true if n is a power of two (1, 2, 4, 8, ...), otherwise false.</li></ul>
@@ -3424,7 +3412,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Hint</summary><p>Divide n by 2 while it is even. What is left of a power of two in the end? Handle 0 and negative numbers first.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 14. Total bonus points</h3>
+<h3>Ticket 13. Total bonus points</h3>
 <p>Bonus points come from another system. The array has the type Integer[] and not int[], because an Integer can be <code>null</code>: it means the system does not know the points of this customer. Sometimes the whole array is <code>null</code>: the system has sent nothing.</p>
 <p>What to do: create a method <code>sumBonusPoints</code> with one parameter: an array <code>bonuses</code> of type <code>Integer[]</code>. The method must add up all the known points, skip every <code>null</code> and return the sum.</p>
 <ul><li><strong>Input:</strong> bonuses, the array of points; it can be <code>null</code> and can contain <code>null</code> elements.</li><li><strong>Return:</strong> the sum of all numbers in the array. If the array is <code>null</code>, return 0.</li></ul>
@@ -3434,7 +3422,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Hint</summary><p>There are two possible <code>null</code> values here: the array and each element. Using a <code>null</code> Integer in arithmetic throws NullPointerException.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 15. Is there a comment?</h3>
+<h3>Ticket 14. Is there a comment?</h3>
 <p>Customers can add a comment to an order. If they leave the field empty, the site can send <code>null</code>, an empty string, or a string of spaces. None of these is a real comment.</p>
 <p>What to do: create a method <code>hasCommentText</code> with one parameter: a string <code>s</code>. The method must check that the comment has real text (it is not <code>null</code> and has at least one character that is not a space) and return true or false.</p>
 <ul><li><strong>Input:</strong> s, the comment. It can be <code>null</code>.</li><li><strong>Return:</strong> true if there is real text, otherwise false.</li></ul>
@@ -3444,7 +3432,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Hint</summary><p>Check for <code>null</code> first, because calling any method on <code>null</code> throws NullPointerException. <code>trim()</code> removes the spaces at the start and the end of a string.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 16. Digit from a character</h3>
+<h3>Ticket 15. Digit from a character</h3>
 <p>A serial number is read one character at a time. The character '7' and the number 7 are different things: inside Java the character '7' is stored as the code 55.</p>
 <p>What to do: create a method <code>digitFromChar</code> with one parameter: a character <code>c</code> of type <code>char</code>. The method must turn a digit character into the number it shows and return this number. If the character is not a digit, it must return -1.</p>
 <ul><li><strong>Input:</strong> c, one character.</li><li><strong>Return:</strong> a number from 0 to 9 if c is one of the characters '0' to '9', otherwise -1.</li></ul>
@@ -3454,7 +3442,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Hint</summary><p>The digit characters have codes that go one after another: '0' is 48, '1' is 49, '2' is 50. You can subtract one char from another.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 17. Total price without overflow</h3>
+<h3>Ticket 16. Total price without overflow</h3>
 <p>The total of an order is <code>price * quantity</code>. An int can hold numbers up to about 2.1 billion. If the result is bigger, Java does not report an error: you just get a wrong number. This is called overflow.</p>
 <p>What to do: create a method <code>totalPrice</code> with two parameters: the first is a number <code>price</code>, the second is a number <code>quantity</code>, both of type <code>int</code>. The method must multiply them and return the exact result as a <code>long</code>, even if it does not fit in an <code>int</code>.</p>
 <ul><li><strong>Input:</strong> price and quantity, two numbers of type int.</li><li><strong>Return:</strong> the exact result of the multiplication as a long.</li></ul>
@@ -3648,19 +3636,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Подсказка</summary><p>Сначала найдите самое большое число в массиве, это n. Потом посчитайте, чему должна равняться сумма всех чисел от 0 до n, и сравните её с реальной суммой массива.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 10. Подписи для музыкальной викторины</h3>
-<p>На странице викторины показаны числа от 1 до n, но некоторые числа заменены словами.</p>
-<p>Что сделать: создайте метод <code>buildQuizLabels</code> с одним параметром: число <code>n</code>. Метод должен собрать и вернуть одну строку с подписью для каждого числа от 1 до <code>n</code>. Подпись числа такая:</p>
-<ul><li>"FizzBuzz", если число делится и на 3, и на 5;</li><li>"Fizz", если оно делится только на 3;</li><li>"Buzz", если оно делится только на 5;</li><li>само число во всех остальных случаях.</li></ul>
-<p>«Делится» значит, что при делении нет остатка.</p>
-<ul><li><strong>Дано:</strong> n — сколько чисел показать (n равно 0 или больше).</li><li><strong>Вернуть:</strong> одну строку String со всеми подписями через запятую и пробел. При <code>n = 0</code> верните пустую строку "".</li></ul>
-<p>Примеры:</p>
-<ul><li><code>buildQuizLabels(5)</code> <code>-&gt;</code> "1, 2, Fizz, 4, Buzz"</li><li><code>buildQuizLabels(15)</code> <code>-&gt;</code> "1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz"</li><li><code>buildQuizLabels(0)</code> <code>-&gt;</code> ""</li></ul>
-<div class="code"><pre><code><span class="t-type">String</span> buildQuizLabels(<span class="t-kw">int</span> n)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p>Порядок проверок важен: 15 делится и на 3, поэтому решите, какая проверка должна идти первой. Запятая стоит только между подписями, после последней её нет.</p></details>
-</section>
-<section class="card task">
-<h3>Тикет 11. Код специального предложения</h3>
+<h3>Тикет 10. Код специального предложения</h3>
 <p>Промокод работает, только если он простое число. Простое число больше 1 и делится без остатка только на 1 и на само себя: 2, 3, 5, 7, 11, ...</p>
 <p>Что сделать: создайте метод <code>isPrime</code> с одним параметром: число <code>n</code>. Метод должен проверить, простое ли число <code>n</code>, и вернуть true или false.</p>
 <ul><li><strong>Дано:</strong> n — промокод.</li><li><strong>Вернуть:</strong> true, если n простое, иначе false.</li></ul>
@@ -3670,7 +3646,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Подсказка</summary><p>Попробуйте делить n на 2, 3, 4 и так далее. Если какое-то из них делит n без остатка, n не простое. Числа меньше 2 никогда не бывают простыми, поэтому обработайте их первыми.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 12. Зеркальное название альбома</h3>
+<h3>Тикет 11. Зеркальное название альбома</h3>
 <p>Некоторые названия читаются одинаково слева направо и справа налево, например "level". Такое слово называется палиндромом, и магазин хочет отмечать такие альбомы.</p>
 <p>Что сделать: создайте метод <code>isPalindrome</code> с одним параметром: строка <code>s</code>. Метод должен проверить, является ли <code>s</code> палиндромом, и вернуть true или false. Заглавные и строчные буквы считаются разными, поэтому "Level" — не палиндром.</p>
 <ul><li><strong>Дано:</strong> s — название. Может быть <code>null</code>: это значит, что названия нет совсем.</li><li><strong>Вернуть:</strong> true, если s — палиндром, иначе false. Пустая строка и строка из одной буквы — палиндромы. Для <code>null</code> верните false.</li></ul>
@@ -3680,7 +3656,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Подсказка</summary><p>Сначала разберитесь с <code>null</code>. Затем сравните первую букву с последней, вторую с предпоследней и так далее до середины. <code>s.charAt(i)</code> даёт букву на позиции i.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 13. Наборы пластинок</h3>
+<h3>Тикет 12. Наборы пластинок</h3>
 <p>Наборы пластинок выпускают только по 1, 2, 4, 8, 16, ... штук: каждый размер вдвое больше предыдущего. Такие числа называются степенями двойки. Покупатель просит набор из n пластинок.</p>
 <p>Что сделать: создайте метод <code>isPowerOfTwo</code> с одним параметром: число <code>n</code>. Метод должен проверить, является ли <code>n</code> одним из этих размеров, и вернуть true или false.</p>
 <ul><li><strong>Дано:</strong> n — запрошенный размер. Может быть также 0 или отрицательным.</li><li><strong>Вернуть:</strong> true, если n — степень двойки (1, 2, 4, 8, ...), иначе false.</li></ul>
@@ -3690,7 +3666,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Подсказка</summary><p>Делите n на 2, пока оно чётное. Что в итоге останется от степени двойки? Ноль и отрицательные числа обработайте первыми.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 14. Сумма бонусных баллов</h3>
+<h3>Тикет 13. Сумма бонусных баллов</h3>
 <p>Бонусные баллы приходят из другой системы. У массива тип Integer[], а не int[], потому что Integer может быть <code>null</code>: это значит, что система не знает баллы этого клиента. Иногда <code>null</code> весь массив: система ничего не прислала.</p>
 <p>Что сделать: создайте метод <code>sumBonusPoints</code> с одним параметром: массив <code>bonuses</code> типа <code>Integer[]</code>. Метод должен сложить все известные баллы, пропустить каждый <code>null</code> и вернуть сумму.</p>
 <ul><li><strong>Дано:</strong> bonuses — массив баллов; он сам может быть <code>null</code> и может содержать элементы <code>null</code>.</li><li><strong>Вернуть:</strong> сумму всех чисел в массиве. Если массив равен <code>null</code>, верните 0.</li></ul>
@@ -3700,7 +3676,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Подсказка</summary><p>Здесь <code>null</code> может быть в двух местах: сам массив и каждый элемент. Использование Integer, равного <code>null</code>, в вычислениях бросает NullPointerException.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 15. Есть ли комментарий?</h3>
+<h3>Тикет 14. Есть ли комментарий?</h3>
 <p>Покупатели могут оставить комментарий к заказу. Если поле оставили пустым, сайт может прислать <code>null</code>, пустую строку или строку из пробелов. Всё это не настоящий комментарий.</p>
 <p>Что сделать: создайте метод <code>hasCommentText</code> с одним параметром: строка <code>s</code>. Метод должен проверить, что в комментарии есть настоящий текст (он не <code>null</code> и в нём есть хотя бы один символ, кроме пробела), и вернуть true или false.</p>
 <ul><li><strong>Дано:</strong> s — комментарий. Может быть <code>null</code>.</li><li><strong>Вернуть:</strong> true, если есть настоящий текст, иначе false.</li></ul>
@@ -3710,7 +3686,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Подсказка</summary><p>Сначала проверьте <code>null</code>, потому что вызов любого метода у <code>null</code> бросает NullPointerException. <code>trim()</code> убирает пробелы в начале и в конце строки.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 16. Цифра из символа</h3>
+<h3>Тикет 15. Цифра из символа</h3>
 <p>Серийный номер читают по одному символу. Символ '7' и число 7 — это разные вещи: внутри Java символ '7' хранится как код 55.</p>
 <p>Что сделать: создайте метод <code>digitFromChar</code> с одним параметром: символ <code>c</code> типа <code>char</code>. Метод должен превратить символ-цифру в число, которое она обозначает, и вернуть это число. Если символ не цифра, метод должен вернуть -1.</p>
 <ul><li><strong>Дано:</strong> c — один символ.</li><li><strong>Вернуть:</strong> число от 0 до 9, если c — один из символов от '0' до '9', иначе -1.</li></ul>
@@ -3720,7 +3696,7 @@ list.add(<span class="t-string">"d"</span>);                                    
 <details class="hint"><summary>Подсказка</summary><p>Коды символов-цифр идут подряд: '0' это 48, '1' это 49, '2' это 50. Один char можно вычесть из другого.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 17. Сумма заказа без переполнения</h3>
+<h3>Тикет 16. Сумма заказа без переполнения</h3>
 <p>Сумма заказа равна <code>price * quantity</code>. В int помещаются числа примерно до 2,1 миллиарда. Если результат больше, Java не сообщает об ошибке: вы просто получаете неверное число. Это называется переполнением.</p>
 <p>Что сделать: создайте метод <code>totalPrice</code> с двумя параметрами: первый — число <code>price</code>, второй — число <code>quantity</code>, оба типа <code>int</code>. Метод должен перемножить их и вернуть точный результат в виде <code>long</code>, даже если он не помещается в <code>int</code>.</p>
 <ul><li><strong>Дано:</strong> price и quantity — два числа типа int.</li><li><strong>Вернуть:</strong> точный результат умножения в виде long.</li></ul>
