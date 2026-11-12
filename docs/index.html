@@ -3373,11 +3373,11 @@ list.add(<span class="t-string">"d"</span>);                                    
 </section>
 <section class="card task">
 <h3>Ticket 9. The lost ticket number</h3>
-<p>Concert tickets have the numbers 0, 1, 2, ... up to some number n, one ticket per number. One ticket is lost. The array holds the numbers of all the other tickets, in any order.</p>
+<p>Concert tickets have the numbers from 0 to n, one ticket per number. So there are <code>n + 1</code> tickets in total. One ticket is lost. The array holds the numbers of all the other tickets, in any order.</p>
 <p>What to do: create a method <code>findLostTicket</code> with one parameter: an array of numbers <code>arr</code>. The method must find the number of the lost ticket and return it.</p>
-<ul><li><strong>Input:</strong> arr, the numbers of the remaining tickets, without repeats. The biggest possible number n equals arr.length.</li><li><strong>Return:</strong> the number from 0 to n that is not in the array.</li></ul>
+<ul><li><strong>Input:</strong> arr, the numbers of the remaining tickets, without repeats. There were <code>n + 1</code> tickets and one is lost, so the array holds exactly n numbers. That means <code>n = arr.length</code>.</li><li><strong>Return:</strong> the number from 0 to n that is not in the array.</li></ul>
 <p>Examples:</p>
-<ul><li><code>findLostTicket([3, 0, 1])</code> <code>-&gt;</code> 2 (n is 3, so the tickets were 0, 1, 2, 3, and 2 is missing)</li><li><code>findLostTicket([0, 1])</code> <code>-&gt;</code> 2 (n is 2, so the tickets were 0, 1, 2, and 2 is missing)</li><li><code>findLostTicket([1])</code> <code>-&gt;</code> 0 (n is 1, so the tickets were 0, 1, and 0 is missing)</li></ul>
+<ul><li><code>findLostTicket([3, 0, 1])</code> <code>-&gt;</code> 2 (the array has 3 numbers, so <code>n = 3</code> and the tickets were 0, 1, 2, 3. 2 is missing)</li><li><code>findLostTicket([0, 1])</code> <code>-&gt;</code> 2 (the array has 2 numbers, so <code>n = 2</code> and the tickets were 0, 1, 2. The last one, 2, is lost)</li><li><code>findLostTicket([1])</code> <code>-&gt;</code> 0 (the array has 1 number, so <code>n = 1</code> and the tickets were 0, 1. 0 is missing)</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span> findLostTicket(<span class="t-kw">int</span>[] arr)</code></pre></div>
 <details class="hint"><summary>Hint</summary><p>You can work out what the sum of all numbers from 0 to n should be. Compare it with the real sum of the array.</p></details>
 </section>
@@ -3639,11 +3639,11 @@ list.add(<span class="t-string">"d"</span>);                                    
 </section>
 <section class="card task">
 <h3>Тикет 9. Потерянный номер билета</h3>
-<p>У билетов на концерт номера 0, 1, 2, ... до некоторого числа n, на каждый номер один билет. Один билет потерялся. В массиве лежат номера всех остальных билетов, в любом порядке.</p>
+<p>У билетов на концерт номера от 0 до n, на каждый номер один билет. Значит, всего билетов <code>n + 1</code>. Один билет потерялся. В массиве лежат номера всех остальных билетов, в любом порядке.</p>
 <p>Что сделать: создайте метод <code>findLostTicket</code> с одним параметром: массив чисел <code>arr</code>. Метод должен найти номер потерянного билета и вернуть его.</p>
-<ul><li><strong>Дано:</strong> arr — номера оставшихся билетов, без повторов. Самый большой возможный номер n равен arr.length.</li><li><strong>Вернуть:</strong> число от 0 до n, которого нет в массиве.</li></ul>
+<ul><li><strong>Дано:</strong> arr — номера оставшихся билетов, без повторов. Билетов было <code>n + 1</code>, один потерялся, поэтому в массиве ровно n чисел. Значит, <code>n = arr.length</code>.</li><li><strong>Вернуть:</strong> число от 0 до n, которого нет в массиве.</li></ul>
 <p>Примеры:</p>
-<ul><li><code>findLostTicket([3, 0, 1])</code> <code>-&gt;</code> 2 (n равно 3, значит, были билеты 0, 1, 2, 3, и не хватает 2)</li><li><code>findLostTicket([0, 1])</code> <code>-&gt;</code> 2 (n равно 2, значит, были билеты 0, 1, 2, и не хватает 2)</li><li><code>findLostTicket([1])</code> <code>-&gt;</code> 0 (n равно 1, значит, были билеты 0, 1, и не хватает 0)</li></ul>
+<ul><li><code>findLostTicket([3, 0, 1])</code> <code>-&gt;</code> 2 (в массиве 3 числа, значит, <code>n = 3</code> и были билеты 0, 1, 2, 3. Не хватает 2)</li><li><code>findLostTicket([0, 1])</code> <code>-&gt;</code> 2 (в массиве 2 числа, значит, <code>n = 2</code> и были билеты 0, 1, 2. Потерялся последний, 2)</li><li><code>findLostTicket([1])</code> <code>-&gt;</code> 0 (в массиве 1 число, значит, <code>n = 1</code> и были билеты 0, 1. Не хватает 0)</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span> findLostTicket(<span class="t-kw">int</span>[] arr)</code></pre></div>
 <details class="hint"><summary>Подсказка</summary><p>Можно вычислить, чему должна равняться сумма всех чисел от 0 до n. Сравните её с реальной суммой массива.</p></details>
 </section>
