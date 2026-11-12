@@ -188,20 +188,20 @@ public class WarmupTasks {
 
     /**
      * Ticket 9. The lost ticket number
-     * Concert tickets have the numbers from 0 to n, one ticket per number. So there are n + 1 tickets in total.
-     * One ticket is lost. The array holds the numbers of all the other tickets, in any order.
+     * Concert tickets have the numbers from 0 to n with no gaps, one ticket per number.
+     * One ticket is lost. The array holds the numbers of all the other tickets, in any order. The ticket with the biggest number n is never the lost one.
      *
      * What to do: create a method `findLostTicket` with one parameter: an array of numbers `arr`. The method must find the number of the lost ticket and return it.
      *
-     * - Input: arr, the numbers of the remaining tickets, without repeats. There were n + 1 tickets and one is lost, so the array holds exactly n numbers. That means n = arr.length.
+     * - Input: arr, the numbers of the remaining tickets, without repeats. n is the biggest number in the array.
      * - Return: the number from 0 to n that is not in the array.
      *
      * Examples:
-     * - findLostTicket([3, 0, 1]) -> 2 (the array has 3 numbers, so n = 3 and the tickets were 0, 1, 2, 3. 2 is missing)
-     * - findLostTicket([0, 1]) -> 2 (the array has 2 numbers, so n = 2 and the tickets were 0, 1, 2. The last one, 2, is lost)
-     * - findLostTicket([1]) -> 0 (the array has 1 number, so n = 1 and the tickets were 0, 1. 0 is missing)
+     * - findLostTicket([3, 0, 1]) -> 2 (the biggest number is 3, so the tickets were 0, 1, 2, 3. 2 is missing)
+     * - findLostTicket([5, 2, 0, 1, 4]) -> 3 (the biggest number is 5, so the tickets were 0, 1, 2, 3, 4, 5. 3 is missing)
+     * - findLostTicket([1]) -> 0 (the biggest number is 1, so the tickets were 0, 1. 0 is missing)
      *
-     * Hint: You can work out what the sum of all numbers from 0 to n should be. Compare it with the real sum of the array.
+     * Hint: First find the biggest number in the array, that is n. Then work out what the sum of all numbers from 0 to n should be and compare it with the real sum of the array.
      */
     static int findLostTicket(int[] arr) {
         return 0;

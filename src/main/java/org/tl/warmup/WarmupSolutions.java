@@ -116,12 +116,15 @@ public class WarmupSolutions {
     }
 
     static int findLostTicket(int[] arr) {
-        int n = arr.length;
-        int expected = n * (n + 1) / 2;       // sum of 0..n
+        int n = 0;                            // the biggest number in the array
         int actual = 0;
         for (int x : arr) {
+            if (x > n) {
+                n = x;
+            }
             actual += x;
         }
+        int expected = n * (n + 1) / 2;       // sum of 0..n
         return expected - actual;
     }
 
