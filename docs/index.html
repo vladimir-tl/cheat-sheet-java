@@ -6060,49 +6060,49 @@ totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>);     <spa
 <ul><li><strong>Input:</strong> the parameters the method gets.</li><li><strong>Return:</strong> what the method must give back.</li><li><strong>Examples:</strong> inputs with their expected results. Run them in main to check yourself.</li></ul>
 </section>
 <section class="card task">
-<h3>Ticket 1. Big invoices</h3>
+<h3>Ticket 1. Keep only invoices over 100</h3>
 <p>The accountant wants to check only the large invoices: those with a total greater than 100. Keep them in the same order as in the input.</p>
 <ul><li><strong>Input:</strong> totals, the invoice totals.</li><li><strong>Return:</strong> a new list with the totals greater than 100.</li></ul>
 <p>Examples:</p>
 <ul><li>[50, 120, 300, 100] <code>-&gt;</code> [120, 300] (100 is not greater than 100)</li><li>[10, 20] <code>-&gt;</code> []</li></ul>
 <div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task1(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>stream()</code>, then <code>filter</code> with a condition, then <code>toList()</code>.</p></details>
+<details class="hint"><summary>Hint</summary><p>Build a chain of three steps: <code>totals.stream()</code> starts the stream, <code>filter(t -&gt; t &gt; 100)</code> lets through only the totals greater than 100, and <code>toList()</code> collects them into a new list. <code>filter</code> doesn't reorder anything, so the order stays as in the input. Note: exactly 100 is not "greater than 100".</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 2. Prices in cents</h3>
+<h3>Ticket 2. Turn euros into cents</h3>
 <p>The payment system works with cents, not euros. Turn every price into cents (multiply by 100), keeping the order.</p>
 <ul><li><strong>Input:</strong> prices, the prices in euros.</li><li><strong>Return:</strong> a new list with the prices in cents.</li></ul>
 <p>Examples:</p>
 <ul><li>[5, 12] <code>-&gt;</code> [500, 1200]</li><li>[] <code>-&gt;</code> []</li></ul>
 <div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task2(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; prices)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>map</code> changes every element: <code>p -&gt; p * 100</code>.</p></details>
+<details class="hint"><summary>Hint</summary><p><code>filter</code> throws elements away, <code>map</code> changes each one. Write <code>prices.stream().map(p -&gt; p * 100).toList()</code>: every price goes in, the same price times 100 comes out. The new list has as many elements as the old one, in the same order, and the input list stays unchanged.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 3. Label printer</h3>
+<h3>Ticket 3. Names in upper case</h3>
 <p>The label printer prints only capital letters. Turn every customer name into upper case.</p>
 <ul><li><strong>Input:</strong> names, the customer names.</li><li><strong>Return:</strong> a new list with the same names in upper case, in the same order.</li></ul>
 <p>Example:</p>
 <ul><li>["Anna", "bob"] <code>-&gt;</code> ["ANNA", "BOB"]</li></ul>
 <div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task3(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>map</code> with a method reference: <code>String::toUpperCase</code>.</p></details>
+<details class="hint"><summary>Hint</summary><p>Use <code>map</code> again: it turns every name into a new string. The lambda <code>n -&gt; n.toUpperCase()</code> works, and a shorter way to write the same thing is the method reference <code>String::toUpperCase</code>. Finish with <code>toList()</code>. Strings never change, so <code>toUpperCase()</code> gives a new string and the input list is not touched.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 4. Urgent tickets</h3>
+<h3>Ticket 4. How many urgent tickets?</h3>
 <p>The list holds the priority of every open ticket: 1 means "urgent", bigger numbers are less urgent. How many urgent tickets are there?</p>
 <ul><li><strong>Input:</strong> priorities, the priority of every ticket.</li><li><strong>Return:</strong> how many elements are equal to 1 (as a long, because <code>count()</code> returns a long).</li></ul>
 <p>Examples:</p>
 <ul><li>[1, 3, 1, 2] <code>-&gt;</code> 2</li><li>[2, 3] <code>-&gt;</code> 0</li></ul>
 <div class="code"><pre><code><span class="t-kw">long</span> task4(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; priorities)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>filter</code> the urgent ones, then <code>count()</code>.</p></details>
+<details class="hint"><summary>Hint</summary><p>Keep only the urgent tickets with <code>filter(p -&gt; p == 1)</code> and count what is left with <code>count()</code>. <code>count()</code> ends the stream and returns a <code>long</code>, which is why the method returns <code>long</code>. You don't need <code>toList()</code> here: you want a number, not a list.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 5. Revenue of the day</h3>
+<h3>Ticket 5. Sum of all invoices</h3>
 <p>The list holds the totals of today's invoices. Add them up.</p>
 <ul><li><strong>Input:</strong> totals, the invoice totals.</li><li><strong>Return:</strong> the sum of all the totals, or 0 for an empty list.</li></ul>
 <p>Examples:</p>
 <ul><li>[10, 25, 5] <code>-&gt;</code> 40</li><li>[] <code>-&gt;</code> 0</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>mapToInt(Integer::intValue)</code> gives an <code>IntStream</code>, and it has <code>sum()</code>.</p></details>
+<details class="hint"><summary>Hint</summary><p>A <code>Stream&lt;Integer&gt;</code> has no <code>sum()</code>, because it doesn't know its elements are numbers. First turn it into an <code>IntStream</code> with <code>mapToInt(Integer::intValue)</code> (or <code>mapToInt(t -&gt; t)</code>): it is a stream of plain <code>int</code>s and it has <code>sum()</code>. For an empty list <code>sum()</code> returns <code>0</code> by itself.</p></details>
 </section>
 <section class="card task">
 <h3>Ticket 6. Average rating</h3>
@@ -6111,79 +6111,79 @@ totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>);     <spa
 <p>Examples:</p>
 <ul><li>[5, 4] <code>-&gt;</code> 4.5</li><li>[5, 4, 3] <code>-&gt;</code> 4.0</li><li>[] <code>-&gt;</code> 0.0</li></ul>
 <div class="code"><pre><code><span class="t-kw">double</span> task6(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; ratings)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>IntStream</code> has <code>average()</code>; it returns an <code>OptionalDouble</code>, so use <code>orElse(0)</code> for an empty list.</p></details>
+<details class="hint"><summary>Hint</summary><p>As in ticket 5, first <code>mapToInt(Integer::intValue)</code>, then <code>average()</code>. The average of an empty list doesn't exist, so <code>average()</code> returns not a number but an <code>OptionalDouble</code>, a box that may be empty. <code>orElse(0)</code> opens the box: it gives the average or <code>0</code> if the box is empty. The result is a <code>double</code>, so the fractional part is kept: 4 and 5 give 4.5.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 7. The biggest invoice</h3>
+<h3>Ticket 7. Find the biggest invoice</h3>
 <p>The manager wants to see the biggest invoice of the day.</p>
 <ul><li><strong>Input:</strong> totals, the invoice totals.</li><li><strong>Return:</strong> the biggest total, or -1 if the list is empty (no invoices today).</li></ul>
 <p>Examples:</p>
 <ul><li>[40, 250, 90] <code>-&gt;</code> 250</li><li>[] <code>-&gt;</code> -1</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span> task7(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>max(Integer::compare)</code> returns an <code>Optional</code>; <code>orElse(-1)</code> handles an empty list.</p></details>
+<details class="hint"><summary>Hint</summary><p><code>max</code> on a <code>Stream&lt;Integer&gt;</code> needs to know how to compare two numbers, so pass it <code>Integer::compare</code>. An empty list has no biggest element, so <code>max</code> returns an <code>Optional</code>, a box that may be empty. <code>orElse(-1)</code> gives the value from the box or <code>-1</code> if it is empty. Another way: <code>mapToInt(Integer::intValue).max().orElse(-1)</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 8. Top 3 invoices</h3>
+<h3>Ticket 8. Three biggest invoices</h3>
 <p>The manager wants the three biggest invoices, the biggest first. If there are fewer than three invoices, return all of them, the biggest first.</p>
 <ul><li><strong>Input:</strong> totals, the invoice totals.</li><li><strong>Return:</strong> a new list with at most 3 biggest totals, sorted from big to small.</li></ul>
 <p>Examples:</p>
 <ul><li>[5, 12, 8, 20, 3] <code>-&gt;</code> [20, 12, 8]</li><li>[7, 9] <code>-&gt;</code> [9, 7]</li></ul>
 <div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task8(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>sorted(Comparator.reverseOrder())</code>, then <code>limit(3)</code>.</p></details>
+<details class="hint"><summary>Hint</summary><p>Two steps. <code>sorted(Comparator.reverseOrder())</code> sorts from big to small (plain <code>sorted()</code> sorts from small to big). Then <code>limit(3)</code> keeps only the first three. If there are fewer than three elements, <code>limit</code> just takes all of them, no error. Finish with <code>toList()</code>. The input list isn't sorted: the stream works on its own copy of the order.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 9. Countries of our customers</h3>
+<h3>Ticket 9. Remove repeated countries</h3>
 <p>The list holds the country of every order, so countries repeat. Marketing wants every country once, in the order in which it first appears.</p>
 <ul><li><strong>Input:</strong> countries, the country of every order.</li><li><strong>Return:</strong> a new list without repeats.</li></ul>
 <p>Example:</p>
 <ul><li>["USA", "Brazil", "USA", "Estonia"] <code>-&gt;</code> ["USA", "Brazil", "Estonia"]</li></ul>
 <div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task9(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p>One stream operation removes repeats and keeps the order.</p></details>
+<details class="hint"><summary>Hint</summary><p>The operation is <code>distinct()</code>: it lets every value through only the first time, and the repeats are dropped. The order of first appearances stays, so "Brazil" stays before "USA" if it came first. Write <code>countries.stream().distinct().toList()</code>. Strings are compared by <code>equals</code>, so "usa" and "USA" are different countries.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 10. Any refund?</h3>
+<h3>Ticket 10. Is there at least one refund?</h3>
 <p>The list holds the movements of an account: a payment is a positive number, a refund is a negative number. Is there at least one refund?</p>
 <ul><li><strong>Input:</strong> movements, the account movements.</li><li><strong>Return:</strong> true if at least one number is less than 0, otherwise false.</li></ul>
 <p>Examples:</p>
 <ul><li>[50, -20, 30] <code>-&gt;</code> true</li><li>[50, 30] <code>-&gt;</code> false</li><li>[0] <code>-&gt;</code> false</li></ul>
 <div class="code"><pre><code><span class="t-kw">boolean</span> task10(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; movements)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>anyMatch</code> answers "is there at least one?".</p></details>
+<details class="hint"><summary>Hint</summary><p><code>anyMatch(m -&gt; m &lt; 0)</code> goes through the movements and returns <code>true</code> as soon as it finds the first negative number, without looking further. If there is no such number, it returns <code>false</code>. It already returns a <code>boolean</code>, so you return its result directly. No <code>filter</code> and no <code>count</code> needed.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 11. All orders paid?</h3>
+<h3>Ticket 11. Are all orders paid?</h3>
 <p>The list holds the paid amount of every order. An order is paid if its amount is greater than 0. Are all the orders paid?</p>
 <ul><li><strong>Input:</strong> amounts, the paid amounts.</li><li><strong>Return:</strong> true if every amount is greater than 0, otherwise false. For an empty list return true (no unpaid orders).</li></ul>
 <p>Examples:</p>
 <ul><li>[10, 20] <code>-&gt;</code> true</li><li>[10, 0, 20] <code>-&gt;</code> false</li><li>[] <code>-&gt;</code> true</li></ul>
 <div class="code"><pre><code><span class="t-kw">boolean</span> task11(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; amounts)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>allMatch</code> answers "are all of them...?".</p></details>
+<details class="hint"><summary>Hint</summary><p><code>allMatch(a -&gt; a &gt; 0)</code> returns <code>true</code> only if the condition holds for every element, and stops at the first one that breaks it. For an empty list <code>allMatch</code> returns <code>true</code> by itself (there is no element that breaks the rule), exactly as the ticket requires. Remember: 0 is not greater than 0, so an order with 0 is unpaid.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 12. First long title</h3>
+<h3>Ticket 12. Find the first long title</h3>
 <p>The radio host needs a long track title. Find the first title that is longer than 10 characters.</p>
 <ul><li><strong>Input:</strong> titles, the track titles.</li><li><strong>Return:</strong> the first title with more than 10 characters, or "none" if there is no such title.</li></ul>
 <p>Examples:</p>
 <ul><li>["Intro", "Bohemian Rhapsody", "Yesterday Once More"] <code>-&gt;</code> "Bohemian Rhapsody"</li><li>["Intro", "Help"] <code>-&gt;</code> "none"</li></ul>
 <div class="code"><pre><code><span class="t-type">String</span> task12(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; titles)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>filter</code> by <code>length()</code>, then <code>findFirst()</code>, then <code>orElse("none")</code>.</p></details>
+<details class="hint"><summary>Hint</summary><p>Keep only the long titles with <code>filter(t -&gt; t.length() &gt; 10)</code>, then take the first of them with <code>findFirst()</code>. Maybe there is no such title, so <code>findFirst()</code> returns an <code>Optional&lt;String&gt;</code>, a box that may be empty. <code>orElse("none")</code> gives the title from the box or "none". A title of exactly 10 characters doesn't count.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 13. Mailing list</h3>
+<h3>Ticket 13. Join names into one line</h3>
 <p>The e-mail tool wants all the customer names in one line, separated by a comma and a space. There is no comma after the last name.</p>
 <ul><li><strong>Input:</strong> names, the customer names.</li><li><strong>Return:</strong> one text with all the names.</li></ul>
 <p>Examples:</p>
 <ul><li>["Anna", "Bob", "Eve"] <code>-&gt;</code> "Anna, Bob, Eve"</li><li>["Anna"] <code>-&gt;</code> "Anna"</li><li>[] <code>-&gt;</code> ""</li></ul>
 <div class="code"><pre><code><span class="t-type">String</span> task13(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>collect(Collectors.joining(", "))</code> glues strings with a separator.</p></details>
+<details class="hint"><summary>Hint</summary><p>End the stream with <code>collect(Collectors.joining(", "))</code>: it glues all the names into one string and puts ", " only <em>between</em> them, so there is no comma after the last name. For an empty list you get an empty string "". Don't forget <code>import java.util.stream.Collectors;</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 14. Customers per country</h3>
+<h3>Ticket 14. How many orders from each country?</h3>
 <p>The list holds the country of every order. How many orders came from each country?</p>
 <ul><li><strong>Input:</strong> countries, the country of every order.</li><li><strong>Return:</strong> a map: country <code>-&gt;</code> number of orders from it. The numbers are Long, because <code>counting()</code> counts in long.</li></ul>
 <p>Examples:</p>
 <ul><li>["USA", "Brazil", "USA"] <code>-&gt;</code> {USA=2, Brazil=1}</li><li>[] <code>-&gt;</code> {}</li></ul>
 <div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Long</span>&gt; task14(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>Collectors.groupingBy(c -&gt; c, Collectors.counting())</code> counts each value.</p></details>
+<details class="hint"><summary>Hint</summary><p>End the stream with <code>collect(Collectors.groupingBy(c -&gt; c, Collectors.counting()))</code>. The first argument says what the group is: <code>c -&gt; c</code> means "the country itself is the group". The second says what to do with each group: <code>counting()</code> counts its elements. You get a map like {Brazil=3, USA=2}. <code>counting()</code> counts in <code>long</code>, so the values are <code>Long</code>, as in the method signature. The order of the pairs may differ.</p></details>
 </section>
 </div>
 <div class="l-ru">
@@ -6404,49 +6404,49 @@ totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>);     <spa
 <ul><li><strong>Дано:</strong> параметры, которые получает метод.</li><li><strong>Вернуть:</strong> что метод должен вернуть.</li><li><strong>Примеры:</strong> входные данные и ожидаемые результаты. Запустите их в main, чтобы проверить себя.</li></ul>
 </section>
 <section class="card task">
-<h3>Тикет 1. Крупные счета</h3>
+<h3>Тикет 1. Оставить только счета больше 100</h3>
 <p>Бухгалтер хочет проверить только крупные счета — с суммой больше 100. Сохраните их в том же порядке, что и во входном списке.</p>
 <ul><li><strong>Дано:</strong> totals — суммы счетов.</li><li><strong>Вернуть:</strong> новый список с суммами больше 100.</li></ul>
 <p>Примеры:</p>
 <ul><li>[50, 120, 300, 100] <code>-&gt;</code> [120, 300] (100 не больше 100)</li><li>[10, 20] <code>-&gt;</code> []</li></ul>
 <div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task1(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>stream()</code>, потом <code>filter</code> с условием, потом <code>toList()</code>.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Соберите цепочку из трёх шагов: <code>totals.stream()</code> запускает поток, <code>filter(t -&gt; t &gt; 100)</code> пропускает только суммы больше 100, а <code>toList()</code> собирает их в новый список. <code>filter</code> ничего не переставляет, поэтому порядок остаётся как во входном списке. Обратите внимание: ровно 100 — это не «больше 100».</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 2. Цены в центах</h3>
+<h3>Тикет 2. Перевести евро в центы</h3>
 <p>Платёжная система работает с центами, а не с евро. Переведите каждую цену в центы (умножьте на 100), сохранив порядок.</p>
 <ul><li><strong>Дано:</strong> prices — цены в евро.</li><li><strong>Вернуть:</strong> новый список с ценами в центах.</li></ul>
 <p>Примеры:</p>
 <ul><li>[5, 12] <code>-&gt;</code> [500, 1200]</li><li>[] <code>-&gt;</code> []</li></ul>
 <div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task2(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; prices)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>map</code> меняет каждый элемент: <code>p -&gt; p * 100</code>.</p></details>
+<details class="hint"><summary>Подсказка</summary><p><code>filter</code> выбрасывает элементы, а <code>map</code> меняет каждый. Напишите <code>prices.stream().map(p -&gt; p * 100).toList()</code>: на вход приходит цена, на выходе та же цена, умноженная на 100. В новом списке столько же элементов, сколько в старом, и в том же порядке, а входной список не меняется.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 3. Принтер этикеток</h3>
+<h3>Тикет 3. Имена заглавными буквами</h3>
 <p>Принтер этикеток печатает только заглавные буквы. Переведите каждое имя клиента в верхний регистр.</p>
 <ul><li><strong>Дано:</strong> names — имена клиентов.</li><li><strong>Вернуть:</strong> новый список с теми же именами заглавными буквами, в том же порядке.</li></ul>
 <p>Пример:</p>
 <ul><li>["Anna", "bob"] <code>-&gt;</code> ["ANNA", "BOB"]</li></ul>
 <div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task3(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>map</code> со ссылкой на метод: <code>String::toUpperCase</code>.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Снова <code>map</code>: он превращает каждое имя в новую строку. Подойдёт лямбда <code>n -&gt; n.toUpperCase()</code>, а короче то же самое записывается ссылкой на метод <code>String::toUpperCase</code>. В конце — <code>toList()</code>. Строки не меняются, поэтому <code>toUpperCase()</code> возвращает новую строку, а входной список остаётся прежним.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 4. Срочные тикеты</h3>
+<h3>Тикет 4. Сколько срочных тикетов?</h3>
 <p>В списке лежит приоритет каждого открытого тикета: 1 — «срочно», большие числа — менее срочно. Сколько срочных тикетов?</p>
 <ul><li><strong>Дано:</strong> priorities — приоритет каждого тикета.</li><li><strong>Вернуть:</strong> сколько элементов равны 1 (как long, потому что <code>count()</code> возвращает long).</li></ul>
 <p>Примеры:</p>
 <ul><li>[1, 3, 1, 2] <code>-&gt;</code> 2</li><li>[2, 3] <code>-&gt;</code> 0</li></ul>
 <div class="code"><pre><code><span class="t-kw">long</span> task4(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; priorities)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>filter</code> для срочных, потом <code>count()</code>.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Оставьте только срочные тикеты через <code>filter(p -&gt; p == 1)</code> и посчитайте, что осталось, через <code>count()</code>. <code>count()</code> завершает поток и возвращает <code>long</code>, поэтому метод и возвращает <code>long</code>. <code>toList()</code> здесь не нужен: нужно число, а не список.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 5. Выручка за день</h3>
+<h3>Тикет 5. Сумма всех счетов</h3>
 <p>В списке лежат суммы сегодняшних счетов. Сложите их.</p>
 <ul><li><strong>Дано:</strong> totals — суммы счетов.</li><li><strong>Вернуть:</strong> сумму всех счетов или 0 для пустого списка.</li></ul>
 <p>Примеры:</p>
 <ul><li>[10, 25, 5] <code>-&gt;</code> 40</li><li>[] <code>-&gt;</code> 0</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>mapToInt(Integer::intValue)</code> даёт <code>IntStream</code>, а у него есть <code>sum()</code>.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>У <code>Stream&lt;Integer&gt;</code> нет <code>sum()</code>: он не знает, что внутри числа. Сначала превратите его в <code>IntStream</code> через <code>mapToInt(Integer::intValue)</code> (или <code>mapToInt(t -&gt; t)</code>): это поток обычных <code>int</code>, и у него есть <code>sum()</code>. Для пустого списка <code>sum()</code> сам вернёт <code>0</code>.</p></details>
 </section>
 <section class="card task">
 <h3>Тикет 6. Средняя оценка</h3>
@@ -6455,79 +6455,79 @@ totals.stream().filter(t -&gt; t &gt; <span class="t-number">7</span>);     <spa
 <p>Примеры:</p>
 <ul><li>[5, 4] <code>-&gt;</code> 4.5</li><li>[5, 4, 3] <code>-&gt;</code> 4.0</li><li>[] <code>-&gt;</code> 0.0</li></ul>
 <div class="code"><pre><code><span class="t-kw">double</span> task6(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; ratings)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p>У <code>IntStream</code> есть <code>average()</code>; он возвращает <code>OptionalDouble</code>, поэтому для пустого списка используйте <code>orElse(0)</code>.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Как в тикете 5, сначала <code>mapToInt(Integer::intValue)</code>, потом <code>average()</code>. У пустого списка среднего нет, поэтому <code>average()</code> возвращает не число, а <code>OptionalDouble</code> — коробку, которая может быть пустой. <code>orElse(0)</code> открывает коробку: даёт среднее или <code>0</code>, если коробка пуста. Результат — <code>double</code>, так что дробная часть сохранится: 4 и 5 дадут 4.5.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 7. Самый большой счёт</h3>
+<h3>Тикет 7. Найти самый большой счёт</h3>
 <p>Менеджер хочет видеть самый большой счёт за день.</p>
 <ul><li><strong>Дано:</strong> totals — суммы счетов.</li><li><strong>Вернуть:</strong> самую большую сумму или -1, если список пуст (сегодня счетов нет).</li></ul>
 <p>Примеры:</p>
 <ul><li>[40, 250, 90] <code>-&gt;</code> 250</li><li>[] <code>-&gt;</code> -1</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span> task7(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>max(Integer::compare)</code> возвращает <code>Optional</code>; <code>orElse(-1)</code> обработает пустой список.</p></details>
+<details class="hint"><summary>Подсказка</summary><p><code>max</code> у <code>Stream&lt;Integer&gt;</code> должен знать, как сравнить два числа, поэтому передайте ему <code>Integer::compare</code>. У пустого списка самого большого элемента нет, поэтому <code>max</code> возвращает <code>Optional</code> — коробку, которая может быть пустой. <code>orElse(-1)</code> даёт значение из коробки или <code>-1</code>, если она пуста. Другой способ: <code>mapToInt(Integer::intValue).max().orElse(-1)</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 8. Топ-3 счетов</h3>
+<h3>Тикет 8. Три самых больших счёта</h3>
 <p>Менеджер хочет три самых больших счёта, самый большой — первым. Если счетов меньше трёх, верните все, самый большой — первым.</p>
 <ul><li><strong>Дано:</strong> totals — суммы счетов.</li><li><strong>Вернуть:</strong> новый список не более чем из 3 самых больших сумм, от большей к меньшей.</li></ul>
 <p>Примеры:</p>
 <ul><li>[5, 12, 8, 20, 3] <code>-&gt;</code> [20, 12, 8]</li><li>[7, 9] <code>-&gt;</code> [9, 7]</li></ul>
 <div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; task8(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; totals)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>sorted(Comparator.reverseOrder())</code>, потом <code>limit(3)</code>.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Два шага. <code>sorted(Comparator.reverseOrder())</code> сортирует от большего к меньшему (обычный <code>sorted()</code> — от меньшего к большему). Потом <code>limit(3)</code> оставляет только первые три. Если элементов меньше трёх, <code>limit</code> просто возьмёт все, без ошибки. В конце — <code>toList()</code>. Входной список при этом не сортируется: поток работает со своей копией порядка.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 9. Страны наших клиентов</h3>
+<h3>Тикет 9. Убрать повторы стран</h3>
 <p>В списке лежит страна каждого заказа, поэтому страны повторяются. Маркетингу нужна каждая страна по одному разу, в порядке первого появления.</p>
 <ul><li><strong>Дано:</strong> countries — страна каждого заказа.</li><li><strong>Вернуть:</strong> новый список без повторов.</li></ul>
 <p>Пример:</p>
 <ul><li>["USA", "Brazil", "USA", "Estonia"] <code>-&gt;</code> ["USA", "Brazil", "Estonia"]</li></ul>
 <div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; task9(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p>Одна операция потока убирает повторы и сохраняет порядок.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Эта операция — <code>distinct()</code>: она пропускает каждое значение только в первый раз, а повторы отбрасывает. Порядок первых появлений сохраняется: если "Brazil" встретилась раньше "USA", она и останется впереди. Напишите <code>countries.stream().distinct().toList()</code>. Строки сравниваются через <code>equals</code>, так что "usa" и "USA" — разные страны.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 10. Есть возврат?</h3>
+<h3>Тикет 10. Есть ли хотя бы один возврат?</h3>
 <p>В списке лежат движения по счёту: платёж — положительное число, возврат — отрицательное. Есть ли хотя бы один возврат?</p>
 <ul><li><strong>Дано:</strong> movements — движения по счёту.</li><li><strong>Вернуть:</strong> true, если хотя бы одно число меньше 0, иначе false.</li></ul>
 <p>Примеры:</p>
 <ul><li>[50, -20, 30] <code>-&gt;</code> true</li><li>[50, 30] <code>-&gt;</code> false</li><li>[0] <code>-&gt;</code> false</li></ul>
 <div class="code"><pre><code><span class="t-kw">boolean</span> task10(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; movements)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>anyMatch</code> отвечает на вопрос «есть ли хотя бы один?».</p></details>
+<details class="hint"><summary>Подсказка</summary><p><code>anyMatch(m -&gt; m &lt; 0)</code> идёт по движениям и возвращает <code>true</code>, как только найдёт первое отрицательное число, дальше не смотрит. Если такого числа нет, вернёт <code>false</code>. Он уже возвращает <code>boolean</code>, так что просто верните его результат. Ни <code>filter</code>, ни <code>count</code> не нужны.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 11. Все заказы оплачены?</h3>
+<h3>Тикет 11. Все ли заказы оплачены?</h3>
 <p>В списке лежит оплаченная сумма каждого заказа. Заказ оплачен, если сумма больше 0. Все ли заказы оплачены?</p>
 <ul><li><strong>Дано:</strong> amounts — оплаченные суммы.</li><li><strong>Вернуть:</strong> true, если каждая сумма больше 0, иначе false. Для пустого списка верните true (неоплаченных заказов нет).</li></ul>
 <p>Примеры:</p>
 <ul><li>[10, 20] <code>-&gt;</code> true</li><li>[10, 0, 20] <code>-&gt;</code> false</li><li>[] <code>-&gt;</code> true</li></ul>
 <div class="code"><pre><code><span class="t-kw">boolean</span> task11(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; amounts)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>allMatch</code> отвечает на вопрос «все ли ...?».</p></details>
+<details class="hint"><summary>Подсказка</summary><p><code>allMatch(a -&gt; a &gt; 0)</code> вернёт <code>true</code>, только если условие выполняется для каждого элемента, и остановится на первом, который его нарушит. Для пустого списка <code>allMatch</code> сам вернёт <code>true</code> (нет ни одного элемента, который нарушил бы правило) — ровно как требует тикет. Помните: 0 не больше 0, так что заказ с суммой 0 не оплачен.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 12. Первое длинное название</h3>
+<h3>Тикет 12. Найти первое длинное название</h3>
 <p>Ведущему радио нужно длинное название трека. Найдите первое название длиннее 10 символов.</p>
 <ul><li><strong>Дано:</strong> titles — названия треков.</li><li><strong>Вернуть:</strong> первое название, в котором больше 10 символов, или "none", если такого нет.</li></ul>
 <p>Примеры:</p>
 <ul><li>["Intro", "Bohemian Rhapsody", "Yesterday Once More"] <code>-&gt;</code> "Bohemian Rhapsody"</li><li>["Intro", "Help"] <code>-&gt;</code> "none"</li></ul>
 <div class="code"><pre><code><span class="t-type">String</span> task12(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; titles)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>filter</code> по <code>length()</code>, потом <code>findFirst()</code>, потом <code>orElse("none")</code>.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Оставьте только длинные названия через <code>filter(t -&gt; t.length() &gt; 10)</code> и возьмите первое из них через <code>findFirst()</code>. Такого названия может и не быть, поэтому <code>findFirst()</code> возвращает <code>Optional&lt;String&gt;</code> — коробку, которая может быть пустой. <code>orElse("none")</code> даёт название из коробки или "none". Название ровно из 10 символов не подходит.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 13. Список рассылки</h3>
+<h3>Тикет 13. Склеить имена в одну строку</h3>
 <p>Почтовому сервису нужны все имена клиентов одной строкой через запятую и пробел. После последнего имени запятой нет.</p>
 <ul><li><strong>Дано:</strong> names — имена клиентов.</li><li><strong>Вернуть:</strong> один текст со всеми именами.</li></ul>
 <p>Примеры:</p>
 <ul><li>["Anna", "Bob", "Eve"] <code>-&gt;</code> "Anna, Bob, Eve"</li><li>["Anna"] <code>-&gt;</code> "Anna"</li><li>[] <code>-&gt;</code> ""</li></ul>
 <div class="code"><pre><code><span class="t-type">String</span> task13(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>collect(Collectors.joining(", "))</code> склеивает строки через разделитель.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Завершите поток через <code>collect(Collectors.joining(", "))</code>: он склеит все имена в одну строку и поставит ", " только <em>между</em> ними, поэтому после последнего имени запятой не будет. Для пустого списка получится пустая строка "". Не забудьте <code>import java.util.stream.Collectors;</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 14. Клиенты по странам</h3>
+<h3>Тикет 14. Сколько заказов из каждой страны?</h3>
 <p>В списке лежит страна каждого заказа. Сколько заказов пришло из каждой страны?</p>
 <ul><li><strong>Дано:</strong> countries — страна каждого заказа.</li><li><strong>Вернуть:</strong> словарь: страна <code>-&gt;</code> число заказов из неё. Числа типа Long, потому что <code>counting()</code> считает в long.</li></ul>
 <p>Примеры:</p>
 <ul><li>["USA", "Brazil", "USA"] <code>-&gt;</code> {USA=2, Brazil=1}</li><li>[] <code>-&gt;</code> {}</li></ul>
 <div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Long</span>&gt; task14(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; countries)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>Collectors.groupingBy(c -&gt; c, Collectors.counting())</code> считает каждое значение.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Завершите поток через <code>collect(Collectors.groupingBy(c -&gt; c, Collectors.counting()))</code>. Первый аргумент говорит, что считать группой: <code>c -&gt; c</code> значит «группа — это сама страна». Второй говорит, что делать с группой: <code>counting()</code> считает её элементы. Получится словарь вида {Brazil=3, USA=2}. <code>counting()</code> считает в <code>long</code>, поэтому значения — <code>Long</code>, как в сигнатуре метода. Порядок пар может отличаться.</p></details>
 </section>
 </div>
 </div>
