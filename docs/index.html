@@ -3718,6 +3718,16 @@ list.add(<span class="t-string">"d"</span>);                                    
 <li value="3"><a href="#warmuplist-3">add: put an element at the end</a></li>
 <li value="4"><a href="#warmuplist-4">Collections.reverse: reverse the same list</a></li>
 </ol></div>
+<div class="group"><h4>Search and change</h4><ol>
+<li value="5"><a href="#warmuplist-5">contains and indexOf: is the element there, and where</a></li>
+<li value="6"><a href="#warmuplist-6">remove: by element or by position</a></li>
+<li value="7"><a href="#warmuplist-7">set and <code>add(position, element)</code>: replace and insert</a></li>
+<li value="8"><a href="#warmuplist-8">isEmpty: is the list empty</a></li>
+</ol></div>
+<div class="group"><h4>Loops over a list</h4><ol>
+<li value="9"><a href="#warmuplist-9">for-each: go through all elements</a></li>
+<li value="10"><a href="#warmuplist-10">Removing while looping</a></li>
+</ol></div>
 </div>
 </nav>
 <h2 class="group-title">Basic operations</h2>
@@ -3748,11 +3758,71 @@ numbers.add(<span class="t-number">20</span>);
 <span class="t-type">Collections</span>.reverse(numbers);
 <span class="t-type">System</span>.out.println(numbers);          <span class="t-comment">// [3, 2, 1]</span></code></pre></div>
 </section>
+<h2 class="group-title">Search and change</h2>
+<section class="card" data-id="warmuplist-5">
+<h3>5. contains and indexOf: is the element there, and where</h3>
+<p><code>contains(element)</code> returns true if the list has this element. <code>indexOf(element)</code> returns its position, or -1 if it is not there. Both compare elements with equals, so they work for strings too.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Ann"</span>, <span class="t-string">"Bob"</span>));
+<span class="t-type">System</span>.out.println(names.contains(<span class="t-string">"Bob"</span>));   <span class="t-comment">// true</span>
+<span class="t-type">System</span>.out.println(names.indexOf(<span class="t-string">"Bob"</span>));    <span class="t-comment">// 1</span>
+<span class="t-type">System</span>.out.println(names.indexOf(<span class="t-string">"Eve"</span>));    <span class="t-comment">// -1</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-6">
+<h3>6. remove: by element or by position</h3>
+<p><code>remove(position)</code> removes the element at this position. <code>remove(element)</code> removes the first equal element, and does nothing if there is none. The elements after it move one position to the left.</p>
+<p>Trap: in a <code>List&lt;Integer&gt;</code> the call <code>remove(1)</code> means position 1, not the number 1. To remove the number, write remove(<code>Integer.valueOf(1)</code>).</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
+numbers.remove(<span class="t-number">1</span>);                           <span class="t-comment">// position 1: [10, 30]</span>
+numbers.remove(<span class="t-type">Integer</span>.valueOf(<span class="t-number">10</span>));         <span class="t-comment">// the number 10: [30]</span>
+<span class="t-type">System</span>.out.println(numbers);                 <span class="t-comment">// [30]</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-7">
+<h3>7. set and <code>add(position, element)</code>: replace and insert</h3>
+<p><code>set(position, element)</code> writes over the old element, the size stays the same. <code>add(position, element)</code> inserts the element, the size grows by one and the others move to the right.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Ann"</span>, <span class="t-string">"Bob"</span>));
+names.set(<span class="t-number">1</span>, <span class="t-string">"Eve"</span>);                         <span class="t-comment">// [Ann, Eve]</span>
+names.add(<span class="t-number">0</span>, <span class="t-string">"Max"</span>);                         <span class="t-comment">// [Max, Ann, Eve]</span>
+<span class="t-type">System</span>.out.println(names);</code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-8">
+<h3>8. isEmpty: is the list empty</h3>
+<p><code>isEmpty()</code> returns true when the list has no elements. It means the same as <code>size() == 0</code>, but reads better.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+<span class="t-type">System</span>.out.println(names.isEmpty());         <span class="t-comment">// true</span>
+names.add(<span class="t-string">"Ann"</span>);
+<span class="t-type">System</span>.out.println(names.isEmpty());         <span class="t-comment">// false</span></code></pre></div>
+</section>
+<h2 class="group-title">Loops over a list</h2>
+<section class="card" data-id="warmuplist-9">
+<h3>9. for-each: go through all elements</h3>
+<p>for (int x : list) takes the elements one by one, from the first to the last. Use it when you only read the elements and don't need their positions. A <code>List&lt;Integer&gt;</code> can be read into an int.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">3</span>, <span class="t-number">8</span>, <span class="t-number">5</span>));
+<span class="t-kw">int</span> sum = <span class="t-number">0</span>;
+<span class="t-kw">for</span> (<span class="t-kw">int</span> x : numbers) {
+    sum += x;
+}
+<span class="t-type">System</span>.out.println(sum);                     <span class="t-comment">// 16</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-10">
+<h3>10. Removing while looping</h3>
+<p>Removing inside a for-each throws ConcurrentModificationException. Go by positions from the end to the start: a removal then moves only elements you have already checked. Or use removeIf.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>, <span class="t-number">4</span>));
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = numbers.size() - <span class="t-number">1</span>; i &gt;= <span class="t-number">0</span>; i--) {
+    <span class="t-kw">if</span> (numbers.get(i) % <span class="t-number">2</span> == <span class="t-number">0</span>) {
+        numbers.remove(i);
+    }
+}
+<span class="t-type">System</span>.out.println(numbers);                 <span class="t-comment">// [1, 3]</span>
+
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; other = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>, <span class="t-number">4</span>));
+other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-number">0</span>);             <span class="t-comment">// the same in one line</span>
+<span class="t-type">System</span>.out.println(other);                   <span class="t-comment">// [1, 3]</span></code></pre></div>
+</section>
 <h2 class="group-title" data-id="warmuplist-tasks">Practice tasks</h2>
 <section class="card">
-<p>You work in the support team of an online music store. Every ticket below is a small situation from work and one method that you have to create. The ticket says what the method is called and which parameters it takes. Its template is shown under the ticket (in WarmupListTasks.java it is already there), so you only have to write the body. You need only four operations: size, get, add and reverse.</p>
+<p>You work in the support team of an online music store. Every ticket below is a small situation from work and one method that you have to create. The ticket says what the method is called and which parameters it takes. Its template is shown under the ticket (in WarmupListTasks.java it is already there), so you only have to write the body. Tickets 1-11 need one list method each: size, get, add, reverse, contains, indexOf, remove, set and isEmpty. Tickets 12-16 walk through a list of track durations with a loop.</p>
 <p>How to read a ticket:</p>
-<ul><li><strong>What to do:</strong> which method to create, with which parameters, and what it must do.</li><li><strong>Input:</strong> the values the method receives.</li><li><strong>Return:</strong> what the method must give back. If it returns nothing (void), it changes the list it received.</li><li><strong>Examples:</strong> <code>countTracks(["Intro", "Solo"]) -&gt; 2</code> means "call the method with this list, and it must return 2".</li><li>The notation <code>["Intro", "Solo"]</code> is a short way to show a list. In Java code write <code>new ArrayList&lt;&gt;(List.of("Intro", "Solo"))</code>.</li><li>Run the examples in main to check yourself. A list can be printed directly: <code>System.out.println(tracks)</code>.</li></ul>
+<ul><li><strong>What to do:</strong> which method to create, with which parameters, and what it must do.</li><li><strong>Input:</strong> the values the method receives.</li><li><strong>Return:</strong> what the method must give back. If it returns nothing (void), it changes the list it received.</li><li><strong>Examples:</strong> <code>countTracks(["Intro", "Solo"]) -&gt; 2</code> means "call the method with this list, and it must return 2".</li><li>The notation <code>["Intro", "Solo"]</code> is a short way to show a list. In Java code write <code>new ArrayList&lt;&gt;(List.of("Intro", "Solo"))</code>.</li><li><strong>Durations are given in seconds:</strong> <code>[200, 45]</code> is a list of two tracks, 3:20 and 0:45.</li><li>Run the examples in main to check yourself. A list can be printed directly: <code>System.out.println(tracks)</code>.</li></ul>
 </section>
 <section class="card task">
 <h3>Ticket 1. How many tracks are in the playlist?</h3>
@@ -3804,6 +3874,116 @@ numbers.add(<span class="t-number">20</span>);
 <div class="code"><pre><code><span class="t-kw">void</span> reversePlaylist(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
 <details class="hint"><summary>Hint</summary><p>The class <code>Collections</code> from java.util already has a method that reverses a list. Don't forget the import.</p></details>
 </section>
+<section class="card task">
+<h3>Ticket 6. Is the track in the playlist?</h3>
+<p>Next to every track in the store there is a button "Add to playlist". If the track is already in the playlist, the button must be grey.</p>
+<p>What to do: create a method <code>hasTrack</code> with two parameters: the first is a list of strings <code>tracks</code>, the second is a string <code>track</code>. The method must return true if <code>track</code> is in the list, and false if it is not.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles; track, the title to look for.</li><li><strong>Return:</strong> true if the track is in the playlist, otherwise false.</li></ul>
+<p>Examples:</p>
+<ul><li><code>hasTrack(["Intro", "Solo"], "Solo")</code> <code>-&gt;</code> true</li><li><code>hasTrack(["Intro", "Solo"], "Outro")</code> <code>-&gt;</code> false</li><li><code>hasTrack([], "Solo")</code> <code>-&gt;</code> false (an empty playlist has no tracks)</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> hasTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>You don't need a loop. A list has the method <code>contains(element)</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 7. Where is the track?</h3>
+<p>A customer asks: "What number is my favourite track in the playlist?". Support needs its position.</p>
+<p>What to do: create a method <code>findTrackPosition</code> with two parameters: the first is a list of strings <code>tracks</code>, the second is a string <code>track</code>. The method must return the position of <code>track</code> in the list. If the track is not there, it must return -1.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles; track, the title to look for.</li><li><strong>Return:</strong> the position of the track (counted from 0). If the track is not in the list, -1.</li></ul>
+<p>Examples:</p>
+<ul><li><code>findTrackPosition(["Intro", "Solo", "Outro"], "Solo")</code> <code>-&gt;</code> 1</li><li><code>findTrackPosition(["Intro", "Solo"], "Intro")</code> <code>-&gt;</code> 0 (the first position is 0)</li><li><code>findTrackPosition(["Intro", "Solo"], "Outro")</code> <code>-&gt;</code> -1 (there is no such track)</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> findTrackPosition(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>The method <code>indexOf(element)</code> returns the position of an element, and -1 if the element is not in the list.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 8. Remove a track by its title</h3>
+<p>A customer presses "Remove from playlist" next to a track.</p>
+<p>What to do: create a method <code>removeTrack</code> with two parameters: the first is a list of strings <code>tracks</code>, the second is a string <code>track</code>. The method must remove <code>track</code> from the list. If the track is not there, the list stays as it is. It returns nothing, it changes <code>tracks</code> itself.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles; track, the title to remove.</li><li><strong>Return:</strong> nothing (void). Change the list tracks itself.</li></ul>
+<p>Examples:</p>
+<ul><li>tracks = ["Intro", "Solo", "Outro"], <code>removeTrack(tracks, "Solo")</code> <code>-&gt;</code> tracks becomes ["Intro", "Outro"]</li><li>tracks = ["Intro"], <code>removeTrack(tracks, "Outro")</code> <code>-&gt;</code> tracks stays ["Intro"] (there is nothing to remove)</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> removeTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>A list has two <code>remove</code> methods. <code>remove(position)</code> takes a number, <code>remove(element)</code> takes the element itself. Here you have the element.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 9. Replace a track</h3>
+<p>The label sent a remastered version of a track. It must take the place of the old one, at the same position.</p>
+<p>What to do: create a method <code>replaceTrack</code> with three parameters: a list of strings <code>tracks</code>, a number <code>position</code> and a string <code>track</code>. The method must put <code>track</code> at <code>position</code> instead of the old title. The size of the list does not change. It returns nothing, it changes <code>tracks</code> itself. The position always exists.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles; position, which position to change (from 0); track, the new title.</li><li><strong>Return:</strong> nothing (void). Change the list tracks itself.</li></ul>
+<p>Examples:</p>
+<ul><li>tracks = ["Intro", "Solo", "Outro"], replaceTrack(tracks, 1, "Solo (Remastered)") <code>-&gt;</code> tracks becomes ["Intro", "Solo (Remastered)", "Outro"]</li><li>tracks = ["Intro"], replaceTrack(tracks, 0, "Intro (Live)") <code>-&gt;</code> tracks becomes ["Intro (Live)"]</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> replaceTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-kw">int</span> position, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>The method <code>set(position, element)</code> writes an element over the old one. Don't confuse it with <code>add</code>, which makes the list longer.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 10. Play next</h3>
+<p>A customer presses "Play next": the track must go to the very beginning of the playlist.</p>
+<p>What to do: create a method <code>addTrackToStart</code> with two parameters: the first is a list of strings <code>tracks</code>, the second is a string <code>track</code>. The method must put <code>track</code> at the beginning of the list, all the other tracks move one position to the right. It returns nothing, it changes <code>tracks</code> itself.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles; track, the title to add.</li><li><strong>Return:</strong> nothing (void). Change the list tracks itself.</li></ul>
+<p>Examples:</p>
+<ul><li>tracks = ["Intro", "Solo"], <code>addTrackToStart(tracks, "Outro")</code> <code>-&gt;</code> tracks becomes ["Outro", "Intro", "Solo"]</li><li>tracks = [], <code>addTrackToStart(tracks, "Solo")</code> <code>-&gt;</code> tracks becomes ["Solo"]</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> addTrackToStart(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p><code>add</code> can take two arguments: <code>add(position, element)</code> puts the element at this position.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 11. Is the playlist empty?</h3>
+<p>Instead of an empty table, an empty playlist shows the text "Add your first track".</p>
+<p>What to do: create a method <code>isPlaylistEmpty</code> with one parameter: a list of strings <code>tracks</code>. The method must return true if the list has no elements, and false if it has at least one.</p>
+<ul><li><strong>Input:</strong> tracks, the list of track titles.</li><li><strong>Return:</strong> true for an empty list, otherwise false.</li></ul>
+<p>Examples:</p>
+<ul><li><code>isPlaylistEmpty([])</code> <code>-&gt;</code> true</li><li><code>isPlaylistEmpty(["Intro"])</code> <code>-&gt;</code> false</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> isPlaylistEmpty(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p><code>size() == 0</code> works, but a list has a method made exactly for this: <code>isEmpty()</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 12. How long is the playlist?</h3>
+<p>The playlist page shows its total length. The durations of the tracks are stored as a list of numbers in seconds.</p>
+<p>What to do: create a method <code>totalDuration</code> with one parameter: a list of numbers <code>durations</code>. The method must return the sum of all elements of the list.</p>
+<ul><li><strong>Input:</strong> durations, the durations of the tracks in seconds.</li><li><strong>Return:</strong> the sum of the durations. For an empty list, 0.</li></ul>
+<p>Examples:</p>
+<ul><li><code>totalDuration([200, 45, 300])</code> <code>-&gt;</code> 545</li><li><code>totalDuration([])</code> <code>-&gt;</code> 0 (an empty playlist lasts 0 seconds)</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> totalDuration(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Go through the list with a for-each loop <code>for (int d : durations)</code> and add every element to a variable that starts at 0.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 13. The longest track</h3>
+<p>A customer wants to know how long the longest track of the playlist is.</p>
+<p>What to do: create a method <code>longestTrack</code> with one parameter: a list of numbers <code>durations</code>. The method must return the biggest element of the list. If the list is empty, it must return 0.</p>
+<ul><li><strong>Input:</strong> durations, the durations of the tracks in seconds.</li><li><strong>Return:</strong> the biggest duration. For an empty list, 0.</li></ul>
+<p>Examples:</p>
+<ul><li><code>longestTrack([200, 45, 300])</code> <code>-&gt;</code> 300</li><li><code>longestTrack([45])</code> <code>-&gt;</code> 45 (the only track is also the longest one)</li><li><code>longestTrack([])</code> <code>-&gt;</code> 0 (there are no tracks)</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> longestTrack(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Keep the biggest duration seen so far in a variable. Every element that is bigger replaces it.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 14. How many long tracks?</h3>
+<p>The store marks tracks longer than 3 minutes (more than 180 seconds) with the label "long". Count how many such tracks are in the playlist.</p>
+<p>What to do: create a method <code>countLongTracks</code> with one parameter: a list of numbers <code>durations</code>. The method must return how many elements are bigger than 180.</p>
+<ul><li><strong>Input:</strong> durations, the durations of the tracks in seconds.</li><li><strong>Return:</strong> how many durations are bigger than 180. For an empty list, 0.</li></ul>
+<p>Examples:</p>
+<ul><li><code>countLongTracks([200, 45, 300])</code> <code>-&gt;</code> 2</li><li><code>countLongTracks([180, 60])</code> <code>-&gt;</code> 0 (exactly 180 seconds is not "longer than 3 minutes")</li><li><code>countLongTracks([])</code> <code>-&gt;</code> 0</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> countLongTracks(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>A counter that starts at 0, a loop and one <code>if</code> inside it.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 15. Only short tracks</h3>
+<p>The "Quick break" mode plays only tracks shorter than 3 minutes (less than 180 seconds). The original playlist must not change.</p>
+<p>What to do: create a method <code>shortTracks</code> with one parameter: a list of numbers <code>durations</code>. The method must return a new list with only the elements smaller than 180, in the same order. The list <code>durations</code> must stay as it was.</p>
+<ul><li><strong>Input:</strong> durations, the durations of the tracks in seconds.</li><li><strong>Return:</strong> a new list with the durations smaller than 180. If there are none, an empty list.</li></ul>
+<p>Examples:</p>
+<ul><li><code>shortTracks([200, 45, 120, 300])</code> <code>-&gt;</code> [45, 120]</li><li><code>shortTracks([200, 300])</code> <code>-&gt;</code> [] (there are no short tracks)</li></ul>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; shortTracks(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Create an empty <code>new ArrayList&lt;&gt;()</code> before the loop and <code>add</code> the right elements into it. Don't change <code>durations</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Ticket 16. Remove the jingles</h3>
+<p>Very short tracks (less than 60 seconds) are jingles and ads. They must be removed from the playlist itself.</p>
+<p>What to do: create a method <code>removeJingles</code> with one parameter: a list of numbers <code>durations</code>. The method must remove all elements smaller than 60 from this same list. It returns nothing, it changes <code>durations</code> itself.</p>
+<ul><li><strong>Input:</strong> durations, the durations of the tracks in seconds.</li><li><strong>Return:</strong> nothing (void). Change the list durations itself.</li></ul>
+<p>Examples:</p>
+<ul><li>durations = [200, 30, 45, 300], <code>removeJingles(durations)</code> <code>-&gt;</code> durations becomes [200, 300]</li><li>durations = [200, 300], <code>removeJingles(durations)</code> <code>-&gt;</code> durations stays [200, 300] (there is nothing to remove)</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> removeJingles(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Don't remove inside <code>for (int d : durations)</code>: Java throws ConcurrentModificationException. Go by positions from the end to the start and use <code>remove(position)</code>, or try the method <code>removeIf</code>.</p></details>
+</section>
 </div>
 <div class="l-ru">
 <h1>Разминка: ArrayList</h1>
@@ -3814,6 +3994,16 @@ numbers.add(<span class="t-number">20</span>);
 <li value="2"><a href="#warmuplist-2">get: прочитать элемент по позиции</a></li>
 <li value="3"><a href="#warmuplist-3">add: добавить элемент в конец</a></li>
 <li value="4"><a href="#warmuplist-4">Collections.reverse: развернуть тот же список</a></li>
+</ol></div>
+<div class="group"><h4>Поиск и изменение</h4><ol>
+<li value="5"><a href="#warmuplist-5">contains и indexOf: есть ли элемент и где он</a></li>
+<li value="6"><a href="#warmuplist-6">remove: по элементу или по позиции</a></li>
+<li value="7"><a href="#warmuplist-7">set и <code>add(позиция, элемент)</code>: заменить и вставить</a></li>
+<li value="8"><a href="#warmuplist-8">isEmpty: пустой ли список</a></li>
+</ol></div>
+<div class="group"><h4>Циклы по списку</h4><ol>
+<li value="9"><a href="#warmuplist-9">for-each: пройти по всем элементам</a></li>
+<li value="10"><a href="#warmuplist-10">Удаление во время цикла</a></li>
 </ol></div>
 </div>
 </nav>
@@ -3845,11 +4035,71 @@ numbers.add(<span class="t-number">20</span>);
 <span class="t-type">Collections</span>.reverse(numbers);
 <span class="t-type">System</span>.out.println(numbers);          <span class="t-comment">// [3, 2, 1]</span></code></pre></div>
 </section>
+<h2 class="group-title">Поиск и изменение</h2>
+<section class="card" data-id="warmuplist-5">
+<h3>5. contains и indexOf: есть ли элемент и где он</h3>
+<p><code>contains(элемент)</code> возвращает true, если такой элемент есть в списке. <code>indexOf(элемент)</code> возвращает его позицию или -1, если элемента нет. Оба сравнивают элементы через equals, поэтому работают и со строками.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Ann"</span>, <span class="t-string">"Bob"</span>));
+<span class="t-type">System</span>.out.println(names.contains(<span class="t-string">"Bob"</span>));   <span class="t-comment">// true</span>
+<span class="t-type">System</span>.out.println(names.indexOf(<span class="t-string">"Bob"</span>));    <span class="t-comment">// 1</span>
+<span class="t-type">System</span>.out.println(names.indexOf(<span class="t-string">"Eve"</span>));    <span class="t-comment">// -1</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-6">
+<h3>6. remove: по элементу или по позиции</h3>
+<p><code>remove(позиция)</code> удаляет элемент на этой позиции. <code>remove(элемент)</code> удаляет первый равный элемент, а если такого нет, ничего не делает. Элементы после удалённого сдвигаются на одну позицию влево.</p>
+<p>Ловушка: в <code>List&lt;Integer&gt;</code> вызов <code>remove(1)</code> означает позицию 1, а не число 1. Чтобы удалить число, пишите remove(<code>Integer.valueOf(1)</code>).</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">10</span>, <span class="t-number">20</span>, <span class="t-number">30</span>));
+numbers.remove(<span class="t-number">1</span>);                           <span class="t-comment">// позиция 1: [10, 30]</span>
+numbers.remove(<span class="t-type">Integer</span>.valueOf(<span class="t-number">10</span>));         <span class="t-comment">// число 10: [30]</span>
+<span class="t-type">System</span>.out.println(numbers);                 <span class="t-comment">// [30]</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-7">
+<h3>7. set и <code>add(позиция, элемент)</code>: заменить и вставить</h3>
+<p><code>set(позиция, элемент)</code> записывает поверх старого элемента, размер не меняется. <code>add(позиция, элемент)</code> вставляет элемент, размер растёт на один, а остальные сдвигаются вправо.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"Ann"</span>, <span class="t-string">"Bob"</span>));
+names.set(<span class="t-number">1</span>, <span class="t-string">"Eve"</span>);                         <span class="t-comment">// [Ann, Eve]</span>
+names.add(<span class="t-number">0</span>, <span class="t-string">"Max"</span>);                         <span class="t-comment">// [Max, Ann, Eve]</span>
+<span class="t-type">System</span>.out.println(names);</code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-8">
+<h3>8. isEmpty: пустой ли список</h3>
+<p><code>isEmpty()</code> возвращает true, когда в списке нет элементов. Это то же самое, что <code>size() == 0</code>, но читается проще.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+<span class="t-type">System</span>.out.println(names.isEmpty());         <span class="t-comment">// true</span>
+names.add(<span class="t-string">"Ann"</span>);
+<span class="t-type">System</span>.out.println(names.isEmpty());         <span class="t-comment">// false</span></code></pre></div>
+</section>
+<h2 class="group-title">Циклы по списку</h2>
+<section class="card" data-id="warmuplist-9">
+<h3>9. for-each: пройти по всем элементам</h3>
+<p>for (int x : список) берёт элементы по одному, от первого до последнего. Подходит, когда элементы нужно только читать, а их позиции не важны. Элементы <code>List&lt;Integer&gt;</code> можно читать сразу в int.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">3</span>, <span class="t-number">8</span>, <span class="t-number">5</span>));
+<span class="t-kw">int</span> sum = <span class="t-number">0</span>;
+<span class="t-kw">for</span> (<span class="t-kw">int</span> x : numbers) {
+    sum += x;
+}
+<span class="t-type">System</span>.out.println(sum);                     <span class="t-comment">// 16</span></code></pre></div>
+</section>
+<section class="card" data-id="warmuplist-10">
+<h3>10. Удаление во время цикла</h3>
+<p>Удаление внутри for-each бросает ConcurrentModificationException. Идите по позициям с конца к началу: тогда удаление сдвигает только уже проверенные элементы. Или используйте removeIf.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; numbers = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>, <span class="t-number">4</span>));
+<span class="t-kw">for</span> (<span class="t-kw">int</span> i = numbers.size() - <span class="t-number">1</span>; i &gt;= <span class="t-number">0</span>; i--) {
+    <span class="t-kw">if</span> (numbers.get(i) % <span class="t-number">2</span> == <span class="t-number">0</span>) {
+        numbers.remove(i);
+    }
+}
+<span class="t-type">System</span>.out.println(numbers);                 <span class="t-comment">// [1, 3]</span>
+
+<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; other = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-number">1</span>, <span class="t-number">2</span>, <span class="t-number">3</span>, <span class="t-number">4</span>));
+other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-number">0</span>);             <span class="t-comment">// то же самое в одну строку</span>
+<span class="t-type">System</span>.out.println(other);                   <span class="t-comment">// [1, 3]</span></code></pre></div>
+</section>
 <h2 class="group-title" data-id="warmuplist-tasks">Практические задачи</h2>
 <section class="card">
-<p>Вы работаете в службе поддержки интернет-магазина музыки. Каждый тикет ниже — это небольшая рабочая ситуация и один метод, который нужно создать. В тикете сказано, как называется метод и какие у него параметры. Заготовка показана под условием (в WarmupListTasks.java она уже есть), так что остаётся написать тело метода. Понадобятся всего четыре операции: size, get, add и reverse.</p>
+<p>Вы работаете в службе поддержки интернет-магазина музыки. Каждый тикет ниже — это небольшая рабочая ситуация и один метод, который нужно создать. В тикете сказано, как называется метод и какие у него параметры. Заготовка показана под условием (в WarmupListTasks.java она уже есть), так что остаётся написать тело метода. В тикетах 1–11 нужен один метод списка: size, get, add, reverse, contains, indexOf, remove, set или isEmpty. В тикетах 12–16 нужно пройти циклом по списку длительностей треков.</p>
 <p>Как читать тикет:</p>
-<ul><li><strong>Что сделать:</strong> какой метод создать, с какими параметрами и что он должен делать.</li><li><strong>Дано:</strong> значения, которые получает метод.</li><li><strong>Вернуть:</strong> что метод должен вернуть. Если он ничего не возвращает (void), он меняет полученный список.</li><li><strong>Примеры:</strong> <code>countTracks(["Intro", "Solo"]) -&gt; 2</code> значит «вызываем метод с таким списком, и он должен вернуть 2».</li><li>Запись <code>["Intro", "Solo"]</code> — это короткий способ показать список. В коде на Java пишите <code>new ArrayList&lt;&gt;(List.of("Intro", "Solo"))</code>.</li><li>Запускайте примеры в main, чтобы проверить себя. Список можно вывести на экран напрямую: <code>System.out.println(tracks)</code>.</li></ul>
+<ul><li><strong>Что сделать:</strong> какой метод создать, с какими параметрами и что он должен делать.</li><li><strong>Дано:</strong> значения, которые получает метод.</li><li><strong>Вернуть:</strong> что метод должен вернуть. Если он ничего не возвращает (void), он меняет полученный список.</li><li><strong>Примеры:</strong> <code>countTracks(["Intro", "Solo"]) -&gt; 2</code> значит «вызываем метод с таким списком, и он должен вернуть 2».</li><li>Запись <code>["Intro", "Solo"]</code> — это короткий способ показать список. В коде на Java пишите <code>new ArrayList&lt;&gt;(List.of("Intro", "Solo"))</code>.</li><li><strong>Длительности даны в секундах:</strong> <code>[200, 45]</code> — это список из двух треков, 3:20 и 0:45.</li><li>Запускайте примеры в main, чтобы проверить себя. Список можно вывести на экран напрямую: <code>System.out.println(tracks)</code>.</li></ul>
 </section>
 <section class="card task">
 <h3>Тикет 1. Сколько треков в плейлисте?</h3>
@@ -3900,6 +4150,116 @@ numbers.add(<span class="t-number">20</span>);
 <ul><li>tracks = ["a", "b", "c"], <code>reversePlaylist(tracks)</code> <code>-&gt;</code> tracks станет ["c", "b", "a"]</li><li>tracks = [], <code>reversePlaylist(tracks)</code> <code>-&gt;</code> tracks останется [] (разворачивать нечего)</li></ul>
 <div class="code"><pre><code><span class="t-kw">void</span> reversePlaylist(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
 <details class="hint"><summary>Подсказка</summary><p>В классе <code>Collections</code> из java.util уже есть метод, который разворачивает список. Не забудьте импорт.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 6. Есть ли трек в плейлисте?</h3>
+<p>Рядом с каждым треком в магазине есть кнопка «Добавить в плейлист». Если трек уже в плейлисте, кнопка должна быть серой.</p>
+<p>Что сделать: создайте метод <code>hasTrack</code> с двумя параметрами: первый — список строк <code>tracks</code>, второй — строка <code>track</code>. Метод должен вернуть true, если <code>track</code> есть в списке, и false, если нет.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков; track — название, которое ищем.</li><li><strong>Вернуть:</strong> true, если трек есть в плейлисте, иначе false.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>hasTrack(["Intro", "Solo"], "Solo")</code> <code>-&gt;</code> true</li><li><code>hasTrack(["Intro", "Solo"], "Outro")</code> <code>-&gt;</code> false</li><li><code>hasTrack([], "Solo")</code> <code>-&gt;</code> false (в пустом плейлисте треков нет)</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> hasTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Цикл не нужен. У списка есть метод <code>contains(элемент)</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 7. Где этот трек?</h3>
+<p>Покупатель спрашивает: «Каким по счёту стоит мой любимый трек?». Поддержке нужна его позиция.</p>
+<p>Что сделать: создайте метод <code>findTrackPosition</code> с двумя параметрами: первый — список строк <code>tracks</code>, второй — строка <code>track</code>. Метод должен вернуть позицию <code>track</code> в списке. Если трека нет, метод должен вернуть -1.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков; track — название, которое ищем.</li><li><strong>Вернуть:</strong> позицию трека (считая с 0). Если трека в списке нет, -1.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>findTrackPosition(["Intro", "Solo", "Outro"], "Solo")</code> <code>-&gt;</code> 1</li><li><code>findTrackPosition(["Intro", "Solo"], "Intro")</code> <code>-&gt;</code> 0 (первая позиция — 0)</li><li><code>findTrackPosition(["Intro", "Solo"], "Outro")</code> <code>-&gt;</code> -1 (такого трека нет)</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> findTrackPosition(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Метод <code>indexOf(элемент)</code> возвращает позицию элемента, а если элемента нет, -1.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 8. Удалить трек по названию</h3>
+<p>Покупатель нажимает «Удалить из плейлиста» рядом с треком.</p>
+<p>Что сделать: создайте метод <code>removeTrack</code> с двумя параметрами: первый — список строк <code>tracks</code>, второй — строка <code>track</code>. Метод должен удалить <code>track</code> из списка. Если трека нет, список остаётся как был. Метод ничего не возвращает, а меняет сам <code>tracks</code>.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков; track — название, которое нужно удалить.</li><li><strong>Вернуть:</strong> ничего (void). Измените сам список tracks.</li></ul>
+<p>Примеры:</p>
+<ul><li>tracks = ["Intro", "Solo", "Outro"], <code>removeTrack(tracks, "Solo")</code> <code>-&gt;</code> tracks станет ["Intro", "Outro"]</li><li>tracks = ["Intro"], <code>removeTrack(tracks, "Outro")</code> <code>-&gt;</code> tracks останется ["Intro"] (удалять нечего)</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> removeTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>У списка два метода <code>remove</code>. <code>remove(позиция)</code> принимает число, <code>remove(элемент)</code> принимает сам элемент. У вас есть элемент.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 9. Заменить трек</h3>
+<p>Лейбл прислал ремастер трека. Он должен встать на место старой версии, на ту же позицию.</p>
+<p>Что сделать: создайте метод <code>replaceTrack</code> с тремя параметрами: список строк <code>tracks</code>, число <code>position</code> и строка <code>track</code>. Метод должен записать <code>track</code> на позицию <code>position</code> вместо старого названия. Размер списка не меняется. Метод ничего не возвращает, а меняет сам <code>tracks</code>. Позиция всегда существует.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков; position — какую позицию поменять (с 0); track — новое название.</li><li><strong>Вернуть:</strong> ничего (void). Измените сам список tracks.</li></ul>
+<p>Примеры:</p>
+<ul><li>tracks = ["Intro", "Solo", "Outro"], replaceTrack(tracks, 1, "Solo (Remastered)") <code>-&gt;</code> tracks станет ["Intro", "Solo (Remastered)", "Outro"]</li><li>tracks = ["Intro"], replaceTrack(tracks, 0, "Intro (Live)") <code>-&gt;</code> tracks станет ["Intro (Live)"]</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> replaceTrack(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-kw">int</span> position, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Метод <code>set(позиция, элемент)</code> записывает элемент поверх старого. Не путайте его с <code>add</code>, который делает список длиннее.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 10. Играть следующим</h3>
+<p>Покупатель нажимает «Играть следующим»: трек должен встать в самое начало плейлиста.</p>
+<p>Что сделать: создайте метод <code>addTrackToStart</code> с двумя параметрами: первый — список строк <code>tracks</code>, второй — строка <code>track</code>. Метод должен поставить <code>track</code> в начало списка, а все остальные треки сдвигаются на одну позицию вправо. Метод ничего не возвращает, а меняет сам <code>tracks</code>.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков; track — название, которое нужно добавить.</li><li><strong>Вернуть:</strong> ничего (void). Измените сам список tracks.</li></ul>
+<p>Примеры:</p>
+<ul><li>tracks = ["Intro", "Solo"], <code>addTrackToStart(tracks, "Outro")</code> <code>-&gt;</code> tracks станет ["Outro", "Intro", "Solo"]</li><li>tracks = [], <code>addTrackToStart(tracks, "Solo")</code> <code>-&gt;</code> tracks станет ["Solo"]</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> addTrackToStart(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks, <span class="t-type">String</span> track)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p><code>add</code> умеет принимать два аргумента: <code>add(позиция, элемент)</code> ставит элемент на эту позицию.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 11. Пустой ли плейлист?</h3>
+<p>Вместо пустой таблицы пустой плейлист показывает текст «Добавьте первый трек».</p>
+<p>Что сделать: создайте метод <code>isPlaylistEmpty</code> с одним параметром: список строк <code>tracks</code>. Метод должен вернуть true, если в списке нет элементов, и false, если есть хотя бы один.</p>
+<ul><li><strong>Дано:</strong> tracks — список названий треков.</li><li><strong>Вернуть:</strong> true для пустого списка, иначе false.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>isPlaylistEmpty([])</code> <code>-&gt;</code> true</li><li><code>isPlaylistEmpty(["Intro"])</code> <code>-&gt;</code> false</li></ul>
+<div class="code"><pre><code><span class="t-kw">boolean</span> isPlaylistEmpty(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; tracks)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p><code>size() == 0</code> сработает, но у списка есть метод ровно для этого: <code>isEmpty()</code>.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 12. Сколько длится плейлист?</h3>
+<p>На странице плейлиста показана его общая длительность. Длительности треков хранятся списком чисел в секундах.</p>
+<p>Что сделать: создайте метод <code>totalDuration</code> с одним параметром: список чисел <code>durations</code>. Метод должен вернуть сумму всех элементов списка.</p>
+<ul><li><strong>Дано:</strong> durations — длительности треков в секундах.</li><li><strong>Вернуть:</strong> сумму длительностей. Для пустого списка 0.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>totalDuration([200, 45, 300])</code> <code>-&gt;</code> 545</li><li><code>totalDuration([])</code> <code>-&gt;</code> 0 (пустой плейлист длится 0 секунд)</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> totalDuration(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Пройдите по списку циклом for-each <code>for (int d : durations)</code> и прибавляйте каждый элемент к переменной, которая начинается с 0.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 13. Самый длинный трек</h3>
+<p>Покупатель хочет знать, сколько длится самый длинный трек плейлиста.</p>
+<p>Что сделать: создайте метод <code>longestTrack</code> с одним параметром: список чисел <code>durations</code>. Метод должен вернуть самый большой элемент списка. Если список пустой, метод должен вернуть 0.</p>
+<ul><li><strong>Дано:</strong> durations — длительности треков в секундах.</li><li><strong>Вернуть:</strong> самую большую длительность. Для пустого списка 0.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>longestTrack([200, 45, 300])</code> <code>-&gt;</code> 300</li><li><code>longestTrack([45])</code> <code>-&gt;</code> 45 (единственный трек он же и самый длинный)</li><li><code>longestTrack([])</code> <code>-&gt;</code> 0 (треков нет)</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> longestTrack(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Храните в переменной самую большую длительность из уже просмотренных. Каждый элемент, который больше неё, занимает её место.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 14. Сколько длинных треков?</h3>
+<p>Магазин помечает треки длиннее 3 минут (больше 180 секунд) меткой «длинный». Посчитайте, сколько таких треков в плейлисте.</p>
+<p>Что сделать: создайте метод <code>countLongTracks</code> с одним параметром: список чисел <code>durations</code>. Метод должен вернуть, сколько элементов больше 180.</p>
+<ul><li><strong>Дано:</strong> durations — длительности треков в секундах.</li><li><strong>Вернуть:</strong> сколько длительностей больше 180. Для пустого списка 0.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>countLongTracks([200, 45, 300])</code> <code>-&gt;</code> 2</li><li><code>countLongTracks([180, 60])</code> <code>-&gt;</code> 0 (ровно 180 секунд — это не «длиннее 3 минут»)</li><li><code>countLongTracks([])</code> <code>-&gt;</code> 0</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> countLongTracks(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Счётчик, который начинается с 0, цикл и один <code>if</code> внутри.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 15. Только короткие треки</h3>
+<p>Режим «Короткий перерыв» играет только треки короче 3 минут (меньше 180 секунд). Исходный плейлист меняться не должен.</p>
+<p>Что сделать: создайте метод <code>shortTracks</code> с одним параметром: список чисел <code>durations</code>. Метод должен вернуть новый список только с элементами меньше 180, в том же порядке. Список <code>durations</code> должен остаться как был.</p>
+<ul><li><strong>Дано:</strong> durations — длительности треков в секундах.</li><li><strong>Вернуть:</strong> новый список с длительностями меньше 180. Если таких нет, пустой список.</li></ul>
+<p>Примеры:</p>
+<ul><li><code>shortTracks([200, 45, 120, 300])</code> <code>-&gt;</code> [45, 120]</li><li><code>shortTracks([200, 300])</code> <code>-&gt;</code> [] (коротких треков нет)</li></ul>
+<div class="code"><pre><code><span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; shortTracks(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Создайте пустой <code>new ArrayList&lt;&gt;()</code> перед циклом и добавляйте в него подходящие элементы через <code>add</code>. <code>durations</code> не трогайте.</p></details>
+</section>
+<section class="card task">
+<h3>Тикет 16. Убрать джинглы</h3>
+<p>Совсем короткие треки (меньше 60 секунд) — это джинглы и реклама. Их нужно удалить из самого плейлиста.</p>
+<p>Что сделать: создайте метод <code>removeJingles</code> с одним параметром: список чисел <code>durations</code>. Метод должен удалить из этого же списка все элементы меньше 60. Метод ничего не возвращает, а меняет сам <code>durations</code>.</p>
+<ul><li><strong>Дано:</strong> durations — длительности треков в секундах.</li><li><strong>Вернуть:</strong> ничего (void). Измените сам список durations.</li></ul>
+<p>Примеры:</p>
+<ul><li>durations = [200, 30, 45, 300], <code>removeJingles(durations)</code> <code>-&gt;</code> durations станет [200, 300]</li><li>durations = [200, 300], <code>removeJingles(durations)</code> <code>-&gt;</code> durations останется [200, 300] (удалять нечего)</li></ul>
+<div class="code"><pre><code><span class="t-kw">void</span> removeJingles(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Не удаляйте внутри <code>for (int d : durations)</code>: Java бросит ConcurrentModificationException. Идите по позициям с конца к началу и используйте <code>remove(позиция)</code> или попробуйте метод <code>removeIf</code>.</p></details>
 </section>
 </div>
 </div>
