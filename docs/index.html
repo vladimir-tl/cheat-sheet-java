@@ -5595,59 +5595,59 @@ bonus.size();        <span class="t-comment">// 1 (with a plain class without eq
 <ul><li><strong>Input:</strong> the parameters the method gets.</li><li><strong>Return:</strong> what the method must give back (or what it must print).</li><li><strong>Examples:</strong> inputs with their expected results. Run them in main to check yourself.</li></ul>
 </section>
 <section class="card task">
-<h3>Ticket 1. Customer cards</h3>
+<h3>Ticket 1. Create a map of three customers</h3>
 <p>The CRM stores a card for every customer: the name is the key, the age is the value. Create a <code>Map&lt;String, Integer&gt;</code> with three customers, for example Anna 25, Bob 30 and Eve 22.</p>
 <ul><li><strong>Input:</strong> nothing, the method has no parameters (the brackets are empty).</li><li><strong>Return:</strong> a new map with three name <code>-&gt;</code> age pairs.</li></ul>
 <p>Example:</p>
 <ul><li><code>task1()</code> <code>-&gt;</code> {Anna=25, Bob=30, Eve=22}</li></ul>
 <div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; task1()</code></pre></div>
-<details class="hint"><summary>Hint</summary><p>Create a <code>HashMap</code> and call <code>put(key, value)</code> for every customer.</p></details>
+<details class="hint"><summary>Hint</summary><p>Write the type on the left as <code>Map&lt;String, Integer&gt;</code> and create the object with <code>new HashMap&lt;&gt;()</code>. Then call <code>put</code> once for every customer: <code>map.put("Anna", 25)</code>, where the name is the key and the age is the value. The <code>int</code> 25 turns into an <code>Integer</code> by itself. Return the map at the end. If it prints in a different order, that's fine: a <code>HashMap</code> keeps no order.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 2. Lookup in the CRM</h3>
+<h3>Ticket 2. Find a customer's age by name</h3>
 <p>A customer calls and gives their name. Find their age in the CRM. If there is no card with this name, return -1.</p>
 <ul><li><strong>Input:</strong> map, the cards (name <code>-&gt;</code> age); key, the name.</li><li><strong>Return:</strong> the age for this name, or -1 if the name is not a key of the map.</li></ul>
 <p>Examples:</p>
 <ul><li>map {Anna=25, Bob=30}, key "Bob" <code>-&gt;</code> 30</li><li>map {Anna=25, Bob=30}, key "Tom" <code>-&gt;</code> -1</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span> task2(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>getOrDefault(key, defaultValue)</code> returns the default when the key is missing.</p></details>
+<details class="hint"><summary>Hint</summary><p><code>map.get(key)</code> returns <code>null</code> for a missing name, and <code>return map.get(key);</code> in an <code>int</code> method crashes with <code>NullPointerException</code>: <code>null</code> can't become an <code>int</code>. <code>map.getOrDefault(key, -1)</code> solves this: it gives the age if the name is there and <code>-1</code> if it isn't. One line is enough.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 3. Is the customer registered?</h3>
+<h3>Ticket 3. Is there a card for this customer?</h3>
 <p>Before creating a new card the agent checks that the customer does not have one yet.</p>
 <ul><li><strong>Input:</strong> map, the cards (name <code>-&gt;</code> age); key, the name.</li><li><strong>Return:</strong> true if the map has this key, otherwise false.</li></ul>
 <p>Examples:</p>
 <ul><li>map {Anna=25}, key "Anna" <code>-&gt;</code> true</li><li>map {Anna=25}, key "Tom" <code>-&gt;</code> false</li></ul>
 <div class="code"><pre><code><span class="t-kw">boolean</span> task3(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p>A <code>Map</code> can check whether it has a key without reading the value.</p></details>
+<details class="hint"><summary>Hint</summary><p>Use <code>map.containsKey(key)</code>: it returns <code>true</code> if there is a pair with this key and <code>false</code> otherwise, exactly what the method must return, so no <code>if</code> is needed. Don't confuse it with <code>containsValue</code>: that one looks at the ages, not the names.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 4. List for the manager</h3>
+<h3>Ticket 4. Print all customer cards</h3>
 <p>The manager wants to see all customer cards. Go through the map and print every pair as name=age, each on its own line.</p>
 <ul><li><strong>Input:</strong> map, the cards (name <code>-&gt;</code> age).</li><li><strong>Return:</strong> nothing, the method prints to the console.</li></ul>
 <p>Expected output for {Anna=25, Bob=30} (the order of the lines may differ):</p>
 <pre class="plain">  Anna=25
   Bob=30</pre>
 <div class="code"><pre><code><span class="t-kw">void</span> task4(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p>Loop over <code>map.entrySet()</code>; every entry has <code>getKey()</code> and <code>getValue()</code>.</p></details>
+<details class="hint"><summary>Hint</summary><p>You can't loop over a map directly, but <code>map.entrySet()</code> gives all its pairs. Write <code>for (Map.Entry&lt;String, Integer&gt; entry : map.entrySet())</code>: every <code>entry</code> is one pair, <code>entry.getKey()</code> is the name and <code>entry.getValue()</code> is the age. Print them glued with "=": <code>System.out.println(entry.getKey() + "=" + entry.getValue())</code>. The method is <code>void</code>, so nothing is returned.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 5. Total of the order</h3>
+<h3>Ticket 5. Add up the prices in an order</h3>
 <p>The map holds the products of one order: the product name is the key, its price is the value. The customer wants to know the total.</p>
 <ul><li><strong>Input:</strong> map, the products (name <code>-&gt;</code> price).</li><li><strong>Return:</strong> the sum of all the prices (all the values), or 0 for an empty map.</li></ul>
 <p>Examples:</p>
 <ul><li>{Vinyl=30, CD=15, Poster=5} <code>-&gt;</code> 50</li><li>{} <code>-&gt;</code> 0</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>map.values()</code> gives all the prices; add them up in a loop.</p></details>
+<details class="hint"><summary>Hint</summary><p>The names don't matter here, only the prices, and <code>map.values()</code> gives exactly them. Start with <code>int sum = 0</code>, go through <code>for (int price : map.values())</code> and add each price: <code>sum += price</code>. For an empty map the loop doesn't run once, and you return <code>0</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 6. Typo statistics</h3>
+<h3>Ticket 6. Count every character in a text</h3>
 <p>The quality team studies the messages of customers. Count how many times every character appears in the text. Spaces and punctuation are characters too.</p>
 <ul><li><strong>Input:</strong> s, the text.</li><li><strong>Return:</strong> a new map: character <code>-&gt;</code> how many times it appears.</li></ul>
 <p>Examples:</p>
 <ul><li><code>task6("aab")</code> <code>-&gt;</code> {a=2, b=1}</li><li><code>task6("hello")</code> <code>-&gt;</code> {h=1, e=1, l=2, o=1}</li><li><code>task6("")</code> <code>-&gt;</code> {}</li></ul>
 <div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">Character</span>, <span class="t-type">Integer</span>&gt; task6(<span class="t-type">String</span> s)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p>Loop over <code>s.toCharArray()</code>. For every char <code>c</code> put <code>getOrDefault(c, 0) + 1</code>.</p></details>
+<details class="hint"><summary>Hint</summary><p>Create an empty <code>Map&lt;Character, Integer&gt;</code>: the key is the character, the value is how many times it has been seen. Go through the text with <code>for (char c : s.toCharArray())</code>. For each character take the current count: <code>map.getOrDefault(c, 0)</code> (a new character has no count yet, so it is <code>0</code>). Add 1 and put it back: <code>map.put(c, map.getOrDefault(c, 0) + 1)</code>. <code>put</code> overwrites the old value for this key, so the count grows. For an empty string the loop doesn't run, and you return an empty map.</p></details>
 </section>
 </div>
 <div class="l-ru">
@@ -5785,59 +5785,59 @@ bonus.size();        <span class="t-comment">// 1 (с обычным класс�
 <ul><li><strong>Дано:</strong> параметры, которые получает метод.</li><li><strong>Вернуть:</strong> что метод должен вернуть (или что напечатать).</li><li><strong>Примеры:</strong> входные данные и ожидаемые результаты. Запустите их в main, чтобы проверить себя.</li></ul>
 </section>
 <section class="card task">
-<h3>Тикет 1. Карточки клиентов</h3>
+<h3>Тикет 1. Создать словарь из трёх клиентов</h3>
 <p>CRM хранит карточку каждого клиента: имя — ключ, возраст — значение. Создайте <code>Map&lt;String, Integer&gt;</code> с тремя клиентами, например Anna 25, Bob 30 и Eve 22.</p>
 <ul><li><strong>Дано:</strong> ничего, у метода нет параметров (скобки пустые).</li><li><strong>Вернуть:</strong> новый словарь с тремя парами имя <code>-&gt;</code> возраст.</li></ul>
 <p>Пример:</p>
 <ul><li><code>task1()</code> <code>-&gt;</code> {Anna=25, Bob=30, Eve=22}</li></ul>
 <div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; task1()</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p>Создайте <code>HashMap</code> и вызовите <code>put(key, value)</code> для каждого клиента.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Слева напишите тип <code>Map&lt;String, Integer&gt;</code>, а объект создайте через <code>new HashMap&lt;&gt;()</code>. Потом вызовите <code>put</code> для каждого клиента: <code>map.put("Anna", 25)</code>, где имя — ключ, а возраст — значение. <code>int</code> 25 сам превратится в <code>Integer</code>. В конце верните словарь. Если на экране пары идут в другом порядке, это нормально: <code>HashMap</code> порядок не хранит.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 2. Поиск в CRM</h3>
+<h3>Тикет 2. Найти возраст клиента по имени</h3>
 <p>Клиент звонит и называет своё имя. Найдите его возраст в CRM. Если карточки с таким именем нет, верните -1.</p>
 <ul><li><strong>Дано:</strong> map — карточки (имя <code>-&gt;</code> возраст); key — имя.</li><li><strong>Вернуть:</strong> возраст для этого имени или -1, если такого ключа в словаре нет.</li></ul>
 <p>Примеры:</p>
 <ul><li>map {Anna=25, Bob=30}, key "Bob" <code>-&gt;</code> 30</li><li>map {Anna=25, Bob=30}, key "Tom" <code>-&gt;</code> -1</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span> task2(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>getOrDefault(key, defaultValue)</code> возвращает значение по умолчанию, если ключа нет.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Для имени, которого нет, <code>map.get(key)</code> вернёт <code>null</code>, и <code>return map.get(key);</code> в методе с <code>int</code> упадёт с <code>NullPointerException</code>: <code>null</code> нельзя превратить в <code>int</code>. Выручает <code>map.getOrDefault(key, -1)</code>: он вернёт возраст, если имя есть, и <code>-1</code>, если нет. Хватит одной строки.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 3. Клиент зарегистрирован?</h3>
+<h3>Тикет 3. Есть ли карточка у клиента?</h3>
 <p>Прежде чем завести новую карточку, оператор проверяет, что у клиента её ещё нет.</p>
 <ul><li><strong>Дано:</strong> map — карточки (имя <code>-&gt;</code> возраст); key — имя.</li><li><strong>Вернуть:</strong> true, если такой ключ есть в словаре, иначе false.</li></ul>
 <p>Примеры:</p>
 <ul><li>map {Anna=25}, key "Anna" <code>-&gt;</code> true</li><li>map {Anna=25}, key "Tom" <code>-&gt;</code> false</li></ul>
 <div class="code"><pre><code><span class="t-kw">boolean</span> task3(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>Map</code> умеет проверить, есть ли ключ, не читая значение.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Используйте <code>map.containsKey(key)</code>: он вернёт <code>true</code>, если пара с таким ключом есть, и <code>false</code>, если нет. Это ровно то, что нужно вернуть, так что <code>if</code> не нужен. Не перепутайте с <code>containsValue</code>: тот ищет среди возрастов, а не имён.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 4. Список для менеджера</h3>
+<h3>Тикет 4. Напечатать все карточки клиентов</h3>
 <p>Менеджер хочет видеть все карточки клиентов. Пройдите по словарю и напечатайте каждую пару в виде имя=возраст, каждую на отдельной строке.</p>
 <ul><li><strong>Дано:</strong> map — карточки (имя <code>-&gt;</code> возраст).</li><li><strong>Вернуть:</strong> ничего, метод печатает в консоль.</li></ul>
 <p>Ожидаемый вывод для {Anna=25, Bob=30} (порядок строк может отличаться):</p>
 <pre class="plain">  Anna=25
   Bob=30</pre>
 <div class="code"><pre><code><span class="t-kw">void</span> task4(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p>Пройдите циклом по <code>map.entrySet()</code>; у каждой записи есть <code>getKey()</code> и <code>getValue()</code>.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Пройти циклом прямо по словарю нельзя, но <code>map.entrySet()</code> даёт все его пары. Напишите <code>for (Map.Entry&lt;String, Integer&gt; entry : map.entrySet())</code>: каждый <code>entry</code> — одна пара, <code>entry.getKey()</code> — имя, <code>entry.getValue()</code> — возраст. Напечатайте их через «=»: <code>System.out.println(entry.getKey() + "=" + entry.getValue())</code>. Метод <code>void</code>, поэтому ничего не возвращаем.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 5. Сумма заказа</h3>
+<h3>Тикет 5. Сложить цены в заказе</h3>
 <p>В словаре лежат товары одного заказа: название товара — ключ, его цена — значение. Клиент хочет знать итоговую сумму.</p>
 <ul><li><strong>Дано:</strong> map — товары (название <code>-&gt;</code> цена).</li><li><strong>Вернуть:</strong> сумму всех цен (всех значений) или 0 для пустого словаря.</li></ul>
 <p>Примеры:</p>
 <ul><li>{Vinyl=30, CD=15, Poster=5} <code>-&gt;</code> 50</li><li>{} <code>-&gt;</code> 0</li></ul>
 <div class="code"><pre><code><span class="t-kw">int</span> task5(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p><code>map.values()</code> даёт все цены; сложите их в цикле.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Названия товаров здесь не важны, нужны только цены, а их как раз даёт <code>map.values()</code>. Начните с <code>int sum = 0</code>, пройдите циклом <code>for (int price : map.values())</code> и прибавляйте каждую цену: <code>sum += price</code>. Для пустого словаря цикл не выполнится ни разу, и вы вернёте <code>0</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 6. Статистика опечаток</h3>
+<h3>Тикет 6. Посчитать каждый символ в тексте</h3>
 <p>Отдел качества изучает сообщения клиентов. Посчитайте, сколько раз каждый символ встречается в тексте. Пробелы и знаки препинания — тоже символы.</p>
 <ul><li><strong>Дано:</strong> s — текст.</li><li><strong>Вернуть:</strong> новый словарь: символ <code>-&gt;</code> сколько раз он встречается.</li></ul>
 <p>Примеры:</p>
 <ul><li><code>task6("aab")</code> <code>-&gt;</code> {a=2, b=1}</li><li><code>task6("hello")</code> <code>-&gt;</code> {h=1, e=1, l=2, o=1}</li><li><code>task6("")</code> <code>-&gt;</code> {}</li></ul>
 <div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">Character</span>, <span class="t-type">Integer</span>&gt; task6(<span class="t-type">String</span> s)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p>Пройдите циклом по <code>s.toCharArray()</code>. Для каждого символа <code>c</code> запишите <code>getOrDefault(c, 0) + 1</code>.</p></details>
+<details class="hint"><summary>Подсказка</summary><p>Создайте пустой <code>Map&lt;Character, Integer&gt;</code>: ключ — символ, значение — сколько раз он встретился. Пройдите по тексту циклом <code>for (char c : s.toCharArray())</code>. Для каждого символа возьмите текущий счёт: <code>map.getOrDefault(c, 0)</code> (у нового символа счёта ещё нет, поэтому <code>0</code>). Прибавьте 1 и положите обратно: <code>map.put(c, map.getOrDefault(c, 0) + 1)</code>. <code>put</code> перезаписывает старое значение по этому ключу, и счёт растёт. Для пустой строки цикл не выполнится, и вернётся пустой словарь.</p></details>
 </section>
 </div>
 </div>
