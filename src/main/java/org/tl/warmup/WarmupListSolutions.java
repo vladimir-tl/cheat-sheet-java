@@ -70,9 +70,6 @@ public class WarmupListSolutions {
 
         List<Integer> durations = new ArrayList<>(List.of(200, 45, 300));
         List<Integer> noDurations = new ArrayList<>();
-        System.out.println(totalDuration(durations));                 // 545
-        System.out.println(totalDuration(noDurations));               // 0
-
         System.out.println(longestTrack(durations));                  // 300
         System.out.println(longestTrack(List.of(45)));                // 45
         System.out.println(longestTrack(noDurations));                // 0
@@ -142,14 +139,6 @@ public class WarmupListSolutions {
 
     static boolean isPlaylistEmpty(List<String> tracks) {
         return tracks.isEmpty();
-    }
-
-    static int totalDuration(List<Integer> durations) {
-        int sum = 0;
-        for (int d : durations) {
-            sum += d;
-        }
-        return sum;
     }
 
     static int longestTrack(List<Integer> durations) {

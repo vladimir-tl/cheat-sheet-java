@@ -10,7 +10,7 @@ import java.util.List;
  * is called and which parameters it takes. Its template is shown under the ticket (in WarmupListTasks.java
  * it is already there), so you only have to write the body.
  * Tickets 1-11 need one list method each: size, get, add, reverse, contains, indexOf, remove, set and isEmpty.
- * Tickets 12-16 walk through a list of track durations with a loop.
+ * Tickets 12-15 walk through a list of track durations with a loop.
  *
  * How to read a ticket:
  * - What to do: which method to create, with which parameters, and what it must do.
@@ -237,26 +237,7 @@ public class WarmupListTasks {
     }
 
     /**
-     * Ticket 12. How long is the playlist?
-     * The playlist page shows its total length. The durations of the tracks are stored as a list of numbers in seconds.
-     *
-     * What to do: create a method `totalDuration` with one parameter: a list of numbers `durations`. The method must return the sum of all elements of the list.
-     *
-     * - Input: durations, the durations of the tracks in seconds.
-     * - Return: the sum of the durations. For an empty list, 0.
-     *
-     * Examples:
-     * - totalDuration([200, 45, 300]) -> 545
-     * - totalDuration([]) -> 0 (an empty playlist lasts 0 seconds)
-     *
-     * Hint: Go through the list with a for-each loop `for (int d : durations)` and add every element to a variable that starts at 0.
-     */
-    static int totalDuration(List<Integer> durations) {
-        return 0;
-    }
-
-    /**
-     * Ticket 13. The longest track
+     * Ticket 12. The longest track
      * A customer wants to know how long the longest track of the playlist is.
      *
      * What to do: create a method `longestTrack` with one parameter: a list of numbers `durations`. The method must return the biggest element of the list. If the list is empty, it must return 0.
@@ -276,7 +257,7 @@ public class WarmupListTasks {
     }
 
     /**
-     * Ticket 14. How many long tracks?
+     * Ticket 13. How many long tracks?
      * The store marks tracks longer than 3 minutes (more than 180 seconds) with the label "long". Count how many such tracks are in the playlist.
      *
      * What to do: create a method `countLongTracks` with one parameter: a list of numbers `durations`. The method must return how many elements are bigger than 180.
@@ -296,7 +277,7 @@ public class WarmupListTasks {
     }
 
     /**
-     * Ticket 15. Only short tracks
+     * Ticket 14. Only short tracks
      * The "Quick break" mode plays only tracks shorter than 3 minutes (less than 180 seconds). The original playlist must not change.
      *
      * What to do: create a method `shortTracks` with one parameter: a list of numbers `durations`. The method must return a new list with only the elements smaller than 180, in the same order. The list `durations` must stay as it was.
@@ -315,7 +296,7 @@ public class WarmupListTasks {
     }
 
     /**
-     * Ticket 16. Remove the jingles
+     * Ticket 15. Remove the jingles
      * Very short tracks (less than 60 seconds) are jingles and ads. They must be removed from the playlist itself.
      *
      * What to do: create a method `removeJingles` with one parameter: a list of numbers `durations`. The method must remove all elements smaller than 60 from this same list. It returns nothing, it changes `durations` itself.

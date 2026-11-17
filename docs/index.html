@@ -3820,7 +3820,7 @@ other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-num
 </section>
 <h2 class="group-title" data-id="warmuplist-tasks">Practice tasks</h2>
 <section class="card">
-<p>You work in the support team of an online music store. Every ticket below is a small situation from work and one method that you have to create. The ticket says what the method is called and which parameters it takes. Its template is shown under the ticket (in WarmupListTasks.java it is already there), so you only have to write the body. Tickets 1-11 need one list method each: size, get, add, reverse, contains, indexOf, remove, set and isEmpty. Tickets 12-16 walk through a list of track durations with a loop.</p>
+<p>You work in the support team of an online music store. Every ticket below is a small situation from work and one method that you have to create. The ticket says what the method is called and which parameters it takes. Its template is shown under the ticket (in WarmupListTasks.java it is already there), so you only have to write the body. Tickets 1-11 need one list method each: size, get, add, reverse, contains, indexOf, remove, set and isEmpty. Tickets 12-15 walk through a list of track durations with a loop.</p>
 <p>How to read a ticket:</p>
 <ul><li><strong>What to do:</strong> which method to create, with which parameters, and what it must do.</li><li><strong>Input:</strong> the values the method receives.</li><li><strong>Return:</strong> what the method must give back. If it returns nothing (void), it changes the list it received.</li><li><strong>Examples:</strong> <code>countTracks(["Intro", "Solo"]) -&gt; 2</code> means "call the method with this list, and it must return 2".</li><li>The notation <code>["Intro", "Solo"]</code> is a short way to show a list. In Java code write <code>new ArrayList&lt;&gt;(List.of("Intro", "Solo"))</code>.</li><li><strong>Durations are given in seconds:</strong> <code>[200, 45]</code> is a list of two tracks, 3:20 and 0:45.</li><li>Run the examples in main to check yourself. A list can be printed directly: <code>System.out.println(tracks)</code>.</li></ul>
 </section>
@@ -3935,17 +3935,7 @@ other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-num
 <details class="hint"><summary>Hint</summary><p><code>size() == 0</code> works, but a list has a method made exactly for this: <code>isEmpty()</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 12. How long is the playlist?</h3>
-<p>The playlist page shows its total length. The durations of the tracks are stored as a list of numbers in seconds.</p>
-<p>What to do: create a method <code>totalDuration</code> with one parameter: a list of numbers <code>durations</code>. The method must return the sum of all elements of the list.</p>
-<ul><li><strong>Input:</strong> durations, the durations of the tracks in seconds.</li><li><strong>Return:</strong> the sum of the durations. For an empty list, 0.</li></ul>
-<p>Examples:</p>
-<ul><li><code>totalDuration([200, 45, 300])</code> <code>-&gt;</code> 545</li><li><code>totalDuration([])</code> <code>-&gt;</code> 0 (an empty playlist lasts 0 seconds)</li></ul>
-<div class="code"><pre><code><span class="t-kw">int</span> totalDuration(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p>Go through the list with a for-each loop <code>for (int d : durations)</code> and add every element to a variable that starts at 0.</p></details>
-</section>
-<section class="card task">
-<h3>Ticket 13. The longest track</h3>
+<h3>Ticket 12. The longest track</h3>
 <p>A customer wants to know how long the longest track of the playlist is.</p>
 <p>What to do: create a method <code>longestTrack</code> with one parameter: a list of numbers <code>durations</code>. The method must return the biggest element of the list. If the list is empty, it must return 0.</p>
 <ul><li><strong>Input:</strong> durations, the durations of the tracks in seconds.</li><li><strong>Return:</strong> the biggest duration. For an empty list, 0.</li></ul>
@@ -3955,7 +3945,7 @@ other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-num
 <details class="hint"><summary>Hint</summary><p>Keep the biggest duration seen so far in a variable. Every element that is bigger replaces it.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 14. How many long tracks?</h3>
+<h3>Ticket 13. How many long tracks?</h3>
 <p>The store marks tracks longer than 3 minutes (more than 180 seconds) with the label "long". Count how many such tracks are in the playlist.</p>
 <p>What to do: create a method <code>countLongTracks</code> with one parameter: a list of numbers <code>durations</code>. The method must return how many elements are bigger than 180.</p>
 <ul><li><strong>Input:</strong> durations, the durations of the tracks in seconds.</li><li><strong>Return:</strong> how many durations are bigger than 180. For an empty list, 0.</li></ul>
@@ -3965,7 +3955,7 @@ other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-num
 <details class="hint"><summary>Hint</summary><p>A counter that starts at 0, a loop and one <code>if</code> inside it.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 15. Only short tracks</h3>
+<h3>Ticket 14. Only short tracks</h3>
 <p>The "Quick break" mode plays only tracks shorter than 3 minutes (less than 180 seconds). The original playlist must not change.</p>
 <p>What to do: create a method <code>shortTracks</code> with one parameter: a list of numbers <code>durations</code>. The method must return a new list with only the elements smaller than 180, in the same order. The list <code>durations</code> must stay as it was.</p>
 <ul><li><strong>Input:</strong> durations, the durations of the tracks in seconds.</li><li><strong>Return:</strong> a new list with the durations smaller than 180. If there are none, an empty list.</li></ul>
@@ -3975,7 +3965,7 @@ other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-num
 <details class="hint"><summary>Hint</summary><p>Create an empty <code>new ArrayList&lt;&gt;()</code> before the loop and <code>add</code> the right elements into it. Don't change <code>durations</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 16. Remove the jingles</h3>
+<h3>Ticket 15. Remove the jingles</h3>
 <p>Very short tracks (less than 60 seconds) are jingles and ads. They must be removed from the playlist itself.</p>
 <p>What to do: create a method <code>removeJingles</code> with one parameter: a list of numbers <code>durations</code>. The method must remove all elements smaller than 60 from this same list. It returns nothing, it changes <code>durations</code> itself.</p>
 <ul><li><strong>Input:</strong> durations, the durations of the tracks in seconds.</li><li><strong>Return:</strong> nothing (void). Change the list durations itself.</li></ul>
@@ -4097,7 +4087,7 @@ other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-num
 </section>
 <h2 class="group-title" data-id="warmuplist-tasks">Практические задачи</h2>
 <section class="card">
-<p>Вы работаете в службе поддержки интернет-магазина музыки. Каждый тикет ниже — это небольшая рабочая ситуация и один метод, который нужно создать. В тикете сказано, как называется метод и какие у него параметры. Заготовка показана под условием (в WarmupListTasks.java она уже есть), так что остаётся написать тело метода. В тикетах 1–11 нужен один метод списка: size, get, add, reverse, contains, indexOf, remove, set или isEmpty. В тикетах 12–16 нужно пройти циклом по списку длительностей треков.</p>
+<p>Вы работаете в службе поддержки интернет-магазина музыки. Каждый тикет ниже — это небольшая рабочая ситуация и один метод, который нужно создать. В тикете сказано, как называется метод и какие у него параметры. Заготовка показана под условием (в WarmupListTasks.java она уже есть), так что остаётся написать тело метода. В тикетах 1–11 нужен один метод списка: size, get, add, reverse, contains, indexOf, remove, set или isEmpty. В тикетах 12–15 нужно пройти циклом по списку длительностей треков.</p>
 <p>Как читать тикет:</p>
 <ul><li><strong>Что сделать:</strong> какой метод создать, с какими параметрами и что он должен делать.</li><li><strong>Дано:</strong> значения, которые получает метод.</li><li><strong>Вернуть:</strong> что метод должен вернуть. Если он ничего не возвращает (void), он меняет полученный список.</li><li><strong>Примеры:</strong> <code>countTracks(["Intro", "Solo"]) -&gt; 2</code> значит «вызываем метод с таким списком, и он должен вернуть 2».</li><li>Запись <code>["Intro", "Solo"]</code> — это короткий способ показать список. В коде на Java пишите <code>new ArrayList&lt;&gt;(List.of("Intro", "Solo"))</code>.</li><li><strong>Длительности даны в секундах:</strong> <code>[200, 45]</code> — это список из двух треков, 3:20 и 0:45.</li><li>Запускайте примеры в main, чтобы проверить себя. Список можно вывести на экран напрямую: <code>System.out.println(tracks)</code>.</li></ul>
 </section>
@@ -4212,17 +4202,7 @@ other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-num
 <details class="hint"><summary>Подсказка</summary><p><code>size() == 0</code> сработает, но у списка есть метод ровно для этого: <code>isEmpty()</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 12. Сколько длится плейлист?</h3>
-<p>На странице плейлиста показана его общая длительность. Длительности треков хранятся списком чисел в секундах.</p>
-<p>Что сделать: создайте метод <code>totalDuration</code> с одним параметром: список чисел <code>durations</code>. Метод должен вернуть сумму всех элементов списка.</p>
-<ul><li><strong>Дано:</strong> durations — длительности треков в секундах.</li><li><strong>Вернуть:</strong> сумму длительностей. Для пустого списка 0.</li></ul>
-<p>Примеры:</p>
-<ul><li><code>totalDuration([200, 45, 300])</code> <code>-&gt;</code> 545</li><li><code>totalDuration([])</code> <code>-&gt;</code> 0 (пустой плейлист длится 0 секунд)</li></ul>
-<div class="code"><pre><code><span class="t-kw">int</span> totalDuration(<span class="t-type">List</span>&lt;<span class="t-type">Integer</span>&gt; durations)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p>Пройдите по списку циклом for-each <code>for (int d : durations)</code> и прибавляйте каждый элемент к переменной, которая начинается с 0.</p></details>
-</section>
-<section class="card task">
-<h3>Тикет 13. Самый длинный трек</h3>
+<h3>Тикет 12. Самый длинный трек</h3>
 <p>Покупатель хочет знать, сколько длится самый длинный трек плейлиста.</p>
 <p>Что сделать: создайте метод <code>longestTrack</code> с одним параметром: список чисел <code>durations</code>. Метод должен вернуть самый большой элемент списка. Если список пустой, метод должен вернуть 0.</p>
 <ul><li><strong>Дано:</strong> durations — длительности треков в секундах.</li><li><strong>Вернуть:</strong> самую большую длительность. Для пустого списка 0.</li></ul>
@@ -4232,7 +4212,7 @@ other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-num
 <details class="hint"><summary>Подсказка</summary><p>Храните в переменной самую большую длительность из уже просмотренных. Каждый элемент, который больше неё, занимает её место.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 14. Сколько длинных треков?</h3>
+<h3>Тикет 13. Сколько длинных треков?</h3>
 <p>Магазин помечает треки длиннее 3 минут (больше 180 секунд) меткой «длинный». Посчитайте, сколько таких треков в плейлисте.</p>
 <p>Что сделать: создайте метод <code>countLongTracks</code> с одним параметром: список чисел <code>durations</code>. Метод должен вернуть, сколько элементов больше 180.</p>
 <ul><li><strong>Дано:</strong> durations — длительности треков в секундах.</li><li><strong>Вернуть:</strong> сколько длительностей больше 180. Для пустого списка 0.</li></ul>
@@ -4242,7 +4222,7 @@ other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-num
 <details class="hint"><summary>Подсказка</summary><p>Счётчик, который начинается с 0, цикл и один <code>if</code> внутри.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 15. Только короткие треки</h3>
+<h3>Тикет 14. Только короткие треки</h3>
 <p>Режим «Короткий перерыв» играет только треки короче 3 минут (меньше 180 секунд). Исходный плейлист меняться не должен.</p>
 <p>Что сделать: создайте метод <code>shortTracks</code> с одним параметром: список чисел <code>durations</code>. Метод должен вернуть новый список только с элементами меньше 180, в том же порядке. Список <code>durations</code> должен остаться как был.</p>
 <ul><li><strong>Дано:</strong> durations — длительности треков в секундах.</li><li><strong>Вернуть:</strong> новый список с длительностями меньше 180. Если таких нет, пустой список.</li></ul>
@@ -4252,7 +4232,7 @@ other.removeIf(x -&gt; x % <span class="t-number">2</span> == <span class="t-num
 <details class="hint"><summary>Подсказка</summary><p>Создайте пустой <code>new ArrayList&lt;&gt;()</code> перед циклом и добавляйте в него подходящие элементы через <code>add</code>. <code>durations</code> не трогайте.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 16. Убрать джинглы</h3>
+<h3>Тикет 15. Убрать джинглы</h3>
 <p>Совсем короткие треки (меньше 60 секунд) — это джинглы и реклама. Их нужно удалить из самого плейлиста.</p>
 <p>Что сделать: создайте метод <code>removeJingles</code> с одним параметром: список чисел <code>durations</code>. Метод должен удалить из этого же списка все элементы меньше 60. Метод ничего не возвращает, а меняет сам <code>durations</code>.</p>
 <ul><li><strong>Дано:</strong> durations — длительности треков в секундах.</li><li><strong>Вернуть:</strong> ничего (void). Измените сам список durations.</li></ul>
