@@ -45,6 +45,13 @@ public class MapTheory {
      * you look up the word "apple" and see its translation right next to it. You don't have
      * to read the whole dictionary from the start, so lookup by key in a Map is fast.
      *
+     * Why do you need a Map if there is a List? Say you need to find Anna's salary.
+     * In a List you would keep the employees in order and look for Anna with a loop:
+     * the first one isn't her, the second one isn't her, and so on to the end. The longer
+     * the list, the longer the search. A Map gives you the value right away by its key:
+     * salaries.get("Anna"). There can be ten employees or a million, and lookup by key
+     * is still fast. The code is shorter too: one line instead of a loop with a check.
+     *
      * Two important rules:
      * - Keys never repeat. A Map can't hold a second "Anna" key. If you put a value under a key
      *   that is already there, the old value is replaced with the new one (more in section 2).
@@ -58,6 +65,17 @@ public class MapTheory {
      * A Map is not a List. It has no indexes 0, 1, 2, and no "first element" either.
      * So map.get(0) won't give you the first pair: the Map looks for the key 0, doesn't find it
      * and returns null.
+     *
+     * How do you choose between them? Use a Map when the task has something to search by:
+     * - Lookup by key: a salary by name, a product by its code, a country by its code.
+     * - Counting: how many times each word appears, for example "cat" -> 3.
+     * - Grouping: a department -> the list of its employees.
+     * - Uniqueness: one login is one user, there won't be a second identical key.
+     *
+     * Use a List when you don't need a key:
+     * - Order and position: you need the first, the second or the last element.
+     * - Simple looping: you only go through the values, you don't search among them.
+     * - Repeats: identical elements are fine, like in a shopping list.
      *
      * For the curious: technically Map is a separate interface, and it does NOT extend Collection
      * (List and Set do). That is why a Map has no add(x) method, it has put(key, value) instead.
