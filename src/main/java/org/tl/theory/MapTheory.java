@@ -16,7 +16,7 @@ import java.util.TreeMap;
  *   1. What a Map is
  *   2. Put and get
  *   3. Missing key: null and getOrDefault
- *   4. Checking a key: containsKey
+ *   4. Checking a key and a value: containsKey and containsValue
  *
  * Kinds of Map
  *   5. HashMap, LinkedHashMap, TreeMap
@@ -189,14 +189,41 @@ public class MapTheory {
     }
 
     /**
-     * 4. Checking a key: containsKey
+     * 4. Checking a key and a value: containsKey and containsValue
      *
      * Sometimes you just need to know whether a key is in the Map. That's what containsKey(key)
      * is for: it returns true if the key is there and false if it isn't. It is as fast as get.
      *
-     * The similar method containsValue(value) searches the values. It is slow: a Map can only
-     * search quickly by key, so here it goes through all the pairs one by one. On a big Map
-     * you'll notice that.
+     * The similar method containsValue(value) searches the values: is anyone 26 years old?
+     * The answer is the same, true or false. But it works much slower. Let's see why.
+     *
+     * Picture a cloakroom in a theatre. You hand in your coat and get ticket number 42. The ticket
+     * is the key, the coat is the value. When you bring the ticket back, the attendant goes
+     * straight to hook 42, there's nothing to search for. That's how get and containsKey work.
+     *
+     * Now you ask: "Do you have a blue coat here?" There's no ticket, so the attendant has to walk
+     * past every hook and look at every coat. That's how containsValue works.
+     *
+     * A Map works the same way. From the key, a HashMap calculates right away where the pair is
+     * stored: that's what the key's hashCode is for (more in section 7). Values have no such
+     * "address". So containsValue takes the first pair and compares its value, then the second,
+     * the third and so on, until it finds a match or runs out of pairs.
+     *
+     * How much you notice it depends on the size of the Map:
+     * - 10 pairs: containsValue makes at most 10 comparisons. You won't feel the difference.
+     * - A million pairs: containsKey still looks in one or two places, while containsValue may make
+     *   a million comparisons.
+     * - containsValue in a loop: a thousand checks on a Map with a million pairs is up to
+     *   a billion comparisons. That's where the program will slow down noticeably.
+     *
+     * So a rare check on a small Map is a perfectly normal job for containsValue, no need
+     * to be afraid of it.
+     *
+     * And if you need to search by value often, make the value a key in a second Map.
+     * For example, you often look up a customer by phone number. Create a Map<String, String>
+     * phoneToName: phone -> name. Then a lookup by phone becomes fast too, with containsKey
+     * or get. The price: you have to update both Maps together. Added a customer to one,
+     * add them to the other as well.
      */
     static void contains() {
         Map<String, Integer> ages = new HashMap<>();
@@ -205,6 +232,11 @@ public class MapTheory {
         ages.containsKey("Anna");   // true
         ages.containsKey("Zed");    // false
         ages.containsValue(26);     // true
+
+        // Searching by value often? Make it a key in a second Map
+        Map<String, String> phoneToName = new HashMap<>();
+        phoneToName.put("+372 5555 1234", "Anna");
+        phoneToName.get("+372 5555 1234");           // "Anna"
     }
 
     /**

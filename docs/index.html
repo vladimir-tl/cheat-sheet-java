@@ -5468,7 +5468,7 @@ customers.size();            <span class="t-comment">// 1 (с обычным к�
 <li value="1"><a href="#map-1">What a Map is</a></li>
 <li value="2"><a href="#map-2">Put and get</a></li>
 <li value="3"><a href="#map-3">Missing key: <code>null</code> and getOrDefault</a></li>
-<li value="4"><a href="#map-4">Checking a key: containsKey</a></li>
+<li value="4"><a href="#map-4">Checking a key and a value: containsKey and containsValue</a></li>
 </ol></div>
 <div class="group"><h4>Kinds of Map</h4><ol>
 <li value="5"><a href="#map-5">HashMap, LinkedHashMap, TreeMap</a></li>
@@ -5555,15 +5555,27 @@ ages.size();                              <span class="t-comment">// 1: "Zed" wa
 <span class="t-comment">// counts: cat -&gt; 2, dog -&gt; 1</span></code></pre></div>
 </section>
 <section class="card" data-id="map-4">
-<h3>4. Checking a key: containsKey</h3>
+<h3>4. Checking a key and a value: containsKey and containsValue</h3>
 <p>Sometimes you just need to know whether a key is in the Map. That's what <code>containsKey(key)</code> is for: it returns true if the key is there and false if it isn't. It is as fast as get.</p>
-<p>The similar method <code>containsValue(value)</code> searches the values. It is slow: a Map can only search quickly by key, so here it goes through all the pairs one by one. On a big Map you'll notice that.</p>
+<p>The similar method <code>containsValue(value)</code> searches the values: is anyone 26 years old? The answer is the same, true or false. But it works much slower. Let's see why.</p>
+<p>Picture a cloakroom in a theatre. You hand in your coat and get ticket number 42. The ticket is the key, the coat is the value. When you bring the ticket back, the attendant goes straight to hook 42, there's nothing to search for. That's how get and containsKey work.</p>
+<p>Now you ask: "Do you have a blue coat here?" There's no ticket, so the attendant has to walk past every hook and look at every coat. That's how containsValue works.</p>
+<p>A Map works the same way. From the key, a HashMap calculates right away where the pair is stored: that's what the key's hashCode is for (more in section <a class="xref" href="#map-7">7</a>). Values have no such "address". So containsValue takes the first pair and compares its value, then the second, the third and so on, until it finds a match or runs out of pairs.</p>
+<p>How much you notice it depends on the size of the Map:</p>
+<ul><li><strong>10 pairs:</strong> containsValue makes at most 10 comparisons. You won't feel the difference.</li><li><strong>A million pairs:</strong> containsKey still looks in one or two places, while containsValue may make a million comparisons.</li><li><strong>containsValue in a loop:</strong> a thousand checks on a Map with a million pairs is up to a billion comparisons. That's where the program will slow down noticeably.</li></ul>
+<p>So a rare check on a small Map is a perfectly normal job for containsValue, no need to be afraid of it.</p>
+<p>And if you need to search by value often, make the value a key in a second Map. For example, you often look up a customer by phone number. Create a <code>Map&lt;String, String&gt;</code> phoneToName: phone <code>-&gt;</code> name. Then a lookup by phone becomes fast too, with containsKey or get. The price: you have to update both Maps together. Added a customer to one, add them to the other as well.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 
 ages.containsKey(<span class="t-string">"Anna"</span>);   <span class="t-comment">// true</span>
 ages.containsKey(<span class="t-string">"Zed"</span>);    <span class="t-comment">// false</span>
-ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment">// true</span></code></pre></div>
+ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment">// true</span>
+
+<span class="t-comment">// Searching by value often? Make it a key in a second Map</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">String</span>&gt; phoneToName = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+phoneToName.put(<span class="t-string">"+372 5555 1234"</span>, <span class="t-string">"Anna"</span>);
+phoneToName.get(<span class="t-string">"+372 5555 1234"</span>);           <span class="t-comment">// "Anna"</span></code></pre></div>
 </section>
 <h2 class="group-title">Kinds of Map</h2>
 <section class="card" data-id="map-5">
@@ -5801,7 +5813,7 @@ bonus.size();        <span class="t-comment">// 1 (with a plain class without eq
 <li value="1"><a href="#map-1">Что такое Map</a></li>
 <li value="2"><a href="#map-2">Положить и получить: put и get</a></li>
 <li value="3"><a href="#map-3">Нет ключа: <code>null</code> и getOrDefault</a></li>
-<li value="4"><a href="#map-4">Проверка ключа: containsKey</a></li>
+<li value="4"><a href="#map-4">Проверка ключа и значения: containsKey и containsValue</a></li>
 </ol></div>
 <div class="group"><h4>Виды Map</h4><ol>
 <li value="5"><a href="#map-5">HashMap, LinkedHashMap, TreeMap</a></li>
@@ -5888,15 +5900,27 @@ ages.size();                              <span class="t-comment">// 1: "Zed" в
 <span class="t-comment">// counts: cat -&gt; 2, dog -&gt; 1</span></code></pre></div>
 </section>
 <section class="card" data-id="map-4">
-<h3>4. Проверка ключа: containsKey</h3>
+<h3>4. Проверка ключа и значения: containsKey и containsValue</h3>
 <p>Иногда нужно просто узнать, есть ли ключ в Map. Для этого есть <code>containsKey(key)</code>: он вернёт true, если ключ есть, и false, если нет. Работает так же быстро, как get.</p>
-<p>Похожий метод <code>containsValue(value)</code> ищет среди значений. Он медленный: быстро искать Map умеет только по ключам, поэтому здесь перебирает все пары подряд. На большой Map это заметно.</p>
+<p>Похожий метод <code>containsValue(value)</code> ищет среди значений: есть ли у кого-нибудь возраст 26? Ответ тот же, true или false. Но работает он гораздо медленнее. Разберёмся почему.</p>
+<p>Представьте гардероб в театре. Вы сдаёте пальто и получаете номерок 42. Номерок — это ключ, пальто — значение. Когда вы возвращаете номерок, гардеробщик сразу идёт к крючку 42, искать ничего не нужно. Так работают get и containsKey.</p>
+<p>А теперь вы спрашиваете: «У вас висит синее пальто?» Номерка нет, поэтому гардеробщику придётся обойти все крючки и посмотреть на каждое пальто. Так работает containsValue.</p>
+<p>С Map то же самое. По ключу HashMap сразу вычисляет место, где лежит пара: для этого у ключа есть hashCode (подробнее в разделе <a class="xref" href="#map-7">7</a>). Для значений такого «адреса» нет. Поэтому containsValue берёт первую пару и сравнивает значение, потом вторую, третью и так далее, пока не найдёт совпадение или пары не закончатся.</p>
+<p>Насколько это заметно, зависит от размера Map:</p>
+<ul><li><strong>10 пар:</strong> containsValue сделает не больше 10 сравнений. Разницы вы не почувствуете.</li><li><strong>Миллион пар:</strong> containsKey по-прежнему заглянет в одно-два места, а containsValue может сделать миллион сравнений.</li><li><strong>containsValue в цикле:</strong> тысяча проверок на Map из миллиона пар — это уже до миллиарда сравнений. Здесь программа заметно задумается.</li></ul>
+<p>Так что редкая проверка на небольшой Map — нормальный случай для containsValue, бояться его не нужно.</p>
+<p>А если искать по значению нужно часто, сделайте значение ключом во второй Map. Например, вы часто ищете клиента по номеру телефона. Заведите <code>Map&lt;String, String&gt;</code> phoneToName: телефон <code>-&gt;</code> имя. Тогда поиск по телефону тоже станет быстрым, через containsKey или get. Цена такого решения — две Map нужно обновлять вместе: добавили клиента в одну, добавьте и в другую.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 
 ages.containsKey(<span class="t-string">"Anna"</span>);   <span class="t-comment">// true</span>
 ages.containsKey(<span class="t-string">"Zed"</span>);    <span class="t-comment">// false</span>
-ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment">// true</span></code></pre></div>
+ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment">// true</span>
+
+<span class="t-comment">// Часто ищете по значению? Сделайте его ключом второй Map</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">String</span>&gt; phoneToName = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+phoneToName.put(<span class="t-string">"+372 5555 1234"</span>, <span class="t-string">"Anna"</span>);
+phoneToName.get(<span class="t-string">"+372 5555 1234"</span>);           <span class="t-comment">// "Anna"</span></code></pre></div>
 </section>
 <h2 class="group-title">Виды Map</h2>
 <section class="card" data-id="map-5">
