@@ -40,20 +40,22 @@ public class MapTasks {
     }
 
     /**
-     * Ticket 2. Lookup in the CRM
-     * A customer calls and gives their name. Find their age in the CRM.
-     * If there is no card with this name, return -1.
+     * Ticket 2. Find a customer's age by name
+     * A customer calls support and gives their name. Find their age in the CRM.
+     * If there is no card with this name, return -1. That way the code that called
+     * the method knows the customer wasn't found.
      *
-     * - Input: map, the cards (name -> age); key, the name.
-     * - Return: the age for this name, or -1 if the name is not a key of the map.
+     * - Input: customers, the customer cards: the key is the name, the value is the age; name, the name the customer gave.
+     * - Return: the customer's age, or -1 if there is no such name in the map.
      *
      * Examples:
-     * - map {Anna=25, Bob=30}, key "Bob" -> 30
-     * - map {Anna=25, Bob=30}, key "Tom" -> -1
+     * - customers {Anna=25, Bob=30}, name "Bob" -> 30
+     * - customers {Anna=25, Bob=30}, name "Tom" -> -1
      *
-     * Hint: `getOrDefault(key, defaultValue)` returns the default when the key is missing.
+     * Hint: `customers.get(name)` returns null for a missing name, and null can't become an int.
+     * `customers.getOrDefault(name, -1)` returns the age if the name is there and -1 if it isn't.
      */
-    static int task2(Map<String, Integer> map, String key) {
+    static int findAgeByName(Map<String, Integer> customers, String name) {
         return 0;
     }
 

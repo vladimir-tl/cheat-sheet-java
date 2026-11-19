@@ -5680,12 +5680,12 @@ bonus.size();        <span class="t-comment">// 1 (with a plain class without eq
 </section>
 <section class="card task">
 <h3>Ticket 2. Find a customer's age by name</h3>
-<p>A customer calls and gives their name. Find their age in the CRM. If there is no card with this name, return -1.</p>
-<ul><li><strong>Input:</strong> map, the cards (name <code>-&gt;</code> age); key, the name.</li><li><strong>Return:</strong> the age for this name, or -1 if the name is not a key of the map.</li></ul>
+<p>A customer calls support and gives their name. Find their age in the CRM. If there is no card with this name, return -1. That way the code that called the method knows the customer wasn't found.</p>
+<ul><li><strong>Input:</strong> customers, the customer cards: the key is the name, the value is the age; name, the name the customer gave.</li><li><strong>Return:</strong> the customer's age, or -1 if there is no such name in the map.</li></ul>
 <p>Examples:</p>
-<ul><li>map {Anna=25, Bob=30}, key "Bob" <code>-&gt;</code> 30</li><li>map {Anna=25, Bob=30}, key "Tom" <code>-&gt;</code> -1</li></ul>
-<div class="code"><pre><code><span class="t-kw">int</span> task2(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p><code>map.get(key)</code> returns <code>null</code> for a missing name, and <code>return map.get(key);</code> in an <code>int</code> method crashes with <code>NullPointerException</code>: <code>null</code> can't become an <code>int</code>. <code>map.getOrDefault(key, -1)</code> solves this: it gives the age if the name is there and <code>-1</code> if it isn't. One line is enough.</p></details>
+<ul><li>customers {Anna=25, Bob=30}, name "Bob" <code>-&gt;</code> 30</li><li>customers {Anna=25, Bob=30}, name "Tom" <code>-&gt;</code> -1</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> findAgeByName(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; customers, <span class="t-type">String</span> name)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p><code>customers.get(name)</code> returns <code>null</code> for a missing name, and <code>return customers.get(name);</code> in an <code>int</code> method crashes with <code>NullPointerException</code>: <code>null</code> can't become an <code>int</code>. <code>customers.getOrDefault(name, -1)</code> solves this: it gives the age if the name is there and <code>-1</code> if it isn't. One line is enough.</p></details>
 </section>
 <section class="card task">
 <h3>Ticket 3. Is there a card for this customer?</h3>
@@ -5945,12 +5945,12 @@ bonus.size();        <span class="t-comment">// 1 (с обычным класс�
 </section>
 <section class="card task">
 <h3>Тикет 2. Найти возраст клиента по имени</h3>
-<p>Клиент звонит и называет своё имя. Найдите его возраст в CRM. Если карточки с таким именем нет, верните -1.</p>
-<ul><li><strong>Дано:</strong> map — карточки (имя <code>-&gt;</code> возраст); key — имя.</li><li><strong>Вернуть:</strong> возраст для этого имени или -1, если такого ключа в словаре нет.</li></ul>
+<p>Клиент звонит в поддержку и называет своё имя. Найдите в CRM его возраст. Если карточки с таким именем нет, верните -1. Так код, который вызвал метод, поймёт, что клиента не нашли.</p>
+<ul><li><strong>Дано:</strong> customers — карточки клиентов: ключ — имя, значение — возраст; name — имя, которое назвал клиент.</li><li><strong>Вернуть:</strong> возраст клиента или -1, если такого имени в словаре нет.</li></ul>
 <p>Примеры:</p>
-<ul><li>map {Anna=25, Bob=30}, key "Bob" <code>-&gt;</code> 30</li><li>map {Anna=25, Bob=30}, key "Tom" <code>-&gt;</code> -1</li></ul>
-<div class="code"><pre><code><span class="t-kw">int</span> task2(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map, <span class="t-type">String</span> key)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p>Для имени, которого нет, <code>map.get(key)</code> вернёт <code>null</code>, и <code>return map.get(key);</code> в методе с <code>int</code> упадёт с <code>NullPointerException</code>: <code>null</code> нельзя превратить в <code>int</code>. Выручает <code>map.getOrDefault(key, -1)</code>: он вернёт возраст, если имя есть, и <code>-1</code>, если нет. Хватит одной строки.</p></details>
+<ul><li>customers {Anna=25, Bob=30}, name "Bob" <code>-&gt;</code> 30</li><li>customers {Anna=25, Bob=30}, name "Tom" <code>-&gt;</code> -1</li></ul>
+<div class="code"><pre><code><span class="t-kw">int</span> findAgeByName(<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; customers, <span class="t-type">String</span> name)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Для имени, которого нет, <code>customers.get(name)</code> вернёт <code>null</code>, и <code>return customers.get(name);</code> в методе с <code>int</code> упадёт с <code>NullPointerException</code>: <code>null</code> нельзя превратить в <code>int</code>. Выручает <code>customers.getOrDefault(name, -1)</code>: он вернёт возраст, если имя есть, и <code>-1</code>, если нет. Хватит одной строки.</p></details>
 </section>
 <section class="card task">
 <h3>Тикет 3. Есть ли карточка у клиента?</h3>

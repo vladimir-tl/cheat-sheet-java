@@ -16,8 +16,8 @@ public class MapSolutions {
         return ages;
     }
 
-    static int task2(Map<String, Integer> map, String key) {
-        return map.getOrDefault(key, -1);
+    static int findAgeByName(Map<String, Integer> customers, String name) {
+        return customers.getOrDefault(name, -1);
     }
 
     static boolean task3(Map<String, Integer> map, String key) {
