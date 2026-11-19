@@ -294,6 +294,48 @@ public class MapTheory {
      *   > }
      *   > // sum = 56
      *
+     * Разберём цикл с keySet подробнее. Читайте его так: «для каждого имени из набора имён
+     * выполни код в фигурных скобках». Цикл сам берёт очередное имя и кладёт его в переменную
+     * name. Тип String слева от двоеточия — это тип ключей нашей Map.
+     *
+     * Если для каждого имени нужен ещё и возраст, достаньте его через get:
+     * - get(name) внутри цикла: вернёт значение для текущего ключа. Здесь get точно не вернёт
+     *   null: мы перебираем ключи, которые в Map есть. Поэтому результат можно смело сохранить в int.
+     *   > for (String name : ages.keySet()) {
+     *   >     int age = ages.get(name);
+     *   >     System.out.println(name + " -> " + age);
+     *   > }
+     *   > // Bob -> 30
+     *   > // Anna -> 26
+     *
+     * Так работает, но для каждого имени Map ищет значение заново. entrySet удобнее: он сразу
+     * отдаёт и ключ, и значение.
+     *
+     * keySet() и values() можно вызвать и без цикла. Они возвращают коллекции, которые можно
+     * напечатать, сохранить в переменную или передать дальше:
+     * - keySet(): вернёт `Set<String>`, набор ключей. Это именно Set (множество, см. SetTheory),
+     *   потому что ключи в Map не повторяются.
+     *   > System.out.println(ages.keySet());           // [Bob, Anna]
+     *   > Set<String> names = ages.keySet();
+     *   > System.out.println(names.size());            // 2
+     *   > System.out.println(names.contains("Bob"));   // true
+     * - values(): вернёт `Collection<Integer>`, все значения. Это уже не Set: если у Anna и Bob
+     *   окажется одинаковый возраст, он попадёт сюда дважды.
+     *   > System.out.println(ages.values());           // [30, 26]
+     *
+     * Обратите внимание на скобки: сама Map печатается в фигурных, {Bob=30, Anna=26},
+     * а keySet и values — в квадратных, как обычный список.
+     *
+     * Две вещи, о которых стоит помнить:
+     * - Копия: если нужен отдельный список ключей, сделайте копию через new ArrayList<>(...).
+     *   С копией можно делать что угодно, Map при этом не изменится.
+     *   > List<String> nameList = new ArrayList<>(ages.keySet());   // [Bob, Anna]
+     *   > nameList.remove("Bob");                                    // ages не изменилась
+     * - Ловушка: keySet() — не копия, а «окно» в ту же Map. Удалите ключ из names,
+     *   и пара пропадёт из ages.
+     *   > names.remove("Bob");
+     *   > System.out.println(ages);                    // {Anna=26}
+     *
      * Если в цикле нужны и ключ, и значение, берите entrySet. Разберём, что он отдаёт.
      *
      * Map.Entry — это одна пара из Map: ключ и значение вместе, как одна строка в таблице.
@@ -354,6 +396,16 @@ public class MapTheory {
         for (int age : ages.values()) {
             System.out.println(age);
         }
+
+        // Имя и возраст через get: Bob -> 30, Anna -> 26
+        for (String name : ages.keySet()) {
+            int age = ages.get(name);
+            System.out.println(name + " -> " + age);
+        }
+
+        // keySet и values можно напечатать целиком
+        System.out.println(ages.keySet());   // [Bob, Anna]
+        System.out.println(ages.values());   // [30, 26]
 
         // setValue меняет значение прямо в Map
         for (Map.Entry<String, Integer> e : ages.entrySet()) {

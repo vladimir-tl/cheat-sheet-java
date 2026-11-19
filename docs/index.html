@@ -5624,6 +5624,25 @@ editable.put(<span class="t-string">"LT"</span>, <span class="t-string">"Lithuan
     sum += age;
 }
 <span class="t-comment">// sum = 56</span></code></pre></li></ul>
+<p>Let's look at the keySet loop more closely. Read it like this: "for every name from the set of names, run the code in the curly braces". The loop takes the next name by itself and puts it into the variable name. The type String to the left of the colon is the key type of our Map.</p>
+<p>If you also need the age for every name, get it with get:</p>
+<ul><li><strong><code>get(name)</code> inside the loop:</strong> returns the value for the current key. Here get never returns <code>null</code>: we go through keys that are in the Map. So you can safely store the result in an int.<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
+    <span class="t-kw">int</span> age = ages.get(name);
+    <span class="t-type">System</span>.out.println(name + <span class="t-string">" -&gt; "</span> + age);
+}
+<span class="t-comment">// Bob -&gt; 30</span>
+<span class="t-comment">// Anna -&gt; 26</span></code></pre></li></ul>
+<p>This works, but for every name the Map looks up the value again. entrySet is handier: it gives you the key and the value at once.</p>
+<p>You can call <code>keySet()</code> and <code>values()</code> without a loop too. They return collections that you can print, store in a variable or pass on:</p>
+<ul><li><strong><code>keySet()</code>:</strong> returns a <code>Set&lt;String&gt;</code>, the set of keys. It is a Set (see <a class="xref" href="#set">SetTheory</a>) because keys in a Map don't repeat.<pre class="eg"><code><span class="t-type">System</span>.out.println(ages.keySet());           <span class="t-comment">// [Bob, Anna]</span>
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = ages.keySet();
+<span class="t-type">System</span>.out.println(names.size());            <span class="t-comment">// 2</span>
+<span class="t-type">System</span>.out.println(names.contains(<span class="t-string">"Bob"</span>));   <span class="t-comment">// true</span></code></pre></li><li><strong><code>values()</code>:</strong> returns a <code>Collection&lt;Integer&gt;</code>, all the values. This one is not a Set: if Anna and Bob happen to be the same age, that age shows up here twice.<pre class="eg"><code><span class="t-type">System</span>.out.println(ages.values());           <span class="t-comment">// [30, 26]</span></code></pre></li></ul>
+<p>Notice the brackets: the Map itself prints in curly braces, {Bob=30, Anna=26}, while keySet and values print in square brackets, like a regular list.</p>
+<p>Two things to keep in mind:</p>
+<ul><li><strong>A copy:</strong> if you need a separate list of keys, make a copy with <code>new ArrayList&lt;&gt;(...)</code>. You can do anything with the copy, and the Map won't change.<pre class="eg"><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; nameList = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(ages.keySet());   <span class="t-comment">// [Bob, Anna]</span>
+nameList.remove(<span class="t-string">"Bob"</span>);                                    <span class="t-comment">// ages hasn't changed</span></code></pre></li><li><strong>A trap:</strong> <code>keySet()</code> is not a copy but a "window" into the same Map. Remove a key from names, and the pair disappears from ages too.<pre class="eg"><code>names.remove(<span class="t-string">"Bob"</span>);
+<span class="t-type">System</span>.out.println(ages);                    <span class="t-comment">// {Anna=26}</span></code></pre></li></ul>
 <p>If you need both the key and the value in the loop, use entrySet. Let's see what it gives you.</p>
 <p>Map.Entry is one pair from a Map: a key and a value together, like one row in a table. A Map is made of such pairs, and <code>entrySet()</code> hands them out one by one.</p>
 <p>Why is the name written with a dot? Entry is declared inside Map, so its full name is Map.Entry. It's like "flat 5 in house 12": without the house number you can't tell which flat is meant.</p>
@@ -5658,6 +5677,16 @@ ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
 <span class="t-kw">for</span> (<span class="t-kw">int</span> age : ages.values()) {
     <span class="t-type">System</span>.out.println(age);
 }
+
+<span class="t-comment">// Name and age with get: Bob -&gt; 30, Anna -&gt; 26</span>
+<span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
+    <span class="t-kw">int</span> age = ages.get(name);
+    <span class="t-type">System</span>.out.println(name + <span class="t-string">" -&gt; "</span> + age);
+}
+
+<span class="t-comment">// keySet and values can be printed as a whole</span>
+<span class="t-type">System</span>.out.println(ages.keySet());   <span class="t-comment">// [Bob, Anna]</span>
+<span class="t-type">System</span>.out.println(ages.values());   <span class="t-comment">// [30, 26]</span>
 
 <span class="t-comment">// setValue changes the value right inside the Map</span>
 <span class="t-kw">for</span> (<span class="t-type">Map</span>.<span class="t-type">Entry</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; e : ages.entrySet()) {
@@ -5913,6 +5942,25 @@ editable.put(<span class="t-string">"LT"</span>, <span class="t-string">"Lithuan
     sum += age;
 }
 <span class="t-comment">// sum = 56</span></code></pre></li></ul>
+<p>Разберём цикл с keySet подробнее. Читайте его так: «для каждого имени из набора имён выполни код в фигурных скобках». Цикл сам берёт очередное имя и кладёт его в переменную name. Тип String слева от двоеточия — это тип ключей нашей Map.</p>
+<p>Если для каждого имени нужен ещё и возраст, достаньте его через get:</p>
+<ul><li><strong><code>get(name)</code> внутри цикла:</strong> вернёт значение для текущего ключа. Здесь get точно не вернёт <code>null</code>: мы перебираем ключи, которые в Map есть. Поэтому результат можно смело сохранить в int.<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
+    <span class="t-kw">int</span> age = ages.get(name);
+    <span class="t-type">System</span>.out.println(name + <span class="t-string">" -&gt; "</span> + age);
+}
+<span class="t-comment">// Bob -&gt; 30</span>
+<span class="t-comment">// Anna -&gt; 26</span></code></pre></li></ul>
+<p>Так работает, но для каждого имени Map ищет значение заново. entrySet удобнее: он сразу отдаёт и ключ, и значение.</p>
+<p><code>keySet()</code> и <code>values()</code> можно вызвать и без цикла. Они возвращают коллекции, которые можно напечатать, сохранить в переменную или передать дальше:</p>
+<ul><li><strong><code>keySet()</code>:</strong> вернёт <code>Set&lt;String&gt;</code>, набор ключей. Это именно Set (множество, см. <a class="xref" href="#set">SetTheory</a>), потому что ключи в Map не повторяются.<pre class="eg"><code><span class="t-type">System</span>.out.println(ages.keySet());           <span class="t-comment">// [Bob, Anna]</span>
+<span class="t-type">Set</span>&lt;<span class="t-type">String</span>&gt; names = ages.keySet();
+<span class="t-type">System</span>.out.println(names.size());            <span class="t-comment">// 2</span>
+<span class="t-type">System</span>.out.println(names.contains(<span class="t-string">"Bob"</span>));   <span class="t-comment">// true</span></code></pre></li><li><strong><code>values()</code>:</strong> вернёт <code>Collection&lt;Integer&gt;</code>, все значения. Это уже не Set: если у Anna и Bob окажется одинаковый возраст, он попадёт сюда дважды.<pre class="eg"><code><span class="t-type">System</span>.out.println(ages.values());           <span class="t-comment">// [30, 26]</span></code></pre></li></ul>
+<p>Обратите внимание на скобки: сама Map печатается в фигурных, {Bob=30, Anna=26}, а keySet и values — в квадратных, как обычный список.</p>
+<p>Две вещи, о которых стоит помнить:</p>
+<ul><li><strong>Копия:</strong> если нужен отдельный список ключей, сделайте копию через <code>new ArrayList&lt;&gt;(...)</code>. С копией можно делать что угодно, Map при этом не изменится.<pre class="eg"><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; nameList = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(ages.keySet());   <span class="t-comment">// [Bob, Anna]</span>
+nameList.remove(<span class="t-string">"Bob"</span>);                                    <span class="t-comment">// ages не изменилась</span></code></pre></li><li><strong>Ловушка:</strong> <code>keySet()</code> — не копия, а «окно» в ту же Map. Удалите ключ из names, и пара пропадёт из ages.<pre class="eg"><code>names.remove(<span class="t-string">"Bob"</span>);
+<span class="t-type">System</span>.out.println(ages);                    <span class="t-comment">// {Anna=26}</span></code></pre></li></ul>
 <p>Если в цикле нужны и ключ, и значение, берите entrySet. Разберём, что он отдаёт.</p>
 <p>Map.Entry — это одна пара из Map: ключ и значение вместе, как одна строка в таблице. Entry по-английски значит «запись». Map состоит из таких пар, а <code>entrySet()</code> отдаёт их по очереди, одну за другой.</p>
 <p>Почему имя пишется через точку? Entry объявлен внутри Map, поэтому его полное имя — Map.Entry. Это как «квартира 5 в доме 12»: без номера дома непонятно, о какой квартире речь.</p>
@@ -5947,6 +5995,16 @@ ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
 <span class="t-kw">for</span> (<span class="t-kw">int</span> age : ages.values()) {
     <span class="t-type">System</span>.out.println(age);
 }
+
+<span class="t-comment">// Имя и возраст через get: Bob -&gt; 30, Anna -&gt; 26</span>
+<span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
+    <span class="t-kw">int</span> age = ages.get(name);
+    <span class="t-type">System</span>.out.println(name + <span class="t-string">" -&gt; "</span> + age);
+}
+
+<span class="t-comment">// keySet и values можно напечатать целиком</span>
+<span class="t-type">System</span>.out.println(ages.keySet());   <span class="t-comment">// [Bob, Anna]</span>
+<span class="t-type">System</span>.out.println(ages.values());   <span class="t-comment">// [30, 26]</span>
 
 <span class="t-comment">// setValue меняет значение прямо в Map</span>
 <span class="t-kw">for</span> (<span class="t-type">Map</span>.<span class="t-type">Entry</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; e : ages.entrySet()) {

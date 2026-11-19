@@ -298,6 +298,48 @@ public class MapTheory {
      *   > }
      *   > // sum = 56
      *
+     * Let's look at the keySet loop more closely. Read it like this: "for every name from the set
+     * of names, run the code in the curly braces". The loop takes the next name by itself and puts
+     * it into the variable name. The type String to the left of the colon is the key type of our Map.
+     *
+     * If you also need the age for every name, get it with get:
+     * - get(name) inside the loop: returns the value for the current key. Here get never returns
+     *   null: we go through keys that are in the Map. So you can safely store the result in an int.
+     *   > for (String name : ages.keySet()) {
+     *   >     int age = ages.get(name);
+     *   >     System.out.println(name + " -> " + age);
+     *   > }
+     *   > // Bob -> 30
+     *   > // Anna -> 26
+     *
+     * This works, but for every name the Map looks up the value again. entrySet is handier:
+     * it gives you the key and the value at once.
+     *
+     * You can call keySet() and values() without a loop too. They return collections that you can
+     * print, store in a variable or pass on:
+     * - keySet(): returns a `Set<String>`, the set of keys. It is a Set (see SetTheory) because
+     *   keys in a Map don't repeat.
+     *   > System.out.println(ages.keySet());           // [Bob, Anna]
+     *   > Set<String> names = ages.keySet();
+     *   > System.out.println(names.size());            // 2
+     *   > System.out.println(names.contains("Bob"));   // true
+     * - values(): returns a `Collection<Integer>`, all the values. This one is not a Set: if Anna
+     *   and Bob happen to be the same age, that age shows up here twice.
+     *   > System.out.println(ages.values());           // [30, 26]
+     *
+     * Notice the brackets: the Map itself prints in curly braces, {Bob=30, Anna=26},
+     * while keySet and values print in square brackets, like a regular list.
+     *
+     * Two things to keep in mind:
+     * - A copy: if you need a separate list of keys, make a copy with new ArrayList<>(...).
+     *   You can do anything with the copy, and the Map won't change.
+     *   > List<String> nameList = new ArrayList<>(ages.keySet());   // [Bob, Anna]
+     *   > nameList.remove("Bob");                                    // ages hasn't changed
+     * - A trap: keySet() is not a copy but a "window" into the same Map. Remove a key from names,
+     *   and the pair disappears from ages too.
+     *   > names.remove("Bob");
+     *   > System.out.println(ages);                    // {Anna=26}
+     *
      * If you need both the key and the value in the loop, use entrySet. Let's see what it gives you.
      *
      * Map.Entry is one pair from a Map: a key and a value together, like one row in a table.
@@ -360,6 +402,16 @@ public class MapTheory {
         for (int age : ages.values()) {
             System.out.println(age);
         }
+
+        // Name and age with get: Bob -> 30, Anna -> 26
+        for (String name : ages.keySet()) {
+            int age = ages.get(name);
+            System.out.println(name + " -> " + age);
+        }
+
+        // keySet and values can be printed as a whole
+        System.out.println(ages.keySet());   // [Bob, Anna]
+        System.out.println(ages.values());   // [30, 26]
 
         // setValue changes the value right inside the Map
         for (Map.Entry<String, Integer> e : ages.entrySet()) {
