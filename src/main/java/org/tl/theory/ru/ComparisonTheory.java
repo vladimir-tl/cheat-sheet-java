@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * ТЕОРИЯ: Сравнение
@@ -15,6 +16,9 @@ import java.util.Map;
  * Коллекции
  *   1. Сравнение двух списков List
  *   3. Сравнение двух Map
+ *
+ * На практике
+ *   4. Основной use case equals()
  */
 public class ComparisonTheory {
 
@@ -62,5 +66,30 @@ public class ComparisonTheory {
 
         System.out.println(first == second);      // false — разные объекты
         System.out.println(first.equals(second)); // true — одинаковые пары
+    }
+
+    /**
+     * 4. Основной use case equals()
+     *
+     * Основной use case .equals() — проверить, равны ли два объекта по содержимому.
+     *
+     * Например: пользователь ввёл команду, и нужно проверить её текст.
+     * Или найти конкретное имя при переборе.
+     */
+    static void equalsUseCase() {
+        Scanner scanner = new Scanner(System.in);
+        String command = scanner.nextLine();
+
+        if ("exit".equals(command)) {
+            System.out.println("Выход из программы");
+        }
+
+        // найти конкретное имя при переборе:
+        List<String> names = List.of("Max", "Anna", "Kate");
+        for (String name : names) {
+            if ("Anna".equals(name)) {
+                System.out.println("Нашли Анну!");
+            }
+        }
     }
 }

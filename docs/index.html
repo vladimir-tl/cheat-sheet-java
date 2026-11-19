@@ -6272,6 +6272,9 @@ key.add(<span class="t-string">"jazz"</span>);
 <li value="1"><a href="#comparison-1">Comparing two lists</a></li>
 <li value="3"><a href="#comparison-3">Comparing two maps</a></li>
 </ol></div>
+<div class="group"><h4>In practice</h4><ol>
+<li value="4"><a href="#comparison-4">The main use case of <code>equals()</code></a></li>
+</ol></div>
 </div>
 </nav>
 <h2 class="group-title">Collections</h2>
@@ -6311,6 +6314,26 @@ second.put(<span class="t-string">"Anna"</span>, <span class="t-number">25</span
 <span class="t-type">System</span>.out.println(first == second);      <span class="t-comment">// false: different objects</span>
 <span class="t-type">System</span>.out.println(first.equals(second)); <span class="t-comment">// true: same pairs</span></code></pre></div>
 </section>
+<h2 class="group-title">In practice</h2>
+<section class="card" data-id="comparison-4">
+<h3>4. The main use case of <code>equals()</code></h3>
+<p>The main use case of <code>.equals()</code> is checking whether two objects are equal by contents.</p>
+<p>For example: the user typed a command, and you need to check its text. Or find a specific name while looping.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Scanner</span> scanner = <span class="t-kw">new</span> <span class="t-type">Scanner</span>(<span class="t-type">System</span>.in);
+<span class="t-type">String</span> command = scanner.nextLine();
+
+<span class="t-kw">if</span> (<span class="t-string">"exit"</span>.equals(command)) {
+    <span class="t-type">System</span>.out.println(<span class="t-string">"Exiting the program"</span>);
+}
+
+<span class="t-comment">// find a specific name while looping:</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Max"</span>, <span class="t-string">"Anna"</span>, <span class="t-string">"Kate"</span>);
+<span class="t-kw">for</span> (<span class="t-type">String</span> name : names) {
+    <span class="t-kw">if</span> (<span class="t-string">"Anna"</span>.equals(name)) {
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Found Anna!"</span>);
+    }
+}</code></pre></div>
+</section>
 </div>
 <div class="l-ru">
 <h1>Сравнение</h1>
@@ -6319,6 +6342,9 @@ second.put(<span class="t-string">"Anna"</span>, <span class="t-number">25</span
 <div class="group"><h4>Коллекции</h4><ol>
 <li value="1"><a href="#comparison-1">Сравнение двух списков List</a></li>
 <li value="3"><a href="#comparison-3">Сравнение двух Map</a></li>
+</ol></div>
+<div class="group"><h4>На практике</h4><ol>
+<li value="4"><a href="#comparison-4">Основной use case <code>equals()</code></a></li>
 </ol></div>
 </div>
 </nav>
@@ -6358,6 +6384,26 @@ second.put(<span class="t-string">"Anna"</span>, <span class="t-number">25</span
 
 <span class="t-type">System</span>.out.println(first == second);      <span class="t-comment">// false — разные объекты</span>
 <span class="t-type">System</span>.out.println(first.equals(second)); <span class="t-comment">// true — одинаковые пары</span></code></pre></div>
+</section>
+<h2 class="group-title">На практике</h2>
+<section class="card" data-id="comparison-4">
+<h3>4. Основной use case <code>equals()</code></h3>
+<p>Основной use case <code>.equals()</code> — проверить, равны ли два объекта по содержимому.</p>
+<p>Например: пользователь ввёл команду, и нужно проверить её текст. Или найти конкретное имя при переборе.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Scanner</span> scanner = <span class="t-kw">new</span> <span class="t-type">Scanner</span>(<span class="t-type">System</span>.in);
+<span class="t-type">String</span> command = scanner.nextLine();
+
+<span class="t-kw">if</span> (<span class="t-string">"exit"</span>.equals(command)) {
+    <span class="t-type">System</span>.out.println(<span class="t-string">"Выход из программы"</span>);
+}
+
+<span class="t-comment">// найти конкретное имя при переборе:</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; names = <span class="t-type">List</span>.of(<span class="t-string">"Max"</span>, <span class="t-string">"Anna"</span>, <span class="t-string">"Kate"</span>);
+<span class="t-kw">for</span> (<span class="t-type">String</span> name : names) {
+    <span class="t-kw">if</span> (<span class="t-string">"Anna"</span>.equals(name)) {
+        <span class="t-type">System</span>.out.println(<span class="t-string">"Нашли Анну!"</span>);
+    }
+}</code></pre></div>
 </section>
 </div>
 </div>

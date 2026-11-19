@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * THEORY: Comparison
@@ -15,6 +16,9 @@ import java.util.Map;
  * Collections
  *   1. Comparing two lists
  *   3. Comparing two maps
+ *
+ * In practice
+ *   4. The main use case of equals()
  */
 public class ComparisonTheory {
 
@@ -62,5 +66,30 @@ public class ComparisonTheory {
 
         System.out.println(first == second);      // false: different objects
         System.out.println(first.equals(second)); // true: same pairs
+    }
+
+    /**
+     * 4. The main use case of equals()
+     *
+     * The main use case of .equals() is checking whether two objects are equal by contents.
+     *
+     * For example: the user typed a command, and you need to check its text.
+     * Or find a specific name while looping.
+     */
+    static void equalsUseCase() {
+        Scanner scanner = new Scanner(System.in);
+        String command = scanner.nextLine();
+
+        if ("exit".equals(command)) {
+            System.out.println("Exiting the program");
+        }
+
+        // find a specific name while looping:
+        List<String> names = List.of("Max", "Anna", "Kate");
+        for (String name : names) {
+            if ("Anna".equals(name)) {
+                System.out.println("Found Anna!");
+            }
+        }
     }
 }
