@@ -230,10 +230,26 @@ public class MapTheory {
      * 6. Перебор: entrySet, keySet, values
      *
      * Пройти по Map циклом for-each напрямую нельзя. Java не знает, что вы хотите перебрать:
-     * ключи, значения или пары целиком. Поэтому сначала выберите это сами одним из трёх методов:
-     * - entrySet(): пары целиком. У каждой пары есть getKey() и getValue().
-     * - keySet(): только ключи.
-     * - values(): только значения.
+     * ключи, значения или пары целиком. Поэтому сначала выберите это сами одним из трёх методов.
+     * Во всех примерах ages = {Anna=26, Bob=30}.
+     * - entrySet(): пары целиком. У каждой пары есть getKey() (ключ) и getValue() (значение).
+     *   > for (Map.Entry<String, Integer> e : ages.entrySet()) {
+     *   >     System.out.println(e.getKey() + " -> " + e.getValue());
+     *   > }
+     *   > // Anna -> 26
+     *   > // Bob -> 30
+     * - keySet(): только ключи. Значение по ключу при желании можно достать через get.
+     *   > for (String name : ages.keySet()) {
+     *   >     System.out.println(name);
+     *   > }
+     *   > // Anna
+     *   > // Bob
+     * - values(): только значения, без ключей. Удобно, например, чтобы посчитать сумму.
+     *   > int sum = 0;
+     *   > for (int age : ages.values()) {
+     *   >     sum += age;
+     *   > }
+     *   > // sum = 56
      *
      * Если в цикле нужны и ключ, и значение, берите entrySet. Тип каждой пары записывается
      * как Map.Entry<String, Integer>, то есть «запись Map с ключом String и значением Integer».

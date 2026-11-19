@@ -5583,8 +5583,20 @@ ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment
 <h2 class="group-title">Looping</h2>
 <section class="card" data-id="map-6">
 <h3>6. Iterating: entrySet, keySet, values</h3>
-<p>You can't loop over a Map with for-each directly. Java doesn't know what you want to go through: the keys, the values or the whole pairs. So you choose it first with one of three methods:</p>
-<ul><li><strong><code>entrySet()</code>:</strong> whole pairs. Each pair has <code>getKey()</code> and <code>getValue()</code>.</li><li><strong><code>keySet()</code>:</strong> only the keys.</li><li><strong><code>values()</code>:</strong> only the values.</li></ul>
+<p>You can't loop over a Map with for-each directly. Java doesn't know what you want to go through: the keys, the values or the whole pairs. So you choose it first with one of three methods. In all the examples ages = {Anna=26, Bob=30}.</p>
+<ul><li><strong><code>entrySet()</code>:</strong> whole pairs. Each pair has <code>getKey()</code> (the key) and <code>getValue()</code> (the value).<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">Map</span>.<span class="t-type">Entry</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; e : ages.entrySet()) {
+    <span class="t-type">System</span>.out.println(e.getKey() + <span class="t-string">" -&gt; "</span> + e.getValue());
+}
+<span class="t-comment">// Anna -&gt; 26</span>
+<span class="t-comment">// Bob -&gt; 30</span></code></pre></li><li><strong><code>keySet()</code>:</strong> only the keys. You can still get the value for a key with get if you need it.<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
+    <span class="t-type">System</span>.out.println(name);
+}
+<span class="t-comment">// Anna</span>
+<span class="t-comment">// Bob</span></code></pre></li><li><strong><code>values()</code>:</strong> only the values, without keys. Handy, for example, to count a sum.<pre class="eg"><code><span class="t-kw">int</span> sum = <span class="t-number">0</span>;
+<span class="t-kw">for</span> (<span class="t-kw">int</span> age : ages.values()) {
+    sum += age;
+}
+<span class="t-comment">// sum = 56</span></code></pre></li></ul>
 <p>If you need both the key and the value in the loop, use entrySet. The type of each pair is written as Map.<code>Entry&lt;String, Integer&gt;</code>, which means "a Map entry with a String key and an Integer value". It looks long, but you get used to it quickly.</p>
 <p>The example uses a LinkedHashMap so that the pairs come out in insertion order.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
@@ -5809,8 +5821,20 @@ ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment
 <h2 class="group-title">Обход</h2>
 <section class="card" data-id="map-6">
 <h3>6. Перебор: entrySet, keySet, values</h3>
-<p>Пройти по Map циклом for-each напрямую нельзя. Java не знает, что вы хотите перебрать: ключи, значения или пары целиком. Поэтому сначала выберите это сами одним из трёх методов:</p>
-<ul><li><strong><code>entrySet()</code>:</strong> пары целиком. У каждой пары есть <code>getKey()</code> и <code>getValue()</code>.</li><li><strong><code>keySet()</code>:</strong> только ключи.</li><li><strong><code>values()</code>:</strong> только значения.</li></ul>
+<p>Пройти по Map циклом for-each напрямую нельзя. Java не знает, что вы хотите перебрать: ключи, значения или пары целиком. Поэтому сначала выберите это сами одним из трёх методов. Во всех примерах ages = {Anna=26, Bob=30}.</p>
+<ul><li><strong><code>entrySet()</code>:</strong> пары целиком. У каждой пары есть <code>getKey()</code> (ключ) и <code>getValue()</code> (значение).<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">Map</span>.<span class="t-type">Entry</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; e : ages.entrySet()) {
+    <span class="t-type">System</span>.out.println(e.getKey() + <span class="t-string">" -&gt; "</span> + e.getValue());
+}
+<span class="t-comment">// Anna -&gt; 26</span>
+<span class="t-comment">// Bob -&gt; 30</span></code></pre></li><li><strong><code>keySet()</code>:</strong> только ключи. Значение по ключу при желании можно достать через get.<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
+    <span class="t-type">System</span>.out.println(name);
+}
+<span class="t-comment">// Anna</span>
+<span class="t-comment">// Bob</span></code></pre></li><li><strong><code>values()</code>:</strong> только значения, без ключей. Удобно, например, чтобы посчитать сумму.<pre class="eg"><code><span class="t-kw">int</span> sum = <span class="t-number">0</span>;
+<span class="t-kw">for</span> (<span class="t-kw">int</span> age : ages.values()) {
+    sum += age;
+}
+<span class="t-comment">// sum = 56</span></code></pre></li></ul>
 <p>Если в цикле нужны и ключ, и значение, берите entrySet. Тип каждой пары записывается как Map.<code>Entry&lt;String, Integer&gt;</code>, то есть «запись Map с ключом String и значением Integer». Выглядит длинно, но к этому быстро привыкают.</p>
 <p>В примере мы взяли LinkedHashMap, чтобы пары выводились в порядке добавления.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();

@@ -233,10 +233,25 @@ public class MapTheory {
      *
      * You can't loop over a Map with for-each directly. Java doesn't know what you want to go
      * through: the keys, the values or the whole pairs. So you choose it first with one of
-     * three methods:
-     * - entrySet(): whole pairs. Each pair has getKey() and getValue().
-     * - keySet(): only the keys.
-     * - values(): only the values.
+     * three methods. In all the examples ages = {Anna=26, Bob=30}.
+     * - entrySet(): whole pairs. Each pair has getKey() (the key) and getValue() (the value).
+     *   > for (Map.Entry<String, Integer> e : ages.entrySet()) {
+     *   >     System.out.println(e.getKey() + " -> " + e.getValue());
+     *   > }
+     *   > // Anna -> 26
+     *   > // Bob -> 30
+     * - keySet(): only the keys. You can still get the value for a key with get if you need it.
+     *   > for (String name : ages.keySet()) {
+     *   >     System.out.println(name);
+     *   > }
+     *   > // Anna
+     *   > // Bob
+     * - values(): only the values, without keys. Handy, for example, to count a sum.
+     *   > int sum = 0;
+     *   > for (int age : ages.values()) {
+     *   >     sum += age;
+     *   > }
+     *   > // sum = 56
      *
      * If you need both the key and the value in the loop, use entrySet. The type of each pair
      * is written as Map.Entry<String, Integer>, which means "a Map entry with a String key
