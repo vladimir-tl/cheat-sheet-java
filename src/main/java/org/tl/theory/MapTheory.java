@@ -34,19 +34,37 @@ public class MapTheory {
     /**
      * 1. What a Map is
      *
-     * A Map stores key -> value pairs, like a dictionary. You find a value by its key.
-     * Keys are unique. Values can repeat. Lookup by key is fast.
+     * A Map stores data in pairs: "key -> value". Let's start with a few examples of such pairs:
      *
-     * Generics: Map<KeyType, ValueType>. Primitives need wrappers: Map<String, Integer>,
+     *   "Anna"  -> 3000        employee name -> salary
+     *   "apple" -> "яблоко"    word -> translation
+     *   "EE"    -> "Estonia"   country code -> country name
+     *
+     * The key is what you search by: a name, a word, a code. The value is what you want
+     * to find for that key: a salary, a translation, a country name. It works like a dictionary:
+     * you look up the word "apple" and see its translation right next to it. You don't have
+     * to read the whole dictionary from the start, so lookup by key in a Map is fast.
+     *
+     * Two important rules:
+     * - Keys never repeat. A Map can't hold a second "Anna" key. If you put a value under a key
+     *   that is already there, the old value is replaced with the new one (more in section 2).
+     * - Values can repeat. "Anna" and "Bob" can easily have the same salary of 3000.
+     *
+     * When you create a Map, you write two types in the angle brackets: first the key type,
+     * then the value type. Map<String, Integer> means "keys are strings, values are whole numbers".
+     * Primitives like int can't go there, you need their wrapper classes: Map<String, Integer>,
      * not Map<String, int> (see PrimitivesAndWrappersTheory).
      *
-     * Map is not a List: there are no indexes and you can't write map.get(0).
+     * A Map is not a List. It has no indexes 0, 1, 2, and no "first element" either.
+     * So map.get(0) won't give you the first pair: the Map looks for the key 0, doesn't find it
+     * and returns null.
      *
-     * Technically Map is a separate interface: it does NOT extend Collection (List and Set do).
-     * That is why a Map has no add(x) (there is put(key, value)) and you can't loop over it
-     * directly (see section 6).
+     * For the curious: technically Map is a separate interface, and it does NOT extend Collection
+     * (List and Set do). That is why a Map has no add(x) method, it has put(key, value) instead.
+     * You also can't loop over a Map with for-each directly, you use entrySet, keySet
+     * or values for that (see section 6).
      *
-     * A typical example: an employee name and the salary of this employee.
+     * Below is the first example from the list in code: employee names and their salaries.
      */
     static void whatIsMap() {
         // Employee name -> salary:

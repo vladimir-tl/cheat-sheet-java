@@ -5484,11 +5484,17 @@ customers.size();            <span class="t-comment">// 1 (с обычным к�
 <h2 class="group-title">Basics</h2>
 <section class="card" data-id="map-1">
 <h3>1. What a Map is</h3>
-<p>A Map stores key <code>-&gt;</code> value pairs, like a dictionary. You find a value by its key. Keys are unique. Values can repeat. Lookup by key is fast.</p>
-<p>Generics: <code>Map&lt;KeyType, ValueType&gt;</code>. Primitives need wrappers: <code>Map&lt;String, Integer&gt;</code>, not <code>Map&lt;String, int&gt;</code> (see <a class="xref" href="#primitivesandwrappers">PrimitivesAndWrappersTheory</a>).</p>
-<p>Map is not a List: there are no indexes and you can't write <code>map.get(0)</code>.</p>
-<p>Technically Map is a separate interface: it does NOT extend Collection (List and Set do). That is why a Map has no <code>add(x)</code> (there is <code>put(key, value)</code>) and you can't loop over it directly (see section <a class="xref" href="#map-6">6</a>).</p>
-<p>A typical example: an employee name and the salary of this employee.</p>
+<p>A Map stores data in pairs: "key <code>-&gt;</code> value". Let's start with a few examples of such pairs:</p>
+<pre class="plain">  "Anna"  -&gt; 3000        employee name -&gt; salary
+  "apple" -&gt; "яблоко"    word -&gt; translation
+  "EE"    -&gt; "Estonia"   country code -&gt; country name</pre>
+<p>The key is what you search by: a name, a word, a code. The value is what you want to find for that key: a salary, a translation, a country name. It works like a dictionary: you look up the word "apple" and see its translation right next to it. You don't have to read the whole dictionary from the start, so lookup by key in a Map is fast.</p>
+<p>Two important rules:</p>
+<ul><li>Keys never repeat. A Map can't hold a second "Anna" key. If you put a value under a key that is already there, the old value is replaced with the new one (more in section <a class="xref" href="#map-2">2</a>).</li><li>Values can repeat. "Anna" and "Bob" can easily have the same salary of 3000.</li></ul>
+<p>When you create a Map, you write two types in the angle brackets: first the key type, then the value type. <code>Map&lt;String, Integer&gt;</code> means "keys are strings, values are whole numbers". Primitives like int can't go there, you need their wrapper classes: <code>Map&lt;String, Integer&gt;</code>, not <code>Map&lt;String, int&gt;</code> (see <a class="xref" href="#primitivesandwrappers">PrimitivesAndWrappersTheory</a>).</p>
+<p>A Map is not a List. It has no indexes 0, 1, 2, and no "first element" either. So <code>map.get(0)</code> won't give you the first pair: the Map looks for the key 0, doesn't find it and returns <code>null</code>.</p>
+<p>For the curious: technically Map is a separate interface, and it does NOT extend Collection (List and Set do). That is why a Map has no <code>add(x)</code> method, it has <code>put(key, value)</code> instead. You also can't loop over a Map with for-each directly, you use entrySet, keySet or values for that (see section <a class="xref" href="#map-6">6</a>).</p>
+<p>Below is the first example from the list in code: employee names and their salaries.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// Employee name -&gt; salary:</span>
 <span class="t-comment">//   "Anna" -&gt; 3000</span>
 <span class="t-comment">//   "Bob"  -&gt; 2500</span>
@@ -5674,11 +5680,17 @@ bonus.size();        <span class="t-comment">// 1 (with a plain class without eq
 <h2 class="group-title">Основы</h2>
 <section class="card" data-id="map-1">
 <h3>1. Что такое Map</h3>
-<p>Map хранит пары ключ <code>-&gt;</code> значение, как словарь. Значение находят по ключу. Ключи уникальны. Значения могут повторяться. Поиск по ключу быстрый.</p>
-<p>Generics: <code>Map&lt;ТипКлюча, ТипЗначения&gt;</code>. Примитивам нужны обёртки: <code>Map&lt;String, Integer&gt;</code>, а не <code>Map&lt;String, int&gt;</code> (см. <a class="xref" href="#primitivesandwrappers">PrimitivesAndWrappersTheory</a>).</p>
-<p>Map это не List: индексов нет, и <code>map.get(0)</code> писать нельзя.</p>
-<p>Технически Map это отдельный интерфейс: он НЕ наследует Collection (а List и Set наследуют). Поэтому у Map нет <code>add(x)</code> (есть <code>put(key, value)</code>), и по нему нельзя пройти циклом напрямую (см. раздел <a class="xref" href="#map-6">6</a>).</p>
-<p>Типичный пример: имя сотрудника и его зарплата.</p>
+<p>Map хранит данные парами: «ключ <code>-&gt;</code> значение». Сначала посмотрим на примеры таких пар:</p>
+<pre class="plain">  "Anna"  -&gt; 3000        имя сотрудника -&gt; зарплата
+  "apple" -&gt; "яблоко"    слово -&gt; перевод
+  "EE"    -&gt; "Estonia"   код страны -&gt; название страны</pre>
+<p>Ключ — то, по чему мы ищем: имя, слово, код. Значение — то, что хотим найти по этому ключу: зарплату, перевод, название. Похоже на словарь: вы ищете слово «apple» и сразу видите рядом перевод. Листать весь словарь подряд не нужно, поэтому поиск по ключу в Map быстрый.</p>
+<p>Два важных правила:</p>
+<ul><li>Ключи не повторяются. Второго ключа "Anna" в Map быть не может. Если положить значение под ключ, который уже есть, старое значение заменится новым (подробнее в разделе <a class="xref" href="#map-2">2</a>).</li><li>Значения повторяться могут. У "Anna" и у "Bob" вполне может быть одинаковая зарплата 3000.</li></ul>
+<p>При создании Map в угловых скобках указывают два типа: сначала тип ключа, потом тип значения. Запись <code>Map&lt;String, Integer&gt;</code> значит «ключи — строки, значения — целые числа». Примитивы вроде int сюда писать нельзя, нужны классы-обёртки: <code>Map&lt;String, Integer&gt;</code>, а не <code>Map&lt;String, int&gt;</code> (см. <a class="xref" href="#primitivesandwrappers">PrimitivesAndWrappersTheory</a>).</p>
+<p>Map — не List. У него нет индексов 0, 1, 2, и «первого элемента» тоже нет. Поэтому <code>map.get(0)</code> не вернёт первую пару: Map поищет ключ 0, не найдёт его и вернёт <code>null</code>.</p>
+<p>Для любопытных: технически Map — отдельный интерфейс, и он НЕ наследует Collection (а List и Set наследуют). Поэтому у Map нет метода <code>add(x)</code>, вместо него <code>put(key, value)</code>. И пройти по Map циклом for-each напрямую тоже не получится, для этого есть entrySet, keySet и values (см. раздел <a class="xref" href="#map-6">6</a>).</p>
+<p>Ниже первый пример из списка в коде: имена сотрудников и их зарплаты.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// Employee name -&gt; salary:</span>
 <span class="t-comment">//   "Anna" -&gt; 3000</span>
 <span class="t-comment">//   "Bob"  -&gt; 2500</span>
