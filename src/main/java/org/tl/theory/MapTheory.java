@@ -45,6 +45,17 @@ public class MapTheory {
      * you look up the word "apple" and see its translation right next to it. You don't have
      * to read the whole dictionary from the start, so lookup by key in a Map is fast.
      *
+     * What a Map can do, in short. The details for each method are in the sections below.
+     * - put(key, value): put a pair. If the key is already there, replaces the value (section 2).
+     * - get(key): get the value by key. If the key is missing, returns null (sections 2 and 3).
+     * - getOrDefault(key, x): the value by key, or the fallback x if the key is missing (section 3).
+     * - containsKey(key): whether there is such a key, true or false (section 4).
+     * - containsValue(value): whether there is such a value. It is slow (section 4).
+     * - remove(key): remove the pair by key. Returns the removed value, or null if there was no key.
+     * - size(): how many pairs are in the Map. isEmpty() tells whether it is empty.
+     * - keySet(), values(), entrySet(): all the keys, all the values and all the pairs, for example
+     *   for a loop (section 6).
+     *
      * Why do you need a Map if there is a List? Say you need to find Anna's salary.
      * In a List you would keep the employees in order and look for Anna with a loop:
      * the first one isn't her, the second one isn't her, and so on to the end. The longer
@@ -339,6 +350,38 @@ public class MapTheory {
      *   and the pair disappears from ages too.
      *   > names.remove("Bob");
      *   > System.out.println(ages);                    // {Anna=26}
+     *
+     * Now a closer look at values(). It gives you only the values, and the keys stay hidden.
+     * So values() is the right choice when it doesn't matter whose value it is: to count a sum,
+     * find the maximum, or check whether a value appears at all.
+     *
+     * In the loop, the variable type is the value type of the Map. Our values are Integer, so you
+     * can write int age or Integer age: Java turns an Integer into an int by itself.
+     *
+     * What you can do with values():
+     * - Sum and average: loop over the values and add them up.
+     *   > int sum = 0;
+     *   > for (int age : ages.values()) {
+     *   >     sum += age;
+     *   > }
+     *   > System.out.println(sum);                     // 56
+     *   > System.out.println(sum / ages.size());       // 28
+     * - Maximum and minimum: Collections.max and Collections.min find them without a loop.
+     *   > System.out.println(Collections.max(ages.values()));   // 30
+     * - Whether a value is there: contains works just like containsValue from section 4,
+     *   and it is just as slow, going through all the values.
+     *   > System.out.println(ages.values().contains(30));       // true
+     * - Without repeats: values() keeps repeats. If you need only distinct values,
+     *   put them into a HashSet (see SetTheory).
+     *   > ages.put("Eve", 26);
+     *   > System.out.println(ages.values());                    // [30, 26, 26]
+     *   > System.out.println(new HashSet<>(ages.values()));     // [26, 30]
+     *
+     * What values() can't do:
+     * - Add a value: ages.values().add(40) throws UnsupportedOperationException.
+     *   A Map can't store a value without a key, so add pairs with put.
+     * - Tell you the key: from the value 26 you can't tell whose age it is. If you need
+     *   the key too, use entrySet.
      *
      * If you need both the key and the value in the loop, use entrySet. Let's see what it gives you.
      *
