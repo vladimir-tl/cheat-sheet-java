@@ -294,9 +294,42 @@ public class MapTheory {
      *   > }
      *   > // sum = 56
      *
-     * Если в цикле нужны и ключ, и значение, берите entrySet. Тип каждой пары записывается
-     * как Map.Entry<String, Integer>, то есть «запись Map с ключом String и значением Integer».
-     * Выглядит длинно, но к этому быстро привыкают.
+     * Если в цикле нужны и ключ, и значение, берите entrySet. Разберём, что он отдаёт.
+     *
+     * Map.Entry — это одна пара из Map: ключ и значение вместе, как одна строка в таблице.
+     * Entry по-английски значит «запись». Map состоит из таких пар, а entrySet() отдаёт их
+     * по очереди, одну за другой.
+     *
+     * Почему имя пишется через точку? Entry объявлен внутри Map, поэтому его полное имя —
+     * Map.Entry. Это как «квартира 5 в доме 12»: без номера дома непонятно, о какой квартире речь.
+     *
+     * В угловых скобках стоят те же типы, что у самой Map. `Map.Entry<String, Integer>` — пара
+     * с ключом String и значением Integer. Так что для `Map<String, Integer>` всегда берите
+     * `Map.Entry<String, Integer>`. Выглядит длинно, но к этому быстро привыкают.
+     *
+     * Что умеет пара:
+     * - getKey() и getValue(): вернут ключ и значение. Их вы уже видели в цикле выше.
+     * - setValue(x): заменит значение прямо в Map. Удобно, когда нужно поменять все значения
+     *   разом. Например, у всех клиентов прошёл день рождения:
+     *   > for (Map.Entry<String, Integer> e : ages.entrySet()) {
+     *   >     e.setValue(e.getValue() + 1);
+     *   > }
+     *   > System.out.println(ages);   // {Bob=31, Anna=27}
+     *
+     * Ключ у пары поменять нельзя: метода setKey нет. Если нужен другой ключ, удалите старую
+     * пару через remove и положите новую через put.
+     *
+     * Пару можно создать и без Map:
+     * - Map.entry(key, value): создаёт отдельную пару. Изменить её нельзя: setValue бросит
+     *   UnsupportedOperationException. Пригодится, например, для `Map.ofEntries(...)`:
+     *   это тот же Map.of, только из готовых пар.
+     *   > Map.Entry<String, Integer> pair = Map.entry("Eve", 22);
+     *   > System.out.println(pair.getKey() + " " + pair.getValue());   // Eve 22
+     *   > System.out.println(pair);                                    // Eve=22
+     *
+     * Если не хочется писать длинный тип, напишите var: `for (var e : ages.entrySet())`.
+     * Java сама поймёт, что e — это `Map.Entry<String, Integer>`. Но пока вы учитесь, лучше
+     * писать тип полностью: так сразу видно, что лежит в переменной.
      *
      * Обратите внимание на порядок: Bob вывелся раньше Anna, хотя его добавили вторым.
      * Это нормально для HashMap, порядок пар в нём не гарантирован (см. раздел 5).
@@ -321,6 +354,16 @@ public class MapTheory {
         for (int age : ages.values()) {
             System.out.println(age);
         }
+
+        // setValue меняет значение прямо в Map
+        for (Map.Entry<String, Integer> e : ages.entrySet()) {
+            e.setValue(e.getValue() + 1);
+        }
+        System.out.println(ages);   // {Bob=31, Anna=27}
+
+        // Отдельная пара без Map, изменить её нельзя
+        Map.Entry<String, Integer> pair = Map.entry("Eve", 22);
+        System.out.println(pair.getKey() + " " + pair.getValue());   // Eve 22
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class MapSolutions {
 
-    static Map<String, Integer> task1() {
+    static Map<String, Integer> createCustomers() {
         Map<String, Integer> ages = new HashMap<>();
         ages.put("Anna", 25);
         ages.put("Bob", 30);
@@ -20,27 +20,27 @@ public class MapSolutions {
         return customers.getOrDefault(name, -1);
     }
 
-    static boolean task3(Map<String, Integer> map, String key) {
-        return map.containsKey(key);
+    static boolean hasCustomer(Map<String, Integer> customers, String name) {
+        return customers.containsKey(name);
     }
 
-    static void task4(Map<String, Integer> map) {
-        for (Map.Entry<String, Integer> e : map.entrySet()) {
+    static void printCustomers(Map<String, Integer> customers) {
+        for (Map.Entry<String, Integer> e : customers.entrySet()) {
             System.out.println(e.getKey() + "=" + e.getValue());
         }
     }
 
-    static int task5(Map<String, Integer> map) {
+    static int orderTotal(Map<String, Integer> prices) {
         int sum = 0;
-        for (int value : map.values()) {
+        for (int value : prices.values()) {
             sum += value;
         }
         return sum;
     }
 
-    static Map<Character, Integer> task6(String s) {
+    static Map<Character, Integer> countChars(String text) {
         Map<Character, Integer> counts = new HashMap<>();
-        for (char c : s.toCharArray()) {
+        for (char c : text.toCharArray()) {
             counts.put(c, counts.getOrDefault(c, 0) + 1);
         }
         return counts;

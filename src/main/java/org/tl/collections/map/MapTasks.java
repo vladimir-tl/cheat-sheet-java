@@ -31,11 +31,11 @@ public class MapTasks {
      * - Return: a new map with three name -> age pairs.
      *
      * Example:
-     * - task1() -> {Anna=25, Bob=30, Eve=22}
+     * - createCustomers() -> {Anna=25, Bob=30, Eve=22}
      *
      * Hint: Create a `HashMap` and call `put(key, value)` for every customer.
      */
-    static Map<String, Integer> task1() {
+    static Map<String, Integer> createCustomers() {
         return null;
     }
 
@@ -63,16 +63,16 @@ public class MapTasks {
      * Ticket 3. Is the customer registered?
      * Before creating a new card the agent checks that the customer does not have one yet.
      *
-     * - Input: map, the cards (name -> age); key, the name.
-     * - Return: true if the map has this key, otherwise false.
+     * - Input: customers, the customer cards (name -> age); name, the name to check.
+     * - Return: true if there is such a name in the map, otherwise false.
      *
      * Examples:
-     * - map {Anna=25}, key "Anna" -> true
-     * - map {Anna=25}, key "Tom" -> false
+     * - customers {Anna=25}, name "Anna" -> true
+     * - customers {Anna=25}, name "Tom" -> false
      *
      * Hint: A `Map` can check whether it has a key without reading the value.
      */
-    static boolean task3(Map<String, Integer> map, String key) {
+    static boolean hasCustomer(Map<String, Integer> customers, String name) {
         return false;
     }
 
@@ -81,7 +81,7 @@ public class MapTasks {
      * The manager wants to see all customer cards. Go through the map and print every pair
      * as name=age, each on its own line.
      *
-     * - Input: map, the cards (name -> age).
+     * - Input: customers, the customer cards (name -> age).
      * - Return: nothing, the method prints to the console.
      *
      * Expected output for {Anna=25, Bob=30} (the order of the lines may differ):
@@ -89,9 +89,9 @@ public class MapTasks {
      *   Anna=25
      *   Bob=30
      *
-     * Hint: Loop over `map.entrySet()`; every entry has `getKey()` and `getValue()`.
+     * Hint: Loop over `customers.entrySet()`; every entry has `getKey()` and `getValue()`.
      */
-    static void task4(Map<String, Integer> map) {
+    static void printCustomers(Map<String, Integer> customers) {
     }
 
     /**
@@ -99,16 +99,16 @@ public class MapTasks {
      * The map holds the products of one order: the product name is the key, its price is
      * the value. The customer wants to know the total.
      *
-     * - Input: map, the products (name -> price).
+     * - Input: prices, the products of the order (name -> price).
      * - Return: the sum of all the prices (all the values), or 0 for an empty map.
      *
      * Examples:
      * - {Vinyl=30, CD=15, Poster=5} -> 50
      * - {} -> 0
      *
-     * Hint: `map.values()` gives all the prices; add them up in a loop.
+     * Hint: `prices.values()` gives all the prices; add them up in a loop.
      */
-    static int task5(Map<String, Integer> map) {
+    static int orderTotal(Map<String, Integer> prices) {
         return 0;
     }
 
@@ -117,17 +117,17 @@ public class MapTasks {
      * The quality team studies the messages of customers. Count how many times every character
      * appears in the text. Spaces and punctuation are characters too.
      *
-     * - Input: s, the text.
+     * - Input: text, the customer's message.
      * - Return: a new map: character -> how many times it appears.
      *
      * Examples:
-     * - task6("aab") -> {a=2, b=1}
-     * - task6("hello") -> {h=1, e=1, l=2, o=1}
-     * - task6("") -> {}
+     * - countChars("aab") -> {a=2, b=1}
+     * - countChars("hello") -> {h=1, e=1, l=2, o=1}
+     * - countChars("") -> {}
      *
-     * Hint: Loop over `s.toCharArray()`. For every char `c` put `getOrDefault(c, 0) + 1`.
+     * Hint: Loop over `text.toCharArray()`. For every char `c` put `getOrDefault(c, 0) + 1`.
      */
-    static Map<Character, Integer> task6(String s) {
+    static Map<Character, Integer> countChars(String text) {
         return null;
     }
 }

@@ -298,9 +298,44 @@ public class MapTheory {
      *   > }
      *   > // sum = 56
      *
-     * If you need both the key and the value in the loop, use entrySet. The type of each pair
-     * is written as Map.Entry<String, Integer>, which means "a Map entry with a String key
-     * and an Integer value". It looks long, but you get used to it quickly.
+     * If you need both the key and the value in the loop, use entrySet. Let's see what it gives you.
+     *
+     * Map.Entry is one pair from a Map: a key and a value together, like one row in a table.
+     * A Map is made of such pairs, and entrySet() hands them out one by one.
+     *
+     * Why is the name written with a dot? Entry is declared inside Map, so its full name
+     * is Map.Entry. It's like "flat 5 in house 12": without the house number you can't tell
+     * which flat is meant.
+     *
+     * The angle brackets hold the same types as the Map itself. `Map.Entry<String, Integer>`
+     * is a pair with a String key and an Integer value. So for a `Map<String, Integer>` always
+     * use `Map.Entry<String, Integer>`. It looks long, but you get used to it quickly.
+     *
+     * What a pair can do:
+     * - getKey() and getValue(): return the key and the value. You already saw them
+     *   in the loop above.
+     * - setValue(x): replaces the value right inside the Map. Handy when you need to change
+     *   all the values at once. For example, every customer just had a birthday:
+     *   > for (Map.Entry<String, Integer> e : ages.entrySet()) {
+     *   >     e.setValue(e.getValue() + 1);
+     *   > }
+     *   > System.out.println(ages);   // {Bob=31, Anna=27}
+     *
+     * You can't change a pair's key: there is no setKey method. If you need a different key,
+     * remove the old pair with remove and put a new one with put.
+     *
+     * You can also create a pair without a Map:
+     * - Map.entry(key, value): creates a standalone pair. It can't be changed: setValue throws
+     *   UnsupportedOperationException. It comes in handy, for example, for `Map.ofEntries(...)`:
+     *   the same as Map.of, but built from ready pairs.
+     *   > Map.Entry<String, Integer> pair = Map.entry("Eve", 22);
+     *   > System.out.println(pair.getKey() + " " + pair.getValue());   // Eve 22
+     *   > System.out.println(pair);                                    // Eve=22
+     *
+     * If you don't want to write the long type, use var: `for (var e : ages.entrySet())`.
+     * Java figures out by itself that e is a `Map.Entry<String, Integer>`. But while you're
+     * learning, it's better to write the full type: that way you see right away what the
+     * variable holds.
      *
      * Notice the order: Bob came out before Anna, even though he was added second.
      * That's normal for a HashMap, the order of its pairs is not guaranteed (see section 5).
@@ -325,6 +360,16 @@ public class MapTheory {
         for (int age : ages.values()) {
             System.out.println(age);
         }
+
+        // setValue changes the value right inside the Map
+        for (Map.Entry<String, Integer> e : ages.entrySet()) {
+            e.setValue(e.getValue() + 1);
+        }
+        System.out.println(ages);   // {Bob=31, Anna=27}
+
+        // A standalone pair without a Map, it can't be changed
+        Map.Entry<String, Integer> pair = Map.entry("Eve", 22);
+        System.out.println(pair.getKey() + " " + pair.getValue());   // Eve 22
     }
 
     /**
