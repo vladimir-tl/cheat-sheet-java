@@ -78,8 +78,15 @@ public class MapTheory {
     /**
      * 2. Put and get
      *
-     * put(key, value) adds a pair. If the key already exists, its value is OVERWRITTEN.
-     * get(key) returns the value.
+     * To put a pair into a Map, call put(key, value): the key first, then the value.
+     * To get a value back, call get(key) with the key. The Map returns whatever is stored
+     * under that key.
+     *
+     * If you call put with a key that is already there, no new pair appears. The Map replaces
+     * the old value with the new one, and the size stays the same. There is no error either,
+     * so the old value disappears silently.
+     *
+     * Let's see it in an example: first Anna is 25, then we write 26 for her.
      */
     static void putAndGet() {
         Map<String, Integer> ages = new HashMap<>();
@@ -95,10 +102,17 @@ public class MapTheory {
     /**
      * 3. Missing key: null and getOrDefault
      *
-     * get returns null when the key is not found. getOrDefault(key, x) returns x instead.
+     * What happens if you ask for a key that isn't in the Map? There is no error: get simply
+     * returns null, which means "nothing".
      *
-     * A trap: unboxing null. int age = ages.get("Zed") throws NullPointerException,
-     * because null cannot become an int (see PrimitivesAndWrappersTheory).
+     * If null is inconvenient, use getOrDefault(key, x). When the key is there, it returns
+     * the key's value. When the key is missing, it returns the fallback value x. For example,
+     * getOrDefault("Zed", 0) returns 0.
+     *
+     * A trap: don't store the result of get straight into an int. The line
+     * int age = ages.get("Zed") crashes with NullPointerException. get returned null,
+     * and null can't become an int. Store the result in an Integer or use getOrDefault
+     * (see PrimitivesAndWrappersTheory).
      */
     static void missingKey() {
         Map<String, Integer> ages = new HashMap<>();
@@ -112,8 +126,12 @@ public class MapTheory {
     /**
      * 4. Checking a key: containsKey
      *
-     * containsKey(key) is true if the key is in the map. containsValue(value) checks values
-     * (it is slow: it looks through all of them).
+     * Sometimes you just need to know whether a key is in the Map. That's what containsKey(key)
+     * is for: it returns true if the key is there and false if it isn't. It is as fast as get.
+     *
+     * The similar method containsValue(value) searches the values. It is slow: a Map can only
+     * search quickly by key, so here it goes through all the pairs one by one. On a big Map
+     * you'll notice that.
      */
     static void contains() {
         Map<String, Integer> ages = new HashMap<>();
@@ -127,13 +145,23 @@ public class MapTheory {
     /**
      * 5. HashMap, LinkedHashMap, TreeMap
      *
-     * All three are used the same way. The difference is the order of the pairs.
+     * Java has several ready-made kinds of Map. They all have the same methods: put, get,
+     * containsKey and the rest. The difference is the order in which they keep the pairs
+     * and show them when you print or loop over the Map.
      *
-     *   HashMap         - no guaranteed order. The default choice, the fastest.
-     *   LinkedHashMap   - keeps the insertion order.
-     *   TreeMap         - keeps the keys sorted (A to Z, smallest to largest).
+     * The three most common kinds:
+     * - HashMap: the order of the pairs is not guaranteed, they can come out in any order.
+     *   But it is the fastest one, so use it by default.
+     * - LinkedHashMap: remembers the insertion order. The pair you put first comes out first.
+     * - TreeMap: sorts the pairs by key. Strings go in alphabetical order, numbers from smallest
+     *   to largest.
      *
-     * Map.of(...) creates an immutable map (put throws UnsupportedOperationException).
+     * On the left you usually write just Map, and the specific kind goes on the right, after new.
+     * That way it's easy to swap HashMap for TreeMap later: you change only one place.
+     *
+     * There is also a short way to create a Map with data right away: Map.of("Anna", 26, "Bob", 30).
+     * But such a Map can't be changed: any put throws UnsupportedOperationException.
+     * If you need to add pairs, create a new HashMap<>().
      */
     static void kinds() {
         Map<String, Integer> hash = new HashMap<>();
@@ -149,10 +177,18 @@ public class MapTheory {
     /**
      * 6. Iterating: entrySet, keySet, values
      *
-     * A Map can't be looped over directly. Choose what you need:
-     *   entrySet() - key and value together (pairs)
-     *   keySet()   - only keys
-     *   values()   - only values
+     * You can't loop over a Map with for-each directly. Java doesn't know what you want to go
+     * through: the keys, the values or the whole pairs. So you choose it first with one of
+     * three methods:
+     * - entrySet(): whole pairs. Each pair has getKey() and getValue().
+     * - keySet(): only the keys.
+     * - values(): only the values.
+     *
+     * If you need both the key and the value in the loop, use entrySet. The type of each pair
+     * is written as Map.Entry<String, Integer>, which means "a Map entry with a String key
+     * and an Integer value". It looks long, but you get used to it quickly.
+     *
+     * The example uses a LinkedHashMap so that the pairs come out in insertion order.
      */
     static void iterating() {
         Map<String, Integer> ages = new LinkedHashMap<>();
@@ -178,12 +214,22 @@ public class MapTheory {
     /**
      * 7. Keys must be unique and comparable by equals/hashCode
      *
-     * A Map finds a key using equals() and hashCode(). String and Integer have them
-     * done right, so use them as keys. For your own classes you must write both methods,
-     * otherwise two "equal" objects become two different keys.
+     * How does a Map know that a key is "the same"? It compares keys with equals()
+     * and hashCode(). First hashCode() quickly tells the Map where to look for the key.
+     * Then equals() checks whether it really matches.
      *
-     * Do not change an object after using it as a key: its hashCode changes and
-     * the map will not find it anymore.
+     * String, Integer and other standard classes already have these methods done right.
+     * That's why strings and numbers are the easiest keys. Just keep in mind that String
+     * is case-sensitive: "Anna" and "anna" are two different keys.
+     *
+     * Your own classes are trickier. If a class has no equals() and hashCode(), Java treats
+     * only the very same object as equal. Then two objects with the same data become
+     * two different keys. The easiest way to make a key is a record: it creates equals()
+     * and hashCode() for you.
+     *
+     * One more trap: don't change an object while it sits in a Map as a key. Its hashCode()
+     * changes, and the Map looks for the key in the wrong place. The pair stays inside,
+     * but get can't find it anymore.
      */
     static void keysTrap() {
         Map<String, Integer> map = new HashMap<>();

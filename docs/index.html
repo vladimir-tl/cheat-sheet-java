@@ -5504,7 +5504,9 @@ salaries.put(<span class="t-string">"Bob"</span>, <span class="t-number">2500</s
 </section>
 <section class="card" data-id="map-2">
 <h3>2. Put and get</h3>
-<p><code>put(key, value)</code> adds a pair. If the key already exists, its value is OVERWRITTEN. <code>get(key)</code> returns the value.</p>
+<p>To put a pair into a Map, call <code>put(key, value)</code>: the key first, then the value. To get a value back, call <code>get(key)</code> with the key. The Map returns whatever is stored under that key.</p>
+<p>If you call put with a key that is already there, no new pair appears. The Map replaces the old value with the new one, and the size stays the same. There is no error either, so the old value disappears silently.</p>
+<p>Let's see it in an example: first Anna is 25, then we write 26 for her.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">25</span>);   <span class="t-comment">// {Anna=25}</span>
@@ -5516,8 +5518,9 @@ ages.size();            <span class="t-comment">// 2: still two keys</span></cod
 </section>
 <section class="card" data-id="map-3">
 <h3>3. Missing key: <code>null</code> and getOrDefault</h3>
-<p>get returns <code>null</code> when the key is not found. <code>getOrDefault(key, x)</code> returns x instead.</p>
-<p>A trap: unboxing <code>null</code>. int <code>age = ages.get("Zed")</code> throws NullPointerException, because <code>null</code> cannot become an int (see <a class="xref" href="#primitivesandwrappers">PrimitivesAndWrappersTheory</a>).</p>
+<p>What happens if you ask for a key that isn't in the Map? There is no error: get simply returns <code>null</code>, which means "nothing".</p>
+<p>If <code>null</code> is inconvenient, use <code>getOrDefault(key, x)</code>. When the key is there, it returns the key's value. When the key is missing, it returns the fallback value x. For example, <code>getOrDefault("Zed", 0)</code> returns 0.</p>
+<p>A trap: don't store the result of get straight into an int. The line int <code>age = ages.get("Zed")</code> crashes with NullPointerException. get returned <code>null</code>, and <code>null</code> can't become an int. Store the result in an Integer or use getOrDefault (see <a class="xref" href="#primitivesandwrappers">PrimitivesAndWrappersTheory</a>).</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 
@@ -5527,7 +5530,8 @@ ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>)
 </section>
 <section class="card" data-id="map-4">
 <h3>4. Checking a key: containsKey</h3>
-<p><code>containsKey(key)</code> is true if the key is in the map. <code>containsValue(value)</code> checks values (it is slow: it looks through all of them).</p>
+<p>Sometimes you just need to know whether a key is in the Map. That's what <code>containsKey(key)</code> is for: it returns true if the key is there and false if it isn't. It is as fast as get.</p>
+<p>The similar method <code>containsValue(value)</code> searches the values. It is slow: a Map can only search quickly by key, so here it goes through all the pairs one by one. On a big Map you'll notice that.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 
@@ -5538,11 +5542,11 @@ ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment
 <h2 class="group-title">Kinds of Map</h2>
 <section class="card" data-id="map-5">
 <h3>5. HashMap, LinkedHashMap, TreeMap</h3>
-<p>All three are used the same way. The difference is the order of the pairs.</p>
-<pre class="plain">  HashMap         - no guaranteed order. The default choice, the fastest.
-  LinkedHashMap   - keeps the insertion order.
-  TreeMap         - keeps the keys sorted (A to Z, smallest to largest).</pre>
-<p><code>Map.of(...)</code> creates an immutable map (put throws UnsupportedOperationException).</p>
+<p>Java has several ready-made kinds of Map. They all have the same methods: put, get, containsKey and the rest. The difference is the order in which they keep the pairs and show them when you print or loop over the Map.</p>
+<p>The three most common kinds:</p>
+<ul><li><strong>HashMap:</strong> the order of the pairs is not guaranteed, they can come out in any order. But it is the fastest one, so use it by default.</li><li><strong>LinkedHashMap:</strong> remembers the insertion order. The pair you put first comes out first.</li><li><strong>TreeMap:</strong> sorts the pairs by key. Strings go in alphabetical order, numbers from smallest to largest.</li></ul>
+<p>On the left you usually write just Map, and the specific kind goes on the right, after new. That way it's easy to swap HashMap for TreeMap later: you change only one place.</p>
+<p>There is also a short way to create a Map with data right away: <code>Map.of("Anna", 26, "Bob", 30)</code>. But such a Map can't be changed: any put throws UnsupportedOperationException. If you need to add pairs, create a <code>new HashMap&lt;&gt;()</code>.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; hash = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 <span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; linked = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
 <span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; tree = <span class="t-kw">new</span> <span class="t-type">TreeMap</span>&lt;&gt;();
@@ -5555,10 +5559,10 @@ ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment
 <h2 class="group-title">Looping</h2>
 <section class="card" data-id="map-6">
 <h3>6. Iterating: entrySet, keySet, values</h3>
-<pre class="plain">A Map can't be looped over directly. Choose what you need:
-  entrySet() - key and value together (pairs)
-  keySet()   - only keys
-  values()   - only values</pre>
+<p>You can't loop over a Map with for-each directly. Java doesn't know what you want to go through: the keys, the values or the whole pairs. So you choose it first with one of three methods:</p>
+<ul><li><strong><code>entrySet()</code>:</strong> whole pairs. Each pair has <code>getKey()</code> and <code>getValue()</code>.</li><li><strong><code>keySet()</code>:</strong> only the keys.</li><li><strong><code>values()</code>:</strong> only the values.</li></ul>
+<p>If you need both the key and the value in the loop, use entrySet. The type of each pair is written as Map.<code>Entry&lt;String, Integer&gt;</code>, which means "a Map entry with a String key and an Integer value". It looks long, but you get used to it quickly.</p>
+<p>The example uses a LinkedHashMap so that the pairs come out in insertion order.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
@@ -5581,8 +5585,10 @@ ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
 <h2 class="group-title">Traps</h2>
 <section class="card" data-id="map-7">
 <h3>7. Keys must be unique and comparable by equals/hashCode</h3>
-<p>A Map finds a key using <code>equals()</code> and <code>hashCode()</code>. String and Integer have them done right, so use them as keys. For your own classes you must write both methods, otherwise two "equal" objects become two different keys.</p>
-<p>Do not change an object after using it as a key: its hashCode changes and the map will not find it anymore.</p>
+<p>How does a Map know that a key is "the same"? It compares keys with <code>equals()</code> and <code>hashCode()</code>. First <code>hashCode()</code> quickly tells the Map where to look for the key. Then <code>equals()</code> checks whether it really matches.</p>
+<p>String, Integer and other standard classes already have these methods done right. That's why strings and numbers are the easiest keys. Just keep in mind that String is case-sensitive: "Anna" and "anna" are two different keys.</p>
+<p>Your own classes are trickier. If a class has no <code>equals()</code> and <code>hashCode()</code>, Java treats only the very same object as equal. Then two objects with the same data become two different keys. The easiest way to make a key is a record: it creates <code>equals()</code> and <code>hashCode()</code> for you.</p>
+<p>One more trap: don't change an object while it sits in a Map as a key. Its <code>hashCode()</code> changes, and the Map looks for the key in the wrong place. The pair stays inside, but get can't find it anymore.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 map.put(<span class="t-string">"Anna"</span>, <span class="t-number">1</span>);
 map.put(<span class="t-string">"anna"</span>, <span class="t-number">2</span>);  <span class="t-comment">// different key: String is case-sensitive -&gt; 2 entries</span>
@@ -5700,7 +5706,9 @@ salaries.put(<span class="t-string">"Bob"</span>, <span class="t-number">2500</s
 </section>
 <section class="card" data-id="map-2">
 <h3>2. Положить и получить: put и get</h3>
-<p><code>put(key, value)</code> добавляет пару. Если ключ уже есть, его значение ПЕРЕЗАПИСЫВАЕТСЯ. <code>get(key)</code> возвращает значение.</p>
+<p>Чтобы положить пару в Map, вызовите <code>put(key, value)</code>: сначала ключ, потом значение. Чтобы достать значение, вызовите <code>get(key)</code> и передайте ключ. Map вернёт то, что лежит под этим ключом.</p>
+<p>Если вызвать put с ключом, который уже есть, новая пара не появится. Map заменит старое значение новым, а размер останется прежним. Ошибки при этом не будет, так что старое значение пропадёт молча.</p>
+<p>Посмотрим на примере: сначала Анне 25, потом мы записываем ей 26.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">25</span>);   <span class="t-comment">// {Anna=25}</span>
@@ -5712,8 +5720,9 @@ ages.size();            <span class="t-comment">// 2: по-прежнему дв
 </section>
 <section class="card" data-id="map-3">
 <h3>3. Нет ключа: <code>null</code> и getOrDefault</h3>
-<p>get возвращает <code>null</code>, если ключ не найден. <code>getOrDefault(key, x)</code> вместо этого возвращает x.</p>
-<p>Ловушка: распаковка <code>null</code>. int <code>age = ages.get("Zed")</code> бросает NullPointerException, потому что <code>null</code> нельзя превратить в int (см. <a class="xref" href="#primitivesandwrappers">PrimitivesAndWrappersTheory</a>).</p>
+<p>Что будет, если спросить ключ, которого в Map нет? Ошибки не будет: get просто вернёт <code>null</code>, то есть «ничего».</p>
+<p>Если <code>null</code> вам неудобен, используйте <code>getOrDefault(key, x)</code>. Когда ключ есть, метод вернёт его значение. Когда ключа нет, вернёт запасное значение x. Например, <code>getOrDefault("Zed", 0)</code> вернёт 0.</p>
+<p>Ловушка: не записывайте результат get сразу в int. Строка int <code>age = ages.get("Zed")</code> упадёт с NullPointerException. get вернул <code>null</code>, а <code>null</code> нельзя превратить в число int. Сохраняйте результат в Integer или берите getOrDefault (см. <a class="xref" href="#primitivesandwrappers">PrimitivesAndWrappersTheory</a>).</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 
@@ -5723,7 +5732,8 @@ ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>)
 </section>
 <section class="card" data-id="map-4">
 <h3>4. Проверка ключа: containsKey</h3>
-<p><code>containsKey(key)</code> истинно, если ключ есть в карте. <code>containsValue(value)</code> проверяет значения (это медленно: перебираются все).</p>
+<p>Иногда нужно просто узнать, есть ли ключ в Map. Для этого есть <code>containsKey(key)</code>: он вернёт true, если ключ есть, и false, если нет. Работает так же быстро, как get.</p>
+<p>Похожий метод <code>containsValue(value)</code> ищет среди значений. Он медленный: быстро искать Map умеет только по ключам, поэтому здесь перебирает все пары подряд. На большой Map это заметно.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 
@@ -5734,11 +5744,11 @@ ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment
 <h2 class="group-title">Виды Map</h2>
 <section class="card" data-id="map-5">
 <h3>5. HashMap, LinkedHashMap, TreeMap</h3>
-<p>Все три используются одинаково. Разница в порядке пар.</p>
-<pre class="plain">  HashMap         - порядок не гарантирован. Выбор по умолчанию, самый быстрый.
-  LinkedHashMap   - сохраняет порядок добавления.
-  TreeMap         - хранит ключи отсортированными (от A до Z, от меньшего к большему).</pre>
-<p><code>Map.of(...)</code> создаёт неизменяемую карту (put бросает UnsupportedOperationException).</p>
+<p>В Java есть несколько готовых видов Map. Методы у них одинаковые: put, get, containsKey и остальные. Отличаются они порядком, в котором хранят пары и выводят их при печати или переборе.</p>
+<p>Три самых частых вида:</p>
+<ul><li><strong>HashMap:</strong> порядок пар не гарантирован, они могут вывестись в любом порядке. Зато это самый быстрый вариант, поэтому берите его по умолчанию.</li><li><strong>LinkedHashMap:</strong> помнит порядок добавления. Какую пару положили первой, та первой и выведется.</li><li><strong>TreeMap:</strong> сортирует пары по ключу. Строки идут по алфавиту, числа от меньшего к большему.</li></ul>
+<p>Слева обычно пишут просто Map, а конкретный вид указывают справа, после new. Так потом легко заменить HashMap на TreeMap: правка нужна только в одном месте.</p>
+<p>Есть и короткий способ создать Map сразу с данными: <code>Map.of("Anna", 26, "Bob", 30)</code>. Но такую Map нельзя изменить: любой put бросит UnsupportedOperationException. Если пары нужно добавлять, создайте <code>new HashMap&lt;&gt;()</code>.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; hash = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 <span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; linked = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
 <span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; tree = <span class="t-kw">new</span> <span class="t-type">TreeMap</span>&lt;&gt;();
@@ -5751,10 +5761,10 @@ ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment
 <h2 class="group-title">Обход</h2>
 <section class="card" data-id="map-6">
 <h3>6. Перебор: entrySet, keySet, values</h3>
-<pre class="plain">Напрямую по Map цикл не пройти. Выберите, что нужно:
-  entrySet() - ключ и значение вместе (пары)
-  keySet()   - только ключи
-  values()   - только значения</pre>
+<p>Пройти по Map циклом for-each напрямую нельзя. Java не знает, что вы хотите перебрать: ключи, значения или пары целиком. Поэтому сначала выберите это сами одним из трёх методов:</p>
+<ul><li><strong><code>entrySet()</code>:</strong> пары целиком. У каждой пары есть <code>getKey()</code> и <code>getValue()</code>.</li><li><strong><code>keySet()</code>:</strong> только ключи.</li><li><strong><code>values()</code>:</strong> только значения.</li></ul>
+<p>Если в цикле нужны и ключ, и значение, берите entrySet. Тип каждой пары записывается как Map.<code>Entry&lt;String, Integer&gt;</code>, то есть «запись Map с ключом String и значением Integer». Выглядит длинно, но к этому быстро привыкают.</p>
+<p>В примере мы взяли LinkedHashMap, чтобы пары выводились в порядке добавления.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
@@ -5777,8 +5787,10 @@ ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
 <h2 class="group-title">Ловушки</h2>
 <section class="card" data-id="map-7">
 <h3>7. Ключи уникальны и сравниваются через equals/hashCode</h3>
-<p>Map находит ключ с помощью <code>equals()</code> и <code>hashCode()</code>. У String и Integer они реализованы правильно, поэтому используйте их как ключи. Для своих классов нужно написать оба метода, иначе два «равных» объекта станут двумя разными ключами.</p>
-<p>Не меняйте объект после того, как использовали его как ключ: изменится hashCode, и карта его больше не найдёт.</p>
+<p>Как Map понимает, что ключ «тот же самый»? Map сравнивает ключи методами <code>equals()</code> и <code>hashCode()</code>. Сначала <code>hashCode()</code> быстро подсказывает, где искать ключ. Потом <code>equals()</code> проверяет, совпадает ли он на самом деле.</p>
+<p>У String, Integer и других стандартных классов эти методы уже написаны правильно. Поэтому строки и числа — самые удобные ключи. Учтите только, что String различает регистр: "Anna" и "anna" — два разных ключа.</p>
+<p>Со своими классами сложнее. Если в классе нет <code>equals()</code> и <code>hashCode()</code>, Java считает одинаковым только один и тот же объект. Тогда два объекта с одинаковыми данными станут двумя разными ключами. Проще всего сделать ключ через record: он создаёт <code>equals()</code> и <code>hashCode()</code> сам.</p>
+<p>И ещё одна ловушка: не меняйте объект, пока он лежит в Map как ключ. Его <code>hashCode()</code> изменится, и Map будет искать ключ не в том месте. Пара останется внутри, но get её уже не найдёт.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 map.put(<span class="t-string">"Anna"</span>, <span class="t-number">1</span>);
 map.put(<span class="t-string">"anna"</span>, <span class="t-number">2</span>);  <span class="t-comment">// другой ключ: String учитывает регистр -&gt; 2 записи</span>
