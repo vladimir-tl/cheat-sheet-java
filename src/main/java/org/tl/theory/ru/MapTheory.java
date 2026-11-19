@@ -1,7 +1,9 @@
 package org.tl.theory.ru;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -496,34 +498,109 @@ public class MapTheory {
     /**
      * 7. Ключи уникальны и сравниваются через equals/hashCode
      *
-     * Как Map понимает, что ключ «тот же самый»? Map сравнивает ключи методами equals()
-     * и hashCode(). Сначала hashCode() быстро подсказывает, где искать ключ. Потом equals()
-     * проверяет, совпадает ли он на самом деле.
+     * Как Map понимает, что ключ «тот же самый»? Она сравнивает ключи двумя методами,
+     * которые есть у каждого объекта в Java:
+     * - hashCode(): превращает ключ в число. По этому числу HashMap сразу понимает,
+     *   в каком месте искать пару. Как номерок в гардеробе из раздела 4.
+     * - equals(): проверяет, совпадает ли найденный ключ с вашим на самом деле.
+     *   Разные ключи иногда получают одинаковое число, поэтому без этой проверки не обойтись.
      *
-     * У String, Integer и других стандартных классов эти методы уже написаны правильно.
-     * Поэтому строки и числа — самые удобные ключи. Учтите только, что String различает
-     * регистр: "Anna" и "anna" — два разных ключа.
+     * Если два ключа равны по equals(), для Map это один и тот же ключ. Второй put не добавит
+     * новую пару, а заменит значение у старой.
      *
-     * Со своими классами сложнее. Если в классе нет equals() и hashCode(), Java считает
-     * одинаковым только один и тот же объект. Тогда два объекта с одинаковыми данными станут
-     * двумя разными ключами. Проще всего сделать ключ через record: он создаёт equals()
-     * и hashCode() сам.
+     * У String, Integer и других стандартных классов эти методы уже написаны правильно:
+     * строки равны, если в них одинаковые символы, числа равны, если равны их значения.
+     * Поэтому строки и числа — самые удобные ключи. Но у строк есть свои подвохи:
+     * - Регистр и пробелы: "Anna", "anna" и "Anna " (с пробелом в конце) — три разных ключа.
+     *   Для equals это разные строки.
+     *   > map.put("Anna", 1);
+     *   > map.put("anna", 2);
+     *   > map.put("Anna ", 3);
+     *   > System.out.println(map.size());   // 3
+     * - Как этого избежать: приведите ключ к одному виду до того, как класть его в Map.
+     *   trim() убирает пробелы по краям, toLowerCase() делает все буквы строчными.
+     *   > names.put(" Anna ".trim().toLowerCase(), 1);
+     *   > names.put("ANNA".trim().toLowerCase(), 2);
+     *   > System.out.println(names);        // {anna=2}
      *
-     * И ещё одна ловушка: не меняйте объект, пока он лежит в Map как ключ. Его hashCode()
-     * изменится, и Map будет искать ключ не в том месте. Пара останется внутри,
-     * но get её уже не найдёт.
+     * Со своими классами сложнее. Если вы не написали в классе equals() и hashCode(), Java
+     * сравнивает объекты по принципу «это тот же самый объект в памяти?». Каждый new создаёт
+     * новый объект, поэтому два клиента с одинаковым email станут двумя разными ключами:
+     * - Обычный класс: второй put добавил новую пару, а get с новым объектом ничего не нашёл.
+     *   > class Customer {
+     *   >     String email;
+     *   >     Customer(String email) { this.email = email; }
+     *   > }
+     *   > bonus.put(new Customer("ann@mail.ee"), 10);
+     *   > bonus.put(new Customer("ann@mail.ee"), 20);
+     *   > System.out.println(bonus.size());                            // 2
+     *   > System.out.println(bonus.get(new Customer("ann@mail.ee")));  // null
+     * - record: самый простой способ сделать свой ключ. Он сам создаёт equals() и hashCode()
+     *   по всем полям, поэтому одинаковые данные дают одинаковый ключ.
+     *   > record CustomerId(String email) {}
+     *   > ids.put(new CustomerId("ann@mail.ee"), 10);
+     *   > ids.put(new CustomerId("ann@mail.ee"), 20);
+     *   > System.out.println(ids.size());                              // 1
+     *   > System.out.println(ids.get(new CustomerId("ann@mail.ee")));  // 20
+     *
+     * Если пишете equals() сами, обязательно напишите и hashCode(). С одним equals() HashMap
+     * почти всегда будет искать ключ не в том месте и до сравнения через equals просто не дойдёт.
+     * Тогда одинаковые объекты снова станут разными ключами. В IntelliJ IDEA оба метода можно
+     * сгенерировать сразу: меню «Code → Generate», пункт «equals() and hashCode()».
+     *
+     * И последняя ловушка: не меняйте объект, пока он лежит в Map как ключ. Его hashCode()
+     * изменится, и Map будет искать пару не в том месте. Пара останется внутри, но get её
+     * уже не найдёт. Посмотрим на примере со списком в роли ключа: список сравнивается
+     * по содержимому, поэтому его hashCode зависит от элементов.
+     * - Ключ изменили после put: пара на месте, size() её видит, а get и containsKey — нет.
+     *   > List<String> key = new ArrayList<>(List.of("rock"));
+     *   > playlists.put(key, 1);
+     *   > key.add("jazz");                               // меняем ключ, который уже в Map
+     *   > System.out.println(playlists.get(key));        // null
+     *   > System.out.println(playlists.containsKey(key)); // false
+     *   > System.out.println(playlists.size());          // 1
+     *
+     * Поэтому для ключей берите то, что нельзя изменить: String, Integer или record.
      */
     static void keysTrap() {
+        // Строки: регистр и пробелы важны
         Map<String, Integer> map = new HashMap<>();
         map.put("Anna", 1);
-        map.put("anna", 2);  // другой ключ: String учитывает регистр -> 2 записи
-        map.size();          // 2
+        map.put("anna", 2);
+        map.put("Anna ", 3);
+        System.out.println(map.size());   // 3: три разных ключа
 
-        // свой тип ключа: record сам даёт equals и hashCode
+        // Приводим ключ к одному виду перед put
+        Map<String, Integer> names = new HashMap<>();
+        names.put(" Anna ".trim().toLowerCase(), 1);
+        names.put("ANNA".trim().toLowerCase(), 2);
+        System.out.println(names);        // {anna=2}
+
+        // Обычный класс без equals и hashCode: одинаковые данные, но разные ключи
+        class Customer {
+            String email;
+            Customer(String email) { this.email = email; }
+        }
+        Map<Customer, Integer> bonus = new HashMap<>();
+        bonus.put(new Customer("ann@mail.ee"), 10);
+        bonus.put(new Customer("ann@mail.ee"), 20);
+        System.out.println(bonus.size());                            // 2
+        System.out.println(bonus.get(new Customer("ann@mail.ee")));  // null
+
+        // record сам даёт equals и hashCode: одинаковые данные — один ключ
         record CustomerId(String email) {}
-        Map<CustomerId, Integer> bonus = new HashMap<>();
-        bonus.put(new CustomerId("ann@mail.ee"), 10);
-        bonus.put(new CustomerId("ann@mail.ee"), 20); // тот же ключ по equals() -> значение заменено
-        bonus.size();        // 1 (с обычным классом без equals было бы 2)
+        Map<CustomerId, Integer> ids = new HashMap<>();
+        ids.put(new CustomerId("ann@mail.ee"), 10);
+        ids.put(new CustomerId("ann@mail.ee"), 20);
+        System.out.println(ids.size());                              // 1
+        System.out.println(ids.get(new CustomerId("ann@mail.ee")));  // 20
+
+        // Ключ изменили после put: get его больше не находит
+        Map<List<String>, Integer> playlists = new HashMap<>();
+        List<String> key = new ArrayList<>(List.of("rock"));
+        playlists.put(key, 1);
+        key.add("jazz");
+        System.out.println(playlists.get(key));   // null
+        System.out.println(playlists.size());     // 1
     }
 }

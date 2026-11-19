@@ -1,7 +1,9 @@
 package org.tl.theory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -502,34 +504,109 @@ public class MapTheory {
     /**
      * 7. Keys must be unique and comparable by equals/hashCode
      *
-     * How does a Map know that a key is "the same"? It compares keys with equals()
-     * and hashCode(). First hashCode() quickly tells the Map where to look for the key.
-     * Then equals() checks whether it really matches.
+     * How does a Map know that a key is "the same"? It compares keys with two methods that every
+     * object in Java has:
+     * - hashCode(): turns the key into a number. From this number a HashMap knows right away
+     *   where to look for the pair. Like the cloakroom ticket from section 4.
+     * - equals(): checks whether the key it found really matches yours. Different keys sometimes
+     *   get the same number, so this check can't be skipped.
      *
-     * String, Integer and other standard classes already have these methods done right.
-     * That's why strings and numbers are the easiest keys. Just keep in mind that String
-     * is case-sensitive: "Anna" and "anna" are two different keys.
+     * If two keys are equal by equals(), for the Map they are one and the same key. The second put
+     * doesn't add a new pair, it replaces the value of the old one.
      *
-     * Your own classes are trickier. If a class has no equals() and hashCode(), Java treats
-     * only the very same object as equal. Then two objects with the same data become
-     * two different keys. The easiest way to make a key is a record: it creates equals()
-     * and hashCode() for you.
+     * String, Integer and other standard classes already have these methods done right: strings
+     * are equal if they have the same characters, numbers are equal if their values are equal.
+     * That's why strings and numbers are the easiest keys. But strings have their own catches:
+     * - Case and spaces: "Anna", "anna" and "Anna " (with a space at the end) are three different
+     *   keys. For equals they are different strings.
+     *   > map.put("Anna", 1);
+     *   > map.put("anna", 2);
+     *   > map.put("Anna ", 3);
+     *   > System.out.println(map.size());   // 3
+     * - How to avoid it: bring the key to one form before you put it into the Map.
+     *   trim() removes spaces at the edges, toLowerCase() makes all letters lowercase.
+     *   > names.put(" Anna ".trim().toLowerCase(), 1);
+     *   > names.put("ANNA".trim().toLowerCase(), 2);
+     *   > System.out.println(names);        // {anna=2}
      *
-     * One more trap: don't change an object while it sits in a Map as a key. Its hashCode()
-     * changes, and the Map looks for the key in the wrong place. The pair stays inside,
-     * but get can't find it anymore.
+     * Your own classes are trickier. If you haven't written equals() and hashCode() in a class,
+     * Java compares objects by the rule "is this the very same object in memory?". Every new
+     * creates a new object, so two customers with the same email become two different keys:
+     * - A plain class: the second put added a new pair, and get with a new object found nothing.
+     *   > class Customer {
+     *   >     String email;
+     *   >     Customer(String email) { this.email = email; }
+     *   > }
+     *   > bonus.put(new Customer("ann@mail.ee"), 10);
+     *   > bonus.put(new Customer("ann@mail.ee"), 20);
+     *   > System.out.println(bonus.size());                            // 2
+     *   > System.out.println(bonus.get(new Customer("ann@mail.ee")));  // null
+     * - record: the easiest way to make your own key. It creates equals() and hashCode() from
+     *   all its fields by itself, so the same data gives the same key.
+     *   > record CustomerId(String email) {}
+     *   > ids.put(new CustomerId("ann@mail.ee"), 10);
+     *   > ids.put(new CustomerId("ann@mail.ee"), 20);
+     *   > System.out.println(ids.size());                              // 1
+     *   > System.out.println(ids.get(new CustomerId("ann@mail.ee")));  // 20
+     *
+     * If you write equals() yourself, always write hashCode() too. With equals() alone, a HashMap
+     * almost always looks for the key in the wrong place and never even gets to the equals check.
+     * Then equal objects become different keys again. In IntelliJ IDEA you can generate both
+     * methods at once: the menu "Code → Generate", item "equals() and hashCode()".
+     *
+     * And the last trap: don't change an object while it sits in a Map as a key. Its hashCode()
+     * changes, and the Map looks for the pair in the wrong place. The pair stays inside, but get
+     * can't find it anymore. Let's see it with a list as the key: a list is compared by its
+     * contents, so its hashCode depends on the elements.
+     * - The key changed after put: the pair is there and size() sees it, but get and containsKey don't.
+     *   > List<String> key = new ArrayList<>(List.of("rock"));
+     *   > playlists.put(key, 1);
+     *   > key.add("jazz");                               // changing a key that is already in the Map
+     *   > System.out.println(playlists.get(key));        // null
+     *   > System.out.println(playlists.containsKey(key)); // false
+     *   > System.out.println(playlists.size());          // 1
+     *
+     * So for keys use things that can't be changed: String, Integer or a record.
      */
     static void keysTrap() {
+        // Strings: case and spaces matter
         Map<String, Integer> map = new HashMap<>();
         map.put("Anna", 1);
-        map.put("anna", 2);  // different key: String is case-sensitive -> 2 entries
-        map.size();          // 2
+        map.put("anna", 2);
+        map.put("Anna ", 3);
+        System.out.println(map.size());   // 3: three different keys
 
-        // your own key type: a record gives equals and hashCode for free
+        // Bring the key to one form before put
+        Map<String, Integer> names = new HashMap<>();
+        names.put(" Anna ".trim().toLowerCase(), 1);
+        names.put("ANNA".trim().toLowerCase(), 2);
+        System.out.println(names);        // {anna=2}
+
+        // A plain class without equals and hashCode: the same data, but different keys
+        class Customer {
+            String email;
+            Customer(String email) { this.email = email; }
+        }
+        Map<Customer, Integer> bonus = new HashMap<>();
+        bonus.put(new Customer("ann@mail.ee"), 10);
+        bonus.put(new Customer("ann@mail.ee"), 20);
+        System.out.println(bonus.size());                            // 2
+        System.out.println(bonus.get(new Customer("ann@mail.ee")));  // null
+
+        // A record gives equals and hashCode by itself: the same data is one key
         record CustomerId(String email) {}
-        Map<CustomerId, Integer> bonus = new HashMap<>();
-        bonus.put(new CustomerId("ann@mail.ee"), 10);
-        bonus.put(new CustomerId("ann@mail.ee"), 20); // the same key by equals() -> value replaced
-        bonus.size();        // 1 (with a plain class without equals it would be 2)
+        Map<CustomerId, Integer> ids = new HashMap<>();
+        ids.put(new CustomerId("ann@mail.ee"), 10);
+        ids.put(new CustomerId("ann@mail.ee"), 20);
+        System.out.println(ids.size());                              // 1
+        System.out.println(ids.get(new CustomerId("ann@mail.ee")));  // 20
+
+        // The key changed after put: get can't find it anymore
+        Map<List<String>, Integer> playlists = new HashMap<>();
+        List<String> key = new ArrayList<>(List.of("rock"));
+        playlists.put(key, 1);
+        key.add("jazz");
+        System.out.println(playlists.get(key));   // null
+        System.out.println(playlists.size());     // 1
     }
 }

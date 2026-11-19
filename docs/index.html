@@ -5728,21 +5728,77 @@ ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
 <h2 class="group-title">Traps</h2>
 <section class="card" data-id="map-7">
 <h3>7. Keys must be unique and comparable by equals/hashCode</h3>
-<p>How does a Map know that a key is "the same"? It compares keys with <code>equals()</code> and <code>hashCode()</code>. First <code>hashCode()</code> quickly tells the Map where to look for the key. Then <code>equals()</code> checks whether it really matches.</p>
-<p>String, Integer and other standard classes already have these methods done right. That's why strings and numbers are the easiest keys. Just keep in mind that String is case-sensitive: "Anna" and "anna" are two different keys.</p>
-<p>Your own classes are trickier. If a class has no <code>equals()</code> and <code>hashCode()</code>, Java treats only the very same object as equal. Then two objects with the same data become two different keys. The easiest way to make a key is a record: it creates <code>equals()</code> and <code>hashCode()</code> for you.</p>
-<p>One more trap: don't change an object while it sits in a Map as a key. Its <code>hashCode()</code> changes, and the Map looks for the key in the wrong place. The pair stays inside, but get can't find it anymore.</p>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+<p>How does a Map know that a key is "the same"? It compares keys with two methods that every object in Java has:</p>
+<ul><li><strong><code>hashCode()</code>:</strong> turns the key into a number. From this number a HashMap knows right away where to look for the pair. Like the cloakroom ticket from section <a class="xref" href="#map-4">4</a>.</li><li><strong><code>equals()</code>:</strong> checks whether the key it found really matches yours. Different keys sometimes get the same number, so this check can't be skipped.</li></ul>
+<p>If two keys are equal by <code>equals()</code>, for the Map they are one and the same key. The second put doesn't add a new pair, it replaces the value of the old one.</p>
+<p>String, Integer and other standard classes already have these methods done right: strings are equal if they have the same characters, numbers are equal if their values are equal. That's why strings and numbers are the easiest keys. But strings have their own catches:</p>
+<ul><li><strong>Case and spaces:</strong> "Anna", "anna" and "Anna " (with a space at the end) are three different keys. For equals they are different strings.<pre class="eg"><code>map.put(<span class="t-string">"Anna"</span>, <span class="t-number">1</span>);
+map.put(<span class="t-string">"anna"</span>, <span class="t-number">2</span>);
+map.put(<span class="t-string">"Anna "</span>, <span class="t-number">3</span>);
+<span class="t-type">System</span>.out.println(map.size());   <span class="t-comment">// 3</span></code></pre></li><li><strong>How to avoid it:</strong> bring the key to one form before you put it into the Map. <code>trim()</code> removes spaces at the edges, <code>toLowerCase()</code> makes all letters lowercase.<pre class="eg"><code>names.put(<span class="t-string">" Anna "</span>.trim().toLowerCase(), <span class="t-number">1</span>);
+names.put(<span class="t-string">"ANNA"</span>.trim().toLowerCase(), <span class="t-number">2</span>);
+<span class="t-type">System</span>.out.println(names);        <span class="t-comment">// {anna=2}</span></code></pre></li></ul>
+<p>Your own classes are trickier. If you haven't written <code>equals()</code> and <code>hashCode()</code> in a class, Java compares objects by the rule "is this the very same object in memory?". Every new creates a new object, so two customers with the same email become two different keys:</p>
+<ul><li><strong>A plain class:</strong> the second put added a new pair, and get with a new object found nothing.<pre class="eg"><code><span class="t-kw">class</span> <span class="t-type">Customer</span> {
+    <span class="t-type">String</span> email;
+    <span class="t-type">Customer</span>(<span class="t-type">String</span> email) { <span class="t-kw">this</span>.email = email; }
+}
+bonus.put(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">10</span>);
+bonus.put(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">20</span>);
+<span class="t-type">System</span>.out.println(bonus.size());                            <span class="t-comment">// 2</span>
+<span class="t-type">System</span>.out.println(bonus.get(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>)));  <span class="t-comment">// null</span></code></pre></li><li><strong>record:</strong> the easiest way to make your own key. It creates <code>equals()</code> and <code>hashCode()</code> from all its fields by itself, so the same data gives the same key.<pre class="eg"><code>record <span class="t-type">CustomerId</span>(<span class="t-type">String</span> email) {}
+ids.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">10</span>);
+ids.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">20</span>);
+<span class="t-type">System</span>.out.println(ids.size());                              <span class="t-comment">// 1</span>
+<span class="t-type">System</span>.out.println(ids.get(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>)));  <span class="t-comment">// 20</span></code></pre></li></ul>
+<p>If you write <code>equals()</code> yourself, always write <code>hashCode()</code> too. With <code>equals()</code> alone, a HashMap almost always looks for the key in the wrong place and never even gets to the equals check. Then equal objects become different keys again. In IntelliJ IDEA you can generate both methods at once: the menu "Code → Generate", item "<code>equals()</code> and <code>hashCode()</code>".</p>
+<p>And the last trap: don't change an object while it sits in a Map as a key. Its <code>hashCode()</code> changes, and the Map looks for the pair in the wrong place. The pair stays inside, but get can't find it anymore. Let's see it with a list as the key: a list is compared by its contents, so its hashCode depends on the elements.</p>
+<ul><li><strong>The key changed after put:</strong> the pair is there and <code>size()</code> sees it, but get and containsKey don't.<pre class="eg"><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; key = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"rock"</span>));
+playlists.put(key, <span class="t-number">1</span>);
+key.add(<span class="t-string">"jazz"</span>);                               <span class="t-comment">// changing a key that is already in the Map</span>
+<span class="t-type">System</span>.out.println(playlists.get(key));        <span class="t-comment">// null</span>
+<span class="t-type">System</span>.out.println(playlists.containsKey(key)); <span class="t-comment">// false</span>
+<span class="t-type">System</span>.out.println(playlists.size());          <span class="t-comment">// 1</span></code></pre></li></ul>
+<p>So for keys use things that can't be changed: String, Integer or a record.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-comment">// Strings: case and spaces matter</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 map.put(<span class="t-string">"Anna"</span>, <span class="t-number">1</span>);
-map.put(<span class="t-string">"anna"</span>, <span class="t-number">2</span>);  <span class="t-comment">// different key: String is case-sensitive -&gt; 2 entries</span>
-map.size();          <span class="t-comment">// 2</span>
+map.put(<span class="t-string">"anna"</span>, <span class="t-number">2</span>);
+map.put(<span class="t-string">"Anna "</span>, <span class="t-number">3</span>);
+<span class="t-type">System</span>.out.println(map.size());   <span class="t-comment">// 3: three different keys</span>
 
-<span class="t-comment">// your own key type: a record gives equals and hashCode for free</span>
+<span class="t-comment">// Bring the key to one form before put</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+names.put(<span class="t-string">" Anna "</span>.trim().toLowerCase(), <span class="t-number">1</span>);
+names.put(<span class="t-string">"ANNA"</span>.trim().toLowerCase(), <span class="t-number">2</span>);
+<span class="t-type">System</span>.out.println(names);        <span class="t-comment">// {anna=2}</span>
+
+<span class="t-comment">// A plain class without equals and hashCode: the same data, but different keys</span>
+<span class="t-kw">class</span> <span class="t-type">Customer</span> {
+    <span class="t-type">String</span> email;
+    <span class="t-type">Customer</span>(<span class="t-type">String</span> email) { <span class="t-kw">this</span>.email = email; }
+}
+<span class="t-type">Map</span>&lt;<span class="t-type">Customer</span>, <span class="t-type">Integer</span>&gt; bonus = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+bonus.put(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">10</span>);
+bonus.put(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">20</span>);
+<span class="t-type">System</span>.out.println(bonus.size());                            <span class="t-comment">// 2</span>
+<span class="t-type">System</span>.out.println(bonus.get(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>)));  <span class="t-comment">// null</span>
+
+<span class="t-comment">// A record gives equals and hashCode by itself: the same data is one key</span>
 record <span class="t-type">CustomerId</span>(<span class="t-type">String</span> email) {}
-<span class="t-type">Map</span>&lt;<span class="t-type">CustomerId</span>, <span class="t-type">Integer</span>&gt; bonus = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
-bonus.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">10</span>);
-bonus.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">20</span>); <span class="t-comment">// the same key by equals() -&gt; value replaced</span>
-bonus.size();        <span class="t-comment">// 1 (with a plain class without equals it would be 2)</span></code></pre></div>
+<span class="t-type">Map</span>&lt;<span class="t-type">CustomerId</span>, <span class="t-type">Integer</span>&gt; ids = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+ids.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">10</span>);
+ids.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">20</span>);
+<span class="t-type">System</span>.out.println(ids.size());                              <span class="t-comment">// 1</span>
+<span class="t-type">System</span>.out.println(ids.get(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>)));  <span class="t-comment">// 20</span>
+
+<span class="t-comment">// The key changed after put: get can't find it anymore</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt;, <span class="t-type">Integer</span>&gt; playlists = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; key = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"rock"</span>));
+playlists.put(key, <span class="t-number">1</span>);
+key.add(<span class="t-string">"jazz"</span>);
+<span class="t-type">System</span>.out.println(playlists.get(key));   <span class="t-comment">// null</span>
+<span class="t-type">System</span>.out.println(playlists.size());     <span class="t-comment">// 1</span></code></pre></div>
 </section>
 <h2 class="group-title" data-id="map-tasks">Practice tasks</h2>
 <section class="card">
@@ -6073,21 +6129,77 @@ ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
 <h2 class="group-title">Ловушки</h2>
 <section class="card" data-id="map-7">
 <h3>7. Ключи уникальны и сравниваются через equals/hashCode</h3>
-<p>Как Map понимает, что ключ «тот же самый»? Map сравнивает ключи методами <code>equals()</code> и <code>hashCode()</code>. Сначала <code>hashCode()</code> быстро подсказывает, где искать ключ. Потом <code>equals()</code> проверяет, совпадает ли он на самом деле.</p>
-<p>У String, Integer и других стандартных классов эти методы уже написаны правильно. Поэтому строки и числа — самые удобные ключи. Учтите только, что String различает регистр: "Anna" и "anna" — два разных ключа.</p>
-<p>Со своими классами сложнее. Если в классе нет <code>equals()</code> и <code>hashCode()</code>, Java считает одинаковым только один и тот же объект. Тогда два объекта с одинаковыми данными станут двумя разными ключами. Проще всего сделать ключ через record: он создаёт <code>equals()</code> и <code>hashCode()</code> сам.</p>
-<p>И ещё одна ловушка: не меняйте объект, пока он лежит в Map как ключ. Его <code>hashCode()</code> изменится, и Map будет искать ключ не в том месте. Пара останется внутри, но get её уже не найдёт.</p>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+<p>Как Map понимает, что ключ «тот же самый»? Она сравнивает ключи двумя методами, которые есть у каждого объекта в Java:</p>
+<ul><li><strong><code>hashCode()</code>:</strong> превращает ключ в число. По этому числу HashMap сразу понимает, в каком месте искать пару. Как номерок в гардеробе из раздела <a class="xref" href="#map-4">4</a>.</li><li><strong><code>equals()</code>:</strong> проверяет, совпадает ли найденный ключ с вашим на самом деле. Разные ключи иногда получают одинаковое число, поэтому без этой проверки не обойтись.</li></ul>
+<p>Если два ключа равны по <code>equals()</code>, для Map это один и тот же ключ. Второй put не добавит новую пару, а заменит значение у старой.</p>
+<p>У String, Integer и других стандартных классов эти методы уже написаны правильно: строки равны, если в них одинаковые символы, числа равны, если равны их значения. Поэтому строки и числа — самые удобные ключи. Но у строк есть свои подвохи:</p>
+<ul><li><strong>Регистр и пробелы:</strong> "Anna", "anna" и "Anna " (с пробелом в конце) — три разных ключа. Для equals это разные строки.<pre class="eg"><code>map.put(<span class="t-string">"Anna"</span>, <span class="t-number">1</span>);
+map.put(<span class="t-string">"anna"</span>, <span class="t-number">2</span>);
+map.put(<span class="t-string">"Anna "</span>, <span class="t-number">3</span>);
+<span class="t-type">System</span>.out.println(map.size());   <span class="t-comment">// 3</span></code></pre></li><li><strong>Как этого избежать:</strong> приведите ключ к одному виду до того, как класть его в Map. <code>trim()</code> убирает пробелы по краям, <code>toLowerCase()</code> делает все буквы строчными.<pre class="eg"><code>names.put(<span class="t-string">" Anna "</span>.trim().toLowerCase(), <span class="t-number">1</span>);
+names.put(<span class="t-string">"ANNA"</span>.trim().toLowerCase(), <span class="t-number">2</span>);
+<span class="t-type">System</span>.out.println(names);        <span class="t-comment">// {anna=2}</span></code></pre></li></ul>
+<p>Со своими классами сложнее. Если вы не написали в классе <code>equals()</code> и <code>hashCode()</code>, Java сравнивает объекты по принципу «это тот же самый объект в памяти?». Каждый new создаёт новый объект, поэтому два клиента с одинаковым email станут двумя разными ключами:</p>
+<ul><li><strong>Обычный класс:</strong> второй put добавил новую пару, а get с новым объектом ничего не нашёл.<pre class="eg"><code><span class="t-kw">class</span> <span class="t-type">Customer</span> {
+    <span class="t-type">String</span> email;
+    <span class="t-type">Customer</span>(<span class="t-type">String</span> email) { <span class="t-kw">this</span>.email = email; }
+}
+bonus.put(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">10</span>);
+bonus.put(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">20</span>);
+<span class="t-type">System</span>.out.println(bonus.size());                            <span class="t-comment">// 2</span>
+<span class="t-type">System</span>.out.println(bonus.get(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>)));  <span class="t-comment">// null</span></code></pre></li><li><strong>record:</strong> самый простой способ сделать свой ключ. Он сам создаёт <code>equals()</code> и <code>hashCode()</code> по всем полям, поэтому одинаковые данные дают одинаковый ключ.<pre class="eg"><code>record <span class="t-type">CustomerId</span>(<span class="t-type">String</span> email) {}
+ids.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">10</span>);
+ids.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">20</span>);
+<span class="t-type">System</span>.out.println(ids.size());                              <span class="t-comment">// 1</span>
+<span class="t-type">System</span>.out.println(ids.get(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>)));  <span class="t-comment">// 20</span></code></pre></li></ul>
+<p>Если пишете <code>equals()</code> сами, обязательно напишите и <code>hashCode()</code>. С одним <code>equals()</code> HashMap почти всегда будет искать ключ не в том месте и до сравнения через equals просто не дойдёт. Тогда одинаковые объекты снова станут разными ключами. В IntelliJ IDEA оба метода можно сгенерировать сразу: меню «Code → Generate», пункт «<code>equals()</code> and <code>hashCode()</code>».</p>
+<p>И последняя ловушка: не меняйте объект, пока он лежит в Map как ключ. Его <code>hashCode()</code> изменится, и Map будет искать пару не в том месте. Пара останется внутри, но get её уже не найдёт. Посмотрим на примере со списком в роли ключа: список сравнивается по содержимому, поэтому его hashCode зависит от элементов.</p>
+<ul><li><strong>Ключ изменили после put:</strong> пара на месте, <code>size()</code> её видит, а get и containsKey — нет.<pre class="eg"><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; key = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"rock"</span>));
+playlists.put(key, <span class="t-number">1</span>);
+key.add(<span class="t-string">"jazz"</span>);                               <span class="t-comment">// меняем ключ, который уже в Map</span>
+<span class="t-type">System</span>.out.println(playlists.get(key));        <span class="t-comment">// null</span>
+<span class="t-type">System</span>.out.println(playlists.containsKey(key)); <span class="t-comment">// false</span>
+<span class="t-type">System</span>.out.println(playlists.size());          <span class="t-comment">// 1</span></code></pre></li></ul>
+<p>Поэтому для ключей берите то, что нельзя изменить: String, Integer или record.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-comment">// Строки: регистр и пробелы важны</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; map = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 map.put(<span class="t-string">"Anna"</span>, <span class="t-number">1</span>);
-map.put(<span class="t-string">"anna"</span>, <span class="t-number">2</span>);  <span class="t-comment">// другой ключ: String учитывает регистр -&gt; 2 записи</span>
-map.size();          <span class="t-comment">// 2</span>
+map.put(<span class="t-string">"anna"</span>, <span class="t-number">2</span>);
+map.put(<span class="t-string">"Anna "</span>, <span class="t-number">3</span>);
+<span class="t-type">System</span>.out.println(map.size());   <span class="t-comment">// 3: три разных ключа</span>
 
-<span class="t-comment">// свой тип ключа: record сам даёт equals и hashCode</span>
+<span class="t-comment">// Приводим ключ к одному виду перед put</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; names = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+names.put(<span class="t-string">" Anna "</span>.trim().toLowerCase(), <span class="t-number">1</span>);
+names.put(<span class="t-string">"ANNA"</span>.trim().toLowerCase(), <span class="t-number">2</span>);
+<span class="t-type">System</span>.out.println(names);        <span class="t-comment">// {anna=2}</span>
+
+<span class="t-comment">// Обычный класс без equals и hashCode: одинаковые данные, но разные ключи</span>
+<span class="t-kw">class</span> <span class="t-type">Customer</span> {
+    <span class="t-type">String</span> email;
+    <span class="t-type">Customer</span>(<span class="t-type">String</span> email) { <span class="t-kw">this</span>.email = email; }
+}
+<span class="t-type">Map</span>&lt;<span class="t-type">Customer</span>, <span class="t-type">Integer</span>&gt; bonus = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+bonus.put(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">10</span>);
+bonus.put(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">20</span>);
+<span class="t-type">System</span>.out.println(bonus.size());                            <span class="t-comment">// 2</span>
+<span class="t-type">System</span>.out.println(bonus.get(<span class="t-kw">new</span> <span class="t-type">Customer</span>(<span class="t-string">"ann@mail.ee"</span>)));  <span class="t-comment">// null</span>
+
+<span class="t-comment">// record сам даёт equals и hashCode: одинаковые данные — один ключ</span>
 record <span class="t-type">CustomerId</span>(<span class="t-type">String</span> email) {}
-<span class="t-type">Map</span>&lt;<span class="t-type">CustomerId</span>, <span class="t-type">Integer</span>&gt; bonus = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
-bonus.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">10</span>);
-bonus.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">20</span>); <span class="t-comment">// тот же ключ по equals() -&gt; значение заменено</span>
-bonus.size();        <span class="t-comment">// 1 (с обычным классом без equals было бы 2)</span></code></pre></div>
+<span class="t-type">Map</span>&lt;<span class="t-type">CustomerId</span>, <span class="t-type">Integer</span>&gt; ids = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+ids.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">10</span>);
+ids.put(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>), <span class="t-number">20</span>);
+<span class="t-type">System</span>.out.println(ids.size());                              <span class="t-comment">// 1</span>
+<span class="t-type">System</span>.out.println(ids.get(<span class="t-kw">new</span> <span class="t-type">CustomerId</span>(<span class="t-string">"ann@mail.ee"</span>)));  <span class="t-comment">// 20</span>
+
+<span class="t-comment">// Ключ изменили после put: get его больше не находит</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt;, <span class="t-type">Integer</span>&gt; playlists = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; key = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;(<span class="t-type">List</span>.of(<span class="t-string">"rock"</span>));
+playlists.put(key, <span class="t-number">1</span>);
+key.add(<span class="t-string">"jazz"</span>);
+<span class="t-type">System</span>.out.println(playlists.get(key));   <span class="t-comment">// null</span>
+<span class="t-type">System</span>.out.println(playlists.size());     <span class="t-comment">// 1</span></code></pre></div>
 </section>
 <h2 class="group-title" data-id="map-tasks">Практические задачи</h2>
 <section class="card">
