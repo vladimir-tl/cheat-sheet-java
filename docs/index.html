@@ -113,7 +113,7 @@ section { scroll-margin-top: 110px; }
   <div class="subtabs" data-group="conditions"><a href="#ifelse" data-key="ifelse"><span class="l-en">If-else</span><span class="l-ru">If-else</span></a><a href="#switch" data-key="switch"><span class="l-en">Switch</span><span class="l-ru">Switch</span></a></div>
   <div class="subtabs" data-group="arrays"><a href="#array" data-key="array"><span class="l-en">Arrays</span><span class="l-ru">Массивы</span></a></div>
   <div class="subtabs" data-group="warmup"><a href="#warmup" data-key="warmup"><span class="l-en">Warm-up: arrays and loops</span><span class="l-ru">Разминка: массивы и циклы</span></a><a href="#warmuplist" data-key="warmuplist"><span class="l-en">Warm-up: ArrayList</span><span class="l-ru">Разминка: ArrayList</span></a></div>
-  <div class="subtabs" data-group="collections"><a href="#list" data-key="list"><span class="l-en">List</span><span class="l-ru">List</span></a><a href="#set" data-key="set"><span class="l-en">Set and HashSet</span><span class="l-ru">Set и HashSet</span></a><a href="#map" data-key="map"><span class="l-en">Map</span><span class="l-ru">Map</span></a></div>
+  <div class="subtabs" data-group="collections"><a href="#list" data-key="list"><span class="l-en">List</span><span class="l-ru">List</span></a><a href="#set" data-key="set"><span class="l-en">Set and HashSet</span><span class="l-ru">Set и HashSet</span></a><a href="#map" data-key="map"><span class="l-en">Map</span><span class="l-ru">Map</span></a><a href="#comparison" data-key="comparison"><span class="l-en">Comparison</span><span class="l-ru">Сравнение</span></a></div>
   <div class="subtabs" data-group="streams"><a href="#stream" data-key="stream"><span class="l-en">Stream API</span><span class="l-ru">Stream API</span></a></div>
   <a class="practice-link" id="practice-link" href="#"><span class="l-en">Practice tasks</span><span class="l-ru">Практика</span></a>
 </div></div></header>
@@ -6260,6 +6260,104 @@ key.add(<span class="t-string">"jazz"</span>);
 <ul><li><code>countGenres(["rock", "jazz", "rock"])</code> <code>-&gt;</code> {rock=2, jazz=1}</li><li><code>countGenres(["pop", "Pop", "pop"])</code> <code>-&gt;</code> {pop=2, Pop=1}</li><li><code>countGenres([])</code> <code>-&gt;</code> {}</li></ul>
 <div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; countGenres(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; genres)</code></pre></div>
 <details class="hint"><summary>Подсказка</summary><p>Создайте пустой <code>Map&lt;String, Integer&gt; counts</code>: ключ — жанр, значение — сколько раз он встретился. Пройдите по списку циклом <code>for (String genre : genres)</code>. Для каждого жанра возьмите текущий счёт: <code>counts.getOrDefault(genre, 0)</code> (у нового жанра счёта ещё нет, поэтому <code>0</code>). Прибавьте 1 и положите обратно: <code>counts.put(genre, counts.getOrDefault(genre, 0) + 1)</code>. <code>put</code> перезаписывает старое значение по этому ключу, и счёт растёт. Для пустого списка цикл не выполнится, и вернётся пустой словарь.</p></details>
+</section>
+</div>
+</div>
+<div class="topic" data-key="comparison" data-group="collections">
+<div class="l-en">
+<h1>Comparison</h1>
+<p class="lead">Short sample snippets. Copy any of them into a main method and run it.</p>
+<nav class="card contents"><h2>Contents</h2><div class="cols">
+<div class="group"><h4>Collections</h4><ol>
+<li value="1"><a href="#comparison-1">Comparing two lists</a></li>
+<li value="3"><a href="#comparison-3">Comparing two maps</a></li>
+</ol></div>
+</div>
+</nav>
+<h2 class="group-title">Collections</h2>
+<section class="card" data-id="comparison-1">
+<h3>1. Comparing two lists</h3>
+<p>Two lists are equal if they hold the same elements in the same order.</p>
+<p><code>==</code> checks whether it is the same object, equals compares the contents. If the order of the elements changes, equals returns false.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; first = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+first.add(<span class="t-string">"Anna"</span>);
+first.add(<span class="t-string">"Max"</span>);
+
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; second = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+second.add(<span class="t-string">"Anna"</span>);
+second.add(<span class="t-string">"Max"</span>);
+
+<span class="t-type">System</span>.out.println(first == second);      <span class="t-comment">// false: different objects</span>
+<span class="t-type">System</span>.out.println(first.equals(second)); <span class="t-comment">// true: same contents</span>
+
+<span class="t-comment">// If the order changes:</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; third = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+third.add(<span class="t-string">"Max"</span>);
+third.add(<span class="t-string">"Anna"</span>);
+
+<span class="t-type">System</span>.out.println(first.equals(third));  <span class="t-comment">// false</span></code></pre></div>
+</section>
+<section class="card" data-id="comparison-3">
+<h3>3. Comparing two maps</h3>
+<p>Two maps are equal if they hold the same key → value pairs. The order of adding does not matter.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; first = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+first.put(<span class="t-string">"Anna"</span>, <span class="t-number">25</span>);
+first.put(<span class="t-string">"Max"</span>, <span class="t-number">30</span>);
+
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; second = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+second.put(<span class="t-string">"Max"</span>, <span class="t-number">30</span>);
+second.put(<span class="t-string">"Anna"</span>, <span class="t-number">25</span>);
+
+<span class="t-type">System</span>.out.println(first == second);      <span class="t-comment">// false: different objects</span>
+<span class="t-type">System</span>.out.println(first.equals(second)); <span class="t-comment">// true: same pairs</span></code></pre></div>
+</section>
+</div>
+<div class="l-ru">
+<h1>Сравнение</h1>
+<p class="lead">Короткие примеры. Скопируйте любой из них в метод main и запустите.</p>
+<nav class="card contents"><h2>Содержание</h2><div class="cols">
+<div class="group"><h4>Коллекции</h4><ol>
+<li value="1"><a href="#comparison-1">Сравнение двух списков List</a></li>
+<li value="3"><a href="#comparison-3">Сравнение двух Map</a></li>
+</ol></div>
+</div>
+</nav>
+<h2 class="group-title">Коллекции</h2>
+<section class="card" data-id="comparison-1">
+<h3>1. Сравнение двух списков List</h3>
+<p>Списки равны, если в них одинаковые элементы в одинаковом порядке.</p>
+<p><code>==</code> проверяет, один ли это объект, а equals сравнивает содержимое. Если поменять порядок элементов, equals вернёт false.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; first = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+first.add(<span class="t-string">"Anna"</span>);
+first.add(<span class="t-string">"Max"</span>);
+
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; second = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+second.add(<span class="t-string">"Anna"</span>);
+second.add(<span class="t-string">"Max"</span>);
+
+<span class="t-type">System</span>.out.println(first == second);      <span class="t-comment">// false — разные объекты</span>
+<span class="t-type">System</span>.out.println(first.equals(second)); <span class="t-comment">// true — содержимое одинаковое</span>
+
+<span class="t-comment">// Если поменять порядок:</span>
+<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; third = <span class="t-kw">new</span> <span class="t-type">ArrayList</span>&lt;&gt;();
+third.add(<span class="t-string">"Max"</span>);
+third.add(<span class="t-string">"Anna"</span>);
+
+<span class="t-type">System</span>.out.println(first.equals(third));  <span class="t-comment">// false</span></code></pre></div>
+</section>
+<section class="card" data-id="comparison-3">
+<h3>3. Сравнение двух Map</h3>
+<p>Две Map равны, если содержат одинаковые пары «ключ → значение». Порядок добавления не важен.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; first = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+first.put(<span class="t-string">"Anna"</span>, <span class="t-number">25</span>);
+first.put(<span class="t-string">"Max"</span>, <span class="t-number">30</span>);
+
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; second = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+second.put(<span class="t-string">"Max"</span>, <span class="t-number">30</span>);
+second.put(<span class="t-string">"Anna"</span>, <span class="t-number">25</span>);
+
+<span class="t-type">System</span>.out.println(first == second);      <span class="t-comment">// false — разные объекты</span>
+<span class="t-type">System</span>.out.println(first.equals(second)); <span class="t-comment">// true — одинаковые пары</span></code></pre></div>
 </section>
 </div>
 </div>

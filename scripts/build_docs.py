@@ -22,7 +22,7 @@ GROUPS = [
     ("conditions", "Conditions", "Условия", ["IfElseTheory", "SwitchTheory"]),
     ("arrays", "Arrays", "Массивы", ["ArrayTheory"]),
     ("warmup", "Warm-up", "Разминка", ["WarmupTheory", "WarmupListTheory"]),
-    ("collections", "Collections", "Коллекции", ["ListTheory", "SetTheory", "MapTheory"]),
+    ("collections", "Collections", "Коллекции", ["ListTheory", "SetTheory", "MapTheory", "ComparisonTheory"]),
     ("streams", "Stream API", "Stream API", ["StreamTheory"]),
 ]
 
