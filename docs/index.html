@@ -5524,14 +5524,33 @@ ages.size();            <span class="t-comment">// 2: still two keys</span></cod
 <section class="card" data-id="map-3">
 <h3>3. Missing key: <code>null</code> and getOrDefault</h3>
 <p>What happens if you ask for a key that isn't in the Map? There is no error: get simply returns <code>null</code>, which means "nothing".</p>
-<p>If <code>null</code> is inconvenient, use <code>getOrDefault(key, x)</code>. When the key is there, it returns the key's value. When the key is missing, it returns the fallback value x. For example, <code>getOrDefault("Zed", 0)</code> returns 0.</p>
 <p>A trap: don't store the result of get straight into an int. The line int <code>age = ages.get("Zed")</code> crashes with NullPointerException. get returned <code>null</code>, and <code>null</code> can't become an int. Store the result in an Integer or use getOrDefault (see <a class="xref" href="#primitivesandwrappers">PrimitivesAndWrappersTheory</a>).</p>
+<p>To avoid dealing with <code>null</code>, there is <code>getOrDefault(key, x)</code>. It takes two arguments: the key and a fallback value. The rest is simple:</p>
+<ul><li><strong>Key is there:</strong> the method returns the value from the Map, and the fallback x isn't used.</li><li><strong>Key is missing:</strong> the method returns x.</li></ul>
+<p>For example, ages holds only "Anna" <code>-&gt;</code> 26. Then <code>getOrDefault("Anna", 0)</code> returns 26, and <code>getOrDefault("Zed", 0)</code> returns 0.</p>
+<p>Pick the fallback to fit the task. It is the answer that makes sense when there is no data: 0 for a count or a sum, "" for text, -1 as a "not found" mark. The type of x must match the type of the values. For a <code>Map&lt;String, Integer&gt;</code> 0 works, but the string "none" won't compile.</p>
+<p>Important: getOrDefault puts nothing into the Map, it only reads. After <code>getOrDefault("Zed", 0)</code> the key "Zed" is still not in the Map, and <code>size()</code> doesn't change. If you need to keep the pair, call put.</p>
+<p>Most often getOrDefault is used for counting. Say we count how many times each word appears. For each word we take the current count with <code>getOrDefault(word, 0)</code> and put back <code>count + 1</code>. When a word shows up for the first time, it isn't in the Map yet, so the method returns 0. That gives <code>0 + 1 = 1</code>. Without getOrDefault you would have to check separately whether the word is there, with containsKey or a <code>null</code> check.</p>
+<p>A detail for the curious: if the key is there but holds <code>null</code> (<code>map.put("Zed", null)</code>), getOrDefault returns <code>null</code>, not x. The fallback is used only when the key is missing completely. In normal tasks nobody puts <code>null</code> into a Map, so this is rare.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 
+<span class="t-comment">// get: no key -&gt; null</span>
 <span class="t-type">Integer</span> unknown = ages.get(<span class="t-string">"Zed"</span>);        <span class="t-comment">// null</span>
-<span class="t-kw">int</span> safe = ages.getOrDefault(<span class="t-string">"Zed"</span>, <span class="t-number">0</span>);   <span class="t-comment">// 0</span>
-<span class="t-comment">// int crash = ages.get("Zed");           // NullPointerException</span></code></pre></div>
+<span class="t-comment">// int crash = ages.get("Zed");           // NullPointerException</span>
+
+<span class="t-comment">// getOrDefault: key is there -&gt; its value, key is missing -&gt; the fallback</span>
+ages.getOrDefault(<span class="t-string">"Anna"</span>, <span class="t-number">0</span>);             <span class="t-comment">// 26: the key is there, 0 isn't needed</span>
+ages.getOrDefault(<span class="t-string">"Zed"</span>, <span class="t-number">0</span>);              <span class="t-comment">// 0: no such key</span>
+ages.size();                              <span class="t-comment">// 1: "Zed" was NOT added to the Map</span>
+
+<span class="t-comment">// Counting: how many times each word appears</span>
+<span class="t-type">String</span>[] words = {<span class="t-string">"cat"</span>, <span class="t-string">"dog"</span>, <span class="t-string">"cat"</span>};
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; counts = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+<span class="t-kw">for</span> (<span class="t-type">String</span> word : words) {
+    counts.put(word, counts.getOrDefault(word, <span class="t-number">0</span>) + <span class="t-number">1</span>);
+}
+<span class="t-comment">// counts: cat -&gt; 2, dog -&gt; 1</span></code></pre></div>
 </section>
 <section class="card" data-id="map-4">
 <h3>4. Checking a key: containsKey</h3>
@@ -5731,14 +5750,33 @@ ages.size();            <span class="t-comment">// 2: по-прежнему дв
 <section class="card" data-id="map-3">
 <h3>3. Нет ключа: <code>null</code> и getOrDefault</h3>
 <p>Что будет, если спросить ключ, которого в Map нет? Ошибки не будет: get просто вернёт <code>null</code>, то есть «ничего».</p>
-<p>Если <code>null</code> вам неудобен, используйте <code>getOrDefault(key, x)</code>. Когда ключ есть, метод вернёт его значение. Когда ключа нет, вернёт запасное значение x. Например, <code>getOrDefault("Zed", 0)</code> вернёт 0.</p>
 <p>Ловушка: не записывайте результат get сразу в int. Строка int <code>age = ages.get("Zed")</code> упадёт с NullPointerException. get вернул <code>null</code>, а <code>null</code> нельзя превратить в число int. Сохраняйте результат в Integer или берите getOrDefault (см. <a class="xref" href="#primitivesandwrappers">PrimitivesAndWrappersTheory</a>).</p>
+<p>Чтобы не возиться с <code>null</code>, есть <code>getOrDefault(key, x)</code>. Он принимает два аргумента: ключ и запасное значение. Дальше всё просто:</p>
+<ul><li><strong>Ключ есть:</strong> метод вернёт значение из Map, а запасное x не понадобится.</li><li><strong>Ключа нет:</strong> метод вернёт x.</li></ul>
+<p>Например, в ages лежит только "Anna" <code>-&gt;</code> 26. Тогда <code>getOrDefault("Anna", 0)</code> вернёт 26, а <code>getOrDefault("Zed", 0)</code> вернёт 0.</p>
+<p>Запасное значение выбирайте под задачу. Это ответ, который разумно дать, когда данных нет: 0 для количества или суммы, "" для текста, -1 как пометка «не найдено». Тип x должен совпадать с типом значений. Для <code>Map&lt;String, Integer&gt;</code> подойдёт 0, а строка "нет" не скомпилируется.</p>
+<p>Важно: getOrDefault ничего не кладёт в Map, он только читает. После <code>getOrDefault("Zed", 0)</code> ключа "Zed" в Map по-прежнему нет, и <code>size()</code> не меняется. Если пару нужно сохранить, вызовите put.</p>
+<p>Чаще всего getOrDefault нужен для подсчёта. Допустим, мы считаем, сколько раз встречается каждое слово. Для каждого слова берём текущий счётчик через <code>getOrDefault(word, 0)</code> и кладём обратно счётчик + 1. Когда слово встретилось впервые, его ещё нет в Map, и метод вернёт 0. Получится <code>0 + 1 = 1</code>. Без getOrDefault пришлось бы отдельно проверять, есть ли слово, через containsKey или сравнение с <code>null</code>.</p>
+<p>Тонкость для любопытных: если ключ есть, но под ним лежит <code>null</code> (<code>map.put("Zed", null)</code>), getOrDefault вернёт <code>null</code>, а не x. Запасное значение подставляется, только когда ключа нет совсем. В обычных задачах <code>null</code> в Map не кладут, так что это редкость.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 
+<span class="t-comment">// get: ключа нет -&gt; null</span>
 <span class="t-type">Integer</span> unknown = ages.get(<span class="t-string">"Zed"</span>);        <span class="t-comment">// null</span>
-<span class="t-kw">int</span> safe = ages.getOrDefault(<span class="t-string">"Zed"</span>, <span class="t-number">0</span>);   <span class="t-comment">// 0</span>
-<span class="t-comment">// int crash = ages.get("Zed");           // NullPointerException</span></code></pre></div>
+<span class="t-comment">// int crash = ages.get("Zed");           // NullPointerException</span>
+
+<span class="t-comment">// getOrDefault: ключ есть -&gt; его значение, ключа нет -&gt; запасное</span>
+ages.getOrDefault(<span class="t-string">"Anna"</span>, <span class="t-number">0</span>);             <span class="t-comment">// 26: ключ есть, 0 не понадобился</span>
+ages.getOrDefault(<span class="t-string">"Zed"</span>, <span class="t-number">0</span>);              <span class="t-comment">// 0: ключа нет</span>
+ages.size();                              <span class="t-comment">// 1: "Zed" в Map НЕ добавился</span>
+
+<span class="t-comment">// Подсчёт: сколько раз встречается каждое слово</span>
+<span class="t-type">String</span>[] words = {<span class="t-string">"cat"</span>, <span class="t-string">"dog"</span>, <span class="t-string">"cat"</span>};
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; counts = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
+<span class="t-kw">for</span> (<span class="t-type">String</span> word : words) {
+    counts.put(word, counts.getOrDefault(word, <span class="t-number">0</span>) + <span class="t-number">1</span>);
+}
+<span class="t-comment">// counts: cat -&gt; 2, dog -&gt; 1</span></code></pre></div>
 </section>
 <section class="card" data-id="map-4">
 <h3>4. Проверка ключа: containsKey</h3>

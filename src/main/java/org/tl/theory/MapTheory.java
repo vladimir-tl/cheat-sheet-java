@@ -123,22 +123,58 @@ public class MapTheory {
      * What happens if you ask for a key that isn't in the Map? There is no error: get simply
      * returns null, which means "nothing".
      *
-     * If null is inconvenient, use getOrDefault(key, x). When the key is there, it returns
-     * the key's value. When the key is missing, it returns the fallback value x. For example,
-     * getOrDefault("Zed", 0) returns 0.
-     *
      * A trap: don't store the result of get straight into an int. The line
      * int age = ages.get("Zed") crashes with NullPointerException. get returned null,
      * and null can't become an int. Store the result in an Integer or use getOrDefault
      * (see PrimitivesAndWrappersTheory).
+     *
+     * To avoid dealing with null, there is getOrDefault(key, x). It takes two arguments:
+     * the key and a fallback value. The rest is simple:
+     * - Key is there: the method returns the value from the Map, and the fallback x isn't used.
+     * - Key is missing: the method returns x.
+     *
+     * For example, ages holds only "Anna" -> 26. Then getOrDefault("Anna", 0) returns 26,
+     * and getOrDefault("Zed", 0) returns 0.
+     *
+     * Pick the fallback to fit the task. It is the answer that makes sense when there is no data:
+     * 0 for a count or a sum, "" for text, -1 as a "not found" mark. The type of x must match
+     * the type of the values. For a Map<String, Integer> 0 works, but the string "none"
+     * won't compile.
+     *
+     * Important: getOrDefault puts nothing into the Map, it only reads. After
+     * getOrDefault("Zed", 0) the key "Zed" is still not in the Map, and size() doesn't change.
+     * If you need to keep the pair, call put.
+     *
+     * Most often getOrDefault is used for counting. Say we count how many times each word
+     * appears. For each word we take the current count with getOrDefault(word, 0) and put back
+     * count + 1. When a word shows up for the first time, it isn't in the Map yet, so the method
+     * returns 0. That gives 0 + 1 = 1. Without getOrDefault you would have to check separately
+     * whether the word is there, with containsKey or a null check.
+     *
+     * A detail for the curious: if the key is there but holds null (map.put("Zed", null)),
+     * getOrDefault returns null, not x. The fallback is used only when the key is missing
+     * completely. In normal tasks nobody puts null into a Map, so this is rare.
      */
     static void missingKey() {
         Map<String, Integer> ages = new HashMap<>();
         ages.put("Anna", 26);
 
+        // get: no key -> null
         Integer unknown = ages.get("Zed");        // null
-        int safe = ages.getOrDefault("Zed", 0);   // 0
         // int crash = ages.get("Zed");           // NullPointerException
+
+        // getOrDefault: key is there -> its value, key is missing -> the fallback
+        ages.getOrDefault("Anna", 0);             // 26: the key is there, 0 isn't needed
+        ages.getOrDefault("Zed", 0);              // 0: no such key
+        ages.size();                              // 1: "Zed" was NOT added to the Map
+
+        // Counting: how many times each word appears
+        String[] words = {"cat", "dog", "cat"};
+        Map<String, Integer> counts = new HashMap<>();
+        for (String word : words) {
+            counts.put(word, counts.getOrDefault(word, 0) + 1);
+        }
+        // counts: cat -> 2, dog -> 1
     }
 
     /**
