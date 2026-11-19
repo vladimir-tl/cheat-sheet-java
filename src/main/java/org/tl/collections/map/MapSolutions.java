@@ -1,6 +1,7 @@
 package org.tl.collections.map;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,10 +39,10 @@ public class MapSolutions {
         return sum;
     }
 
-    static Map<Character, Integer> countChars(String text) {
-        Map<Character, Integer> counts = new HashMap<>();
-        for (char c : text.toCharArray()) {
-            counts.put(c, counts.getOrDefault(c, 0) + 1);
+    static Map<String, Integer> countGenres(List<String> genres) {
+        Map<String, Integer> counts = new HashMap<>();
+        for (String genre : genres) {
+            counts.put(genre, counts.getOrDefault(genre, 0) + 1);
         }
         return counts;
     }

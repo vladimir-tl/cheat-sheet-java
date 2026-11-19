@@ -1,5 +1,6 @@
 package org.tl.collections.map;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -113,21 +114,22 @@ public class MapTasks {
     }
 
     /**
-     * Ticket 6. Typo statistics
-     * The quality team studies the messages of customers. Count how many times every character
-     * appears in the text. Spaces and punctuation are characters too.
+     * Ticket 6. Count sales by genre
+     * The store wants to know which genres sell best. You get the genres of all sold records,
+     * one per sale. Count how many times every genre appears. Case matters: "pop" and "Pop"
+     * are two different genres.
      *
-     * - Input: text, the customer's message.
-     * - Return: a new map: character -> how many times it appears.
+     * - Input: genres, the list of genres of sold records.
+     * - Return: a new map: genre -> how many records of this genre were sold.
      *
      * Examples:
-     * - countChars("aab") -> {a=2, b=1}
-     * - countChars("hello") -> {h=1, e=1, l=2, o=1}
-     * - countChars("") -> {}
+     * - countGenres(["rock", "jazz", "rock"]) -> {rock=2, jazz=1}
+     * - countGenres(["pop", "Pop", "pop"]) -> {pop=2, Pop=1}
+     * - countGenres([]) -> {}
      *
-     * Hint: Loop over `text.toCharArray()`. For every char `c` put `getOrDefault(c, 0) + 1`.
+     * Hint: Loop over `genres`. For every genre `g` put `getOrDefault(g, 0) + 1`.
      */
-    static Map<Character, Integer> countChars(String text) {
+    static Map<String, Integer> countGenres(List<String> genres) {
         return null;
     }
 }

@@ -5784,13 +5784,13 @@ bonus.size();        <span class="t-comment">// 1 (with a plain class without eq
 <details class="hint"><summary>Hint</summary><p>The names don't matter here, only the prices, and <code>prices.values()</code> gives exactly them. Start with <code>int sum = 0</code>, go through <code>for (int price : prices.values())</code> and add each price: <code>sum += price</code>. For an empty map the loop doesn't run once, and you return <code>0</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Ticket 6. Count every character in a text</h3>
-<p>The quality team studies the messages of customers. Count how many times every character appears in the text. Spaces and punctuation are characters too.</p>
-<ul><li><strong>Input:</strong> text, the customer's message.</li><li><strong>Return:</strong> a new map: character <code>-&gt;</code> how many times it appears.</li></ul>
+<h3>Ticket 6. Count sales by genre</h3>
+<p>The store wants to know which genres sell best. You get the genres of all sold records, one per sale. Count how many times every genre appears. Case matters: "pop" and "Pop" are two different genres.</p>
+<ul><li><strong>Input:</strong> genres, the list of genres of sold records.</li><li><strong>Return:</strong> a new map: genre <code>-&gt;</code> how many records of this genre were sold.</li></ul>
 <p>Examples:</p>
-<ul><li><code>countChars("aab")</code> <code>-&gt;</code> {a=2, b=1}</li><li><code>countChars("hello")</code> <code>-&gt;</code> {h=1, e=1, l=2, o=1}</li><li><code>countChars("")</code> <code>-&gt;</code> {}</li></ul>
-<div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">Character</span>, <span class="t-type">Integer</span>&gt; countChars(<span class="t-type">String</span> text)</code></pre></div>
-<details class="hint"><summary>Hint</summary><p>Create an empty <code>Map&lt;Character, Integer&gt; counts</code>: the key is the character, the value is how many times it has been seen. Go through the text with <code>for (char c : text.toCharArray())</code>. For each character take the current count: <code>counts.getOrDefault(c, 0)</code> (a new character has no count yet, so it is <code>0</code>). Add 1 and put it back: <code>counts.put(c, counts.getOrDefault(c, 0) + 1)</code>. <code>put</code> overwrites the old value for this key, so the count grows. For an empty string the loop doesn't run, and you return an empty map.</p></details>
+<ul><li><code>countGenres(["rock", "jazz", "rock"])</code> <code>-&gt;</code> {rock=2, jazz=1}</li><li><code>countGenres(["pop", "Pop", "pop"])</code> <code>-&gt;</code> {pop=2, Pop=1}</li><li><code>countGenres([])</code> <code>-&gt;</code> {}</li></ul>
+<div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; countGenres(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; genres)</code></pre></div>
+<details class="hint"><summary>Hint</summary><p>Create an empty <code>Map&lt;String, Integer&gt; counts</code>: the key is the genre, the value is how many times it has been seen. Go through the list with <code>for (String genre : genres)</code>. For each genre take the current count: <code>counts.getOrDefault(genre, 0)</code> (a new genre has no count yet, so it is <code>0</code>). Add 1 and put it back: <code>counts.put(genre, counts.getOrDefault(genre, 0) + 1)</code>. <code>put</code> overwrites the old value for this key, so the count grows. For an empty list the loop doesn't run, and you return an empty map.</p></details>
 </section>
 </div>
 <div class="l-ru">
@@ -6117,13 +6117,13 @@ bonus.size();        <span class="t-comment">// 1 (с обычным класс�
 <details class="hint"><summary>Подсказка</summary><p>Названия товаров здесь не важны, нужны только цены, а их как раз даёт <code>prices.values()</code>. Начните с <code>int sum = 0</code>, пройдите циклом <code>for (int price : prices.values())</code> и прибавляйте каждую цену: <code>sum += price</code>. Для пустого словаря цикл не выполнится ни разу, и вы вернёте <code>0</code>.</p></details>
 </section>
 <section class="card task">
-<h3>Тикет 6. Посчитать каждый символ в тексте</h3>
-<p>Отдел качества изучает сообщения клиентов. Посчитайте, сколько раз каждый символ встречается в тексте. Пробелы и знаки препинания — тоже символы.</p>
-<ul><li><strong>Дано:</strong> text — сообщение клиента.</li><li><strong>Вернуть:</strong> новый словарь: символ <code>-&gt;</code> сколько раз он встречается.</li></ul>
+<h3>Тикет 6. Посчитать продажи по жанрам</h3>
+<p>Магазин хочет знать, какие жанры продаются лучше всего. Вам дают жанры всех проданных пластинок, по одному на каждую продажу. Посчитайте, сколько раз встречается каждый жанр. Регистр важен: "pop" и "Pop" — два разных жанра.</p>
+<ul><li><strong>Дано:</strong> genres — список жанров проданных пластинок.</li><li><strong>Вернуть:</strong> новый словарь: жанр <code>-&gt;</code> сколько пластинок этого жанра продали.</li></ul>
 <p>Примеры:</p>
-<ul><li><code>countChars("aab")</code> <code>-&gt;</code> {a=2, b=1}</li><li><code>countChars("hello")</code> <code>-&gt;</code> {h=1, e=1, l=2, o=1}</li><li><code>countChars("")</code> <code>-&gt;</code> {}</li></ul>
-<div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">Character</span>, <span class="t-type">Integer</span>&gt; countChars(<span class="t-type">String</span> text)</code></pre></div>
-<details class="hint"><summary>Подсказка</summary><p>Создайте пустой <code>Map&lt;Character, Integer&gt; counts</code>: ключ — символ, значение — сколько раз он встретился. Пройдите по тексту циклом <code>for (char c : text.toCharArray())</code>. Для каждого символа возьмите текущий счёт: <code>counts.getOrDefault(c, 0)</code> (у нового символа счёта ещё нет, поэтому <code>0</code>). Прибавьте 1 и положите обратно: <code>counts.put(c, counts.getOrDefault(c, 0) + 1)</code>. <code>put</code> перезаписывает старое значение по этому ключу, и счёт растёт. Для пустой строки цикл не выполнится, и вернётся пустой словарь.</p></details>
+<ul><li><code>countGenres(["rock", "jazz", "rock"])</code> <code>-&gt;</code> {rock=2, jazz=1}</li><li><code>countGenres(["pop", "Pop", "pop"])</code> <code>-&gt;</code> {pop=2, Pop=1}</li><li><code>countGenres([])</code> <code>-&gt;</code> {}</li></ul>
+<div class="code"><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; countGenres(<span class="t-type">List</span>&lt;<span class="t-type">String</span>&gt; genres)</code></pre></div>
+<details class="hint"><summary>Подсказка</summary><p>Создайте пустой <code>Map&lt;String, Integer&gt; counts</code>: ключ — жанр, значение — сколько раз он встретился. Пройдите по списку циклом <code>for (String genre : genres)</code>. Для каждого жанра возьмите текущий счёт: <code>counts.getOrDefault(genre, 0)</code> (у нового жанра счёта ещё нет, поэтому <code>0</code>). Прибавьте 1 и положите обратно: <code>counts.put(genre, counts.getOrDefault(genre, 0) + 1)</code>. <code>put</code> перезаписывает старое значение по этому ключу, и счёт растёт. Для пустого списка цикл не выполнится, и вернётся пустой словарь.</p></details>
 </section>
 </div>
 </div>
