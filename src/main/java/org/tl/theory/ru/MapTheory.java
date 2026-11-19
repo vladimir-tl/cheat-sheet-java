@@ -201,29 +201,72 @@ public class MapTheory {
      * и остальные. Отличаются они порядком, в котором хранят пары и выводят их при печати
      * или переборе.
      *
-     * Три самых частых вида:
-     * - HashMap: порядок пар не гарантирован, они могут вывестись в любом порядке. Зато это
-     *   самый быстрый вариант, поэтому берите его по умолчанию.
+     * Чтобы увидеть разницу, положим в каждую Map одни и те же пары в одном порядке:
+     * put("Bob", 1), потом put("Anna", 2), потом put("Eve", 3). И напечатаем результат.
+     * - HashMap: порядок пар не гарантирован. Он зависит от того, как HashMap раскладывает
+     *   ключи внутри, и может поменяться, когда вы добавите новые пары. Поэтому не пишите код,
+     *   который рассчитывает на этот порядок. Зато HashMap самый быстрый, и в большинстве задач
+     *   порядок не важен. Берите его по умолчанию.
+     *   > System.out.println(hash);     // {Bob=1, Eve=3, Anna=2}, но может быть и другой порядок
      * - LinkedHashMap: помнит порядок добавления. Какую пару положили первой, та первой
-     *   и выведется.
-     * - TreeMap: сортирует пары по ключу. Строки идут по алфавиту, числа от меньшего к большему.
+     *   и выведется. Если положить новое значение под уже существующий ключ, пара останется
+     *   на своём месте. Берите его, когда порядок важен: товары в корзине, шаги в истории действий.
+     *   > System.out.println(linked);   // {Bob=1, Anna=2, Eve=3}
+     * - TreeMap: сортирует пары по ключу. Строки идут по алфавиту, числа от меньшего
+     *   к большему. Берите его, когда нужен отсортированный результат: словарь по алфавиту,
+     *   расписание по часам. Работает чуть медленнее HashMap. Учтите, что строки сравниваются
+     *   с учётом регистра: заглавные буквы идут раньше строчных, поэтому "Bob" окажется
+     *   перед "anna".
+     *   > System.out.println(tree);     // {Anna=2, Bob=1, Eve=3}
      *
-     * Слева обычно пишут просто Map, а конкретный вид указывают справа, после new.
-     * Так потом легко заменить HashMap на TreeMap: правка нужна только в одном месте.
+     * Если сомневаетесь, берите HashMap. Остальные два нужны, только когда важен порядок.
      *
-     * Есть и короткий способ создать Map сразу с данными: Map.of("Anna", 26, "Bob", 30).
-     * Но такую Map нельзя изменить: любой put бросит UnsupportedOperationException.
-     * Если пары нужно добавлять, создайте new HashMap<>().
+     * Слева обычно пишут просто Map, а конкретный вид указывают справа, после new:
+     * Map<String, Integer> ages = new TreeMap<>(). Так потом легко заменить TreeMap
+     * на HashMap: правка нужна только в одном месте, остальной код менять не придётся.
+     *
+     * Есть и короткий способ создать Map сразу с данными: Map.of("EE", "Estonia", "LV", "Latvia").
+     * Аргументы идут парами: ключ, значение, ключ, значение. У такой Map три ограничения:
+     * - Изменить нельзя: put бросит UnsupportedOperationException.
+     * - Ключи не повторяются: Map.of("Anna", 1, "Anna", 2) бросит IllegalArgumentException.
+     * - Порядок не гарантирован, как у HashMap.
+     *
+     * Map.of удобен для данных, которые не меняются, например для кодов стран. Если пары
+     * нужно добавлять, создайте изменяемую копию: new HashMap<>(Map.of(...)).
      */
     static void kinds() {
         Map<String, Integer> hash = new HashMap<>();
-        Map<String, Integer> linked = new LinkedHashMap<>();
+        Map<String, Integer> linked = new HashMap<>();
         Map<String, Integer> tree = new TreeMap<>();
 
-        // После put("Bob", 1), put("Anna", 2), put("Eve", 3):
-        //   HashMap:       любой порядок
-        //   LinkedHashMap: {Bob=1, Anna=2, Eve=3}
-        //   TreeMap:       {Anna=2, Bob=1, Eve=3}
+        // Одни и те же пары в одном порядке: Bob, Anna, Eve
+        hash.put("Bob", 1);
+        hash.put("Anna", 2);
+        hash.put("Eve", 3);
+        linked.put("Bob", 1);
+        linked.put("Anna", 2);
+        linked.put("Eve", 3);
+        tree.put("Bob", 1);
+        tree.put("Anna", 2);
+        tree.put("Eve", 3);
+
+        System.out.println(hash);     // {Bob=1, Eve=3, Anna=2}: порядок не гарантирован
+        System.out.println(linked);   // {Bob=1, Anna=2, Eve=3}: порядок добавления
+        System.out.println(tree);     // {Anna=2, Bob=1, Eve=3}: по алфавиту
+
+        // TreeMap с числами в ключах: от меньшего к большему
+        Map<Integer, String> schedule = new TreeMap<>();
+        schedule.put(18, "Dinner");
+        schedule.put(8, "Breakfast");
+        schedule.put(13, "Lunch");
+        System.out.println(schedule); // {8=Breakfast, 13=Lunch, 18=Dinner}
+
+        // Map.of: сразу с данными, но изменить нельзя
+        Map<String, String> countries = Map.of("EE", "Estonia", "LV", "Latvia");
+        // countries.put("LT", "Lithuania");    // UnsupportedOperationException
+
+        Map<String, String> editable = new HashMap<>(countries);  // изменяемая копия
+        editable.put("LT", "Lithuania");                          // так можно
     }
 
     /**
@@ -231,19 +274,19 @@ public class MapTheory {
      *
      * Пройти по Map циклом for-each напрямую нельзя. Java не знает, что вы хотите перебрать:
      * ключи, значения или пары целиком. Поэтому сначала выберите это сами одним из трёх методов.
-     * Во всех примерах ages = {Anna=26, Bob=30}.
+     * Во всех примерах ages — обычный HashMap: сначала put("Anna", 26), потом put("Bob", 30).
      * - entrySet(): пары целиком. У каждой пары есть getKey() (ключ) и getValue() (значение).
      *   > for (Map.Entry<String, Integer> e : ages.entrySet()) {
      *   >     System.out.println(e.getKey() + " -> " + e.getValue());
      *   > }
-     *   > // Anna -> 26
      *   > // Bob -> 30
+     *   > // Anna -> 26
      * - keySet(): только ключи. Значение по ключу при желании можно достать через get.
      *   > for (String name : ages.keySet()) {
      *   >     System.out.println(name);
      *   > }
-     *   > // Anna
      *   > // Bob
+     *   > // Anna
      * - values(): только значения, без ключей. Удобно, например, чтобы посчитать сумму.
      *   > int sum = 0;
      *   > for (int age : ages.values()) {
@@ -255,24 +298,26 @@ public class MapTheory {
      * как Map.Entry<String, Integer>, то есть «запись Map с ключом String и значением Integer».
      * Выглядит длинно, но к этому быстро привыкают.
      *
-     * В примере мы взяли LinkedHashMap, чтобы пары выводились в порядке добавления.
+     * Обратите внимание на порядок: Bob вывелся раньше Anna, хотя его добавили вторым.
+     * Это нормально для HashMap, порядок пар в нём не гарантирован (см. раздел 5).
+     * Если нужен порядок добавления, возьмите LinkedHashMap, а если сортировка — TreeMap.
      */
     static void iterating() {
-        Map<String, Integer> ages = new LinkedHashMap<>();
+        Map<String, Integer> ages = new HashMap<>();
         ages.put("Anna", 26);
         ages.put("Bob", 30);
 
-        // Пары: Anna=26, Bob=30
+        // Пары: Bob=30, Anna=26 (порядок HashMap не гарантирован)
         for (Map.Entry<String, Integer> e : ages.entrySet()) {
             System.out.println(e.getKey() + "=" + e.getValue());
         }
 
-        // Ключи: Anna, Bob
+        // Ключи: Bob, Anna
         for (String name : ages.keySet()) {
             System.out.println(name);
         }
 
-        // Значения: 26, 30
+        // Значения: 30, 26
         for (int age : ages.values()) {
             System.out.println(age);
         }

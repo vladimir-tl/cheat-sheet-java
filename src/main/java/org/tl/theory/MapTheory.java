@@ -203,29 +203,73 @@ public class MapTheory {
      * containsKey and the rest. The difference is the order in which they keep the pairs
      * and show them when you print or loop over the Map.
      *
-     * The three most common kinds:
-     * - HashMap: the order of the pairs is not guaranteed, they can come out in any order.
-     *   But it is the fastest one, so use it by default.
+     * To see the difference, let's put the same pairs into each Map in the same order:
+     * put("Bob", 1), then put("Anna", 2), then put("Eve", 3). And print the result.
+     * - HashMap: the order of the pairs is not guaranteed. It depends on how HashMap arranges
+     *   the keys inside, and it can change when you add new pairs. So don't write code that
+     *   relies on this order. On the other hand, HashMap is the fastest, and in most tasks
+     *   the order doesn't matter. Use it by default.
+     *   > System.out.println(hash);     // {Bob=1, Eve=3, Anna=2}, but the order may be different
      * - LinkedHashMap: remembers the insertion order. The pair you put first comes out first.
+     *   If you put a new value under a key that is already there, the pair stays in its place.
+     *   Use it when the order matters: items in a shopping cart, steps in an action history.
+     *   > System.out.println(linked);   // {Bob=1, Anna=2, Eve=3}
      * - TreeMap: sorts the pairs by key. Strings go in alphabetical order, numbers from smallest
-     *   to largest.
+     *   to largest. Use it when you need a sorted result: a dictionary in alphabetical order,
+     *   a schedule by hour. It is a bit slower than HashMap. Keep in mind that strings are
+     *   compared case-sensitively: capital letters go before lowercase ones, so "Bob" ends up
+     *   before "anna".
+     *   > System.out.println(tree);     // {Anna=2, Bob=1, Eve=3}
      *
-     * On the left you usually write just Map, and the specific kind goes on the right, after new.
-     * That way it's easy to swap HashMap for TreeMap later: you change only one place.
+     * If in doubt, use HashMap. The other two are needed only when the order matters.
      *
-     * There is also a short way to create a Map with data right away: Map.of("Anna", 26, "Bob", 30).
-     * But such a Map can't be changed: any put throws UnsupportedOperationException.
-     * If you need to add pairs, create a new HashMap<>().
+     * On the left you usually write just Map, and the specific kind goes on the right, after new:
+     * Map<String, Integer> ages = new TreeMap<>(). That way it's easy to swap TreeMap for HashMap
+     * later: you change only one place, and the rest of the code stays the same.
+     *
+     * There is also a short way to create a Map with data right away:
+     * Map.of("EE", "Estonia", "LV", "Latvia"). The arguments go in pairs: key, value, key, value.
+     * Such a Map has three limits:
+     * - Can't be changed: put throws UnsupportedOperationException.
+     * - Keys don't repeat: Map.of("Anna", 1, "Anna", 2) throws IllegalArgumentException.
+     * - No guaranteed order, just like HashMap.
+     *
+     * Map.of is handy for data that doesn't change, for example country codes. If you need to add
+     * pairs, make a changeable copy: new HashMap<>(Map.of(...)).
      */
     static void kinds() {
         Map<String, Integer> hash = new HashMap<>();
-        Map<String, Integer> linked = new LinkedHashMap<>();
+        Map<String, Integer> linked = new HashMap<>();
         Map<String, Integer> tree = new TreeMap<>();
 
-        // After put("Bob", 1), put("Anna", 2), put("Eve", 3):
-        //   HashMap:       any order
-        //   LinkedHashMap: {Bob=1, Anna=2, Eve=3}
-        //   TreeMap:       {Anna=2, Bob=1, Eve=3}
+        // The same pairs in the same order: Bob, Anna, Eve
+        hash.put("Bob", 1);
+        hash.put("Anna", 2);
+        hash.put("Eve", 3);
+        linked.put("Bob", 1);
+        linked.put("Anna", 2);
+        linked.put("Eve", 3);
+        tree.put("Bob", 1);
+        tree.put("Anna", 2);
+        tree.put("Eve", 3);
+
+        System.out.println(hash);     // {Bob=1, Eve=3, Anna=2}: no guaranteed order
+        System.out.println(linked);   // {Bob=1, Anna=2, Eve=3}: insertion order
+        System.out.println(tree);     // {Anna=2, Bob=1, Eve=3}: alphabetical order
+
+        // TreeMap with number keys: from smallest to largest
+        Map<Integer, String> schedule = new TreeMap<>();
+        schedule.put(18, "Dinner");
+        schedule.put(8, "Breakfast");
+        schedule.put(13, "Lunch");
+        System.out.println(schedule); // {8=Breakfast, 13=Lunch, 18=Dinner}
+
+        // Map.of: data right away, but can't be changed
+        Map<String, String> countries = Map.of("EE", "Estonia", "LV", "Latvia");
+        // countries.put("LT", "Lithuania");    // UnsupportedOperationException
+
+        Map<String, String> editable = new HashMap<>(countries);  // a changeable copy
+        editable.put("LT", "Lithuania");                          // this works
     }
 
     /**
@@ -233,19 +277,20 @@ public class MapTheory {
      *
      * You can't loop over a Map with for-each directly. Java doesn't know what you want to go
      * through: the keys, the values or the whole pairs. So you choose it first with one of
-     * three methods. In all the examples ages = {Anna=26, Bob=30}.
+     * three methods. In all the examples ages is a plain HashMap:
+     * first put("Anna", 26), then put("Bob", 30).
      * - entrySet(): whole pairs. Each pair has getKey() (the key) and getValue() (the value).
      *   > for (Map.Entry<String, Integer> e : ages.entrySet()) {
      *   >     System.out.println(e.getKey() + " -> " + e.getValue());
      *   > }
-     *   > // Anna -> 26
      *   > // Bob -> 30
+     *   > // Anna -> 26
      * - keySet(): only the keys. You can still get the value for a key with get if you need it.
      *   > for (String name : ages.keySet()) {
      *   >     System.out.println(name);
      *   > }
-     *   > // Anna
      *   > // Bob
+     *   > // Anna
      * - values(): only the values, without keys. Handy, for example, to count a sum.
      *   > int sum = 0;
      *   > for (int age : ages.values()) {
@@ -257,24 +302,26 @@ public class MapTheory {
      * is written as Map.Entry<String, Integer>, which means "a Map entry with a String key
      * and an Integer value". It looks long, but you get used to it quickly.
      *
-     * The example uses a LinkedHashMap so that the pairs come out in insertion order.
+     * Notice the order: Bob came out before Anna, even though he was added second.
+     * That's normal for a HashMap, the order of its pairs is not guaranteed (see section 5).
+     * If you need insertion order, use a LinkedHashMap, and for sorting, a TreeMap.
      */
     static void iterating() {
-        Map<String, Integer> ages = new LinkedHashMap<>();
+        Map<String, Integer> ages = new HashMap<>();
         ages.put("Anna", 26);
         ages.put("Bob", 30);
 
-        // Pairs: Anna=26, Bob=30
+        // Pairs: Bob=30, Anna=26 (a HashMap doesn't guarantee the order)
         for (Map.Entry<String, Integer> e : ages.entrySet()) {
             System.out.println(e.getKey() + "=" + e.getValue());
         }
 
-        // Keys: Anna, Bob
+        // Keys: Bob, Anna
         for (String name : ages.keySet()) {
             System.out.println(name);
         }
 
-        // Values: 26, 30
+        // Values: 30, 26
         for (int age : ages.values()) {
             System.out.println(age);
         }

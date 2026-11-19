@@ -5567,53 +5567,80 @@ ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment
 <section class="card" data-id="map-5">
 <h3>5. HashMap, LinkedHashMap, TreeMap</h3>
 <p>Java has several ready-made kinds of Map. They all have the same methods: put, get, containsKey and the rest. The difference is the order in which they keep the pairs and show them when you print or loop over the Map.</p>
-<p>The three most common kinds:</p>
-<ul><li><strong>HashMap:</strong> the order of the pairs is not guaranteed, they can come out in any order. But it is the fastest one, so use it by default.</li><li><strong>LinkedHashMap:</strong> remembers the insertion order. The pair you put first comes out first.</li><li><strong>TreeMap:</strong> sorts the pairs by key. Strings go in alphabetical order, numbers from smallest to largest.</li></ul>
-<p>On the left you usually write just Map, and the specific kind goes on the right, after new. That way it's easy to swap HashMap for TreeMap later: you change only one place.</p>
-<p>There is also a short way to create a Map with data right away: <code>Map.of("Anna", 26, "Bob", 30)</code>. But such a Map can't be changed: any put throws UnsupportedOperationException. If you need to add pairs, create a <code>new HashMap&lt;&gt;()</code>.</p>
+<p>To see the difference, let's put the same pairs into each Map in the same order: <code>put("Bob", 1)</code>, then <code>put("Anna", 2)</code>, then <code>put("Eve", 3)</code>. And print the result.</p>
+<ul><li><strong>HashMap:</strong> the order of the pairs is not guaranteed. It depends on how HashMap arranges the keys inside, and it can change when you add new pairs. So don't write code that relies on this order. On the other hand, HashMap is the fastest, and in most tasks the order doesn't matter. Use it by default.<pre class="eg"><code><span class="t-type">System</span>.out.println(hash);     <span class="t-comment">// {Bob=1, Eve=3, Anna=2}, but the order may be different</span></code></pre></li><li><strong>LinkedHashMap:</strong> remembers the insertion order. The pair you put first comes out first. If you put a new value under a key that is already there, the pair stays in its place. Use it when the order matters: items in a shopping cart, steps in an action history.<pre class="eg"><code><span class="t-type">System</span>.out.println(linked);   <span class="t-comment">// {Bob=1, Anna=2, Eve=3}</span></code></pre></li><li><strong>TreeMap:</strong> sorts the pairs by key. Strings go in alphabetical order, numbers from smallest to largest. Use it when you need a sorted result: a dictionary in alphabetical order, a schedule by hour. It is a bit slower than HashMap. Keep in mind that strings are compared case-sensitively: capital letters go before lowercase ones, so "Bob" ends up before "anna".<pre class="eg"><code><span class="t-type">System</span>.out.println(tree);     <span class="t-comment">// {Anna=2, Bob=1, Eve=3}</span></code></pre></li></ul>
+<p>If in doubt, use HashMap. The other two are needed only when the order matters.</p>
+<p>On the left you usually write just Map, and the specific kind goes on the right, after new: <code>Map&lt;String, Integer&gt;</code> ages = <code>new TreeMap&lt;&gt;()</code>. That way it's easy to swap TreeMap for HashMap later: you change only one place, and the rest of the code stays the same.</p>
+<p>There is also a short way to create a Map with data right away: <code>Map.of("EE", "Estonia", "LV", "Latvia")</code>. The arguments go in pairs: key, value, key, value. Such a Map has three limits:</p>
+<ul><li><strong>Can't be changed:</strong> put throws UnsupportedOperationException.</li><li><strong>Keys don't repeat:</strong> <code>Map.of("Anna", 1, "Anna", 2)</code> throws IllegalArgumentException.</li><li>No guaranteed order, just like HashMap.</li></ul>
+<p>Map.of is handy for data that doesn't change, for example country codes. If you need to add pairs, make a changeable copy: <code>new HashMap&lt;&gt;(Map.of(...))</code>.</p>
 <div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; hash = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
-<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; linked = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; linked = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 <span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; tree = <span class="t-kw">new</span> <span class="t-type">TreeMap</span>&lt;&gt;();
 
-<span class="t-comment">// After put("Bob", 1), put("Anna", 2), put("Eve", 3):</span>
-<span class="t-comment">//   HashMap:       any order</span>
-<span class="t-comment">//   LinkedHashMap: {Bob=1, Anna=2, Eve=3}</span>
-<span class="t-comment">//   TreeMap:       {Anna=2, Bob=1, Eve=3}</span></code></pre></div>
+<span class="t-comment">// The same pairs in the same order: Bob, Anna, Eve</span>
+hash.put(<span class="t-string">"Bob"</span>, <span class="t-number">1</span>);
+hash.put(<span class="t-string">"Anna"</span>, <span class="t-number">2</span>);
+hash.put(<span class="t-string">"Eve"</span>, <span class="t-number">3</span>);
+linked.put(<span class="t-string">"Bob"</span>, <span class="t-number">1</span>);
+linked.put(<span class="t-string">"Anna"</span>, <span class="t-number">2</span>);
+linked.put(<span class="t-string">"Eve"</span>, <span class="t-number">3</span>);
+tree.put(<span class="t-string">"Bob"</span>, <span class="t-number">1</span>);
+tree.put(<span class="t-string">"Anna"</span>, <span class="t-number">2</span>);
+tree.put(<span class="t-string">"Eve"</span>, <span class="t-number">3</span>);
+
+<span class="t-type">System</span>.out.println(hash);     <span class="t-comment">// {Bob=1, Eve=3, Anna=2}: no guaranteed order</span>
+<span class="t-type">System</span>.out.println(linked);   <span class="t-comment">// {Bob=1, Anna=2, Eve=3}: insertion order</span>
+<span class="t-type">System</span>.out.println(tree);     <span class="t-comment">// {Anna=2, Bob=1, Eve=3}: alphabetical order</span>
+
+<span class="t-comment">// TreeMap with number keys: from smallest to largest</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">Integer</span>, <span class="t-type">String</span>&gt; schedule = <span class="t-kw">new</span> <span class="t-type">TreeMap</span>&lt;&gt;();
+schedule.put(<span class="t-number">18</span>, <span class="t-string">"Dinner"</span>);
+schedule.put(<span class="t-number">8</span>, <span class="t-string">"Breakfast"</span>);
+schedule.put(<span class="t-number">13</span>, <span class="t-string">"Lunch"</span>);
+<span class="t-type">System</span>.out.println(schedule); <span class="t-comment">// {8=Breakfast, 13=Lunch, 18=Dinner}</span>
+
+<span class="t-comment">// Map.of: data right away, but can't be changed</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">String</span>&gt; countries = <span class="t-type">Map</span>.of(<span class="t-string">"EE"</span>, <span class="t-string">"Estonia"</span>, <span class="t-string">"LV"</span>, <span class="t-string">"Latvia"</span>);
+<span class="t-comment">// countries.put("LT", "Lithuania");    // UnsupportedOperationException</span>
+
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">String</span>&gt; editable = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;(countries);  <span class="t-comment">// a changeable copy</span>
+editable.put(<span class="t-string">"LT"</span>, <span class="t-string">"Lithuania"</span>);                          <span class="t-comment">// this works</span></code></pre></div>
 </section>
 <h2 class="group-title">Looping</h2>
 <section class="card" data-id="map-6">
 <h3>6. Iterating: entrySet, keySet, values</h3>
-<p>You can't loop over a Map with for-each directly. Java doesn't know what you want to go through: the keys, the values or the whole pairs. So you choose it first with one of three methods. In all the examples ages = {Anna=26, Bob=30}.</p>
+<p>You can't loop over a Map with for-each directly. Java doesn't know what you want to go through: the keys, the values or the whole pairs. So you choose it first with one of three methods. In all the examples ages is a plain HashMap: first <code>put("Anna", 26)</code>, then <code>put("Bob", 30)</code>.</p>
 <ul><li><strong><code>entrySet()</code>:</strong> whole pairs. Each pair has <code>getKey()</code> (the key) and <code>getValue()</code> (the value).<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">Map</span>.<span class="t-type">Entry</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; e : ages.entrySet()) {
     <span class="t-type">System</span>.out.println(e.getKey() + <span class="t-string">" -&gt; "</span> + e.getValue());
 }
-<span class="t-comment">// Anna -&gt; 26</span>
-<span class="t-comment">// Bob -&gt; 30</span></code></pre></li><li><strong><code>keySet()</code>:</strong> only the keys. You can still get the value for a key with get if you need it.<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
+<span class="t-comment">// Bob -&gt; 30</span>
+<span class="t-comment">// Anna -&gt; 26</span></code></pre></li><li><strong><code>keySet()</code>:</strong> only the keys. You can still get the value for a key with get if you need it.<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
     <span class="t-type">System</span>.out.println(name);
 }
-<span class="t-comment">// Anna</span>
-<span class="t-comment">// Bob</span></code></pre></li><li><strong><code>values()</code>:</strong> only the values, without keys. Handy, for example, to count a sum.<pre class="eg"><code><span class="t-kw">int</span> sum = <span class="t-number">0</span>;
+<span class="t-comment">// Bob</span>
+<span class="t-comment">// Anna</span></code></pre></li><li><strong><code>values()</code>:</strong> only the values, without keys. Handy, for example, to count a sum.<pre class="eg"><code><span class="t-kw">int</span> sum = <span class="t-number">0</span>;
 <span class="t-kw">for</span> (<span class="t-kw">int</span> age : ages.values()) {
     sum += age;
 }
 <span class="t-comment">// sum = 56</span></code></pre></li></ul>
 <p>If you need both the key and the value in the loop, use entrySet. The type of each pair is written as Map.<code>Entry&lt;String, Integer&gt;</code>, which means "a Map entry with a String key and an Integer value". It looks long, but you get used to it quickly.</p>
-<p>The example uses a LinkedHashMap so that the pairs come out in insertion order.</p>
-<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
+<p>Notice the order: Bob came out before Anna, even though he was added second. That's normal for a HashMap, the order of its pairs is not guaranteed (see section <a class="xref" href="#map-5">5</a>). If you need insertion order, use a LinkedHashMap, and for sorting, a TreeMap.</p>
+<div class="code"><button class="copy" type="button" data-copy="Copy" data-copied="Copied">Copy</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
 
-<span class="t-comment">// Pairs: Anna=26, Bob=30</span>
+<span class="t-comment">// Pairs: Bob=30, Anna=26 (a HashMap doesn't guarantee the order)</span>
 <span class="t-kw">for</span> (<span class="t-type">Map</span>.<span class="t-type">Entry</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; e : ages.entrySet()) {
     <span class="t-type">System</span>.out.println(e.getKey() + <span class="t-string">"="</span> + e.getValue());
 }
 
-<span class="t-comment">// Keys: Anna, Bob</span>
+<span class="t-comment">// Keys: Bob, Anna</span>
 <span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
     <span class="t-type">System</span>.out.println(name);
 }
 
-<span class="t-comment">// Values: 26, 30</span>
+<span class="t-comment">// Values: 30, 26</span>
 <span class="t-kw">for</span> (<span class="t-kw">int</span> age : ages.values()) {
     <span class="t-type">System</span>.out.println(age);
 }</code></pre></div>
@@ -5805,53 +5832,80 @@ ages.containsValue(<span class="t-number">26</span>);     <span class="t-comment
 <section class="card" data-id="map-5">
 <h3>5. HashMap, LinkedHashMap, TreeMap</h3>
 <p>В Java есть несколько готовых видов Map. Методы у них одинаковые: put, get, containsKey и остальные. Отличаются они порядком, в котором хранят пары и выводят их при печати или переборе.</p>
-<p>Три самых частых вида:</p>
-<ul><li><strong>HashMap:</strong> порядок пар не гарантирован, они могут вывестись в любом порядке. Зато это самый быстрый вариант, поэтому берите его по умолчанию.</li><li><strong>LinkedHashMap:</strong> помнит порядок добавления. Какую пару положили первой, та первой и выведется.</li><li><strong>TreeMap:</strong> сортирует пары по ключу. Строки идут по алфавиту, числа от меньшего к большему.</li></ul>
-<p>Слева обычно пишут просто Map, а конкретный вид указывают справа, после new. Так потом легко заменить HashMap на TreeMap: правка нужна только в одном месте.</p>
-<p>Есть и короткий способ создать Map сразу с данными: <code>Map.of("Anna", 26, "Bob", 30)</code>. Но такую Map нельзя изменить: любой put бросит UnsupportedOperationException. Если пары нужно добавлять, создайте <code>new HashMap&lt;&gt;()</code>.</p>
+<p>Чтобы увидеть разницу, положим в каждую Map одни и те же пары в одном порядке: <code>put("Bob", 1)</code>, потом <code>put("Anna", 2)</code>, потом <code>put("Eve", 3)</code>. И напечатаем результат.</p>
+<ul><li><strong>HashMap:</strong> порядок пар не гарантирован. Он зависит от того, как HashMap раскладывает ключи внутри, и может поменяться, когда вы добавите новые пары. Поэтому не пишите код, который рассчитывает на этот порядок. Зато HashMap самый быстрый, и в большинстве задач порядок не важен. Берите его по умолчанию.<pre class="eg"><code><span class="t-type">System</span>.out.println(hash);     <span class="t-comment">// {Bob=1, Eve=3, Anna=2}, но может быть и другой порядок</span></code></pre></li><li><strong>LinkedHashMap:</strong> помнит порядок добавления. Какую пару положили первой, та первой и выведется. Если положить новое значение под уже существующий ключ, пара останется на своём месте. Берите его, когда порядок важен: товары в корзине, шаги в истории действий.<pre class="eg"><code><span class="t-type">System</span>.out.println(linked);   <span class="t-comment">// {Bob=1, Anna=2, Eve=3}</span></code></pre></li><li><strong>TreeMap:</strong> сортирует пары по ключу. Строки идут по алфавиту, числа от меньшего к большему. Берите его, когда нужен отсортированный результат: словарь по алфавиту, расписание по часам. Работает чуть медленнее HashMap. Учтите, что строки сравниваются с учётом регистра: заглавные буквы идут раньше строчных, поэтому "Bob" окажется перед "anna".<pre class="eg"><code><span class="t-type">System</span>.out.println(tree);     <span class="t-comment">// {Anna=2, Bob=1, Eve=3}</span></code></pre></li></ul>
+<p>Если сомневаетесь, берите HashMap. Остальные два нужны, только когда важен порядок.</p>
+<p>Слева обычно пишут просто Map, а конкретный вид указывают справа, после new: <code>Map&lt;String, Integer&gt;</code> ages = <code>new TreeMap&lt;&gt;()</code>. Так потом легко заменить TreeMap на HashMap: правка нужна только в одном месте, остальной код менять не придётся.</p>
+<p>Есть и короткий способ создать Map сразу с данными: <code>Map.of("EE", "Estonia", "LV", "Latvia")</code>. Аргументы идут парами: ключ, значение, ключ, значение. У такой Map три ограничения:</p>
+<ul><li><strong>Изменить нельзя:</strong> put бросит UnsupportedOperationException.</li><li><strong>Ключи не повторяются:</strong> <code>Map.of("Anna", 1, "Anna", 2)</code> бросит IllegalArgumentException.</li><li>Порядок не гарантирован, как у HashMap.</li></ul>
+<p>Map.of удобен для данных, которые не меняются, например для кодов стран. Если пары нужно добавлять, создайте изменяемую копию: <code>new HashMap&lt;&gt;(Map.of(...))</code>.</p>
 <div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; hash = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
-<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; linked = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; linked = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 <span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; tree = <span class="t-kw">new</span> <span class="t-type">TreeMap</span>&lt;&gt;();
 
-<span class="t-comment">// После put("Bob", 1), put("Anna", 2), put("Eve", 3):</span>
-<span class="t-comment">//   HashMap:       любой порядок</span>
-<span class="t-comment">//   LinkedHashMap: {Bob=1, Anna=2, Eve=3}</span>
-<span class="t-comment">//   TreeMap:       {Anna=2, Bob=1, Eve=3}</span></code></pre></div>
+<span class="t-comment">// Одни и те же пары в одном порядке: Bob, Anna, Eve</span>
+hash.put(<span class="t-string">"Bob"</span>, <span class="t-number">1</span>);
+hash.put(<span class="t-string">"Anna"</span>, <span class="t-number">2</span>);
+hash.put(<span class="t-string">"Eve"</span>, <span class="t-number">3</span>);
+linked.put(<span class="t-string">"Bob"</span>, <span class="t-number">1</span>);
+linked.put(<span class="t-string">"Anna"</span>, <span class="t-number">2</span>);
+linked.put(<span class="t-string">"Eve"</span>, <span class="t-number">3</span>);
+tree.put(<span class="t-string">"Bob"</span>, <span class="t-number">1</span>);
+tree.put(<span class="t-string">"Anna"</span>, <span class="t-number">2</span>);
+tree.put(<span class="t-string">"Eve"</span>, <span class="t-number">3</span>);
+
+<span class="t-type">System</span>.out.println(hash);     <span class="t-comment">// {Bob=1, Eve=3, Anna=2}: порядок не гарантирован</span>
+<span class="t-type">System</span>.out.println(linked);   <span class="t-comment">// {Bob=1, Anna=2, Eve=3}: порядок добавления</span>
+<span class="t-type">System</span>.out.println(tree);     <span class="t-comment">// {Anna=2, Bob=1, Eve=3}: по алфавиту</span>
+
+<span class="t-comment">// TreeMap с числами в ключах: от меньшего к большему</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">Integer</span>, <span class="t-type">String</span>&gt; schedule = <span class="t-kw">new</span> <span class="t-type">TreeMap</span>&lt;&gt;();
+schedule.put(<span class="t-number">18</span>, <span class="t-string">"Dinner"</span>);
+schedule.put(<span class="t-number">8</span>, <span class="t-string">"Breakfast"</span>);
+schedule.put(<span class="t-number">13</span>, <span class="t-string">"Lunch"</span>);
+<span class="t-type">System</span>.out.println(schedule); <span class="t-comment">// {8=Breakfast, 13=Lunch, 18=Dinner}</span>
+
+<span class="t-comment">// Map.of: сразу с данными, но изменить нельзя</span>
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">String</span>&gt; countries = <span class="t-type">Map</span>.of(<span class="t-string">"EE"</span>, <span class="t-string">"Estonia"</span>, <span class="t-string">"LV"</span>, <span class="t-string">"Latvia"</span>);
+<span class="t-comment">// countries.put("LT", "Lithuania");    // UnsupportedOperationException</span>
+
+<span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">String</span>&gt; editable = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;(countries);  <span class="t-comment">// изменяемая копия</span>
+editable.put(<span class="t-string">"LT"</span>, <span class="t-string">"Lithuania"</span>);                          <span class="t-comment">// так можно</span></code></pre></div>
 </section>
 <h2 class="group-title">Обход</h2>
 <section class="card" data-id="map-6">
 <h3>6. Перебор: entrySet, keySet, values</h3>
-<p>Пройти по Map циклом for-each напрямую нельзя. Java не знает, что вы хотите перебрать: ключи, значения или пары целиком. Поэтому сначала выберите это сами одним из трёх методов. Во всех примерах ages = {Anna=26, Bob=30}.</p>
+<p>Пройти по Map циклом for-each напрямую нельзя. Java не знает, что вы хотите перебрать: ключи, значения или пары целиком. Поэтому сначала выберите это сами одним из трёх методов. Во всех примерах ages — обычный HashMap: сначала <code>put("Anna", 26)</code>, потом <code>put("Bob", 30)</code>.</p>
 <ul><li><strong><code>entrySet()</code>:</strong> пары целиком. У каждой пары есть <code>getKey()</code> (ключ) и <code>getValue()</code> (значение).<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">Map</span>.<span class="t-type">Entry</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; e : ages.entrySet()) {
     <span class="t-type">System</span>.out.println(e.getKey() + <span class="t-string">" -&gt; "</span> + e.getValue());
 }
-<span class="t-comment">// Anna -&gt; 26</span>
-<span class="t-comment">// Bob -&gt; 30</span></code></pre></li><li><strong><code>keySet()</code>:</strong> только ключи. Значение по ключу при желании можно достать через get.<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
+<span class="t-comment">// Bob -&gt; 30</span>
+<span class="t-comment">// Anna -&gt; 26</span></code></pre></li><li><strong><code>keySet()</code>:</strong> только ключи. Значение по ключу при желании можно достать через get.<pre class="eg"><code><span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
     <span class="t-type">System</span>.out.println(name);
 }
-<span class="t-comment">// Anna</span>
-<span class="t-comment">// Bob</span></code></pre></li><li><strong><code>values()</code>:</strong> только значения, без ключей. Удобно, например, чтобы посчитать сумму.<pre class="eg"><code><span class="t-kw">int</span> sum = <span class="t-number">0</span>;
+<span class="t-comment">// Bob</span>
+<span class="t-comment">// Anna</span></code></pre></li><li><strong><code>values()</code>:</strong> только значения, без ключей. Удобно, например, чтобы посчитать сумму.<pre class="eg"><code><span class="t-kw">int</span> sum = <span class="t-number">0</span>;
 <span class="t-kw">for</span> (<span class="t-kw">int</span> age : ages.values()) {
     sum += age;
 }
 <span class="t-comment">// sum = 56</span></code></pre></li></ul>
 <p>Если в цикле нужны и ключ, и значение, берите entrySet. Тип каждой пары записывается как Map.<code>Entry&lt;String, Integer&gt;</code>, то есть «запись Map с ключом String и значением Integer». Выглядит длинно, но к этому быстро привыкают.</p>
-<p>В примере мы взяли LinkedHashMap, чтобы пары выводились в порядке добавления.</p>
-<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">LinkedHashMap</span>&lt;&gt;();
+<p>Обратите внимание на порядок: Bob вывелся раньше Anna, хотя его добавили вторым. Это нормально для HashMap, порядок пар в нём не гарантирован (см. раздел <a class="xref" href="#map-5">5</a>). Если нужен порядок добавления, возьмите LinkedHashMap, а если сортировка — TreeMap.</p>
+<div class="code"><button class="copy" type="button" data-copy="Копировать" data-copied="Скопировано">Копировать</button><pre><code><span class="t-type">Map</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; ages = <span class="t-kw">new</span> <span class="t-type">HashMap</span>&lt;&gt;();
 ages.put(<span class="t-string">"Anna"</span>, <span class="t-number">26</span>);
 ages.put(<span class="t-string">"Bob"</span>, <span class="t-number">30</span>);
 
-<span class="t-comment">// Пары: Anna=26, Bob=30</span>
+<span class="t-comment">// Пары: Bob=30, Anna=26 (порядок HashMap не гарантирован)</span>
 <span class="t-kw">for</span> (<span class="t-type">Map</span>.<span class="t-type">Entry</span>&lt;<span class="t-type">String</span>, <span class="t-type">Integer</span>&gt; e : ages.entrySet()) {
     <span class="t-type">System</span>.out.println(e.getKey() + <span class="t-string">"="</span> + e.getValue());
 }
 
-<span class="t-comment">// Ключи: Anna, Bob</span>
+<span class="t-comment">// Ключи: Bob, Anna</span>
 <span class="t-kw">for</span> (<span class="t-type">String</span> name : ages.keySet()) {
     <span class="t-type">System</span>.out.println(name);
 }
 
-<span class="t-comment">// Значения: 26, 30</span>
+<span class="t-comment">// Значения: 30, 26</span>
 <span class="t-kw">for</span> (<span class="t-kw">int</span> age : ages.values()) {
     <span class="t-type">System</span>.out.println(age);
 }</code></pre></div>
